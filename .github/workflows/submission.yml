@@ -1,0 +1,54 @@
+# Runs submitted through the GitHub UI: a "Submit runs" issue with zip attachments becomes a pull request with the
+# valid runs (tools/submission.py does all checking). Re-runs when the issue is edited; the pull request's branch
+# is then replaced. A maintainer still reviews and merges.
+name: submission
+on:
+  issues:
+    types: [opened, edited, reopened]
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+concurrency:
+  group: submission-${{ github.event.issue.number }}
+  cancel-in-progress: true
+jobs:
+  submit:
+    if: contains(github.event.issue.body, '### Zip with the runs') && github.event.issue.state == 'open'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+      AUTHOR: ${{ github.event.issue.user.login }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Check the zip(s)
+        env:
+          BODY: ${{ github.event.issue.body }}
+        run: |
+          printf '%s' "$BODY" > /tmp/body.md
+          python3 tools/submission.py /tmp/body.md /tmp/report.md /tmp/runs.txt
+      - name: Pull request with the valid runs
+        run: |
+          branch="submission/issue-$ISSUE"
+          if [ -s /tmp/runs.txt ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git switch -c "$branch"
+            git add results/runs
+            git commit -q -m "runs: $(wc -l < /tmp/runs.txt) run(s) submitted by @$AUTHOR in #$ISSUE" -m "$(cat /tmp/runs.txt)"
+            git push -f origin "$branch"
+            pr="$(gh pr list --head "$branch" --state open --json url -q '.[0].url')"
+            body="$(printf 'Runs submitted by @%s in #%s (the submitter confirmed the licence, the owners'"'"' consent and that the runs are unchanged).\n\n%s\n\nCloses #%s' "$AUTHOR" "$ISSUE" "$(cat /tmp/report.md)" "$ISSUE")"
+            if [ -z "$pr" ]; then
+              pr="$(gh pr create --base main --head "$branch" --title "Runs from #$ISSUE" --body "$body")"
+            else
+              gh pr edit "$pr" --body "$body"
+            fi
+            printf '\n\nPull request: %s — a maintainer reviews and merges it; the table updates after the merge.\n' "$pr" >> /tmp/report.md
+          else
+            printf '\n\nNothing to add yet. Edit this issue (for example drop a corrected zip) and the check runs again.\n' >> /tmp/report.md
+          fi
+          gh issue comment "$ISSUE" --body-file /tmp/report.md

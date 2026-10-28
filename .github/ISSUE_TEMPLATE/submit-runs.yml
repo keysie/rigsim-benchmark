@@ -1,0 +1,36 @@
+name: Submit runs
+description: Share runs from a rigsim stick — drop a zip, no git needed
+title: "Runs: "
+labels: ["runs-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Put the run folders from the stick's `runs/` folder into one zip (several zips are fine too) and drop it
+        into the field below. A check runs right away: the runs must come unchanged from a stick and be complete.
+        Valid runs become a pull request, linked here; the result of the check is posted as a comment. If
+        something needs fixing, edit this issue (e.g. drop a new zip) and the check runs again.
+  - type: textarea
+    id: zip
+    attributes:
+      label: Zip with the runs
+      description: Drag the zip file here (up to 25 MB per file on GitHub; several files are fine).
+      placeholder: Drop the zip here…
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmations
+      options:
+        - label: I agree that the runs are published under CC BY 4.0
+          required: true
+        - label: The owner of every measured machine agreed to publication
+          required: true
+        - label: The run folders are unchanged from the stick
+          required: true
+  - type: input
+    id: machines
+    attributes:
+      label: Machines (optional)
+      description: e.g. "my desktop, a friend's laptop"
