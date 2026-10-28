@@ -1956,6 +1956,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -1971,6 +1975,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -1985,6 +1993,13 @@
      "pci": "0000:01:00.0",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 10073.748857166778,
+       "error": 0.8213661853737946,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      },
       {
        "tag": "v0.1.0",
        "value": 10073.748857166778,
@@ -2004,6 +2019,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "value": 144.00395309344378,
+       "error": -0.05402702062529863,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 12%, memory 88%"
+      },
+      {
        "tag": "v0.1.0",
        "value": 144.00395309344378,
        "error": -0.05402702062529863,
@@ -2021,6 +2043,13 @@
      "pci": "0000:01:00.0",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 49023.23307365412,
+       "error": 1.0425217444606631,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      },
       {
        "tag": "v0.1.0",
        "value": 49023.23307365412,
@@ -2040,6 +2069,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "value": 469.34718253356573,
+       "error": -0.2338443925803434,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 54%, memory 46%"
+      },
+      {
        "tag": "v0.1.0",
        "value": 469.34718253356573,
        "error": -0.2338443925803434,
@@ -2058,6 +2094,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -2072,6 +2112,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -2088,6 +2132,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -2102,6 +2150,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -2118,6 +2170,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "value": 75.35,
+       "error": 0.16640866873065008,
+       "calibration": false,
+       "basis": "fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -2132,6 +2191,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 93.91715976331362,
+       "error": 0.05172276057928937,
+       "calibration": false,
+       "basis": "block model, JEDEC DRAM efficiency; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
@@ -2148,6 +2214,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -2162,6 +2232,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
@@ -2178,6 +2252,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -2193,6 +2271,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -2200,9 +2282,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.1.0",
-    "n": 4,
-    "median_abs_error": 0.8213661853737946
+    "tag": "v0.2.0",
+    "n": 6,
+    "median_abs_error": 0.2338443925803434
    }
   },
   {
@@ -4370,6 +4452,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -4384,6 +4470,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
@@ -4414,6 +4504,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 10073.748857166778,
+       "error": 0.8154012271201421,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      },
       {
        "tag": "v0.1.0",
        "value": 10073.748857166778,
@@ -4448,6 +4545,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "value": 144.00395309344378,
+       "error": -0.04406589796820204,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 12%, memory 88%"
+      },
+      {
        "tag": "v0.1.0",
        "value": 144.00395309344378,
        "error": -0.04406589796820204,
@@ -4480,6 +4584,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 49023.23307365412,
+       "error": 1.0995081115007301,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      },
       {
        "tag": "v0.1.0",
        "value": 49023.23307365412,
@@ -4514,6 +4625,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "value": 469.34718253356573,
+       "error": -0.22483567588886466,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 54%, memory 46%"
+      },
+      {
        "tag": "v0.1.0",
        "value": 469.34718253356573,
        "error": -0.22483567588886466,
@@ -4547,6 +4665,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -4576,6 +4698,10 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -4607,6 +4733,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -4637,6 +4767,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -4659,6 +4793,10 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -4683,6 +4821,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -4706,6 +4848,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -4728,6 +4874,10 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -4759,6 +4909,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -4788,6 +4942,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 760.0,
+       "error": 0.05143597100803654,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured)"
+      },
       {
        "tag": "v0.1.0",
        "value": 760.0,
@@ -4822,6 +4983,10 @@
      ],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "not modelled yet"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -4836,6 +5001,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "value": 75.35,
+       "error": 0.17367601246105902,
+       "calibration": false,
+       "basis": "fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
@@ -4852,6 +5024,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "value": 93.91715976331362,
+       "error": 0.051415454475688405,
+       "calibration": false,
+       "basis": "block model, JEDEC DRAM efficiency; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -4866,6 +5045,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
@@ -4882,6 +5065,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -4896,6 +5083,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
       {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
@@ -4912,6 +5103,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.2.0",
+       "unsupported": "write traffic not modelled yet (reads only)"
+      },
+      {
        "tag": "v0.1.0",
        "unsupported": "not modelled yet"
       }
@@ -4919,9 +5114,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.1.0",
-    "n": 5,
-    "median_abs_error": 0.22483567588886466
+    "tag": "v0.2.0",
+    "n": 7,
+    "median_abs_error": 0.17367601246105902
    }
   }
  ]
