@@ -128,8 +128,8 @@ them somewhere else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-res
 - **Blender** runs by Blender's official offline route (opendata.blender.org/about, "Run Offline"): the Blender
   build and scenes the launcher downloaded at build time, the benchmark script (`BLENDER_SCRIPT_URL`, default 3.1.1),
   one device type at a time — the launcher itself needs the server even to list devices. Device types are taken
-  from the GPUs present; a type the first scene fails on is recorded as unavailable. HIP (AMD) needs a ROCm runtime
-  on the system image, which the stick does not have: AMD cards render through Blender only if a later version adds it.
+  from the GPUs present; a type the first scene fails on is recorded as unavailable. HIP (AMD) runs the same Blender,
+  script and scenes inside the ROCm image, which has AMD's runtime (the system image does not).
 
 ## Versions
 

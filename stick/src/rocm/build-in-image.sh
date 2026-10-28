@@ -29,5 +29,10 @@ HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" cmake -B b -DGGML_HIP=
 cmake --build b --target llama-bench test-backend-ops -j"$(nproc)"
 cp b/bin/llama-bench b/bin/test-backend-ops /rigsim/ && git rev-parse HEAD > /rigsim/LLAMA_COMMIT
 cd / && rm -rf /tmp/llama
+# Blender's HIP device runs in this image (the system image has no ROCm runtime): the X / GL libraries Blender
+# loads at start, even in background mode
+apt-get update -qq && apt-get install -y -qq --no-install-recommends libxrender1 libxi6 libxkbcommon0 libsm6 libgl1 \
+  libxxf86vm1 libxfixes3 libegl1 >/dev/null || echo "WARN: Blender libraries not installed (Blender HIP unavailable)"
+rm -rf /var/lib/apt/lists/*
 printf '#!/bin/bash\nexec "$@"\n' > /rigsim/run.sh && chmod +x /rigsim/run.sh
 echo "rocm image ready"

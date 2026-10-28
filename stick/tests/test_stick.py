@@ -757,3 +757,28 @@ def test_blender_offline_route(tmp_path, monkeypatch):
     assert calls[0][:2] == [str(exe), "--background"] and "--python" in calls[0]
     b_sh = (HERE / "build.sh").read_text()
     assert "blender-benchmark-script-3.1.1.tar.gz" in b_sh and "BLENDER_SCRIPT_URL" in b_sh
+
+
+
+def test_blender_hip_runs_inside_the_rocm_image(tmp_path, monkeypatch):
+    b = tmp_path / "seed" / "blender"
+    exe = b / "home" / "cache" / "4.2.0" / "blender"; exe.parent.mkdir(parents=True); exe.write_text(""); exe.chmod(0o755)
+    f = b / "home" / "cache" / "scenes" / "monster" / "main.blend"; f.parent.mkdir(parents=True); f.write_bytes(b"x")
+    (b / "script").mkdir(); (b / "script" / "main.py").write_text(""); (b / "BLENDER_VERSION").write_text("4.2.0")
+    monkeypatch.setattr(stick, "BLENDER_SCENES", ["monster"])
+    monkeypatch.setattr(stick, "guessed_blender_types", lambda drm=None: ["CPU", "HIP"])
+    monkeypatch.setattr(stick, "vendor_images", lambda data: {"rocm": "rigsim/rocm:k1"})
+    monkeypatch.setattr(stick, "load_image", lambda *a, **k: dict(rc=0, cached=True))
+    calls = []
+
+    class R:
+        returncode, stdout, stderr = 0, "{}", ""
+    monkeypatch.setattr(stick.subprocess, "run", lambda cmd, **kw: calls.append(cmd) or R())
+    r = stick.run_blender(tmp_path, tmp_path / "run", tmp_path / "log")
+    hip = next(c for c in calls if c[-1] == "HIP")
+    assert hip[:2] == ["docker", "run"] and "/dev/kfd" in hip and f"{b}:{b}:ro" in hip and "rigsim/rocm:k1" in hip
+    assert hip[hip.index("rigsim/rocm:k1") + 1:][:2] == ["/rigsim/run.sh", str(exe)]
+    assert r["rc"] == 0 and "hip-monster" in r["runs"] and r["hip_runtime"] == "ROCm image rigsim/rocm:k1"
+    monkeypatch.setattr(stick, "vendor_images", lambda data: {})                     # no ROCm image: unavailable
+    assert stick.run_blender(tmp_path, tmp_path / "run2", tmp_path / "log")["types_unavailable"] == ["HIP"]
+    assert "libxkbcommon0" in (HERE / "src" / "rocm" / "build-in-image.sh").read_text()

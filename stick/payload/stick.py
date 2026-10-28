@@ -876,6 +876,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
     if exe and scenes and script.exists():
         d.mkdir(parents=True, exist_ok=True)
         env = dict(os.environ, HOME=str(b / "home"))
+        rocm_tag = vendor_images(data).get("rocm")
         runs, unavailable = {}, []
         for t in guessed_blender_types():
             for i, (name, blend) in enumerate(scenes.items()):
@@ -883,6 +884,14 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                 t0 = time.time()
                 cmd = [str(exe), "--background", "--factory-startup", "-noaudio", "--debug-cycles", "--enable-autoexec",
                        "--engine", "CYCLES", str(blend), "--python", str(script), "--", "--device-type", t]
+                if t == "HIP":
+                    # HIP needs AMD's runtime, which only the ROCm image has: the same Blender, script and scene,
+                    # mounted read-only at the same paths, run inside it
+                    if not rocm_tag or load_image(data / "seed" / "images" / "vendor-rocm.tar", data, log).get("rc"):
+                        unavailable.append(t)
+                        break
+                    cmd = ["docker", "run", "--rm", "--network", "none", *AMD_DEVICES, "-v", f"{b}:{b}:ro",
+                           "-w", str(script.parent), "-e", "HOME=/tmp", rocm_tag, "/rigsim/run.sh", *cmd]
                 try:
                     rr = subprocess.run(cmd, capture_output=True, text=True, cwd=str(script.parent), env=env,
                                         timeout=BLENDER_TIMEOUT_S)
@@ -896,7 +905,8 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                     break
                 runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
         return dict(rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, route="offline", blender=ver,
-                    runs=runs, types_unavailable=unavailable)
+                    runs=runs, types_unavailable=unavailable,
+                    hip_runtime=f"ROCm image {rocm_tag}" if rocm_tag and any(k.startswith("hip-") for k in runs) else "")
     return run_blender_launcher(b, ver, d, log)
 
 
@@ -1203,6 +1213,9 @@ def tools_for(step: str, man: dict, extra: dict | None = None) -> dict:
         t["mlc"] = seed.get("tools", {}).get("mlc", {})
     elif step == "blender":
         t["blender-benchmark"] = seed.get("tools", {}).get("blender-benchmark", {})
+        t.update(nvidia_driver=rt.get("nvidia_driver", ""), packages=_pkgs(man, r"(libnvidia-gl-|libze|intel-level-zero-gpu)"))
+        if seed.get("vendor", {}).get("rocm"):
+            t["hip_runtime"] = seed["vendor"]["rocm"]               # Blender HIP renders inside the ROCm image
     t.update(extra or {})
     return t
 
