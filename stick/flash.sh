@@ -11,6 +11,7 @@
 #   [e]rase   start from scratch
 #   [a]bort
 # Before update or erase the runs are always copied to $BACKUP (default ~/rigsim-stick-backup-<time>).
+# After seeding, the container images are loaded into the stick's Docker store here (NO_PRELOAD=1: on first boot).
 # New sticks keep room for larger images: the data partition starts at RESERVE_MIB (default 8192) or 2 GiB after
 # the image, whichever is later.
 # Needs: util-linux (sfdisk, partx, lsblk), e2fsprogs, rsync.
@@ -40,12 +41,63 @@ reread() {
 data_part() { lsblk -lnpo NAME,LABEL "$DEV" | awk '$2 == "RIGSIM" {print $1; exit}'; }
 mount_data() { MNT="$(mktemp -d)"; mount "$1" "$MNT"; }
 
+# Loads every seeded container image into the stick's own Docker store now, on this machine, instead of on the
+# stick's first boot on someone else's machine (hours for the ROCm image on a slow stick). It runs the stick's own
+# containerd and dockerd — from the ISO's system image, in a chroot — on the data partition, at the paths the stick
+# uses, so the store is exactly what the stick would have written. The stick still checks every image and loads
+# whatever is missing. NO_PRELOAD=1 skips this.
+PRELOAD_IN_CHROOT='
+containerd >/tmp/containerd.log 2>&1 & cpid=$!
+for i in $(seq 60); do [ -S /run/containerd/containerd.sock ] && break; sleep 1; done
+dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
+  >/tmp/dockerd.log 2>&1 & dpid=$!
+for i in $(seq 90); do docker info >/dev/null 2>&1 && break; sleep 1; done
+if ! docker info >/dev/null 2>&1; then
+  echo "dockerd from the stick did not start here:"; tail -15 /tmp/dockerd.log; kill $dpid $cpid 2>/dev/null; exit 3
+fi
+python3 /opt/rigsim/stick.py --preload /mnt/rigsim; rc=$?
+kill $dpid; wait $dpid 2>/dev/null; kill $cpid; wait $cpid 2>/dev/null
+exit $rc'
+preload_images() {                                   # $1 = data partition (not mounted)
+  if [[ "${NO_PRELOAD:-0}" == 1 ]]; then echo "images: loaded on the stick's first boot (NO_PRELOAD=1)"; return 0; fi
+  if [[ ! -s "$ISO" ]]; then echo "images: no ISO at $ISO here — they load on the stick's first boot"; return 0; fi
+  modprobe overlay 2>/dev/null || true; modprobe squashfs 2>/dev/null || true; modprobe loop 2>/dev/null || true
+  local t r rc=0 ms=()
+  t="$(mktemp -d /var/tmp/rigsim-preload.XXXXXX)"; r="$t/root"
+  mkdir -p "$t/iso" "$t/sq" "$t/up" "$t/wk" "$r"
+  pm() { mount "$@" && ms=("${@: -1}" "${ms[@]}"); }  # remembers every mount point, newest first
+  echo "images: loading them onto the stick with the stick's own Docker (progress every 15 s)"
+  {
+    pm -o loop,ro "$ISO" "$t/iso" &&
+    pm -o loop,ro "$t/iso/casper/filesystem.squashfs" "$t/sq" &&
+    pm -t overlay overlay -o "lowerdir=$t/sq,upperdir=$t/up,workdir=$t/wk" "$r" &&
+    pm --rbind /dev "$r/dev" && pm -t proc proc "$r/proc" && pm --rbind /sys "$r/sys" &&
+    pm -t tmpfs tmpfs "$r/run" && pm -t tmpfs tmpfs "$r/tmp" &&
+    mkdir -p "$r/mnt/rigsim" && pm "$1" "$r/mnt/rigsim" &&
+    mkdir -p "$r/mnt/rigsim/containerd" "$r/mnt/rigsim/docker" "$r/var/lib/containerd" &&
+    pm --bind "$r/mnt/rigsim/containerd" "$r/var/lib/containerd" &&
+    chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"
+  } || rc=$?
+  sync
+  for m in "${ms[@]}"; do umount -l "$m" 2>/dev/null || true; done
+  if findmnt -rn -o TARGET | grep -q "^$t"; then
+    echo "WARN: $t still has mounts; left in place" >&2
+  else
+    rm -rf "$t"
+  fi
+  if [[ $rc -ne 0 ]]; then
+    echo "images: preloading failed (rc=$rc) — the stick loads what is missing on its first boot"
+  fi
+  return 0
+}
+
 seed_stick() {                                       # $1 = data partition
   mount_data "$1"
   mkdir -p "$MNT/runs" "$MNT/seed"
   rsync -a --delete --info=progress2 "$OUT/seed/" "$MNT/seed/"
   [[ -e "$MNT/index.tsv" ]] || printf 'run\tstart_utc\tfingerprint\tcpu\tboard\tgpus\tram\tstatus\tstick\n' > "$MNT/index.tsv"
   sync; umount "$MNT"; rmdir "$MNT"; MNT=""
+  preload_images "$1"
 }
 
 backup_runs() {                                      # $1 = data partition; copies runs + index, read-only mount

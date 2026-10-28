@@ -1057,12 +1057,39 @@ def image_tags(img: Path) -> list[str]:
     return []
 
 
-def load_image(img: Path, data: Path, log: Path) -> dict:
-    """docker load once per stick (marked on the data partition); the time is logged, a slow stick shows here."""
+def _du(p: Path) -> int:
+    rc, out = sh(["du", "-sb", str(p)], timeout=300)
+    try:
+        return int(out.split()[0]) if rc == 0 else 0
+    except (ValueError, IndexError):
+        return 0
+
+
+def load_image(img: Path, data: Path, log: Path | None, every: float = 30.0) -> dict:
+    """docker load once per stick (marked on the data partition). Unpacking onto a USB stick can take long: a line
+    every `every` seconds shows how much has been written and how fast (a slow stick shows here, not as a hang)."""
     if _loaded(img, data):
         return dict(rc=0, cached=True)
+    mib = img.stat().st_size / 2**20
+    say(f"docker: loading {img.name} ({mib:.0f} MiB) onto the stick", log)
     t0 = time.time()
-    rc, _ = sh(["docker", "load", "-q", "-i", str(img)], timeout=3 * 3600)
+    store = data / "containerd"
+    base = last = _du(store)
+    t_last = t0
+    p = subprocess.Popen(["docker", "load", "-q", "-i", str(img)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         text=True)
+    while True:
+        try:
+            p.wait(timeout=every)
+            break
+        except subprocess.TimeoutExpired:
+            if time.time() - t0 > 3 * 3600:
+                p.kill(); p.wait(); break
+            now, size = time.time(), _du(store)
+            say(f"docker: {img.name}: {(size - base) / 2**30:.1f} GiB written, "
+                f"{(size - last) / 2**20 / max(now - t_last, 1e-6):.0f} MB/s, {now - t0:.0f} s", log)
+            last, t_last = size, now
+    rc = p.returncode if p.returncode is not None else -9
     sec = time.time() - t0
     if rc == 0:
         (data / "docker" / f".loaded-{img.name}").write_text(str(img.stat().st_size))
@@ -1324,5 +1351,21 @@ def main() -> int:
     return 0
 
 
+def preload(data: Path) -> int:
+    """Run by flash.sh at flash time, inside the stick's own system image (chroot) with containerd and dockerd
+    already started on the data partition: loads every seeded image — the vendor images too — so the stick's
+    first boot on a machine finds them ready. Same binaries and paths as on the stick; the stick checks every
+    image again before use (_loaded) and loads anything missing itself."""
+    failed = 0
+    for img in sorted((data / "seed" / "images").glob("*.tar"), key=lambda p: p.stat().st_size):
+        r = load_image(img, data, None, every=15.0)
+        if r.get("cached"):
+            say(f"docker: {img.name} already on the stick")
+        failed += r.get("rc", 0) != 0
+    return 1 if failed else 0
+
+
 if __name__ == "__main__":
+    if len(sys.argv) == 3 and sys.argv[1] == "--preload":
+        sys.exit(preload(Path(sys.argv[2])))
     sys.exit(main())

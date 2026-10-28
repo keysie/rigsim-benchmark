@@ -784,3 +784,41 @@ def test_blender_hip_runs_inside_the_rocm_image(tmp_path, monkeypatch):
     monkeypatch.setattr(stick, "vendor_images", lambda data: {})                     # no ROCm image: unavailable
     assert stick.run_blender(tmp_path, tmp_path / "run2", tmp_path / "log")["types_unavailable"] == ["HIP"]
     assert "libxkbcommon0" in (HERE / "src" / "rocm" / "build-in-image.sh").read_text()
+
+
+def test_image_load_reports_progress(tmp_path, monkeypatch, capsys):
+    img = tmp_path / "seed" / "images" / "nvidia_cuda.tar"; img.parent.mkdir(parents=True); img.write_bytes(b"x" * 1024)
+    (tmp_path / "docker").mkdir()
+    sizes = iter([0, 3 * 2**30, 6 * 2**30])
+    monkeypatch.setattr(stick, "_du", lambda p: next(sizes))
+    monkeypatch.setattr(stick, "_loaded", lambda img, data: False)
+
+    class P:
+        n = 0
+        returncode = None
+        def __init__(self, *a, **k): pass
+        def wait(self, timeout=None):
+            P.n += 1
+            if P.n < 3:
+                raise stick.subprocess.TimeoutExpired("docker", timeout)
+            self.returncode = 0
+            return 0
+    monkeypatch.setattr(stick.subprocess, "Popen", P)
+    r = stick.load_image(img, tmp_path, None, every=0.01)
+    out = capsys.readouterr().out
+    assert r["rc"] == 0 and "3.0 GiB written" in out and "6.0 GiB written" in out and "MB/s" in out
+    assert (tmp_path / "docker" / ".loaded-nvidia_cuda.tar").read_text() == "1024"
+
+
+def test_flash_preloads_images_with_the_sticks_own_docker():
+    f = (HERE / "flash.sh").read_text()
+    seed = f.split("seed_stick() {", 1)[1].split("\n}\n", 1)[0]
+    assert seed.rstrip().endswith('preload_images "$1"')                 # every mode that seeds also preloads
+    pre = f.split("preload_images() {", 1)[1].split("\n}\n", 1)[0]
+    assert 'casper/filesystem.squashfs' in pre and 'chroot "$r"' in pre and "NO_PRELOAD" in pre
+    assert pre.index('pm "$1" "$r/mnt/rigsim"') < pre.index('pm --bind "$r/mnt/rigsim/containerd" "$r/var/lib/containerd"')
+    assert 'umount -l "$m"' in pre and "still has mounts; left in place" in pre and "return 0" in pre   # never fails flashing
+    assert "dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock" in f
+    assert "python3 /opt/rigsim/stick.py --preload /mnt/rigsim" in f
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert 'sys.argv[1] == "--preload"' in src and "def preload(data: Path) -> int:" in src
