@@ -24,11 +24,17 @@ def test_index_rows_from_run_json(tmp_path, monkeypatch):
     assert (r["steps_ok"], r["steps_failed"], r["steps_skipped"]) == (1, 1, 1)
 
 
-def test_site_reads_the_generated_table():
+def test_site_reads_the_generated_table(tmp_path, monkeypatch):
     html = (ROOT / "docs" / "index.html").read_text()
     assert 'fetch("data.json", { cache: "no-store" })' in html and "results/runs/" in html
-    runs = json.loads((ROOT / "docs" / "data.json").read_text())["runs"]
-    assert {r["run"] for r in runs} == {p.name for p in (ROOT / "results" / "runs").iterdir() if p.is_dir()}
+    folders = {p.name for p in (ROOT / "results" / "runs").iterdir() if p.is_dir()}
+    # the committed table may lag behind: a submission's pull request adds run folders, and the table is rebuilt
+    # only after the merge (workflow runs.yml) — but it never lists a run that is not there
+    committed = {r["run"] for r in json.loads((ROOT / "docs" / "data.json").read_text())["runs"]}
+    assert committed <= folders
+    # and a rebuild covers every run folder
+    monkeypatch.setattr(index, "OUT", tmp_path / "data.json")
+    assert {r["run"] for r in index.build()} == folders
 
 
 def test_measurements_carry_the_cards_pci_address(tmp_path):
