@@ -6,11 +6,53 @@ Reads every format version 1.x (fields a run lacks are left empty).
 from __future__ import annotations
 
 import json
+import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RUNS = ROOT / "results" / "runs"
+PRED = ROOT / "predictions"
 OUT = ROOT / "docs" / "data.json"
+sys.path.insert(0, str(ROOT / "tools"))
+import measurements  # noqa: E402
+
+
+def _vkey(tag: str) -> tuple:
+    m = re.match(r"^v(\d+)\.(\d+)\.(\d+)$", tag)
+    return tuple(int(x) for x in m.groups()) if m else (-1,)
+
+
+def results(run: Path, pred: Path) -> tuple[list[dict], dict]:
+    """The run's comparable values with rigsim's predictions: the newest release's, and the earlier ones."""
+    meas = measurements.extract(run)["measurements"]
+    files = sorted(pred.glob(f"*/{run.name}.json"), key=lambda f: _vkey(f.parent.name), reverse=True)
+    preds = []
+    for f in files:
+        try:
+            preds.append(json.loads(f.read_text()))
+        except ValueError:
+            pass
+    rows = []
+    for m in meas:
+        hist = []
+        for p in preds:
+            tag = (p.get("rigsim") or {}).get("tag", "")
+            hit = next((x for x in p.get("predictions", []) if x.get("key") == m["key"]), None)
+            miss = next((x for x in p.get("unsupported", []) if x.get("key") == m["key"]), None)
+            if hit:
+                hist.append(dict(tag=tag, value=hit["value"], error=hit["value"] / m["value"] - 1 if m["value"] else None,
+                                 calibration=bool(hit.get("calibration")), basis=hit.get("basis", "")))
+            elif miss or p.get("error"):
+                hist.append(dict(tag=tag, unsupported=(miss or {}).get("reason") or p.get("error", "")))
+        rows.append(dict(key=m["key"], value=m["value"], unit=m["unit"], spread=m.get("spread", 0),
+                         gpu=m["conditions"].get("gpu", ""), predictions=hist))
+    latest = (preds[0].get("rigsim") or {}).get("tag", "") if preds else ""
+    errs = [abs(r["predictions"][0]["error"]) for r in rows if r["predictions"] and r["predictions"][0].get("tag") == latest
+            and r["predictions"][0].get("error") is not None and not r["predictions"][0].get("calibration")]
+    errs.sort()
+    summary = dict(tag=latest, n=len(errs), median_abs_error=errs[len(errs) // 2] if errs else None) if latest else {}
+    return rows, summary
 
 
 def flat(v, prefix: str = "") -> list[list[str]]:
@@ -73,7 +115,8 @@ def row(run_json: Path) -> dict:
                 versions=summary(qs, man), status=r.get("status", ""),
                 steps_ok=sum(1 for s in steps if s["result"] == "ok"),
                 steps_failed=sum(1 for s in steps if s["result"] == "failed"),
-                steps_skipped=sum(1 for s in steps if s["result"] == "skipped"), steps=steps)
+                steps_skipped=sum(1 for s in steps if s["result"] == "skipped"), steps=steps,
+                **dict(zip(("results", "rigsim"), results(run_json.parent, PRED))))
 
 
 def build() -> list[dict]:

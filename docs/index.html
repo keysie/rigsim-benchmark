@@ -81,6 +81,12 @@
   .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px 22px; }
   .step h4 { font: 600 0.98rem "Barlow Semi Condensed", sans-serif; margin: 0 0 4px; }
   .step .result-failed { color: var(--warn); } .step .result-ok { color: var(--ok); } .step .result-skipped { color: var(--muted); }
+  .results { border-collapse: collapse; width: auto; min-width: 0; margin: 4px 0 18px; font-size: 0.9rem; }
+  .results th, .results td { padding: 4px 14px 4px 0; border-bottom: 1px solid var(--rule); background: none; position: static; }
+  .results th { font: 600 0.9rem "Barlow Semi Condensed", sans-serif; color: var(--muted); }
+  .results td.num { text-align: right; }
+  .pred { white-space: nowrap; } .pred abbr { text-decoration: underline dotted; cursor: help; }
+  .err-good { color: var(--ok); } .err-bad { color: var(--warn); } .calib { color: var(--muted); font-size: 0.8rem; }
   .step dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 12px; margin: 0; font-size: 0.86rem; }
   .step dt { color: var(--muted); overflow-wrap: anywhere; } .step dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; text-align: right; }
   footer { margin-top: 28px; color: var(--muted); font-size: 0.92rem; max-width: 80ch; }
@@ -111,7 +117,7 @@
   <div class="table-wrap">
     <table>
       <thead><tr id="head"></tr></thead>
-      <tbody id="rows"><tr><td class="empty" colspan="10">Loading runs…</td></tr></tbody>
+      <tbody id="rows"><tr><td class="empty" colspan="11">Loading runs…</td></tr></tbody>
     </table>
   </div>
 
@@ -136,6 +142,7 @@ const COLS = [
   { key: "board", label: "Board" },
   { key: "steps_ok", label: "Steps", num: true },
   { key: "versions", label: "Versions", sortVal: r => r.versions.nvidia_driver || r.versions.kernel || "" },
+  { key: "rigsim", label: "rigsim", sortVal: r => r.rigsim && r.rigsim.median_abs_error != null ? r.rigsim.median_abs_error : 9 },
   { key: "stick", label: "Stick", sortVal: r => r.stick.split(".").map(n => n.padStart(4, "0")).join(".") },
   { key: "status", label: "Status" },
   { key: "run", label: "Run" },
@@ -157,9 +164,34 @@ function cell(r, c) {
       const parts = [["driver", v.nvidia_driver], ["llama.cpp", v.llama_cpp], ["CUDA", v.cuda]].filter(x => x[1]);
       return `<span class="versions">${parts.map(([k, x]) => `${k} <b>${esc(x)}</b>`).join("<br>") || "—"}</span>`;
     }
+    case "rigsim": {
+      const g = r.rigsim || {};
+      if (!g.tag) return `<span class="versions">—</span>`;
+      return g.median_abs_error == null ? `<span class="versions">${esc(g.tag)}<br>no comparable value</span>`
+        : `<span class="versions">${esc(g.tag)}<br>median <b>±${(100 * g.median_abs_error).toFixed(1)}%</b> (${g.n})</span>`;
+    }
     case "stick": return `${esc(r.stick || "—")}<div class="machine">${esc(r.stick_build)}${r.stick_dirty ? " (local changes)" : ""}</div>`;
     default: return esc(r[c.key]);
   }
+}
+
+function fmt(v) { return Math.abs(v) >= 100 ? v.toFixed(0) : Math.abs(v) >= 10 ? v.toFixed(1) : v.toFixed(2); }
+function predCell(m) {
+  const [p, ...older] = m.predictions || [];
+  if (!p) return "—";
+  const hist = (m.predictions || []).map(x => x.unsupported != null ? `${x.tag}: not predicted (${x.unsupported})`
+    : `${x.tag}: ${fmt(x.value)} ${m.unit} (${x.error >= 0 ? "+" : ""}${(100 * x.error).toFixed(1)}%)${x.calibration ? ", calibration" : ""}`).join("\n");
+  if (p.unsupported != null) return `<abbr title="${esc(hist)}">${esc(p.tag)}: not predicted</abbr>`;
+  const e = 100 * p.error, cls = Math.abs(e) <= 10 ? "err-good" : Math.abs(e) > 25 ? "err-bad" : "";
+  return `<abbr title="${esc(hist)}">${esc(p.tag)}: ${fmt(p.value)}</abbr> <span class="${cls}">(${e >= 0 ? "+" : ""}${e.toFixed(1)}%)</span>`
+    + (p.calibration ? ` <span class="calib">used for calibration</span>` : "") + (older.length ? ` <span class="calib">+${older.length} older</span>` : "");
+}
+function resultsTable(r) {
+  const rows = (r.results || []);
+  if (!rows.length) return "";
+  return `<h3>Results</h3><table class="results"><thead><tr><th>Value</th><th>Device</th><th>Measured</th><th>rigsim predicts</th></tr></thead><tbody>`
+    + rows.map(m => `<tr><td>${esc(m.key)}</td><td>${esc(m.gpu)}</td><td class="num">${fmt(m.value)} ${esc(m.unit)}</td>`
+      + `<td class="pred">${predCell(m)}</td></tr>`).join("") + `</tbody></table>`;
 }
 
 function detail(r) {
@@ -170,7 +202,7 @@ function detail(r) {
   const steps = (r.steps || []).map(s => `<div class="step"><h4>${esc(s.name)} <span class="result-${s.result}">${s.result}</span></h4>`
     + (s.note ? `<p class="meta">${esc(s.note)}</p>` : "")
     + `<dl>${s.tools.map(([k, x]) => `<dt>${esc(k)}</dt><dd>${esc(x)}</dd>`).join("")}</dl></div>`).join("");
-  return `<tr class="detail"><td colspan="${COLS.length}"><h3>Versions behind this run</h3><p class="meta">${meta}</p>`
+  return `<tr class="detail"><td colspan="${COLS.length}">${resultsTable(r)}<h3>Versions behind this run</h3><p class="meta">${meta}</p>`
     + `<div class="steps-grid">${steps || "<p class=meta>No per-step versions in this run.</p>"}</div></td></tr>`;
 }
 

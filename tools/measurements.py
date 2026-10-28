@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""Named, comparable values from a run folder — what the data page shows per run and what rigsim is asked to
+predict (predictions/README.md). Reads every run format 1.x; a value a run does not have is simply absent.
+
+  python3 tools/measurements.py results/runs/<run>        prints the run's values as JSON
+
+Keys are stable (they are how a prediction finds its measurement) and versioned with VERSION; a new kind of value
+gets a new key, an existing key never changes meaning:
+  llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
+  gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
+  mlc/idle_latency                                  ns
+  mlc/max_bandwidth/<traffic>                       GB/s            traffic: all_reads, 3to1_rw, 2to1_rw, ..."""
+from __future__ import annotations
+
+import json
+import re
+import statistics
+import sys
+from pathlib import Path
+
+VERSION = "1"
+LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
+VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
+
+
+def _json_lines(p: Path) -> list[dict]:
+    out = []
+    for line in p.read_text(errors="replace").splitlines():
+        line = line.strip()
+        if line.startswith("{"):
+            try:
+                out.append(json.loads(line))
+            except ValueError:
+                pass
+    return out
+
+
+def _llama_rows(rows: list[dict], backend: str, device: str, model: str, source: str) -> list[dict]:
+    out = []
+    for r in rows:
+        if "avg_ts" not in r:
+            continue
+        n_p, n_g = int(r.get("n_prompt") or 0), int(r.get("n_gen") or 0)
+        test = f"pp{n_p}" if n_p and not n_g else f"tg{n_g}" if n_g and not n_p else f"pp{n_p}+tg{n_g}"
+        out.append(dict(key=f"llama-bench/{backend}/{device}/{model}/{test}", value=float(r["avg_ts"]), unit="tok/s",
+                        spread=float(r.get("stddev_ts") or 0), source=source,
+                        conditions=dict(backend=backend, device=device, gpu=r.get("gpu_info", ""), model=model,
+                                        model_file=r.get("model_filename", ""), n_prompt=n_p, n_gen=n_g,
+                                        n_gpu_layers=r.get("n_gpu_layers"), n_threads=r.get("n_threads"),
+                                        n_batch=r.get("n_batch"), n_ubatch=r.get("n_ubatch"),
+                                        flash_attn=r.get("flash_attn"), build_commit=r.get("build_commit", ""))))
+    return out
+
+
+def llama(run: Path) -> list[dict]:
+    out = []
+    for f in sorted((run / "llama").glob("*.jsonl")):
+        m = LLAMA_FILE.match(f.name)
+        if not m:
+            continue
+        backend, _, dev = m.group(1).partition("-")
+        out += _llama_rows(_json_lines(f), backend, dev or "cpu", m.group(2), f"llama/{f.name}")
+    for kind, backend in (("rocm", "hip"), ("oneapi", "sycl")):
+        for f in sorted((run / kind).glob("dev*-llama-*.jsonl")):
+            m = VENDOR_FILE.match(f.name)
+            if m:
+                out += _llama_rows(_json_lines(f), backend, f"dev{m.group(1)}", m.group(2), f"{kind}/{f.name}")
+    return out
+
+
+def gpu_vram(run: Path) -> list[dict]:
+    f = run / "q" / "gpu-vram" / "results.jsonl"
+    if not f.exists():
+        return []
+    by: dict[tuple[str, str], list[float]] = {}
+    for row in _json_lines(f):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        for r in row.get("results") or []:
+            if r.get("mode") == "stream" and r.get("bytes_per_s"):
+                by.setdefault((str(row.get("params", {}).get("gpu", "")), r.get("op", "")), []).append(r["bytes_per_s"])
+    return [dict(key=f"gpu-vram/{g}/{op}", value=statistics.median(v) / 1e9, unit="GB/s", spread=0.0,
+                 source="q/gpu-vram/results.jsonl", conditions=dict(gpu=g, op=op, repeats=len(v)))
+            for (g, op), v in sorted(by.items())]
+
+
+def mlc(run: Path) -> list[dict]:
+    out = []
+    f = run / "mlc" / "idle_latency.txt"
+    if f.exists():
+        m = re.search(r"Each iteration took .*?\(\s*([\d.]+)\s*ns\)", f.read_text())
+        if m:
+            out.append(dict(key="mlc/idle_latency", value=float(m.group(1)), unit="ns", spread=0.0,
+                            source="mlc/idle_latency.txt", conditions={}))
+    f = run / "mlc" / "max_bandwidth.txt"
+    if f.exists():
+        for name, val in re.findall(r"^\s*(ALL Reads|3:1 Reads-Writes|2:1 Reads-Writes|1:1 Reads-Writes|"
+                                    r"Stream-triad like)\s*:\s*([\d.]+)", f.read_text(), re.M):
+            key = {"ALL Reads": "all_reads", "Stream-triad like": "stream_triad"}.get(
+                name, name.split()[0].replace(":", "to") + "_rw")
+            out.append(dict(key=f"mlc/max_bandwidth/{key}", value=float(val) / 1000, unit="GB/s", spread=0.0,
+                            source="mlc/max_bandwidth.txt", conditions={}))
+    return out
+
+
+def extract(run: Path) -> dict:
+    return dict(version=VERSION, run=run.name, measurements=llama(run) + gpu_vram(run) + mlc(run))
+
+
+if __name__ == "__main__":
+    print(json.dumps(extract(Path(sys.argv[1])), indent=1))
