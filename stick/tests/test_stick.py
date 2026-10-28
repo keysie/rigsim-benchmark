@@ -825,10 +825,16 @@ def test_flash_preloads_images_into_a_store_file_and_copies_it_once():
     seed = f.split("seed_stick() {", 1)[1].split("\n}\n", 1)[0]
     assert seed.rstrip().endswith('preload_images "$1"')                 # every mode that seeds also preloads
     b = f.split("build_store() {", 1)[1].split("\n}\n", 1)[0]
-    assert 'truncate -s "${STORE_GB}G" "$STORE"' in b and "mkfs.ext4" in b and 'pm -o loop "$STORE" "$t/store"' in b
-    assert 'pm --bind -o ro "$OUT/seed" "$r/mnt/rigsim/seed"' in b                  # images read from this machine
-    assert 'pm --bind "$t/store/containerd" "$r/var/lib/containerd"' in b and 'chroot "$r"' in b
-    assert 'umount -l "$m"' in b and "still has mounts; left in place" in b
+    ns = f.split("STORE_IN_NAMESPACE='", 1)[1].split("exit $rc'", 1)[0]
+    assert 'truncate -s "${STORE_GB}G" "$STORE"' in b and "mkfs.ext4" in b
+    # every chroot mount in a private mount namespace: nothing propagates to the host (Nobara lost /dev/pts)
+    assert 'unshare --mount --propagation private bash -c "$STORE_IN_NAMESPACE"' in b and "mount --rbind" not in b
+    assert ns.index("mount --make-rprivate /") < ns.index("mount --rbind /dev")
+    assert 'mount -o loop "$STORE" "$t/store"' in ns and 'mount --bind -o ro "$OUT/seed" "$r/mnt/rigsim/seed"' in ns
+    assert 'mount --bind "$t/store/containerd" "$r/var/lib/containerd"' in ns and 'chroot "$r"' in ns
+    assert "still has mounts; left in place" in b
+    outside = f.replace(f.split("STORE_IN_NAMESPACE='", 1)[1].split("exit $rc'", 1)[0], "")
+    assert "--rbind" not in outside                                                # no recursive bind outside it
     pre = f.split("preload_images() {", 1)[1].split("\n}\n", 1)[0]
     assert 'dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse' in pre and "NO_PRELOAD" in pre
     assert "not copied" in pre and pre.rstrip().endswith("return 0")              # never fails the flash

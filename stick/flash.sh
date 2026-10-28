@@ -62,32 +62,42 @@ fi
 python3 /opt/rigsim/stick.py --preload /mnt/rigsim; rc=$?
 kill $dpid; wait $dpid 2>/dev/null; kill $cpid; wait $cpid 2>/dev/null
 exit $rc'
+# Every mount for the chroot happens inside a private mount namespace (unshare): nothing can propagate to this
+# machine's own mounts, and the kernel drops them all when the namespace ends. (Before, the recursive binds of /dev
+# and /sys were made in the host's namespace; on hosts with shared mount propagation — Fedora / Nobara, systemd —
+# unmounting them took the host's own /dev/pts and cgroup mounts with them: terminals and shutdown stopped working.)
+STORE_IN_NAMESPACE='
+set -e
+mount --make-rprivate /
+mkdir -p "$t/iso" "$t/sq" "$t/up" "$t/wk" "$t/store" "$r"
+mount -o loop,ro "$ISO" "$t/iso"
+mount -o loop,ro "$t/iso/casper/filesystem.squashfs" "$t/sq"
+mount -t overlay overlay -o "lowerdir=$t/sq,upperdir=$t/up,workdir=$t/wk" "$r"
+mount -o loop "$STORE" "$t/store"
+mkdir -p "$t/store/docker" "$t/store/containerd"
+mount --rbind /dev "$r/dev"; mount -t proc proc "$r/proc"; mount --rbind /sys "$r/sys"
+mount -t tmpfs tmpfs "$r/run"; mount -t tmpfs tmpfs "$r/tmp"
+mount -t tmpfs tmpfs "$r/mnt"; mkdir -p "$r/mnt/rigsim/seed" "$r/mnt/rigsim/docker" "$r/var/lib/containerd"
+mount --bind -o ro "$OUT/seed" "$r/mnt/rigsim/seed"
+mount --bind "$t/store/docker" "$r/mnt/rigsim/docker"
+mount --bind "$t/store/containerd" "$r/var/lib/containerd"
+set +e
+chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"; rc=$?
+sync
+umount "$t/store" 2>/dev/null || umount -l "$t/store"
+exit $rc'
 build_store() {                                      # loads the seed's images into $STORE (on this machine)
-  local t r rc=0 ms=()
+  local t rc=0
   modprobe overlay 2>/dev/null || true; modprobe squashfs 2>/dev/null || true; modprobe loop 2>/dev/null || true
   if [[ ! -f "$STORE" ]]; then
     truncate -s "${STORE_GB}G" "$STORE" && mkfs.ext4 -q -F -L RIGSIM-STORE -m 0 "$STORE" || return 1
   fi
   e2fsck -fy "$STORE" >/dev/null 2>&1 || { echo "images: $STORE is damaged; delete it to start a fresh one" >&2; return 1; }
-  t="$(mktemp -d /var/tmp/rigsim-preload.XXXXXX)"; r="$t/root"
-  mkdir -p "$t/iso" "$t/sq" "$t/up" "$t/wk" "$t/store" "$r"
-  pm() { mount "$@" && ms=("${@: -1}" "${ms[@]}"); }  # remembers every mount point, newest first
-  {
-    pm -o loop,ro "$ISO" "$t/iso" &&
-    pm -o loop,ro "$t/iso/casper/filesystem.squashfs" "$t/sq" &&
-    pm -t overlay overlay -o "lowerdir=$t/sq,upperdir=$t/up,workdir=$t/wk" "$r" &&
-    pm -o loop "$STORE" "$t/store" &&
-    mkdir -p "$t/store/docker" "$t/store/containerd" &&
-    pm --rbind /dev "$r/dev" && pm -t proc proc "$r/proc" && pm --rbind /sys "$r/sys" &&
-    pm -t tmpfs tmpfs "$r/run" && pm -t tmpfs tmpfs "$r/tmp" &&
-    pm -t tmpfs tmpfs "$r/mnt" && mkdir -p "$r/mnt/rigsim/seed" "$r/mnt/rigsim/docker" "$r/var/lib/containerd" &&
-    pm --bind -o ro "$OUT/seed" "$r/mnt/rigsim/seed" &&
-    pm --bind "$t/store/docker" "$r/mnt/rigsim/docker" &&
-    pm --bind "$t/store/containerd" "$r/var/lib/containerd" &&
-    chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"
-  } || rc=$?
+  t="$(mktemp -d /var/tmp/rigsim-preload.XXXXXX)"
+  t="$t" r="$t/root" ISO="$ISO" STORE="$STORE" OUT="$OUT" PRELOAD_IN_CHROOT="$PRELOAD_IN_CHROOT" \
+    unshare --mount --propagation private bash -c "$STORE_IN_NAMESPACE" || rc=$?
   sync
-  for m in "${ms[@]}"; do umount -l "$m" 2>/dev/null || true; done
+  # the namespace is gone, so are its mounts; the work folder is only removed if nothing is mounted below it
   if findmnt -rn -o TARGET | grep -q "^$t"; then echo "WARN: $t still has mounts; left in place" >&2; else rm -rf "$t"; fi
   return $rc
 }
