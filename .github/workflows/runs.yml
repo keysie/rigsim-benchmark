@@ -1,0 +1,35 @@
+# Contributed runs: checked on every pull request that touches results/; after merging, the table is rebuilt.
+name: runs
+on:
+  pull_request:
+    paths: ["results/**"]
+  push:
+    branches: [main]
+    paths: ["results/runs/**"]
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Only new run folders, exact stick format, complete, nothing identifying
+        run: python3 tools/validate.py --pr "origin/${{ github.base_ref }}"
+  table:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 tools/index.py
+      - name: Commit the rebuilt table
+        run: |
+          git diff --quiet docs/data.json && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "table: rebuilt from results/runs" docs/data.json
+          git push

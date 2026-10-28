@@ -95,14 +95,14 @@ says so too.
 ## Results
 
 Each boot adds one folder `runs/<UTC time>-<machine>-<random>/` on the data partition; nothing is ever
-overwritten. To add them to this repository:
+overwritten. To share them in this repository:
 
 ```bash
-tools/import.sh /run/media/$USER/RIGSIM      # copy new runs into results/, rebuild the table
+tools/contribute.sh /run/media/$USER/RIGSIM  # new complete runs -> a branch and a pull request
 ```
 
-Then review and commit as described in [`results/README.md`](../results/README.md). Just copying them somewhere
-else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-results`.
+Details, the upload alternative and the licence: [Contributing runs](../README.md#contributing-runs). Just copying
+them somewhere else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-results`.
 
 ## Troubleshooting
 

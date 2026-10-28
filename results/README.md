@@ -17,13 +17,9 @@ itself is not identifiable from it.
 
 ## Adding runs
 
-```bash
-tools/import.sh /run/media/$USER/RIGSIM     # copies new runs here, rebuilds docs/data.json, lists what is new
-```
+See [Contributing runs](../README.md#contributing-runs): `tools/contribute.sh` or an upload on GitHub, both ending
+in a pull request that `tools/validate.py` checks — only new run folders, exactly the files the stick writes, from
+a finished run (`status` "done" or "done with failures"), no MAC addresses or identifier lines. By sharing runs you
+agree to their publication under CC BY 4.0 and confirm the machines' owners agreed.
 
-Before committing, for every new run:
-
-1. **Consent:** the machine's owner agreed to publication (the stick's start screen says results may be published).
-2. **Review:** nothing identifying slipped through — `grep -ril -e "$(hostname)" -e serial results/runs/<run>` and a
-   look at `inventory/` and `stick.log`.
-3. Commit the run folders together with `docs/data.json`.
+Check runs yourself before sharing: `python3 tools/validate.py results/runs/<run>`.

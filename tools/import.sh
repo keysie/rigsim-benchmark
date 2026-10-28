@@ -14,6 +14,7 @@ python3 "$ROOT/tools/index.py"
 if [[ -n "$new" ]]; then
   echo "new runs — review them before committing (owner's consent, nothing identifying):"
   echo "$new" | sed 's/^/  results\/runs\//'
+  python3 "$ROOT/tools/validate.py" $(echo "$new" | sed "s|^|$ROOT/results/runs/|") || true
 else
   echo "no new runs"
 fi
