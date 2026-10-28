@@ -34,20 +34,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / debian:trixie / ref",
        "debian:trixie"
       ],
       [
        "images / debian:trixie / id",
-       "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+       "sha256:8c4733a92aac"
       ],
       [
        "images / debian:trixie / digest",
-       "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+       "debian@sha256:8c4733a92aac"
       ],
       [
        "images / debian:trixie / offline_packages / adduser",
@@ -485,20 +481,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / debian:trixie / ref",
        "debian:trixie"
       ],
       [
        "images / debian:trixie / id",
-       "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+       "sha256:8c4733a92aac"
       ],
       [
        "images / debian:trixie / digest",
-       "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+       "debian@sha256:8c4733a92aac"
       ],
       [
        "images / debian:trixie / offline_packages / adduser",
@@ -936,20 +928,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / debian:trixie / ref",
        "debian:trixie"
       ],
       [
        "images / debian:trixie / id",
-       "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+       "sha256:8c4733a92aac"
       ],
       [
        "images / debian:trixie / digest",
-       "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+       "debian@sha256:8c4733a92aac"
       ],
       [
        "images / debian:trixie / offline_packages / adduser",
@@ -1387,20 +1375,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
        "nvidia/cuda:12.8.1-devel-ubuntu24.04"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
-       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
-       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "nvidia/cuda@sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
@@ -1446,20 +1430,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
        "nvidia/cuda:12.8.1-devel-ubuntu24.04"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
-       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
-       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "nvidia/cuda@sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
@@ -1505,20 +1485,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
        "nvidia/cuda:12.8.1-devel-ubuntu24.04"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
-       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
-       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "nvidia/cuda@sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
@@ -1564,20 +1540,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
        "nvidia/cuda:12.8.1-devel-ubuntu24.04"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
-       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
-       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "nvidia/cuda@sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
@@ -1623,20 +1595,16 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
        "nvidia/cuda:12.8.1-devel-ubuntu24.04"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
-       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
-       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "nvidia/cuda@sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
@@ -1682,10 +1650,6 @@
      "note": "",
      "tools": [
       [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
-      [
        "mlc / sha256",
        "bc347e01bec7"
       ],
@@ -1700,10 +1664,6 @@
      "result": "ok",
      "note": "",
      "tools": [
-      [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
       [
        "packages / clinfo",
        "3.0.23.01.25-1build1"
@@ -1739,10 +1699,6 @@
      "result": "ok",
      "note": "",
      "tools": [
-      [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
       [
        "vkprobe / sha256",
        "b5263a0631ee"
@@ -1797,22 +1753,13 @@
      "name": "rocm",
      "result": "skipped",
      "note": "no AMD GPU",
-     "tools": [
-      [
-       "kernel",
-       "7.0.0-42-generic"
-      ]
-     ]
+     "tools": []
     },
     {
      "name": "oneapi",
      "result": "failed",
      "note": "the runtime sees no GPU (info.jsonl)",
      "tools": [
-      [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
       [
        "vendor / image",
        "rigsim/oneapi:a957cc5b60f54562"
@@ -1823,11 +1770,11 @@
       ],
       [
        "vendor / base / id",
-       "sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0"
+       "sha256:4900a466d7b1"
       ],
       [
        "vendor / base / digest",
-       "intel/oneapi-basekit@sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0"
+       "intel/oneapi-basekit@sha256:4900a466d7b1"
       ],
       [
        "vendor / oneapi_version",
@@ -1856,10 +1803,6 @@
      "result": "ok",
      "note": "",
      "tools": [
-      [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
       [
        "llama.cpp / cuda / commit",
        "a7af149a2a77"
@@ -1898,11 +1841,11 @@
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
-       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
-       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+       "nvidia/cuda@sha256:520292dbb4f7"
       ],
       [
        "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
@@ -1991,10 +1934,6 @@
      "result": "failed",
      "note": "",
      "tools": [
-      [
-       "kernel",
-       "7.0.0-42-generic"
-      ],
       [
        "blender-benchmark / launcher_sha256",
        "c52cd088936d"

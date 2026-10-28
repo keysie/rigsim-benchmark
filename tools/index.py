@@ -71,6 +71,7 @@ def flat(v, prefix: str = "") -> list[list[str]]:
         s = str(v)
         if len(s) in (40, 64) and all(c in "0123456789abcdef" for c in s):
             s = s[:12]
+        s = re.sub(r"(sha256:)([0-9a-f]{12})[0-9a-f]{52}", r"\1\2", s)       # image digests and ids, shortened
         rows.append([prefix, s])
     return rows
 
@@ -106,7 +107,8 @@ def row(run_json: Path) -> dict:
             continue
         result = "skipped" if v.get("skipped") else "ok" if v.get("rc") == 0 else "failed"
         steps.append(dict(name=name, result=result, note=v.get("skipped") or v.get("error") or "",
-                          tools=[x for x in flat(v.get("tools", {})) if not x[0].startswith("stick")]))
+                          tools=[x for x in flat(v.get("tools", {}))
+                                 if not x[0].startswith("stick") and x[0] != "kernel"]))   # both shown for the run
     return dict(run=r.get("run", run_json.parent.name), date=(r.get("start_utc") or "")[:10], machine=r.get("fingerprint", ""),
                 cpu=hw.get("cpu", ""), board=hw.get("board", ""), ram_gib=hw.get("ram_gib"),
                 gpus=[g.split(",")[0].strip() for g in hw.get("gpus", [])],
