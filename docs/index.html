@@ -289,7 +289,7 @@ document.getElementById("rows").addEventListener("click", e => {
   render();
 });
 
-fetch("data.json").then(r => r.json()).then(d => { runs = d.runs || []; render(); })
+fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => { runs = d.runs || []; render(); })
   .catch(() => { document.getElementById("rows").innerHTML =
     `<tr><td class="empty" colspan="${COLS.length}">data.json could not be loaded.</td></tr>`; });
 head();

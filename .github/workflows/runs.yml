@@ -20,7 +20,7 @@ jobs:
   table:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    permissions: { contents: write }
+    permissions: { contents: write, pages: write }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,3 +33,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "table: rebuilt from results/runs" docs/data.json
           git push
+          # a push with the workflow token starts no other workflow — not even the Pages deployment: ask for it
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null && echo "Pages build requested"
+        env:
+          GH_TOKEN: ${{ github.token }}
