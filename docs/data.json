@@ -1,3 +1,2142 @@
 {
- "runs": []
+ "runs": [
+  {
+   "run": "20261028T090051Z-2ad20e343d87-b419",
+   "date": "2026-10-28",
+   "machine": "2ad20e343d87",
+   "cpu": "13th Gen Intel(R) Core(TM) i7-13700K",
+   "board": "Gigabyte Technology Co., Ltd. Z790 AORUS ELITE AX",
+   "ram_gib": 31.1,
+   "gpus": [
+    "NVIDIA GeForce RTX 3080",
+    "Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780] (rev 04)"
+   ],
+   "stick": "0.9.0",
+   "stick_build": "98d5033",
+   "stick_commit": "98d503325384d6e9ab806e8ece041f36f9f6bce2",
+   "stick_dirty": false,
+   "format": "1.0",
+   "versions": {
+    "nvidia_driver": "580.178.04",
+    "kernel": "7.0.0-42-generic",
+    "llama_cpp": "a7af149a2",
+    "cuda": "12.8.93",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done with failures",
+   "steps_ok": 4,
+   "steps_failed": 10,
+   "steps_skipped": 1,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / debian:trixie / ref",
+       "debian:trixie"
+      ],
+      [
+       "images / debian:trixie / id",
+       "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+      ],
+      [
+       "images / debian:trixie / digest",
+       "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+      ],
+      [
+       "images / debian:trixie / offline_packages / adduser",
+       "3.152"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils-common",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils-x86-64-linux-gnu",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-14-x86-64-linux-gnu",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-14",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-x86-64-linux-gnu",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / dmsetup",
+       "2:1.02.205-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / fio",
+       "3.39-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-14-x86-64-linux-gnu",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-14",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-x86-64-linux-gnu",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libaio1t64",
+       "0.3.113-8+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libasan8",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libatomic1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libbinutils",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libboost-iostreams1.83.0",
+       "1.83.0-4.2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libboost-thread1.83.0",
+       "1.83.0-4.2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libc-dev-bin",
+       "2.41-12+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libc6-dev",
+       "2.41-12+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcc1-0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcom-err2",
+       "1.47.2-3+b12"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcrypt-dev",
+       "1:4.4.38-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcryptsetup12",
+       "2:2.7.5-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libctf-nobfd0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libctf0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdaxctl1",
+       "81-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdevmapper1.02.1",
+       "2:1.02.205-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdnnl-dev",
+       "3.7.2+ds-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdnnl3.6",
+       "3.7.2+ds-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libexpat1",
+       "2.9.0-1~deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libffi8",
+       "3.4.8-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libfmt10",
+       "10.1.1+ds1-4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgcc-14-dev",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgdbm-compat4t64",
+       "1.24-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgdbm6t64",
+       "1.24-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfapi0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfortran5",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfrpc0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfxdr0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libglusterfs0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgnutls30t64",
+       "3.8.9-3+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgomp1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgprofng0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgssapi-krb5-2",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libhwasan0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libhwloc15",
+       "2.12.0-4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libibverbs1",
+       "56.1-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libidn2-0",
+       "2.3.8-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libisl23",
+       "0.27-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libitm1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libjansson4",
+       "2.14-2+b3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libjson-c5",
+       "0.18+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libk5crypto3",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkeyutils1",
+       "1.6.3-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkmod2",
+       "34.2-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkrb5-3",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkrb5support0",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / liblsan0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / liblua5.3-0",
+       "5.3.6-2+b4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libmpc3",
+       "1.3.1-1+b3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libmpfr6",
+       "4.2.2-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnbd0",
+       "1.22.2-1+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libncursesw6",
+       "6.5+20250216-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libndctl6",
+       "81-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnfs14",
+       "5.0.2-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnl-3-200",
+       "3.7.0-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnl-route-3-200",
+       "3.7.0-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnuma1",
+       "2.0.19-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas-dev",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas-pthread-dev",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas0-pthread",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas0",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libp11-kit0",
+       "0.25.5-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libperl5.40",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpmem1",
+       "1.13.1-1.1+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3-stdlib",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3.13-minimal",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3.13-stdlib",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libquadmath0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librados2",
+       "18.2.7+ds-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librbd1",
+       "18.2.7+ds-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librdmacm1t64",
+       "56.1-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libreadline8t64",
+       "8.2-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libsframe1",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtasn1-6",
+       "4.20.0-2+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtirpc-common",
+       "1.3.6+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtirpc3t64",
+       "1.3.6+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtsan2",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libubsan1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libunistring5",
+       "1.3-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libxml2",
+       "2.12.7+dfsg+really2.9.14-2.1+deb13u3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / likwid",
+       "5.4.1+dfsg-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / linux-libc-dev",
+       "6.12.113-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / lua5.3",
+       "5.3.6-2+b4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / media-types",
+       "13.0.0"
+      ],
+      [
+       "images / debian:trixie / offline_packages / netbase",
+       "6.5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / perl-modules-5.40",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / perl",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3-minimal",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3.13-minimal",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3.13",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / readline-common",
+       "8.2-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / rpcsvc-proto",
+       "1.4.3-1"
+      ]
+     ]
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / debian:trixie / ref",
+       "debian:trixie"
+      ],
+      [
+       "images / debian:trixie / id",
+       "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+      ],
+      [
+       "images / debian:trixie / digest",
+       "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+      ],
+      [
+       "images / debian:trixie / offline_packages / adduser",
+       "3.152"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils-common",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils-x86-64-linux-gnu",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-14-x86-64-linux-gnu",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-14",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-x86-64-linux-gnu",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / dmsetup",
+       "2:1.02.205-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / fio",
+       "3.39-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-14-x86-64-linux-gnu",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-14",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-x86-64-linux-gnu",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libaio1t64",
+       "0.3.113-8+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libasan8",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libatomic1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libbinutils",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libboost-iostreams1.83.0",
+       "1.83.0-4.2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libboost-thread1.83.0",
+       "1.83.0-4.2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libc-dev-bin",
+       "2.41-12+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libc6-dev",
+       "2.41-12+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcc1-0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcom-err2",
+       "1.47.2-3+b12"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcrypt-dev",
+       "1:4.4.38-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcryptsetup12",
+       "2:2.7.5-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libctf-nobfd0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libctf0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdaxctl1",
+       "81-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdevmapper1.02.1",
+       "2:1.02.205-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdnnl-dev",
+       "3.7.2+ds-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdnnl3.6",
+       "3.7.2+ds-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libexpat1",
+       "2.9.0-1~deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libffi8",
+       "3.4.8-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libfmt10",
+       "10.1.1+ds1-4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgcc-14-dev",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgdbm-compat4t64",
+       "1.24-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgdbm6t64",
+       "1.24-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfapi0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfortran5",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfrpc0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfxdr0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libglusterfs0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgnutls30t64",
+       "3.8.9-3+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgomp1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgprofng0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgssapi-krb5-2",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libhwasan0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libhwloc15",
+       "2.12.0-4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libibverbs1",
+       "56.1-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libidn2-0",
+       "2.3.8-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libisl23",
+       "0.27-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libitm1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libjansson4",
+       "2.14-2+b3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libjson-c5",
+       "0.18+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libk5crypto3",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkeyutils1",
+       "1.6.3-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkmod2",
+       "34.2-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkrb5-3",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkrb5support0",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / liblsan0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / liblua5.3-0",
+       "5.3.6-2+b4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libmpc3",
+       "1.3.1-1+b3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libmpfr6",
+       "4.2.2-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnbd0",
+       "1.22.2-1+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libncursesw6",
+       "6.5+20250216-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libndctl6",
+       "81-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnfs14",
+       "5.0.2-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnl-3-200",
+       "3.7.0-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnl-route-3-200",
+       "3.7.0-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnuma1",
+       "2.0.19-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas-dev",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas-pthread-dev",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas0-pthread",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas0",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libp11-kit0",
+       "0.25.5-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libperl5.40",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpmem1",
+       "1.13.1-1.1+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3-stdlib",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3.13-minimal",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3.13-stdlib",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libquadmath0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librados2",
+       "18.2.7+ds-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librbd1",
+       "18.2.7+ds-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librdmacm1t64",
+       "56.1-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libreadline8t64",
+       "8.2-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libsframe1",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtasn1-6",
+       "4.20.0-2+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtirpc-common",
+       "1.3.6+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtirpc3t64",
+       "1.3.6+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtsan2",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libubsan1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libunistring5",
+       "1.3-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libxml2",
+       "2.12.7+dfsg+really2.9.14-2.1+deb13u3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / likwid",
+       "5.4.1+dfsg-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / linux-libc-dev",
+       "6.12.113-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / lua5.3",
+       "5.3.6-2+b4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / media-types",
+       "13.0.0"
+      ],
+      [
+       "images / debian:trixie / offline_packages / netbase",
+       "6.5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / perl-modules-5.40",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / perl",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3-minimal",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3.13-minimal",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3.13",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / readline-common",
+       "8.2-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / rpcsvc-proto",
+       "1.4.3-1"
+      ]
+     ]
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / debian:trixie / ref",
+       "debian:trixie"
+      ],
+      [
+       "images / debian:trixie / id",
+       "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+      ],
+      [
+       "images / debian:trixie / digest",
+       "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+      ],
+      [
+       "images / debian:trixie / offline_packages / adduser",
+       "3.152"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils-common",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils-x86-64-linux-gnu",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / binutils",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-14-x86-64-linux-gnu",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-14",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp-x86-64-linux-gnu",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / cpp",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / dmsetup",
+       "2:1.02.205-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / fio",
+       "3.39-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-14-x86-64-linux-gnu",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-14",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc-x86-64-linux-gnu",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / gcc",
+       "4:14.2.0-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libaio1t64",
+       "0.3.113-8+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libasan8",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libatomic1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libbinutils",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libboost-iostreams1.83.0",
+       "1.83.0-4.2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libboost-thread1.83.0",
+       "1.83.0-4.2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libc-dev-bin",
+       "2.41-12+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libc6-dev",
+       "2.41-12+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcc1-0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcom-err2",
+       "1.47.2-3+b12"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcrypt-dev",
+       "1:4.4.38-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libcryptsetup12",
+       "2:2.7.5-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libctf-nobfd0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libctf0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdaxctl1",
+       "81-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdevmapper1.02.1",
+       "2:1.02.205-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdnnl-dev",
+       "3.7.2+ds-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libdnnl3.6",
+       "3.7.2+ds-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libexpat1",
+       "2.9.0-1~deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libffi8",
+       "3.4.8-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libfmt10",
+       "10.1.1+ds1-4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgcc-14-dev",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgdbm-compat4t64",
+       "1.24-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgdbm6t64",
+       "1.24-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfapi0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfortran5",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfrpc0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgfxdr0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libglusterfs0",
+       "11.1-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgnutls30t64",
+       "3.8.9-3+deb13u4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgomp1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgprofng0",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libgssapi-krb5-2",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libhwasan0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libhwloc15",
+       "2.12.0-4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libibverbs1",
+       "56.1-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libidn2-0",
+       "2.3.8-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libisl23",
+       "0.27-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libitm1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libjansson4",
+       "2.14-2+b3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libjson-c5",
+       "0.18+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libk5crypto3",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkeyutils1",
+       "1.6.3-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkmod2",
+       "34.2-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkrb5-3",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libkrb5support0",
+       "1.21.3-5+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / liblsan0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / liblua5.3-0",
+       "5.3.6-2+b4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libmpc3",
+       "1.3.1-1+b3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libmpfr6",
+       "4.2.2-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnbd0",
+       "1.22.2-1+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libncursesw6",
+       "6.5+20250216-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libndctl6",
+       "81-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnfs14",
+       "5.0.2-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnl-3-200",
+       "3.7.0-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnl-route-3-200",
+       "3.7.0-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libnuma1",
+       "2.0.19-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas-dev",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas-pthread-dev",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas0-pthread",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libopenblas0",
+       "0.3.29+ds-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libp11-kit0",
+       "0.25.5-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libperl5.40",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpmem1",
+       "1.13.1-1.1+b1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3-stdlib",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3.13-minimal",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libpython3.13-stdlib",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libquadmath0",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librados2",
+       "18.2.7+ds-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librbd1",
+       "18.2.7+ds-1+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / librdmacm1t64",
+       "56.1-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libreadline8t64",
+       "8.2-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libsframe1",
+       "2.44-3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtasn1-6",
+       "4.20.0-2+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtirpc-common",
+       "1.3.6+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtirpc3t64",
+       "1.3.6+ds-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libtsan2",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libubsan1",
+       "14.2.0-19"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libunistring5",
+       "1.3-2"
+      ],
+      [
+       "images / debian:trixie / offline_packages / libxml2",
+       "2.12.7+dfsg+really2.9.14-2.1+deb13u3"
+      ],
+      [
+       "images / debian:trixie / offline_packages / likwid",
+       "5.4.1+dfsg-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / linux-libc-dev",
+       "6.12.113-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / lua5.3",
+       "5.3.6-2+b4"
+      ],
+      [
+       "images / debian:trixie / offline_packages / media-types",
+       "13.0.0"
+      ],
+      [
+       "images / debian:trixie / offline_packages / netbase",
+       "6.5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / perl-modules-5.40",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / perl",
+       "5.40.1-6+deb13u1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3-minimal",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3.13-minimal",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3.13",
+       "3.13.5-2+deb13u5"
+      ],
+      [
+       "images / debian:trixie / offline_packages / python3",
+       "3.13.5-1"
+      ],
+      [
+       "images / debian:trixie / offline_packages / readline-common",
+       "8.2-6"
+      ],
+      [
+       "images / debian:trixie / offline_packages / rpcsvc-proto",
+       "1.4.3-1"
+      ]
+     ]
+    },
+    {
+     "name": "pcie-copy",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
+       "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
+       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
+       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-dev-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-nvcc-12-8",
+       "12.8.93-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-8-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-dev-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ]
+     ]
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
+       "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
+       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
+       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-dev-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-nvcc-12-8",
+       "12.8.93-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-8-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-dev-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ]
+     ]
+    },
+    {
+     "name": "gpu-vram",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
+       "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
+       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
+       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-dev-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-nvcc-12-8",
+       "12.8.93-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-8-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-dev-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ]
+     ]
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
+       "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
+       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
+       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-dev-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-nvcc-12-8",
+       "12.8.93-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-8-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-dev-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ]
+     ]
+    },
+    {
+     "name": "gpu-launch",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
+       "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
+       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
+       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-dev-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-nvcc-12-8",
+       "12.8.93-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-8-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-dev-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ]
+     ]
+    },
+    {
+     "name": "mlc",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "mlc / sha256",
+       "bc347e01bec7"
+      ],
+      [
+       "mlc_version",
+       "v3.13"
+      ]
+     ]
+    },
+    {
+     "name": "opencl",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "vkprobe / sha256",
+       "b5263a0631ee"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ]
+     ]
+    },
+    {
+     "name": "oneapi",
+     "result": "failed",
+     "note": "the runtime sees no GPU (info.jsonl)",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "vendor / image",
+       "rigsim/oneapi:a957cc5b60f54562"
+      ],
+      [
+       "vendor / base / ref",
+       "intel/oneapi-basekit:2025.2.0-0-devel-ubuntu24.04"
+      ],
+      [
+       "vendor / base / id",
+       "sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0"
+      ],
+      [
+       "vendor / base / digest",
+       "intel/oneapi-basekit@sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0"
+      ],
+      [
+       "vendor / oneapi_version",
+       "Intel(R) oneAPI DPC++/C++ Compiler 2025.2.0 (2025.2.0.20250605)"
+      ],
+      [
+       "vendor / llama_commit",
+       "a7af149a2a77"
+      ],
+      [
+       "vendor / 7b14bdda10e052a29037a7b382bd9a07d94db5baf046688d36fb9a04d027d66b",
+       "sha256:probe_sycl"
+      ],
+      [
+       "vendor / 2c609e915ce8d81ba56d0853081d2d693d9ca3eb34f50308d3c2164e98559d4e",
+       "sha256:llama-bench"
+      ],
+      [
+       "vendor / 95981993aea705e46e45015600f398a8f49d41c6237f60dcb134d4fe50ae0066",
+       "sha256:test-backend-ops"
+      ]
+     ]
+    },
+    {
+     "name": "llama-bench",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "llama.cpp / cuda / commit",
+       "a7af149a2a77"
+      ],
+      [
+       "llama.cpp / cuda / files / llama-bench",
+       "4be367ee22d4"
+      ],
+      [
+       "llama.cpp / cuda / files / test-backend-ops",
+       "5a63596ad89e"
+      ],
+      [
+       "llama.cpp / vulkan / commit",
+       "a7af149a2a77"
+      ],
+      [
+       "llama.cpp / vulkan / files / llama-bench",
+       "b0e89a9a0c26"
+      ],
+      [
+       "llama.cpp / vulkan / files / test-backend-ops",
+       "012723e174c6"
+      ],
+      [
+       "models / llama-2-7b-q4_0.gguf / sha256",
+       "78b8f9777dd6"
+      ],
+      [
+       "models / tinyllama-1.1b-q4_0.gguf / sha256",
+       "da3087fb14ae"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / ref",
+       "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / id",
+       "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / digest",
+       "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-cudart-dev-12-8",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-nvcc-12-8",
+       "12.8.93-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-8-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-12-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / cuda-toolkit-config-common",
+       "12.8.90-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "images / nvidia/cuda:12.8.1-devel-ubuntu24.04 / packages / libcublas-dev-12-8",
+       "12.8.4.1-1"
+      ],
+      [
+       "nvidia_driver",
+       "580.178.04"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) Graphics (RPL-S) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "kernel",
+       "7.0.0-42-generic"
+      ],
+      [
+       "blender-benchmark / launcher_sha256",
+       "c52cd088936d"
+      ],
+      [
+       "blender-benchmark / blender",
+       "4.2.0"
+      ]
+     ]
+    }
+   ],
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 434.582955,
+     "unit": "tok/s",
+     "spread": 9.813691,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 110.185531,
+     "unit": "tok/s",
+     "spread": 0.246798,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
+     "value": 5530.875086,
+     "unit": "tok/s",
+     "spread": 92.618002,
+     "gpu": "NVIDIA GeForce RTX 3080",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/tg128",
+     "value": 152.2284,
+     "unit": "tok/s",
+     "spread": 0.045598,
+     "gpu": "NVIDIA GeForce RTX 3080",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/pp512",
+     "value": 24001.327382,
+     "unit": "tok/s",
+     "spread": 1273.977098,
+     "gpu": "NVIDIA GeForce RTX 3080",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/tg128",
+     "value": 612.600336,
+     "unit": "tok/s",
+     "spread": 20.058362,
+     "gpu": "NVIDIA GeForce RTX 3080",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+     "value": 25.590427,
+     "unit": "tok/s",
+     "spread": 0.000742,
+     "gpu": "Intel(R) Graphics (RPL-S)",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+     "value": 5.815614,
+     "unit": "tok/s",
+     "spread": 0.000206,
+     "gpu": "Intel(R) Graphics (RPL-S)",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+     "value": 128.77829,
+     "unit": "tok/s",
+     "spread": 0.015298,
+     "gpu": "Intel(R) Graphics (RPL-S)",
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+     "value": 32.352892,
+     "unit": "tok/s",
+     "spread": 0.005441,
+     "gpu": "Intel(R) Graphics (RPL-S)",
+     "predictions": []
+    },
+    {
+     "key": "mlc/idle_latency",
+     "value": 64.6,
+     "unit": "ns",
+     "spread": 0.0,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "mlc/max_bandwidth/all_reads",
+     "value": 89.2984,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "mlc/max_bandwidth/3to1_rw",
+     "value": 80.4175,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "mlc/max_bandwidth/2to1_rw",
+     "value": 79.13189999999999,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "mlc/max_bandwidth/1to1_rw",
+     "value": 76.2286,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "predictions": []
+    },
+    {
+     "key": "mlc/max_bandwidth/stream_triad",
+     "value": 79.70219999999999,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "predictions": []
+    }
+   ],
+   "rigsim": {}
+  }
+ ]
 }
