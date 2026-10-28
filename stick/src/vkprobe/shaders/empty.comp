@@ -1,0 +1,6 @@
+#version 450
+// one workgroup that does nothing useful: the cost of a dispatch
+layout(local_size_x = 64) in;
+layout(std430, set = 0, binding = 2) buffer O { uint o[]; };
+layout(push_constant) uniform P { uint n; uint a; uint b; uint c; } p;
+void main() { if (p.n == 0xffffffffu) o[gl_LocalInvocationIndex] = 1u; }

@@ -1,0 +1,20 @@
+[Unit]
+Description=rigsim hardware stick: inventory, measurements, power off
+# after the boot-time check of the stick: it reads the whole stick, which must not overlap a measurement
+After=multi-user.target systemd-udev-settle.service casper-md5check.service
+Wants=systemd-udev-settle.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/rigsim/stick.py
+StandardInput=tty
+StandardOutput=tty
+StandardError=journal+console
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+KillSignal=SIGTERM
+TimeoutStopSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+question = "gpu-gemm"
+asks = "cuBLAS share of the per-SM peak at the measured clock, decode- and prefill-shaped (stick profile, default power limit)."
+feeds = "Library reference rates (hw/rates.py) and the sustained clock factor (constants.SUSTAINED_CLOCK_FACTOR)."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 1
+sample_ms = 100
+timeout_s = 300
+
+[grid]
+gpu = ["@all"]
+prec = ["fp32", "fp16", "int8"]
+shape = ["8x2048x2048", "512x2048x2048", "2048x2048x2048", "8x4096x4096", "512x4096x4096", "4096x4096x4096",
+         "8192x8192x8192"]
+
+[args]
+reps = 20
+cmd = ["probe", "gemm", "--prec", "{prec}", "--shape", "{shape}", "--reps", "{reps}"]

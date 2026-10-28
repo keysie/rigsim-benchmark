@@ -1,0 +1,16 @@
+question = "cpu-mem-latency"
+asks = "Idle RAM latency by working-set size (stick profile: the machine's own clock settings)."
+feeds = "RAM access time: CAS time + the global fixed term (hw/arch.py, constants.FIXED_LATENCY_NS)."
+image = "debian:trixie"
+toolkit = "cpu"
+gpus = "none"
+exclusive = true
+repeats = 3
+timeout_s = 300
+
+[grid]
+mib = [64, 1024, 4096]
+
+[args]
+passes = 5
+cmd = ["cpuprobe", "latency", "--mib", "{mib}", "--passes", "{passes}"]

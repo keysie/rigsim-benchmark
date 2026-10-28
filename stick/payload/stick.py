@@ -1,0 +1,1068 @@
+#!/usr/bin/env python3
+"""rigsim hardware stick — the unattended run on every boot (systemd unit rigsim-stick, tty1).
+
+notice (30 s, any key aborts) -> mount the data partition RIGSIM -> new run directory (exclusive, never reused) ->
+inventory (serials, UUIDs, MACs, addresses removed) -> Docker on the data partition, seed images loaded once ->
+the stick profile through the bench runner (bench/hw/runner/hwq.py: baseline, items, restore) -> Intel MLC ->
+clpeak on every OpenCL GPU -> llama-bench (CUDA; Vulkan on every vendor; CPU) -> Blender benchmark -> run.json + a line
+in index.tsv -> unmount -> power off (unless NO_POWEROFF on the partition or rigsim.nopoweroff on the cmdline).
+"""
+from __future__ import annotations
+
+import datetime as dt
+import hashlib
+import json
+import os
+import re
+import secrets
+import select
+import shutil
+import signal
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+OPT = Path("/opt/rigsim")
+MNT = Path("/mnt/rigsim")
+RUN = Path("/run/rigsim")
+LABEL = "RIGSIM"
+NOTICE_S = 30
+QUESTION_TIMEOUT_S = 3 * 3600
+OPENCL_TIMEOUT_S = 20 * 60
+CLPEAK_TESTS = ["--global-bandwidth", "--compute-sp", "--compute-hp", "--compute-integer", "--transfer-bandwidth",
+                "--kernel-latency"]
+SOFTWARE_DEVICES = re.compile(r"(?i)llvmpipe|softpipe|pthread|\bcpu\b|pocl")
+PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "pcie-copy", "gpu-p2p", "gpu-vram", "gpu-gemm", "gpu-launch"]
+DRM = Path("/sys/class/drm")
+FBDEV = Path("/sys/class/graphics")
+SAMPLE_S = 0.2
+MLC_RUNS = [("idle_latency", ["--idle_latency"]), ("max_bandwidth", ["--max_bandwidth"]),
+            ("loaded_latency", ["--loaded_latency"]), ("latency_matrix", ["--latency_matrix"]),
+            ("bandwidth_matrix", ["--bandwidth_matrix"])]
+MLC_TIMEOUT_S = 15 * 60
+LLAMA_ARGS = ["-p", "512", "-n", "128", "-r", "3", "-o", "jsonl"]
+LLAMA_TIMEOUT_S = 30 * 60
+# llama.cpp's own per-kernel timing (test-backend-ops perf): the engine's kernel factors at the bottom, llama-bench
+# validates on top. One call per operation, on one backend device.
+BACKEND_OPS = ["MUL_MAT", "MUL_MAT_ID", "FLASH_ATTN_EXT", "RMS_NORM", "ADD", "MUL", "ROPE", "GLU", "SET_ROWS",
+               "CPY", "SOFT_MAX", "GET_ROWS"]
+BACKEND_OPS_TIMEOUT_S = 30 * 60
+BLENDER_SCENES = ["monster", "junkshop", "classroom"]
+BLENDER_TIMEOUT_S = 90 * 60
+# Vulkan probe (every GPU vendor) and the vendor-native steps (AMD ROCm, Intel oneAPI)
+VKPROBE = OPT / "bin" / "vkprobe"
+VK_GEMM_TYPES = ["f16", "f16f32", "i8"]
+VK_GEMM_SHAPES = ["512x4096x4096", "2048x2048x2048", "4096x4096x4096"]
+VENDOR_GEMM_PRECS = ["fp32", "tf32", "fp16_fp32acc", "fp16", "bf16", "int8"]
+VENDOR_GEMM_SHAPES = ["1x4096x4096", "8x2048x2048", "8x4096x4096", "32x4096x4096", "128x4096x4096", "512x2048x2048",
+                      "2048x2048x2048", "512x8192x8192", "2048x8192x8192", "4096x4096x4096", "8192x8192x8192",
+                      "16384x16384x4096"]
+PROBE_TIMEOUT_S = 10 * 60
+AMD_DEVICES = ["--device", "/dev/kfd", "--device", "/dev/dri", "--security-opt", "seccomp=unconfined"]
+INTEL_DEVICES = ["--device", "/dev/dri"]
+# HIP has no code for a gfx target it was not built for; the usual stand-in is the family's base target
+GFX_FAMILY = [("gfx103", "10.3.0"), ("gfx110", "11.0.0"), ("gfx115", "11.5.0"), ("gfx120", "12.0.0")]
+STICK_READ_MIB = 1024
+INDEX_HEADER = "run\tstart_utc\tfingerprint\tcpu\tboard\tgpus\tram\tstatus\tstick\n"
+DMI = Path("/sys/class/dmi/id")
+SECURE_BOOT_VAR = Path("/sys/firmware/efi/efivars/SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c")
+
+
+import threading  # noqa: E402
+
+
+class Stopped(Exception):
+    pass
+
+
+def say(msg: str, log: Path | None = None) -> None:
+    line = f"{time.strftime('%H:%M:%S')}  {msg}"
+    print(line, flush=True)
+    if log:
+        with open(log, "a") as f:
+            f.write(line + "\n")
+
+
+def sh(cmd: list[str], timeout: float = 120) -> tuple[int, str]:
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return 127, f"{type(e).__name__}: {e}"
+
+
+# --- identity, never an identifier itself ---------------------------------------------------------------------------
+def salt(data: Path) -> bytes:
+    """Created once per stick; makes the fingerprint useless outside this stick's data."""
+    f = data / ".salt"
+    if not f.exists():
+        f.write_bytes(secrets.token_bytes(32))
+    return f.read_bytes()
+
+
+def fingerprint(data: Path, dmi: Path = DMI) -> tuple[str, bool]:
+    """Salted hash of the board's identifiers: (12 hex chars, stable). Not stable if the firmware gives none."""
+    parts = []
+    for k in ("product_uuid", "board_serial", "product_serial", "board_vendor", "board_name", "product_name"):
+        try:
+            v = (dmi / k).read_text().strip()
+        except OSError:
+            v = ""
+        if v and v.lower() not in ("to be filled by o.e.m.", "default string", "none", "0", "not specified"):
+            parts.append(v)
+    stable = any(p for p in parts[:3])
+    raw = "|".join(parts) if stable else secrets.token_hex(8)
+    return hashlib.sha256(salt(data) + raw.encode()).hexdigest()[:12], stable
+
+
+def new_run_dir(runs: Path, fp: str, now: dt.datetime | None = None) -> Path:
+    """Exclusive creation: an existing directory is never reused, whatever the clock says."""
+    runs.mkdir(parents=True, exist_ok=True)
+    now = now or dt.datetime.now(dt.timezone.utc)
+    for _ in range(100):
+        d = runs / f"{now:%Y%m%dT%H%M%SZ}-{fp}-{secrets.token_hex(2)}"
+        try:
+            d.mkdir()
+            return d
+        except FileExistsError:
+            continue
+    raise RuntimeError("could not create a unique run directory")
+
+
+# --- inventory ---------------------------------------------------------------------------------------------------------
+SENSITIVE = re.compile(r"(?i)(serial|uuid|asset tag|\bsn\b|chassis id|system id)")
+MAC = re.compile(r"\b(?:[0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}\b")
+IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+IPV6 = re.compile(r"\b(?:[0-9a-fA-F]{1,4}:){3,7}[0-9a-fA-F]{1,4}\b")
+
+
+def sanitize(text: str) -> str:
+    """Drops lines naming serials, UUIDs or asset tags; masks MAC and IP addresses."""
+    out = [l for l in text.splitlines() if not SENSITIVE.search(l)]
+    t = "\n".join(out)
+    t = MAC.sub("<mac>", t)
+    t = IPV6.sub("<ip6>", t)
+    return IPV4.sub("x.x.x.x", t) + "\n"
+
+
+INVENTORY = [
+    ("lscpu.txt", ["lscpu"]), ("lscpu-e.txt", ["lscpu", "-e"]), ("cpuinfo.txt", ["cat", "/proc/cpuinfo"]),
+    ("numa.txt", ["numactl", "-H"]), ("topology.txt", ["lstopo-no-graphics", "--of", "console"]),
+    ("dmidecode.txt", ["dmidecode", "-t", "bios,system,baseboard,processor,memory,cache,slot"]),
+    ("lshw.json", ["lshw", "-sanitize", "-json"]),
+    ("lspci-tree.txt", ["lspci", "-tvnn"]), ("lspci.txt", ["lspci", "-vvvnn"]),
+    ("spd.txt", ["decode-dimms"]),
+    ("nvidia-smi.txt", ["nvidia-smi", "-q"]), ("nvidia-topo.txt", ["nvidia-smi", "topo", "-m"]),
+    ("clinfo.txt", ["clinfo"]), ("vulkaninfo.txt", ["vulkaninfo", "--summary"]),
+    ("lsblk.txt", ["lsblk", "-o", "NAME,MODEL,SIZE,ROTA,TRAN,TYPE"]),
+    ("sensors.txt", ["sensors"]), ("meminfo.txt", ["cat", "/proc/meminfo"]),
+    ("kernel.txt", ["uname", "-srvm"]), ("cmdline.txt", ["cat", "/proc/cmdline"]),
+]
+
+
+def secure_boot() -> bool | None:
+    try:
+        return SECURE_BOOT_VAR.read_bytes()[-1] == 1
+    except OSError:
+        return None
+
+
+def cpufreq() -> dict:
+    d = Path("/sys/devices/system/cpu/cpu0/cpufreq")
+    out = {}
+    for k in ("cpuinfo_min_freq", "cpuinfo_max_freq", "scaling_driver", "scaling_governor", "base_frequency"):
+        try:
+            out[k] = (d / k).read_text().strip()
+        except OSError:
+            pass
+    return out
+
+
+def parse_dimms(dmidecode: str) -> list[dict]:
+    """Installed modules from dmidecode's 'Memory Device' sections (size, type, speeds, part number)."""
+    dimms = []
+    for block in dmidecode.split("\n\n"):
+        if "Memory Device" not in block:
+            continue
+        f = dict(re.findall(r"^\s*([^:\n]+):\s*(.*)$", block, re.M))
+        if not f.get("Size") or "No Module" in f.get("Size", ""):
+            continue
+        dimms.append({k: f.get(k) for k in ("Locator", "Size", "Type", "Speed", "Configured Memory Speed", "Rank",
+                                             "Manufacturer", "Part Number")})
+    return dimms
+
+
+def collect_inventory(dst: Path, log: Path) -> dict:
+    dst.mkdir(parents=True, exist_ok=True)
+    for mod in ("ee1004", "spd5118", "at24", "i2c-dev", "msr"):
+        sh(["modprobe", mod], timeout=20)
+    for name, cmd in INVENTORY:
+        rc, out = sh(cmd, timeout=180)
+        (dst / name).write_text(sanitize(out) if not name.endswith(".json") else MAC.sub("<mac>", out))
+        if rc != 0:
+            say(f"inventory: {name} rc={rc}", log)
+    cpu = next(iter(re.findall(r"^model name\s*:\s*(.*)$", (dst / "cpuinfo.txt").read_text(), re.M)), "unknown")
+    board = " ".join(_dmi(k) for k in ("board_vendor", "board_name")).strip() or "unknown"
+    rc, gpus = sh(["nvidia-smi", "--query-gpu=name,memory.total,pci.bus_id", "--format=csv,noheader"], timeout=60)
+    gpu_list = [g.strip() for g in gpus.splitlines() if g.strip() and "---" not in g] if rc == 0 else []
+    if not gpu_list:
+        _, vga = sh(["sh", "-c", "lspci -nn | grep -Ei 'vga|3d controller|display'"], timeout=30)
+        gpu_list = [l.split(": ", 1)[-1] for l in vga.splitlines() if l.strip()]
+    mem_kb = int(next(iter(re.findall(r"MemTotal:\s*(\d+)", (dst / "meminfo.txt").read_text())), "0"))
+    dimms = parse_dimms((dst / "dmidecode.txt").read_text())
+    s = dict(cpu=cpu, board=board, bios=_dmi("bios_version"), gpus=gpu_list, ram_gib=round(mem_kb / 2**20, 1),
+             dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip())
+    (dst / "summary.json").write_text(json.dumps(s, indent=1))
+    return s
+
+
+def _dmi(k: str) -> str:
+    try:
+        return (DMI / k).read_text().strip()
+    except OSError:
+        return ""
+
+
+# --- run plan --------------------------------------------------------------------------------------------------------
+def question_gpus(qfile: Path) -> str:
+    m = re.search(r'(?m)^gpus\s*=\s*"(\w+)"', qfile.read_text())
+    return m.group(1) if m else "none"
+
+
+def plan(qdir: Path, nvidia: bool, nvidia_reason: str) -> list[tuple[str, Path, str | None]]:
+    """(question, file, skip reason or None), in profile order."""
+    out = []
+    for q in PROFILE:
+        f = qdir / f"{q}.toml"
+        if not f.exists():
+            out.append((q, f, "question file missing"))
+        elif question_gpus(f) != "none" and not nvidia:
+            out.append((q, f, nvidia_reason))
+        else:
+            out.append((q, f, None))
+    return out
+
+
+def nvidia_state() -> tuple[bool, str]:
+    rc, out = sh(["nvidia-smi", "-L"], timeout=60)
+    if rc == 0 and "GPU" in out:
+        return True, ""
+    flavour = "legacy" if "legacy" in (OPT / "VERSION").read_text() else "open" if (OPT / "VERSION").exists() else "?"
+    if flavour == "open" and _nvidia_pre_turing():
+        return False, "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
+    rc2, lspci = sh(["sh", "-c", "lspci -nn | grep -i nvidia"], timeout=30)
+    if not lspci.strip():
+        return False, "no NVIDIA GPU"
+    return False, "NVIDIA GPU present but the driver did not load (card unsupported by the driver?)"
+
+
+def _nvidia_pre_turing() -> bool:
+    """Maxwell / Pascal / Volta by name (the open modules refuse them)."""
+    _, out = sh(["sh", "-c", "lspci -nn | grep -i nvidia | grep -Ei 'vga|3d'"], timeout=30)
+    return bool(re.search(r"(?i)GM\d{3}|GP\d{3}|GV\d{3}|GTX (9\d\d|10\d\d)|Quadro [MP]\d|Titan (X|Xp|V)\b", out))
+
+
+# --- vendor-neutral GPU measurement (OpenCL, clpeak) ---------------------------------------------------------------------
+def opencl_devices(clinfo_list: str) -> list[tuple[int, int, str, str]]:
+    """(platform, device, platform name, device name) from `clinfo --list`; software devices left out."""
+    out, plat, pname = [], None, ""
+    for line in clinfo_list.splitlines():
+        m = re.match(r"\s*Platform #(\d+):\s*(.*)", line)
+        if m:
+            plat, pname = int(m.group(1)), m.group(2).strip(); continue
+        m = re.match(r"\s*[`|+\\-]*\s*Device #(\d+):\s*(.*)", line)
+        if m and plat is not None:
+            name = m.group(2).strip()
+            if not SOFTWARE_DEVICES.search(name) and not SOFTWARE_DEVICES.search(pname):
+                out.append((plat, int(m.group(1)), pname, name))
+    return out
+
+
+def parse_clpeak(text: str) -> dict:
+    """{section: {key: value}} from clpeak's text output (units are in the section names)."""
+    res, sec = {}, "info"
+    for line in text.splitlines():
+        t = line.strip()
+        if not t or t.startswith(("Platform:", "Device:")):
+            continue
+        m = re.match(r"(.+?)\s*:\s*([-+]?\d+(?:\.\d+)?)\s*(\w+)?\s*$", t)
+        if m:
+            key = m.group(1).strip() + (f" ({m.group(3)})" if m.group(3) else "")
+            res.setdefault(sec, {})[key] = float(m.group(2))
+        elif ":" in t:
+            k, v = t.split(":", 1)
+            res.setdefault("info", {})[k.strip()] = v.strip()
+        else:
+            sec = t
+    return res
+
+
+def run_opencl(rundir: Path, log: Path) -> dict:
+    d = rundir / "opencl"
+    d.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, RUSTICL_ENABLE="radeonsi")       # AMD through Mesa rusticl; Intel through compute-runtime
+    r = subprocess.run(["clinfo", "--list"], capture_output=True, text=True, env=env, timeout=120)
+    (d / "clinfo-list.txt").write_text(r.stdout + r.stderr)
+    devices = opencl_devices(r.stdout)
+    if not devices:
+        say("opencl: no GPU devices", log)
+        return dict(skipped="no OpenCL GPU devices")
+    results = {}
+    for plat, dev, pname, name in devices:
+        key = f"p{plat}d{dev}"
+        say(f"opencl {key}: {name} ({pname})", log)
+        t0 = time.time()
+        try:
+            r = subprocess.run(["clpeak", "-p", str(plat), "-d", str(dev), *CLPEAK_TESTS], capture_output=True,
+                               text=True, env=env, timeout=OPENCL_TIMEOUT_S)
+            rc, out = r.returncode, r.stdout + r.stderr
+        except subprocess.TimeoutExpired:
+            rc, out = -9, f"timeout after {OPENCL_TIMEOUT_S} s"
+        (d / f"clpeak-{key}.txt").write_text(out)
+        parsed = parse_clpeak(out)
+        (d / f"clpeak-{key}.json").write_text(json.dumps(dict(platform=pname, device=name, rc=rc, results=parsed), indent=1))
+        results[key] = dict(platform=pname, device=name, rc=rc, seconds=round(time.time() - t0))
+        say(f"opencl {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    return dict(rc=0 if all(v["rc"] == 0 for v in results.values()) else 1, devices=results)
+
+
+# --- displays: what scans out from which GPU; screens off while measuring ---------------------------------------------
+def displays(drm: Path = DRM) -> list[dict]:
+    """Connected outputs: connector, the GPU's PCI address, preferred mode (first listed), DPMS state."""
+    out = []
+    for c in sorted(drm.glob("card*-*")):
+        try:
+            status = (c / "status").read_text().strip()
+        except OSError:
+            continue
+        if status != "connected":
+            continue
+        card = c.name.split("-", 1)[0]
+        dev = drm / card / "device"
+        modes = (c / "modes").read_text().split() if (c / "modes").exists() else []
+        out.append(dict(connector=c.name.split("-", 1)[1], card=card,
+                        pci=dev.resolve().name if dev.exists() else None, mode=modes[0] if modes else None,
+                        enabled=_read(c / "enabled"), dpms=_read(c / "dpms")))
+    return out
+
+
+def _read(p: Path) -> str | None:
+    try:
+        return p.read_text().strip()
+    except OSError:
+        return None
+
+
+def blank_screens(off: bool, fb: Path = FBDEV) -> list[str]:
+    """Powers the console's screens down (scanout stops: on integrated graphics it reads system RAM) or back on.
+    Returns the framebuffers it changed."""
+    done = []
+    for f in sorted(fb.glob("fb*")):
+        try:
+            (f / "blank").write_text("4" if off else "0")
+            done.append(f.name)
+        except OSError:
+            pass
+    return done
+
+
+# --- AMD / Intel GPU clocks, busy share and power from sysfs (NVIDIA is sampled by the bench runner) ------------------
+def _star(text: str | None) -> float | None:
+    """The active line of pp_dpm_* ('1: 2400Mhz *')."""
+    for line in (text or "").splitlines():
+        if line.rstrip().endswith("*"):
+            m = re.search(r"(\d+)\s*Mhz", line, re.I)
+            return float(m.group(1)) if m else None
+    return None
+
+
+def drm_sample(drm: Path = DRM) -> list[dict]:
+    rows = []
+    for card in sorted(drm.glob("card[0-9]*")):
+        if "-" in card.name:
+            continue
+        dev = card / "device"
+        vendor = _read(dev / "vendor")
+        if vendor not in ("0x1002", "0x8086"):
+            continue
+        r = dict(card=card.name, pci=dev.resolve().name, vendor="amd" if vendor == "0x1002" else "intel")
+        if vendor == "0x1002":
+            r["sclk_mhz"] = _star(_read(dev / "pp_dpm_sclk"))
+            r["mclk_mhz"] = _star(_read(dev / "pp_dpm_mclk"))
+            busy = _read(dev / "gpu_busy_percent")
+            r["busy_pct"] = float(busy) if busy and busy.isdigit() else None
+            for h in sorted((dev / "hwmon").glob("hwmon*")):
+                for k in ("power1_average", "power1_input"):
+                    v = _read(h / k)
+                    if v and v.isdigit():
+                        r["power_w"] = int(v) / 1e6
+                        break
+        else:
+            for f in (card / "gt_act_freq_mhz", card / "gt" / "gt0" / "rps_act_freq_mhz",
+                      dev / "tile0" / "gt0" / "freq0" / "act_freq"):
+                v = _read(f)
+                if v and v.isdigit():
+                    r["gt_mhz"] = float(v)
+                    break
+        rows.append(r)
+    return rows
+
+
+class DrmSampler:
+    """Background sampler for the whole measurement phase; rows carry wall-clock time for alignment."""
+
+    def __init__(self, path: Path, period: float = SAMPLE_S, drm: Path = DRM):
+        self.path, self.period, self.drm = path, period, drm
+        self.stop_evt = threading.Event()
+        self.thread = threading.Thread(target=self._loop, daemon=True)
+
+    def _loop(self):
+        with open(self.path, "a") as f:
+            while not self.stop_evt.is_set():
+                t = time.time()
+                for r in drm_sample(self.drm):
+                    f.write(json.dumps(dict(t=round(t, 3), **r)) + "\n")
+                f.flush()
+                self.stop_evt.wait(self.period)
+
+    def __enter__(self):
+        if drm_sample(self.drm):
+            self.thread.start()
+        return self
+
+    def __exit__(self, *exc):
+        self.stop_evt.set()
+        if self.thread.is_alive():
+            self.thread.join(timeout=5)
+
+
+# --- Intel Memory Latency Checker (downloaded from Intel at build time, not redistributed by this repository) --------
+def parse_mlc(text: str) -> dict:
+    """Numbers MLC prints as 'label : value' or 'label value' rows (bandwidth in MB/s, latency in ns)."""
+    out = {}
+    for line in text.splitlines():
+        m = re.match(r"\s*([A-Za-z0-9][\w :\-/()]*?)\s*:?\s+([0-9]+(?:\.[0-9]+)?)\s*$", line)
+        if m and not m.group(1).strip().isdigit():
+            out[m.group(1).strip().rstrip(":").strip()] = float(m.group(2))
+    return out
+
+
+def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
+    mlc = data / "seed" / "tools" / "mlc" / "mlc"
+    if not mlc.exists():
+        return dict(skipped="Intel MLC not in the seed (build without MLC_URL or download failed)")
+    d = rundir / "mlc"
+    d.mkdir(parents=True, exist_ok=True)
+    sh(["modprobe", "msr"], timeout=20)
+    res = {}
+    for name, args in MLC_RUNS:
+        t0 = time.time()
+        rc, out = sh([str(mlc), *args], timeout=MLC_TIMEOUT_S)
+        (d / f"{name}.txt").write_text(out)
+        res[name] = dict(rc=rc, seconds=round(time.time() - t0), values=parse_mlc(out))
+        say(f"mlc {name}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    prefetch = "unable" in " ".join((d / f).read_text().lower() for f in ("idle_latency.txt",) if (d / f).exists())
+    return dict(rc=0 if all(v["rc"] == 0 for v in res.values()) else 1, runs={k: dict(rc=v["rc"], seconds=v["seconds"])
+                for k, v in res.items()}, prefetchers_left_on=prefetch or bool(secure_boot()))
+
+
+# --- llama-bench: CUDA (in the CUDA image) and Vulkan (on the host, every vendor) -----------------------------------------
+def vulkan_devices(summary: str) -> list[tuple[int, str]]:
+    """(index, name) from `vulkaninfo --summary`; software devices (llvmpipe) left out."""
+    out, idx = [], None
+    for line in summary.splitlines():
+        m = re.match(r"\s*GPU(\d+):", line)
+        if m:
+            idx = int(m.group(1)); continue
+        m = re.match(r"\s*deviceName\s*=\s*(.*)", line)
+        if m and idx is not None:
+            name = m.group(1).strip()
+            if not SOFTWARE_DEVICES.search(name):
+                out.append((idx, name))
+            idx = None
+    return out
+
+
+def llama_models(data: Path) -> list[Path]:
+    return sorted((data / "seed" / "models").glob("*.gguf"), key=lambda p: p.stat().st_size)
+
+
+def _run_env(cmd: list[str], timeout: float, env: dict) -> tuple[int, str]:
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, env=env)
+        return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return 127, f"{type(e).__name__}: {e}"
+
+
+def backend_ops_plan(binary: str, backend: str) -> list[tuple[str, list[str]]]:
+    """(key, command) per operation; perf mode, csv where the build offers it (the caller retries without)."""
+    return [(f"ops-{op.lower()}", [binary, "perf", "-o", op, "-b", backend, "--output", "csv"]) for op in BACKEND_OPS]
+
+
+def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path) -> dict:
+    """run(cmd, timeout) -> (rc, output). Older builds lack --output: then plain console output. A build that does
+    not know the backend name: once more without -b (every backend it sees, CPU included)."""
+    runs = {}
+    for key, cmd in backend_ops_plan(binary, backend):
+        t0 = time.time()
+        rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
+        if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
+            cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
+        if rc != 0 and rc != 127:
+            i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
+        (d / f"{prefix}-{key}.txt").write_text(" ".join(cmd) + "\n" + out)
+        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+    say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
+    return runs
+
+
+def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path) -> dict:
+    seed = data / "seed" / "llama"
+    models = llama_models(data)
+    if not models or not seed.is_dir():
+        return dict(skipped="llama.cpp or models not in the seed")
+    d = rundir / "llama"
+    d.mkdir(parents=True, exist_ok=True)
+    runs = {}
+
+    def one(key: str, cmd: list[str], env: dict | None = None):
+        t0 = time.time()
+        try:
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=LLAMA_TIMEOUT_S,
+                               env=dict(os.environ, **(env or {})))
+            rc, out, err = r.returncode, r.stdout, r.stderr
+        except subprocess.TimeoutExpired:
+            rc, out, err = -9, "", f"timeout after {LLAMA_TIMEOUT_S} s"
+        (d / f"{key}.jsonl").write_text(out)
+        (d / f"{key}.log").write_text(err)
+        runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
+        say(f"llama {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
+
+    if nvidia and (seed / "cuda" / "llama-bench").exists():
+        rc, out = sh(["nvidia-smi", "--query-gpu=index", "--format=csv,noheader"], timeout=60)
+        for gi in [l.strip() for l in out.splitlines() if l.strip().isdigit()]:
+            for m in models:
+                one(f"cuda-gpu{gi}-{m.stem}", ["docker", "run", "--rm", "--gpus", "all", "--network", "none",
+                    "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID", "-e", f"CUDA_VISIBLE_DEVICES={gi}",
+                    "-v", f"{seed / 'cuda'}:/llama:ro", "-v", f"{m.parent}:/models:ro", cfg_image,
+                    "/llama/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS])
+            if (seed / "cuda" / "test-backend-ops").exists():
+                docker = ["docker", "run", "--rm", "--gpus", "all", "--network", "none", "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID",
+                          "-e", f"CUDA_VISIBLE_DEVICES={gi}", "-v", f"{seed / 'cuda'}:/llama:ro", cfg_image]
+                runs.update(run_backend_ops(lambda c, t: sh(docker + c, timeout=t), d, f"cuda-gpu{gi}",
+                                            "/llama/test-backend-ops", "CUDA0", log))
+    vk = seed / "vulkan" / "llama-bench"
+    if vk.exists():
+        _, summary = sh(["vulkaninfo", "--summary"], timeout=60)
+        (d / "vulkaninfo-summary.txt").write_text(summary)
+        tbo = seed / "vulkan" / "test-backend-ops"
+        for vi, name in vulkan_devices(summary):
+            for m in models:
+                one(f"vulkan-dev{vi}-{m.stem}", [str(vk), "-m", str(m), "-ngl", "99", *LLAMA_ARGS],
+                    env={"GGML_VK_VISIBLE_DEVICES": str(vi)})
+            if tbo.exists():
+                env = dict(os.environ, GGML_VK_VISIBLE_DEVICES=str(vi))
+                runs.update(run_backend_ops(lambda c, t, env=env: _run_env(c, t, env), d, f"vulkan-dev{vi}",
+                                            str(tbo), "Vulkan0", log))
+        if tbo.exists():                                      # the CPU backend: layers / experts offloaded to the CPU
+            runs.update(run_backend_ops(lambda c, t: _run_env(c, t, dict(os.environ, GGML_VK_VISIBLE_DEVICES="")),
+                                        d, "cpu", str(tbo), "CPU", log))
+        for m in models[:1]:                                  # CPU only: no GPU device, no offload
+            one(f"cpu-{m.stem}", [str(vk), "-m", str(m), "-ngl", "0", *LLAMA_ARGS], env={"GGML_VK_VISIBLE_DEVICES": ""})
+    if not runs:
+        return dict(skipped="no usable llama.cpp backend")
+    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+
+
+# --- Vulkan probe: every GPU, every vendor (bandwidth, dispatch cost, vector FMA, matrix units; iGPU shared RAM) -----
+def parse_lines(text: str) -> list[dict]:
+    rows = []
+    for line in (text or "").splitlines():
+        line = line.strip()
+        if line.startswith("{"):
+            try:
+                rows.append(json.loads(line))
+            except json.JSONDecodeError:
+                pass
+    return rows
+
+
+def vk_plan(devices: list[dict]) -> list[tuple[str, list[str]]]:
+    """(key, vkprobe args) per hardware device; software devices (llvmpipe) left out."""
+    out = []
+    for d in devices:
+        if d.get("device_type") == "cpu" or SOFTWARE_DEVICES.search(d.get("device", "")):
+            continue
+        i = str(d["index"]); dev = ["--device", i]
+        for op in ("read", "write", "copy"):
+            out.append((f"dev{i}-stream-{op}", ["stream", *dev, "--op", op, "--mib", "1024", "--reps", "20"]))
+        out.append((f"dev{i}-launch", ["launch", *dev, "--count", "2000"]))
+        for prec in ("fp32", "fp16"):
+            out.append((f"dev{i}-fma-{prec}", ["fma", *dev, "--prec", prec]))
+        for t in VK_GEMM_TYPES:
+            for shape in VK_GEMM_SHAPES:
+                out.append((f"dev{i}-gemm-{t}-{shape}", ["gemm", *dev, "--type", t, "--shape", shape, "--reps", "10"]))
+        if d.get("device_type") == "integrated":
+            out.append((f"dev{i}-shared", ["shared", *dev, "--seconds", "8", "--threads", "0"]))
+    return out
+
+
+def run_vulkan_probe(rundir: Path, log: Path, probe: Path = VKPROBE) -> dict:
+    if not probe.exists():
+        return dict(skipped="vkprobe not in the image")
+    d = rundir / "vkprobe"
+    d.mkdir(parents=True, exist_ok=True)
+    rc, out = sh([str(probe), "list"], timeout=120)
+    (d / "list.jsonl").write_text(out)
+    devices = [r for r in parse_lines(out) if r.get("mode") == "list"]
+    runs = {}
+    for key, args in vk_plan(devices):
+        t0 = time.time()
+        rc, out = sh([str(probe), *args], timeout=PROBE_TIMEOUT_S)
+        (d / f"{key}.jsonl").write_text(out)
+        runs[key] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+    if not runs:
+        return dict(skipped="no hardware Vulkan device", devices=len(devices))
+    say(f"vkprobe: {len(runs)} runs on {len({k.split('-')[0] for k in runs})} device(s)", log)
+    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+
+
+# --- vendor-native: AMD (ROCm: hipBLAS probe + llama.cpp HIP), Intel (oneAPI: oneMKL probe + llama.cpp SYCL) ---------
+def gpu_vendors(drm: Path = DRM) -> set[str]:
+    out = set()
+    for card in drm.glob("card[0-9]*"):
+        if "-" in card.name:
+            continue
+        v = _read(card / "device" / "vendor")
+        out |= {"amd"} if v == "0x1002" else {"intel"} if v == "0x8086" else set()
+    return out
+
+
+def vendor_images(data: Path) -> dict[str, str]:
+    """name -> image tag from the seed's VENDOR.tsv (only those whose tar is present)."""
+    f = data / "seed" / "images" / "VENDOR.tsv"
+    out = {}
+    for line in (f.read_text().splitlines() if f.exists() else []):
+        parts = line.split("\t")
+        if len(parts) >= 2 and (data / "seed" / "images" / f"vendor-{parts[0]}.tar").exists():
+            out[parts[0]] = parts[1]
+    return out
+
+
+def hsa_override(arch: str, targets: list[str]) -> str | None:
+    """HSA_OVERRIDE_GFX_VERSION for a card whose gfx target was not compiled (None: built, or no known family)."""
+    base = arch.split(":")[0]
+    if base in targets:
+        return None
+    for prefix, ver in GFX_FAMILY:
+        if base.startswith(prefix):
+            return ver
+    return None
+
+
+def vendor_plan(kind: str) -> list[tuple[str, list[str]]]:
+    """(key, command inside the container) per device, without the device selection (that is the container's env)."""
+    probe = "/rigsim/probe" if kind == "rocm" else "/rigsim/probe_sycl"
+    out = [(f"stream-{op}", [probe, "stream", "--op", op, "--mib", "1024", "--reps", "20"]) for op in ("read", "write", "copy")]
+    out.append(("launch", [probe, "launch", "--count", "2000"]))
+    for d in ("h2d", "d2h") + (("bidir",) if kind == "rocm" else ()):
+        out.append((f"copy-{d}", [probe, "copy", "--dir", d, "--mib", "512", "--reps", "10"]))
+    for prec in VENDOR_GEMM_PRECS:
+        for shape in VENDOR_GEMM_SHAPES:
+            out.append((f"gemm-{prec}-{shape}", [probe, "gemm", "--prec", prec, "--shape", shape, "--reps", "10"]))
+    return out
+
+
+def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
+    vendor = "amd" if kind == "rocm" else "intel"
+    if vendor not in gpu_vendors():
+        return dict(skipped=f"no {vendor.upper()} GPU")
+    if kind == "rocm" and not Path("/dev/kfd").exists():
+        return dict(skipped="no /dev/kfd (amdgpu compute not available on this kernel)")
+    tag = vendor_images(data).get(kind)
+    if not tag:
+        return dict(skipped=f"{kind} image not in the seed")
+    res = dict(load=load_image(data / "seed" / "images" / f"vendor-{kind}.tar", data, log))
+    if res["load"].get("rc"):
+        return dict(res, rc=1, error="image did not load")
+    devs = AMD_DEVICES if kind == "rocm" else INTEL_DEVICES
+    models = llama_models(data)
+    d = rundir / kind
+    d.mkdir(parents=True, exist_ok=True)
+    name = f"rigsim-{kind}"
+    sh(["docker", "rm", "-f", name], timeout=60)
+    base = ["docker", "run", "--rm", "--network", "none", *devs, "-v", f"{data / 'seed' / 'models'}:/models:ro", tag]
+    probe = "/rigsim/probe" if kind == "rocm" else "/rigsim/probe_sycl"
+    _, info = sh([*base, "/rigsim/run.sh", probe, "info"], timeout=300)
+    (d / "info.jsonl").write_text(info)
+    _, meta = sh([*base, "sh", "-c", "cat /rigsim/TARGETS /rigsim/ROCM_VERSION /rigsim/ONEAPI_VERSION /rigsim/LLAMA_COMMIT 2>/dev/null; "
+                  "ls /rigsim"], timeout=120)
+    (d / "image.txt").write_text(meta)
+    targets = meta.splitlines()[0].split(";") if kind == "rocm" and meta else []
+    have_probe = (Path(probe).name in meta.split())
+    devices = [r for r in parse_lines(info) if r.get("mode") == "info"]
+    if not devices:
+        return dict(res, rc=1, error="the runtime sees no GPU (info.jsonl)")
+    res["devices"], runs = [], {}
+    for dev in devices:
+        i = str(dev["index"])
+        env = {"HIP_VISIBLE_DEVICES": i} if kind == "rocm" else {"ONEAPI_DEVICE_SELECTOR": f"level_zero:{i}"}
+        ov = hsa_override(dev.get("arch", ""), targets) if kind == "rocm" else None
+        if ov:
+            env["HSA_OVERRIDE_GFX_VERSION"] = ov
+        res["devices"].append(dict(index=dev["index"], name=dev.get("name"), arch=dev.get("arch"), hsa_override=ov))
+        c = f"{name}-{i}"
+        sh(["docker", "rm", "-f", c], timeout=60)
+        envargs = [x for k, v in env.items() for x in ("-e", f"{k}={v}")]
+        rc, _ = sh(["docker", "run", "-d", "--name", c, "--network", "none", *devs, *envargs,
+                    "-v", f"{data / 'seed' / 'models'}:/models:ro", tag, "sleep", "infinity"], timeout=300)
+        if rc != 0:
+            runs[f"dev{i}"] = dict(rc=rc, error="container did not start"); continue
+        plan = vendor_plan(kind) if have_probe else []
+        plan += [(f"llama-{m.stem}", ["/rigsim/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS]) for m in models]
+        for key, cmd in plan:
+            t0 = time.time()
+            rc, out = sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S)
+            (d / f"dev{i}-{key}.jsonl").write_text(out)
+            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+        if "test-backend-ops" in meta.split():
+            runs.update(run_backend_ops(lambda cmd, t, c=c: sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=t),
+                                        d, f"dev{i}", "/rigsim/test-backend-ops", "ROCm0" if kind == "rocm" else "SYCL0", log))
+        sh(["docker", "rm", "-f", c], timeout=120)
+        say(f"{kind} device {i} ({dev.get('name')}): {sum(1 for k in runs if k.startswith(f'dev{i}-'))} runs"
+            + (f", HSA_OVERRIDE_GFX_VERSION={ov}" if ov else "") + ("" if have_probe else ", probe not in the image"), log)
+    return dict(res, rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+
+
+# --- Blender Benchmark (official launcher CLI, Blender and scenes pre-downloaded into the seed) ---------------------------
+def blender_device_types(devices_out: str) -> list[str]:
+    """Device types the launcher offers ('NVIDIA GeForce RTX 3090    OPTIX'), CPU first, each type once."""
+    found = []
+    for line in devices_out.splitlines():
+        parts = line.strip().rsplit(None, 1)
+        if len(parts) == 2 and parts[1] in ("CPU", "CUDA", "OPTIX", "HIP", "ONEAPI") and parts[1] not in found:
+            found.append(parts[1])
+    return sorted(found, key=lambda t: ("CPU", "OPTIX", "CUDA", "HIP", "ONEAPI").index(t))
+
+
+def run_blender(data: Path, rundir: Path, log: Path) -> dict:
+    b = data / "seed" / "blender"
+    cli = b / "benchmark-launcher-cli"
+    ver = _read(b / "BLENDER_VERSION")
+    if not cli.exists() or not ver:
+        return dict(skipped="Blender benchmark not in the seed")
+    d = rundir / "blender"
+    d.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, HOME=str(b / "home"), XDG_CACHE_HOME=str(b / "home" / ".cache"))
+    r = subprocess.run([str(cli), "devices", "--blender-version", ver], capture_output=True, text=True, env=env,
+                       timeout=300)
+    (d / "devices.txt").write_text(r.stdout + r.stderr)
+    runs = {}
+    for t in blender_device_types(r.stdout):
+        t0 = time.time()
+        try:
+            rr = subprocess.run([str(cli), "benchmark", "--blender-version", ver, "--device-type", t, "--json",
+                                 *BLENDER_SCENES], capture_output=True, text=True, env=env, timeout=BLENDER_TIMEOUT_S)
+            rc, out, err = rr.returncode, rr.stdout, rr.stderr
+        except subprocess.TimeoutExpired:
+            rc, out, err = -9, "", f"timeout after {BLENDER_TIMEOUT_S} s"
+        (d / f"{t.lower()}.json").write_text(out)
+        (d / f"{t.lower()}.log").write_text(err)
+        runs[t] = dict(rc=rc, seconds=round(time.time() - t0))
+        say(f"blender {t}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    if not runs:
+        return dict(skipped="the launcher found no device")
+    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, blender=ver, runs=runs)
+
+
+def should_power_off(data: Path, cmdline: str) -> bool:
+    return not (data / "NO_POWEROFF").exists() and "rigsim.nopoweroff" not in cmdline.split()
+
+
+def append_index(data: Path, row: dict) -> None:
+    f = data / "index.tsv"
+    if not f.exists():
+        f.write_text(INDEX_HEADER)
+    clean = lambda v: str(v).replace("\t", " ").replace("\n", " ")
+    with open(f, "a") as fh:
+        fh.write("\t".join(clean(row.get(k, "")) for k in
+                           ("run", "start_utc", "fingerprint", "cpu", "board", "gpus", "ram", "status", "stick")) + "\n")
+
+
+# --- host actions ------------------------------------------------------------------------------------------------------
+def notice(seconds: int = NOTICE_S) -> bool:
+    """True = go on; False = a key was pressed (abort, nothing measured)."""
+    print("\n" * 2 + "=" * 78)
+    print(" rigsim hardware stick — measures this machine's CPU, memory and GPUs, then powers it off.")
+    print(" Nothing is written to this machine's disks. Results stay on the stick (no serial numbers) and may be")
+    print(" published as open data (CC BY 4.0) with the owner's consent: github.com/keysie/rigsim-benchmark")
+    print(f" Press any key within {seconds} s to ABORT (a shell is on Ctrl+Alt+F2).")
+    print("=" * 78, flush=True)
+    try:
+        import termios, tty
+        fd = sys.stdin.fileno()
+        old = termios.tcgetattr(fd)
+        tty.setcbreak(fd)
+    except Exception:                                   # noqa: BLE001 - no tty: no way to abort, go on
+        old = None
+    try:
+        end = time.time() + seconds
+        while time.time() < end:
+            left = int(end - time.time())
+            print(f"\r starting in {left:2d} s ", end="", flush=True)
+            if old is not None and select.select([sys.stdin], [], [], 1.0)[0]:
+                sys.stdin.read(1)
+                print("\n aborted — nothing measured.", flush=True)
+                return False
+            elif old is None:
+                time.sleep(1)
+        print()
+        return True
+    finally:
+        if old is not None:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old)
+
+
+def mount_data() -> Path | None:
+    rc, dev = sh(["blkid", "-L", LABEL], timeout=30)
+    if rc != 0 or not dev.strip():
+        return None
+    MNT.mkdir(parents=True, exist_ok=True)
+    if subprocess.run(["mountpoint", "-q", str(MNT)]).returncode != 0:
+        if sh(["mount", "-o", "noatime", dev.strip().splitlines()[0], str(MNT)])[0] != 0:
+            return None
+    return MNT
+
+
+def start_docker(data: Path, log: Path) -> dict:
+    """Docker and containerd keep everything on the data partition. The live system's root is an overlay; an
+    overlay snapshot cannot sit on it ("not supported as upperdir"), so both stores move to the stick's ext4:
+    Docker by data-root, containerd (its image store and snapshots, used by Docker's containerd image store) by a
+    bind mount of /var/lib/containerd. A container is started once to prove it works."""
+    sh(["systemctl", "stop", "docker", "docker.socket", "containerd"], timeout=120)
+    root = data / "docker"
+    croot = data / "containerd"
+    root.mkdir(exist_ok=True); croot.mkdir(exist_ok=True)
+    cl = Path("/var/lib/containerd"); cl.mkdir(parents=True, exist_ok=True)
+    if subprocess.run(["mountpoint", "-q", str(cl)]).returncode != 0:
+        sh(["mount", "--bind", str(croot), str(cl)])
+    cfg = Path("/etc/docker/daemon.json")
+    d = json.loads(cfg.read_text()) if cfg.exists() else {}
+    d["data-root"] = str(root)
+    cfg.parent.mkdir(parents=True, exist_ok=True)
+    cfg.write_text(json.dumps(d, indent=1))
+    sh(["systemctl", "start", "containerd", "docker"], timeout=300)
+    for img in sorted((data / "seed" / "images").glob("*.tar")):
+        if not img.name.startswith("vendor-"):       # vendor images load only on a machine that has that vendor's GPU
+            load_image(img, data, log)
+    # proof: one container from the smallest seeded image (a broken storage setup fails every question in a second)
+    tags = [t for img in sorted((data / "seed" / "images").glob("*.tar"), key=lambda p: p.stat().st_size)
+            if not img.name.startswith("vendor-") for t in image_tags(img)]
+    if not tags:
+        return dict(ok=False, why="no seeded image")
+    rc, out = sh(["docker", "run", "--rm", "--network", "none", tags[0], "true"], timeout=300)
+    _, driver = sh(["docker", "info", "--format", "{{.Driver}} / {{.DriverStatus}}"], timeout=60)
+    res = dict(ok=rc == 0, image=tags[0], storage=driver.strip()[:200])
+    if rc != 0:
+        res["error"] = out.strip()[-400:]
+    say(f"docker: {'works' if rc == 0 else 'BROKEN — container questions will fail'} ({res['storage'][:60]})", log)
+    return res
+
+
+def image_tags(img: Path) -> list[str]:
+    """Image names inside a docker-save archive (manifest.json RepoTags; OCI index annotations as fallback)."""
+    import tarfile
+    try:
+        with tarfile.open(img) as t:
+            for name in ("manifest.json", "index.json"):
+                try:
+                    m = json.load(t.extractfile(name))
+                except KeyError:
+                    continue
+                if name == "manifest.json":
+                    return [tag for e in m for tag in (e.get("RepoTags") or [])]
+                return [x.get("annotations", {}).get("io.containerd.image.name") for x in m.get("manifests", [])
+                        if x.get("annotations", {}).get("io.containerd.image.name")]
+    except (OSError, tarfile.TarError, ValueError):
+        pass
+    return []
+
+
+def load_image(img: Path, data: Path, log: Path) -> dict:
+    """docker load once per stick (marked on the data partition); the time is logged, a slow stick shows here."""
+    if _loaded(img, data):
+        return dict(rc=0, cached=True)
+    t0 = time.time()
+    rc, _ = sh(["docker", "load", "-q", "-i", str(img)], timeout=3 * 3600)
+    sec = time.time() - t0
+    if rc == 0:
+        (data / "docker" / f".loaded-{img.name}").write_text(str(img.stat().st_size))
+    mib = img.stat().st_size / 2**20
+    say(f"docker: {'loaded' if rc == 0 else 'FAILED to load'} {img.name} ({mib:.0f} MiB in {sec:.0f} s)", log)
+    return dict(rc=rc, mib=round(mib), seconds=round(sec, 1))
+
+
+def stick_check(path: Path = Path("/run/casper-md5check.json")) -> dict:
+    """casper-md5check's verdict on the stick's files (md5sum.txt on the ISO): a corrupted stick is recorded."""
+    try:
+        r = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return dict(result="unknown (no casper-md5check result)")
+    bad = r.get("checksum_missmatch") or r.get("checksum_mismatch") or []
+    return dict(result=r.get("result", "unknown"), mismatched=bad[:20])
+
+
+def stick_read_speed(data: Path, mib: int = STICK_READ_MIB) -> dict:
+    """Sequential read from the stick, page cache dropped for that file first: explains slow runs afterwards."""
+    files = sorted((p for p in (data / "seed").rglob("*") if p.is_file()), key=lambda p: p.stat().st_size)
+    if not files:
+        return dict(skipped="seed empty")
+    f = files[-1]
+    try:
+        fd = os.open(f, os.O_RDONLY)
+        os.posix_fadvise(fd, 0, 0, os.POSIX_FADV_DONTNEED)
+        t0, got = time.time(), 0
+        while got < mib * 2**20:
+            b = os.read(fd, min(8 << 20, mib * 2**20 - got))
+            if not b:
+                break
+            got += len(b)
+        sec = time.time() - t0
+        os.close(fd)
+    except OSError as e:
+        return dict(error=str(e))
+    return dict(file=f.name, mib=round(got / 2**20), seconds=round(sec, 2), mib_per_s=round(got / 2**20 / max(sec, 1e-6), 1))
+
+
+def _loaded(img: Path, data: Path) -> bool:
+    """Loaded before AND still there: the marker alone is not enough (a store that was lost, e.g. one that lived in
+    RAM on an older stick version, leaves markers behind)."""
+    mark = data / "docker" / f".loaded-{img.name}"
+    if not (mark.exists() and mark.read_text().strip() == str(img.stat().st_size)):
+        return False
+    tags = image_tags(img)
+    return bool(tags) and all(sh(["docker", "image", "inspect", t], timeout=60)[0] == 0 for t in tags)
+
+
+def prepare_toolkits(data: Path) -> Path:
+    tk = RUN / "toolkits"
+    if tk.exists():
+        shutil.rmtree(tk)
+    shutil.copytree(OPT / "toolkits", tk)
+    debs = data / "seed" / "debs"
+    if debs.is_dir():
+        shutil.copytree(debs, tk / "cpu" / "debs")
+    return tk
+
+
+def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dict:
+    d = rundir / "q" / q
+    say(f"{q}: start", log)
+    t0 = time.time()
+    try:
+        r = subprocess.run([sys.executable, str(OPT / "runner" / "hwq.py"), "run", str(qfile), "--dir", str(d),
+                            "--config", str(cfg)], capture_output=True, text=True, timeout=QUESTION_TIMEOUT_S)
+        rc, out = r.returncode, r.stdout + r.stderr
+    except subprocess.TimeoutExpired as e:
+        rc, out = -9, f"timeout after {QUESTION_TIMEOUT_S} s"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "runner.log").write_text(out)
+    counts = json.loads(sh([sys.executable, str(OPT / "runner" / "hwq.py"), "status", "--dir", str(d)])[1] or "{}")
+    say(f"{q}: rc={rc} {counts} ({time.time() - t0:.0f} s)", log)
+    return dict(rc=rc, items=counts, seconds=round(time.time() - t0))
+
+
+def main() -> int:
+    def on_term(*_):
+        raise Stopped()
+    signal.signal(signal.SIGTERM, on_term)
+    version = (OPT / "VERSION").read_text().strip() if (OPT / "VERSION").exists() else "unknown"
+    cmdline = Path("/proc/cmdline").read_text() if Path("/proc/cmdline").exists() else ""
+    data = mount_data()
+    if data is None:
+        say("no data partition labelled RIGSIM — nothing measured. Powering off in 5 minutes (Ctrl+Alt+F2: shell).")
+        time.sleep(300)
+        if "rigsim.nopoweroff" not in cmdline.split():
+            subprocess.run(["systemctl", "poweroff"])
+        return 1
+    if not notice():
+        return 0
+    fp, stable = fingerprint(data)
+    rundir = new_run_dir(data / "runs", fp)
+    log = rundir / "stick.log"
+    start = dt.datetime.now(dt.timezone.utc)
+    run = dict(run=rundir.name, stick=version, fingerprint=fp, fingerprint_stable=stable,
+               start_utc=start.isoformat(timespec="seconds"), clock_note="machine RTC; may be wrong",
+               questions={}, status="running")
+    (rundir / "run.json").write_text(json.dumps(run, indent=1))
+    say(f"run {rundir.name}", log)
+    try:
+        run["hardware"] = collect_inventory(rundir / "inventory", log)
+        say(f"cpu {run['hardware']['cpu']} | board {run['hardware']['board']} | {run['hardware']['ram_gib']} GiB | "
+            f"gpus {run['hardware']['gpus'] or 'none'}", log)
+        run["stick_check"] = stick_check()
+        say(f"stick check: {run['stick_check'].get('result', run['stick_check'])}", log)
+        run["stick_read"] = stick_read_speed(data)
+        say(f"stick read: {run['stick_read']}", log)
+        run["docker"] = start_docker(data, log)
+        RUN.mkdir(parents=True, exist_ok=True)
+        tk = prepare_toolkits(data)
+        cfg = RUN / "hwq.json"
+        cfg.write_text(json.dumps(dict(toolkits=str(tk), image_mirror="", setup_proxy={}, gpu_names={},
+                                       keep_running=[], testdir_parent=str(RUN / "testdir"),
+                                       pause_file=str(RUN / "PAUSE"), min_free_gb=2)))
+        nvidia, why = nvidia_state()
+        run["displays"] = displays()
+        say(f"screens: {[(x['card'], x['connector'], x['mode']) for x in run['displays']] or 'none connected'}", log)
+        run["screens_blanked"] = blank_screens(True)
+        say(f"screens off while measuring: {run['screens_blanked'] or 'not possible'}", log)
+        cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
+        with DrmSampler(rundir / "samples-drm.jsonl"):
+            for q, f, skip in plan(OPT / "questions", nvidia, why):
+                if skip:
+                    run["questions"][q] = dict(skipped=skip); say(f"{q}: skipped ({skip})", log); continue
+                run["questions"][q] = run_question(q, f, rundir, cfg, log)
+                (rundir / "run.json").write_text(json.dumps(run, indent=1))
+            for name, step in (("mlc", lambda: run_mlc(data, rundir, log)),
+                               ("opencl", lambda: run_opencl(rundir, log)),
+                               ("vkprobe", lambda: run_vulkan_probe(rundir, log)),
+                               ("rocm", lambda: run_vendor("rocm", data, rundir, log)),
+                               ("oneapi", lambda: run_vendor("oneapi", data, rundir, log)),
+                               ("llama-bench", lambda: run_llama(data, rundir, cuda_image, nvidia, log)),
+                               ("blender", lambda: run_blender(data, rundir, log))):
+                run["questions"][name] = step()
+                if run["questions"][name].get("skipped"):
+                    say(f"{name}: skipped ({run['questions'][name]['skipped']})", log)
+                (rundir / "run.json").write_text(json.dumps(run, indent=1))
+        ok = all(v.get("skipped") or (v.get("rc") == 0) for v in run["questions"].values())
+        run["status"] = "done" if ok else "done with failures"
+    except Stopped:
+        run["status"] = "stopped"
+        say("stopped on request", log)
+    except Exception as e:                              # noqa: BLE001 - always label what we have
+        run["status"] = f"error: {type(e).__name__}: {e}"
+        say(run["status"], log)
+    blank_screens(False)
+    run["end_utc"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    (rundir / "run.json").write_text(json.dumps(run, indent=1))
+    hw = run.get("hardware", {})
+    append_index(data, dict(run=rundir.name, start_utc=run["start_utc"], fingerprint=fp, cpu=hw.get("cpu", ""),
+                            board=hw.get("board", ""), gpus="; ".join(hw.get("gpus", [])),
+                            ram=f"{hw.get('ram_gib', '')} GiB", status=run["status"], stick=version))
+    say(f"finished: {run['status']}", log)
+    sh(["systemctl", "stop", "docker", "containerd"], timeout=300)
+    sh(["umount", "/var/lib/containerd"], timeout=120)
+    os.sync()
+    off = should_power_off(data, cmdline) and run["status"] != "stopped"
+    sh(["umount", str(MNT)], timeout=120)
+    if off:
+        say("powering off in 10 s")
+        time.sleep(10)
+        subprocess.run(["systemctl", "poweroff"])
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

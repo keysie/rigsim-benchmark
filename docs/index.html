@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rigsim-benchmark — measured machines</title>
+<meta name="description" content="Hardware measurements of real machines (CPU, memory, GPUs, llama.cpp, Blender), taken by the rigsim measurement stick. Data under CC BY 4.0.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #eef1ec;
+    --sheet: #f8faf6;
+    --ink: #182027;
+    --muted: #55626b;
+    --rule: #c9d1cc;
+    --accent: #2f4db3;
+    --warn: #a35f00;
+    --ok: #2b7a4b;
+    --chip: #dfe5e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #151b20; --sheet: #1b232a; --ink: #e4e9e6; --muted: #9aa7ae; --rule: #2f3a42;
+      --accent: #8fa6ff; --warn: #e2a24a; --ok: #6fcf97; --chip: #26313a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #151b20; --sheet: #1b232a; --ink: #e4e9e6; --muted: #9aa7ae; --rule: #2f3a42;
+    --accent: #8fa6ff; --warn: #e2a24a; --ok: #6fcf97; --chip: #26313a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body { font: 400 16px/1.5 "Barlow", system-ui, sans-serif; }
+  a { color: var(--accent); }
+  a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  main { max-width: 1240px; margin: 0 auto; padding: 48px 24px 64px; }
+  header { display: grid; grid-template-columns: 1fr auto; gap: 8px 32px; align-items: end; margin-bottom: 28px; }
+  h1 { font: 700 clamp(2.2rem, 5vw, 3.6rem)/1.02 "Barlow Semi Condensed", sans-serif; margin: 0; letter-spacing: -0.01em; }
+  h1 .count { font-variant-numeric: tabular-nums; }
+  .lede { grid-column: 1 / -1; max-width: 70ch; color: var(--muted); margin: 6px 0 0; }
+  .links { display: flex; gap: 18px; flex-wrap: wrap; font-weight: 500; }
+  .tools { display: flex; gap: 12px; align-items: center; margin: 0 0 12px; flex-wrap: wrap; }
+  .tools input {
+    font: inherit; padding: 8px 12px; width: min(420px, 100%); border: 1px solid var(--rule);
+    border-radius: 6px; background: var(--sheet); color: var(--ink);
+  }
+  .tools .shown { color: var(--muted); font-size: 0.92rem; }
+  .table-wrap { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; min-width: 980px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { position: sticky; top: 0; background: var(--sheet); z-index: 1; }
+  th button {
+    font: 600 0.95rem "Barlow Semi Condensed", sans-serif; color: var(--muted); background: none; border: 0;
+    padding: 0; cursor: pointer; white-space: nowrap;
+  }
+  th button[aria-sort="ascending"]::after { content: " ▲"; }
+  th button[aria-sort="descending"]::after { content: " ▼"; }
+  th button[aria-sort] { color: var(--ink); }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; }
+  td.date { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .chip { display: inline-block; background: var(--chip); border-radius: 4px; padding: 1px 7px; margin: 0 4px 4px 0; font-size: 0.9rem; white-space: nowrap; }
+  .status-ok { color: var(--ok); font-weight: 500; }
+  .status-bad { color: var(--warn); font-weight: 500; }
+  .steps { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .machine { font-size: 0.85rem; color: var(--muted); }
+  .empty { padding: 40px 20px; text-align: center; color: var(--muted); }
+  footer { margin-top: 28px; color: var(--muted); font-size: 0.92rem; max-width: 80ch; }
+  @media (max-width: 640px) { header { grid-template-columns: 1fr; } main { padding-top: 28px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1><span class="count" id="headline">Measured machines</span></h1>
+    <nav class="links" aria-label="Project">
+      <a href="https://github.com/keysie/rigsim-benchmark">Repository</a>
+      <a href="https://github.com/keysie/rigsim-benchmark/tree/main/stick">The stick</a>
+      <a href="data.json">data.json</a>
+    </nav>
+    <p class="lede">Every run of the rigsim measurement stick: a machine booted from the stick, measured its CPU,
+      memory, GPUs, llama.cpp and Blender unattended, and powered off. Open a run for its raw files.</p>
+  </header>
+
+  <div class="tools">
+    <input id="filter" type="search" placeholder="Filter by CPU, board, GPU, date…" aria-label="Filter runs">
+    <span class="shown" id="shown"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr id="head"></tr></thead>
+      <tbody id="rows"><tr><td class="empty" colspan="8">Loading runs…</td></tr></tbody>
+    </table>
+  </div>
+
+  <footer>
+    Data: <a href="https://github.com/keysie/rigsim-benchmark/blob/main/results/LICENSE">CC BY 4.0</a>,
+    code: <a href="https://github.com/keysie/rigsim-benchmark/blob/main/LICENSE">Apache 2.0</a>.
+    Machines are identified by a salted hash, never by serial numbers.
+  </footer>
+</main>
+<script>
+const REPO = "https://github.com/keysie/rigsim-benchmark/tree/main/results/runs/";
+const COLS = [
+  { key: "date", label: "Date", cls: "date" },
+  { key: "cpu", label: "CPU" },
+  { key: "gpus", label: "GPUs", sortVal: r => r.gpus.join(", ") },
+  { key: "ram_gib", label: "RAM (GiB)", cls: "num", num: true },
+  { key: "board", label: "Board" },
+  { key: "steps_ok", label: "Steps", num: true },
+  { key: "status", label: "Status" },
+  { key: "run", label: "Run" },
+];
+let runs = [], sort = { key: "date", dir: -1 };
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function cell(r, c) {
+  switch (c.key) {
+    case "gpus": return r.gpus.length ? r.gpus.map(g => `<span class="chip">${esc(g)}</span>`).join("") : "none";
+    case "steps_ok": return `<span class="steps">${r.steps_ok} ok` + (r.steps_failed ? `, ${r.steps_failed} failed` : "")
+      + (r.steps_skipped ? `, ${r.steps_skipped} skipped` : "") + `</span>`;
+    case "status": return `<span class="${r.status === "done" ? "status-ok" : "status-bad"}">${esc(r.status)}</span>`;
+    case "run": return `<a href="${REPO}${encodeURIComponent(r.run)}">files</a><div class="machine">machine ${esc(r.machine.slice(0, 8))}</div>`;
+    default: return esc(r[c.key]);
+  }
+}
+
+function head() {
+  document.getElementById("head").innerHTML = COLS.map(c => {
+    const s = sort.key === c.key ? ` aria-sort="${sort.dir > 0 ? "ascending" : "descending"}"` : "";
+    return `<th scope="col"><button type="button" data-key="${c.key}"${s}>${c.label}</button></th>`;
+  }).join("");
+}
+
+function render() {
+  const q = document.getElementById("filter").value.trim().toLowerCase();
+  const col = COLS.find(c => c.key === sort.key);
+  const val = r => col.sortVal ? col.sortVal(r) : r[col.key];
+  const list = runs.filter(r => !q || [r.date, r.cpu, r.board, r.status, r.run, r.machine, ...r.gpus].join(" ").toLowerCase().includes(q))
+    .sort((a, b) => {
+      const x = val(a), y = val(b);
+      return (col.num ? (x ?? -1) - (y ?? -1) : String(x ?? "").localeCompare(String(y ?? ""))) * sort.dir;
+    });
+  const body = document.getElementById("rows");
+  if (!runs.length) {
+    body.innerHTML = `<tr><td class="empty" colspan="${COLS.length}">No runs yet. Runs appear here once results from a stick are imported (tools/import.sh).</td></tr>`;
+  } else if (!list.length) {
+    body.innerHTML = `<tr><td class="empty" colspan="${COLS.length}">No run matches “${esc(q)}”.</td></tr>`;
+  } else {
+    body.innerHTML = list.map(r => `<tr>${COLS.map(c => `<td class="${c.cls || ""}">${cell(r, c)}</td>`).join("")}</tr>`).join("");
+  }
+  const machines = new Set(runs.map(r => r.machine)).size;
+  document.getElementById("headline").textContent =
+    `${runs.length} run${runs.length === 1 ? "" : "s"} on ${machines} machine${machines === 1 ? "" : "s"}`;
+  document.getElementById("shown").textContent = q ? `${list.length} of ${runs.length} shown` : "";
+  head();
+}
+
+document.getElementById("head").addEventListener("click", e => {
+  const key = e.target.closest("button")?.dataset.key;
+  if (!key) return;
+  sort = { key, dir: sort.key === key ? -sort.dir : (COLS.find(c => c.key === key).num || key === "date" ? -1 : 1) };
+  render();
+});
+document.getElementById("filter").addEventListener("input", render);
+
+fetch("data.json").then(r => r.json()).then(d => { runs = d.runs || []; render(); })
+  .catch(() => { document.getElementById("rows").innerHTML =
+    `<tr><td class="empty" colspan="${COLS.length}">data.json could not be loaded.</td></tr>`; });
+head();
+</script>
+</body>
+</html>

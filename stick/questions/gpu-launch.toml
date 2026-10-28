@@ -1,0 +1,17 @@
+question = "gpu-launch"
+asks = "What one kernel launch costs on each NVIDIA card: back-to-back, launch + synchronize, and replayed from a CUDA graph (stick profile)."
+feeds = "The fixed cost per operation (hw/rates.py launch_s): it sets the writing speed of small models, where launches cost more than reading the weights."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 3
+sample_ms = 100
+timeout_s = 120
+
+[grid]
+gpu = ["@all"]
+
+[args]
+count = 2000
+cmd = ["probe", "launch", "--count", "{count}"]

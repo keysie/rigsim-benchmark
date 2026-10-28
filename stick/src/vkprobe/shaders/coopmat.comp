@@ -1,0 +1,41 @@
+#version 450
+// Cooperative-matrix GEMM, C(MxN) = A(MxK) B(KxN), row-major. Each subgroup computes 2x2 tiles straight from global
+// memory (no shared-memory staging): a probe of the matrix units through Vulkan, not a tuned library kernel.
+// Built per type pair with -DAT=<A/B type> -DCT=<accumulator type>; tile sizes and subgroup size are
+// specialization constants taken from the device's cooperative-matrix properties.
+#extension GL_KHR_cooperative_matrix : require
+#extension GL_KHR_memory_scope_semantics : require
+#extension GL_EXT_shader_explicit_arithmetic_types : require
+#extension GL_EXT_shader_16bit_storage : enable
+#extension GL_EXT_shader_8bit_storage : enable
+layout(constant_id = 0) const uint lM = 16;
+layout(constant_id = 1) const uint lN = 16;
+layout(constant_id = 2) const uint lK = 16;
+layout(local_size_x_id = 3) in;
+layout(std430, set = 0, binding = 0) readonly buffer A { AT a[]; };
+layout(std430, set = 0, binding = 1) readonly buffer B { AT b[]; };
+layout(std430, set = 0, binding = 2) writeonly buffer C { CT c[]; };
+layout(push_constant) uniform P { uint M; uint N; uint K; uint pad; } p;
+#define ACC coopmat<CT, gl_ScopeSubgroup, lM, lN, gl_MatrixUseAccumulator>
+#define MA coopmat<AT, gl_ScopeSubgroup, lM, lK, gl_MatrixUseA>
+#define MB coopmat<AT, gl_ScopeSubgroup, lK, lN, gl_MatrixUseB>
+void main() {
+    uint tm = gl_WorkGroupID.x * 2u, tn = gl_WorkGroupID.y * 2u;
+    ACC c00 = ACC(CT(0));
+    ACC c01 = ACC(CT(0));
+    ACC c10 = ACC(CT(0));
+    ACC c11 = ACC(CT(0));
+    MA a0; MA a1; MB b0; MB b1;
+    for (uint k = 0u; k < p.K; k += lK) {
+        coopMatLoad(a0, a, (tm * lM) * p.K + k, p.K, gl_CooperativeMatrixLayoutRowMajor);
+        coopMatLoad(a1, a, ((tm + 1u) * lM) * p.K + k, p.K, gl_CooperativeMatrixLayoutRowMajor);
+        coopMatLoad(b0, b, k * p.N + tn * lN, p.N, gl_CooperativeMatrixLayoutRowMajor);
+        coopMatLoad(b1, b, k * p.N + (tn + 1u) * lN, p.N, gl_CooperativeMatrixLayoutRowMajor);
+        c00 = coopMatMulAdd(a0, b0, c00); c01 = coopMatMulAdd(a0, b1, c01);
+        c10 = coopMatMulAdd(a1, b0, c10); c11 = coopMatMulAdd(a1, b1, c11);
+    }
+    coopMatStore(c00, c, (tm * lM) * p.N + tn * lN, p.N, gl_CooperativeMatrixLayoutRowMajor);
+    coopMatStore(c01, c, (tm * lM) * p.N + (tn + 1u) * lN, p.N, gl_CooperativeMatrixLayoutRowMajor);
+    coopMatStore(c10, c, ((tm + 1u) * lM) * p.N + tn * lN, p.N, gl_CooperativeMatrixLayoutRowMajor);
+    coopMatStore(c11, c, ((tm + 1u) * lM) * p.N + (tn + 1u) * lN, p.N, gl_CooperativeMatrixLayoutRowMajor);
+}

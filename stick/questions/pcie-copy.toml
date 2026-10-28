@@ -1,0 +1,19 @@
+question = "pcie-copy"
+asks = "Host <-> card copies per card and all cards at once, both directions (stick profile)."
+feeds = "PCIe link capacities, shared uplinks, routers (hw/links.py, the machine graph)."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 2
+sample_ms = 200
+timeout_s = 300
+
+[grid]
+gpu = ["@all", "@together"]
+dir = ["h2d", "d2h", "bidir"]
+
+[args]
+mib = 512
+reps = 5
+cmd = ["probe", "copy", "--dir", "{dir}", "--mib", "{mib}", "--reps", "{reps}"]

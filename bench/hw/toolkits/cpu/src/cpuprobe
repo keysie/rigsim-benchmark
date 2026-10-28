@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""rigsim CPU / storage probe. One JSON object per result line on stdout.
+  cpuprobe ladder  --kernel load_sse|load_avx|load_avx512 --threads N --size 2GB --iterations 20   (likwid-bench)
+  cpuprobe latency --mib 1024 --passes 5                                                            (pointer chase)
+  cpuprobe fio     --mode seqread_1m_qd32|randread_4k_qd1|randread_4k_qd32 --size 8G --runtime 30   (fio, /data)
+"""
+import argparse, json, re, subprocess, sys
+
+FIO = {"seqread_1m_qd32": ("read", "1M", 32), "randread_4k_qd1": ("randread", "4k", 1),
+       "randread_4k_qd32": ("randread", "4k", 32)}
+
+
+def ladder(a):
+    # S0 domain: likwid lists each physical core's first hardware thread before the SMT siblings, so N threads up to
+    # the core count land on N physical cores (checked in the smoke run from likwid's own thread report)
+    cmd = ["likwid-bench", "-t", a.kernel, "-i", str(a.iterations), "-w", f"S0:{a.size}:{a.threads}"]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        print(json.dumps(dict(mode="ladder", kernel=a.kernel, threads=a.threads, error=r.stderr.strip()[-500:]))); return 1
+    mb = re.search(r"MByte/s:\s+([0-9.]+)", r.stdout)
+    cyc = re.search(r"Cycles:\s+([0-9]+)", r.stdout)
+    cpus = re.findall(r"Thread \d+ running on (?:hwthread|core) (\d+)", r.stdout)
+    print(json.dumps(dict(mode="ladder", kernel=a.kernel, threads=a.threads, size=a.size, iterations=a.iterations,
+                          bytes_per_s=float(mb.group(1)) * 1e6 if mb else None,
+                          cycles=int(cyc.group(1)) if cyc else None, hwthreads=[int(c) for c in cpus])))
+    return 0
+
+
+def latency(a):
+    r = subprocess.run(["chase", str(a.mib), str(a.passes)], capture_output=True, text=True)
+    sys.stdout.write(r.stdout); sys.stderr.write(r.stderr)
+    return r.returncode
+
+
+def fio(a):
+    rw, bs, qd = FIO[a.mode]
+    cmd = ["fio", "--name=rigsim", "--filename=/data/rigsim-testfile", f"--size={a.size}", "--direct=1",
+           "--ioengine=libaio", f"--rw={rw}", f"--bs={bs}", f"--iodepth={qd}", f"--runtime={a.runtime}",
+           "--time_based", "--group_reporting", "--output-format=json"]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        print(json.dumps(dict(mode="fio", fio_mode=a.mode, error=r.stderr.strip()[-500:]))); return 1
+    job = json.loads(r.stdout)["jobs"][0]["read"]
+    lat = job.get("clat_ns") or job.get("lat_ns") or {}
+    print(json.dumps(dict(mode="fio", fio_mode=a.mode, bs=bs, iodepth=qd, bytes_per_s=job["bw_bytes"], iops=job["iops"],
+                          lat_ns_mean=lat.get("mean"), lat_ns_p50=(lat.get("percentile") or {}).get("50.000000"),
+                          lat_ns_p99=(lat.get("percentile") or {}).get("99.000000"))))
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("what", choices=["ladder", "latency", "fio"])
+    ap.add_argument("--kernel", default="load_avx"); ap.add_argument("--threads", type=int, default=1)
+    ap.add_argument("--size", default=None); ap.add_argument("--iterations", type=int, default=20)
+    ap.add_argument("--mib", type=int, default=1024); ap.add_argument("--passes", type=int, default=5)
+    ap.add_argument("--mode", default="randread_4k_qd1", choices=sorted(FIO)); ap.add_argument("--runtime", type=int, default=30)
+    a = ap.parse_args()
+    if a.size is None:
+        a.size = "8G" if a.what == "fio" else "2GB"
+    return {"ladder": ladder, "latency": latency, "fio": fio}[a.what](a)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

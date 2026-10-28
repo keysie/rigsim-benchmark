@@ -1,0 +1,24 @@
+#version 450
+// vector FMA peak: 8 independent chains of 4-wide FMAs per invocation
+#extension GL_EXT_shader_explicit_arithmetic_types_float16 : enable
+layout(local_size_x = 256) in;
+layout(std430, set = 0, binding = 2) buffer O { float o[]; };
+layout(push_constant) uniform P { uint iters; uint a; uint b; uint c; } p;
+#ifdef F16
+#define V f16vec4
+#define S float16_t
+#else
+#define V vec4
+#define S float
+#endif
+void main() {
+    V x0 = V(S(gl_LocalInvocationID.x) * S(0.001)), x1 = x0 + V(S(0.1)), x2 = x0 + V(S(0.2)), x3 = x0 + V(S(0.3));
+    V x4 = x0 + V(S(0.4)), x5 = x0 + V(S(0.5)), x6 = x0 + V(S(0.6)), x7 = x0 + V(S(0.7));
+    V m = V(S(0.999)), c = V(S(0.001));
+    for (uint i = 0u; i < p.iters; ++i) {
+        x0 = fma(x0, m, c); x1 = fma(x1, m, c); x2 = fma(x2, m, c); x3 = fma(x3, m, c);
+        x4 = fma(x4, m, c); x5 = fma(x5, m, c); x6 = fma(x6, m, c); x7 = fma(x7, m, c);
+    }
+    V s = x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7;
+    if (float(s.x + s.y + s.z + s.w) == 12345.678) o[0] = float(s.x);
+}

@@ -1,0 +1,18 @@
+question = "gpu-p2p"
+asks = "Card-to-card copies for every pair of NVIDIA cards, with and without peer access (stick profile; needs two or more cards)."
+feeds = "Peer links and the path through the host for layer splits over several cards (hw/links.py)."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 2
+sample_ms = 200
+timeout_s = 600
+
+[grid]
+gpu = ["@together"]
+
+[args]
+mib = 512
+reps = 5
+cmd = ["probe", "copy", "--dir", "d2d", "--mib", "{mib}", "--reps", "{reps}"]

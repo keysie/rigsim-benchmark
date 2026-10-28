@@ -1,0 +1,15 @@
+#version 450
+// random fill, one 32-bit word per invocation: mode 0 = f32 in [-0.5, 0.5), 1 = two f16 in [-0.5, 0.5), 2 = random bytes
+layout(local_size_x = 256) in;
+layout(std430, set = 0, binding = 0) buffer W { uint w[]; };
+layout(push_constant) uniform P { uint n; uint mode; uint seed; uint c; } p;
+uint mix32(uint x) { x ^= x >> 16; x *= 0x7feb352du; x ^= x >> 15; x *= 0x846ca68bu; x ^= x >> 16; return x; }
+void main() {
+    uint stride = gl_NumWorkGroups.x * 256u;
+    for (uint i = gl_GlobalInvocationID.x; i < p.n; i += stride) {
+        uint r = mix32(i ^ (p.seed * 0x9e3779b9u));
+        if (p.mode == 0u) w[i] = floatBitsToUint(float(r & 0xffffu) / 65536.0 - 0.5);
+        else if (p.mode == 1u) w[i] = packHalf2x16(vec2(float(r & 0xffffu), float(r >> 16)) / 65536.0 - 0.5);
+        else w[i] = r;
+    }
+}

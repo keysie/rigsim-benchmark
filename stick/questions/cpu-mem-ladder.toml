@@ -1,0 +1,19 @@
+question = "cpu-mem-ladder"
+asks = "RAM read bandwidth by number of cores and instruction width (stick profile; thread counts above the machine's core count fail harmlessly)."
+feeds = "Per-core link (Little's law), DRAM efficiency from JEDEC timings, chiplet links (hw/arch.py, hw/dram.py)."
+image = "debian:trixie"
+toolkit = "cpu"
+gpus = "none"
+exclusive = true
+repeats = 2
+timeout_s = 300
+max_attempts = 1
+
+[grid]
+kernel = ["load_sse", "load_avx"]
+threads = [1, 2, 4, 8, 16, 32]
+
+[args]
+size = "2GB"
+iterations = 10
+cmd = ["cpuprobe", "ladder", "--kernel", "{kernel}", "--threads", "{threads}", "--size", "{size}", "--iterations", "{iterations}"]

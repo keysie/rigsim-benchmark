@@ -1,0 +1,18 @@
+question = "cpu-gemm"
+asks = "CPU matrix throughput: OpenBLAS sgemm/dgemm and oneDNN int8 (u8 x s8, VNNI / AMX), one core and all logical CPUs, small and large matrices (stick profile)."
+feeds = "CPU compute rates for engines that offload layers or experts to the CPU (hw/rates.py)."
+image = "debian:trixie"
+toolkit = "cpu"
+gpus = "none"
+exclusive = true
+repeats = 2
+timeout_s = 600
+
+[grid]
+prec = ["fp32", "fp64", "int8"]
+n = [512, 4096]
+threads = [1, 0]
+
+[args]
+reps = 5
+cmd = ["cgemm", "--prec", "{prec}", "--n", "{n}", "--threads", "{threads}", "--reps", "{reps}"]

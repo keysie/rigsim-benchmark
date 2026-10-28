@@ -1,0 +1,19 @@
+question = "gpu-vram"
+asks = "VRAM read, write and copy bandwidth at the card's default power limit (stick profile)."
+feeds = "VRAM efficiency (constants.VRAM_EFFICIENCY, unmeasured so far) against the documented memory controllers."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 2
+sample_ms = 100
+timeout_s = 180
+
+[grid]
+gpu = ["@all"]
+op = ["read", "write", "copy"]
+
+[args]
+mib = 2048
+reps = 10
+cmd = ["probe", "stream", "--op", "{op}", "--mib", "{mib}", "--reps", "{reps}"]
