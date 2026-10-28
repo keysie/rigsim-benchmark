@@ -1,0 +1,1 @@
+TimeoutExpired: Command '['docker', 'run', '--rm', '--network', 'none', '--device', '/dev/dri', '-v', '/mnt/rigsim/seed/models:/models:ro', 'rigsim/oneapi:a957cc5b60f54562', '/rigsim/run.sh', '/rigsim/probe_sycl', 'info']' timed out after 300 seconds

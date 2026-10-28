@@ -1,0 +1,1 @@
+{"mode":"gemm","device":"Intel(R) Graphics (RPL-S)","device_type":"integrated","vendor_id":32902,"device_id":42880,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","type":"i8","m":4096,"n":4096,"k":4096,"unsupported":true,"why":"no VK_KHR_cooperative_matrix"}

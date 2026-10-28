@@ -1,0 +1,1 @@
+{"mode":"stream","device":"Intel(R) Graphics (RPL-S)","device_type":"integrated","vendor_id":32902,"device_id":42880,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","op":"read","bytes":1073741824,"reps":20,"t_median_s":0.0144654163,"t_min_s":0.0144567705,"bytes_per_s":7.42282e+10}

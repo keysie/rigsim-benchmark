@@ -1,0 +1,7 @@
+Platform #0: Intel(R) OpenCL Graphics
+ `-- Device #0: Intel(R) UHD Graphics 770
+Platform #1: NVIDIA CUDA
+ `-- Device #0: NVIDIA GeForce RTX 3080
+Platform #2: rusticl
+pci id for fd 12: 10de:2216, driver (null)
+pci id for fd 13: 10de:2216, driver (null)

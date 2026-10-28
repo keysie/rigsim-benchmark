@@ -1,0 +1,7 @@
+
+--- stderr ---
+src/probe.cu(326): error: no suitable conversion function from "std::string" to "const char *" exists
+      int count = atoi(arg(argc, argv, "--count", "2000"));
+                       ^
+
+1 error detected in the compilation of "src/probe.cu".

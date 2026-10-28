@@ -1,0 +1,28 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o RMS_NORM -b Vulkan0 --output sql
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:16:46Z', 'a7af149a2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[4096,1,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '4.889781', '0.000000', '6.241473', '32', '204775', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:16:47Z', 'a7af149a2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[128,32,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '3.006250', '0.000000', '10.151996', '32', '335831', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:16:49Z', 'a7af149a2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[4096,512,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '228.040020', '0.000000', '68.535395', '16384', '6147', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:16:50Z', 'a7af149a2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[128,16384,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '654.440703', '0.000000', '23.881175', '16384', '2049', '', '');
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Intel(R) Graphics (RPL-S) (Intel open-source Mesa driver) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 65536 | int dot: 0 | matrix cores: none

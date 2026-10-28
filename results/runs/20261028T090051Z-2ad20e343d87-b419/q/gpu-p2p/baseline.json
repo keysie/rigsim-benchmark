@@ -1,0 +1,146 @@
+{
+ "t": 1793178981.8866668,
+ "gpus": [
+  {
+   "index": 0,
+   "bus": "0000:01:00.0",
+   "model": "NVIDIA GeForce RTX 3080",
+   "name": "gpu0",
+   "power_limit_w": 320.0,
+   "min_w": 100.0,
+   "max_w": 336.0,
+   "default_w": 320.0
+  }
+ ],
+ "cpufreq": {
+  "cpu0": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu1": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu10": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5400000"
+  },
+  "cpu11": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5400000"
+  },
+  "cpu12": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu13": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu14": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu15": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu16": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu17": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu18": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu19": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu2": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu20": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu21": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu22": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu23": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4200000"
+  },
+  "cpu3": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu4": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu5": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu6": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu7": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5300000"
+  },
+  "cpu8": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5400000"
+  },
+  "cpu9": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "5400000"
+  }
+ },
+ "docker": {
+  "containers": [],
+  "running": [],
+  "images": [
+   "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+   "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+  ],
+  "volumes": []
+ }
+}

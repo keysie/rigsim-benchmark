@@ -1,0 +1,41 @@
+/llama/test-backend-ops perf -o ADD -b CUDA0 --output sql
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T09:48:11Z', 'a7af149a2', 'CUDA0', 'ADD', 'type=f32,ne=[4096,1,1,1],nr=[1,1,1,1],nf=1,perm1=0,src_overlap=0', 'perf', '1', '1', '', '1.322969', '0.000000', '34.604049', '48', '761670', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T09:48:12Z', 'a7af149a2', 'CUDA0', 'ADD', 'type=f32,ne=[4096,1,1,1],nr=[1,512,1,1],nf=1,perm1=0,src_overlap=0', 'perf', '1', '1', '', '26.664218', '0.000000', '878.986972', '24576', '38248', '', '');
+
+--- stderr ---
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 9866 MiB):
+  Device 0: NVIDIA GeForce RTX 3080, compute capability 8.6, VMM: yes, VRAM: 9866 MiB
