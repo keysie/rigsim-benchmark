@@ -883,4 +883,43 @@ def test_identical_gpus_stay_apart():
     assert "ext_intel_pci_address" in (HERE / "src" / "syclprobe" / "probe_sycl.cpp").read_text()
     src = (HERE / "payload" / "stick.py").read_text()
     assert 'pci=dev.get("pci", "")' in src and '"CUDA_DEVICE_ORDER=PCI_BUS_ID"' in src
-    assert stick.FORMAT["version"] == "1.1"
+    assert tuple(map(int, stick.FORMAT["version"].split("."))) >= (1, 1)
+
+
+def _cfg(port_type: int) -> bytes:
+    c = bytearray(256)
+    c[6] = 0x10                     # capabilities list present
+    c[0x34] = 0x40                  # first capability: power management, then PCIe
+    c[0x40], c[0x41] = 0x01, 0x60
+    c[0x60], c[0x61] = 0x10, 0x00
+    c[0x62:0x64] = ((port_type << 4) | 2).to_bytes(2, "little")
+    return bytes(c)
+
+
+def test_pcie_topology_from_sysfs(tmp_path):
+    """A GPU behind a switch on a chipset root port, another on a CPU root port: parents, port types, links, paths."""
+    root = tmp_path / "devices" / "pci0000:00"
+    tree = {"0000:00:01.0": (root, 4, "16.0 GT/s PCIe", "16", "0x060400"),
+            "0000:01:00.0": (root / "0000:00:01.0", 0, "16.0 GT/s PCIe", "16", "0x030000"),
+            "0000:00:1c.0": (root, 4, "8.0 GT/s PCIe", "4", "0x060400"),
+            "0000:02:00.0": (root / "0000:00:1c.0", 5, "8.0 GT/s PCIe", "4", "0x060400"),
+            "0000:03:00.0": (root / "0000:00:1c.0" / "0000:02:00.0", 6, "8.0 GT/s PCIe", "4", "0x060400"),
+            "0000:04:00.0": (root / "0000:00:1c.0" / "0000:02:00.0" / "0000:03:00.0", 0, "8.0 GT/s PCIe", "4", "0x030000")}
+    bus = tmp_path / "bus"; bus.mkdir()
+    for bdf, (parent, pt, speed, width, cls) in tree.items():
+        d = parent / bdf; d.mkdir(parents=True, exist_ok=True)
+        for f, v in (("vendor", "0x10de"), ("device", "0x2204"), ("class", cls), ("current_link_speed", speed),
+                     ("current_link_width", width), ("max_link_speed", "16.0 GT/s PCIe"), ("max_link_width", "16")):
+            (d / f).write_text(v + "\n")
+        (d / "config").write_bytes(_cfg(pt))
+        (bus / bdf).symlink_to(d)
+    t = stick.pcie_topology(bus, names={"0000:00:1c.0": dict(name="Raptor Lake PCH PCI Express Root Port")})
+    d = t["devices"]
+    assert sorted(t["gpus"]) == ["0000:01:00.0", "0000:04:00.0"]
+    assert d["0000:04:00.0"]["path"] == ["0000:00:1c.0", "0000:02:00.0", "0000:03:00.0", "0000:04:00.0"]
+    assert [d[h]["port_type"] for h in d["0000:04:00.0"]["path"]] == ["root port", "switch upstream port",
+                                                                     "switch downstream port", "endpoint"]
+    assert d["0000:04:00.0"]["link"] == dict(speed="8.0 GT/s PCIe", width="4", max_speed="16.0 GT/s PCIe", max_width="16")
+    assert d["0000:00:1c.0"]["name"] == "Raptor Lake PCH PCI Express Root Port" and d["0000:01:00.0"]["parent"] == "0000:00:01.0"
+    assert d["0000:01:00.0"]["host_bridge"] == "pci0000:00"
+    assert stick.pcie_port_type(b"") == "" and "pcie.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.2"

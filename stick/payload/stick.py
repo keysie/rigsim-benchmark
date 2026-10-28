@@ -228,6 +228,7 @@ def collect_inventory(dst: Path, log: Path) -> dict:
         if rc != 0:
             say(f"inventory: {name} rc={rc}", log)
     spd_raw(dst)
+    (dst / "pcie.json").write_text(json.dumps(pcie_topology(names=lspci_names()), indent=1))
     cpu = next(iter(re.findall(r"^model name\s*:\s*(.*)$", (dst / "cpuinfo.txt").read_text(), re.M)), "unknown")
     board = " ".join(_dmi(k) for k in ("board_vendor", "board_name")).strip() or "unknown"
     rc, gpus = sh(["nvidia-smi", "--query-gpu=name,memory.total,pci.bus_id", "--format=csv,noheader"], timeout=60)
@@ -242,6 +243,76 @@ def collect_inventory(dst: Path, log: Path) -> dict:
              dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip())
     (dst / "summary.json").write_text(json.dumps(s, indent=1))
     return s
+
+
+# --- PCIe topology ----------------------------------------------------------------------------------------------
+# Files written by the inventory besides the INVENTORY commands (the validator allows exactly these).
+INVENTORY_EXTRA = ["summary.json", "pcie.json"]
+PCI_BDF = re.compile(r"^[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-7]$")
+PORT_TYPES = {0: "endpoint", 1: "legacy endpoint", 4: "root port", 5: "switch upstream port",
+              6: "switch downstream port", 7: "PCIe to PCI bridge", 8: "PCI to PCIe bridge",
+              9: "root complex integrated endpoint", 10: "root complex event collector"}
+
+
+def pcie_port_type(config: bytes) -> str:
+    """The PCI Express capability's device/port type (PCIe base spec, capability ID 0x10, bits 7:4)."""
+    if len(config) < 0x40 or not (config[6] & 0x10):            # status: capabilities list present
+        return ""
+    ptr, seen = config[0x34] & 0xFC, set()
+    while ptr and ptr not in seen and ptr + 4 <= len(config):
+        seen.add(ptr)
+        if config[ptr] == 0x10:
+            return PORT_TYPES.get((int.from_bytes(config[ptr + 2:ptr + 4], "little") >> 4) & 0xF, "other")
+        ptr = config[ptr + 1] & 0xFC
+    return ""
+
+
+def pcie_topology(devices: Path = Path("/sys/bus/pci/devices"), names: dict | None = None) -> dict:
+    """Every PCI device with its parent, port type, and current and maximum link, read from sysfs: the path of each
+    card from the root complex — CPU or chipset root port, switches, risers' bridges — as facts, not a judgement."""
+    out = {}
+    for link in sorted(devices.glob("*")):
+        try:
+            real = link.resolve()
+        except OSError:
+            continue
+        chain = [part for part in real.parts if PCI_BDF.match(part)]
+        root = next((part for part in real.parts if part.startswith("pci") and ":" in part), "")
+        r = lambda f: _read(real / f)
+        try:
+            cfg = (real / "config").read_bytes()[:256]
+        except OSError:
+            cfg = b""
+        n = (names or {}).get(link.name, {})
+        drv = (real / "driver").resolve().name if (real / "driver").exists() else ""
+        out[link.name] = dict(parent=chain[-2] if len(chain) >= 2 else "", host_bridge=root,
+                              vendor=r("vendor"), device=r("device"), class_=r("class"),
+                              subsystem=f"{r('subsystem_vendor')}:{r('subsystem_device')}".strip(":"),
+                              name=n.get("name", ""), vendor_name=n.get("vendor", ""), kind=n.get("class", ""),
+                              port_type=pcie_port_type(cfg), driver=drv, numa_node=r("numa_node"),
+                              link=dict(speed=r("current_link_speed"), width=r("current_link_width"),
+                                        max_speed=r("max_link_speed"), max_width=r("max_link_width")))
+    paths = {}
+    for bdf in out:
+        path, cur, guard = [], bdf, 0
+        while cur and guard < 16:
+            path.insert(0, cur); cur = out.get(cur, {}).get("parent", ""); guard += 1
+        paths[bdf] = path
+    for bdf, d in out.items():
+        d["path"] = paths[bdf]
+    return dict(devices=out, gpus=[b for b, d in out.items() if d["class_"].startswith("0x03")])
+
+
+def lspci_names() -> dict:
+    """bdf -> class, vendor and device names (lspci -mm), for pcie.json."""
+    rc, out = sh(["lspci", "-D", "-mm"], timeout=60)
+    names = {}
+    for line in out.splitlines():
+        parts = re.findall(r'"([^"]*)"', line)
+        bdf = line.split(" ", 1)[0]
+        if PCI_BDF.match(bdf) and len(parts) >= 3:
+            names[bdf] = dict(**{"class": parts[0]}, vendor=parts[1], name=parts[2])
+    return names
 
 
 # SPD serial-number bytes, zeroed before a dump is stored (JEDEC: DDR4 bytes 325-328, DDR5 bytes 517-520)
@@ -1178,7 +1249,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.1")
+FORMAT = dict(name="rigsim-stick-run", version="1.2")
 
 
 def runtime_versions() -> dict:

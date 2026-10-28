@@ -23,9 +23,31 @@ def _vkey(tag: str) -> tuple:
     return tuple(int(x) for x in m.groups()) if m else (-1,)
 
 
+def pcie_paths(run: Path) -> dict[str, list[dict]]:
+    """pci address -> its path from the root complex (inventory/pcie.json, format 1.2+), each hop with port type and
+    link — as recorded, for the page to show under a result's device."""
+    f = run / "inventory" / "pcie.json"
+    try:
+        devs = json.loads(f.read_text()).get("devices", {})
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for bdf, d in devs.items():
+        hops = []
+        for h in d.get("path", []):
+            x = devs.get(h, {})
+            l = x.get("link") or {}
+            hops.append(dict(pci=h, name=x.get("name", ""), port_type=x.get("port_type", ""),
+                             link=f"x{l.get('width')} {l.get('speed')}" if l.get("width") else "",
+                             max_link=f"x{l.get('max_width')} {l.get('max_speed')}" if l.get("max_width") else ""))
+        out[bdf] = hops
+    return out
+
+
 def results(run: Path, pred: Path) -> tuple[list[dict], dict]:
     """The run's comparable values with rigsim's predictions: the newest release's, and the earlier ones."""
     meas = measurements.extract(run)["measurements"]
+    paths = pcie_paths(run)
     files = sorted(pred.glob(f"*/{run.name}.json"), key=lambda f: _vkey(f.parent.name), reverse=True)
     preds = []
     for f in files:
@@ -46,7 +68,8 @@ def results(run: Path, pred: Path) -> tuple[list[dict], dict]:
             elif miss or p.get("error"):
                 hist.append(dict(tag=tag, unsupported=(miss or {}).get("reason") or p.get("error", "")))
         rows.append(dict(key=m["key"], value=m["value"], unit=m["unit"], spread=m.get("spread", 0),
-                         gpu=m["conditions"].get("gpu", ""), pci=m["conditions"].get("pci", ""), predictions=hist))
+                         gpu=m["conditions"].get("gpu", ""), pci=m["conditions"].get("pci", ""),
+                         pcie_path=paths.get(m["conditions"].get("pci", ""), []), predictions=hist))
     latest = (preds[0].get("rigsim") or {}).get("tag", "") if preds else ""
     errs = [abs(r["predictions"][0]["error"]) for r in rows if r["predictions"] and r["predictions"][0].get("tag") == latest
             and r["predictions"][0].get("error") is not None and not r["predictions"][0].get("calibration")]

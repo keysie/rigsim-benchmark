@@ -180,6 +180,16 @@ function cell(r, c) {
   }
 }
 
+// the card's PCIe path from the root complex (inventory/pcie.json): the card's own link inline, every hop on hover
+function pathShort(m) {
+  const p = m.pcie_path || [], end = p[p.length - 1];
+  return end && end.link ? ` · ${esc(end.link)}${end.max_link && end.max_link !== end.link ? ` (max ${esc(end.max_link)})` : ""}`
+    + (p.length > 2 ? ` · ${p.length - 1} hops` : "") : "";
+}
+function pathTitle(m) {
+  const p = m.pcie_path || [];
+  return p.length ? ` title="${esc(p.map(h => `${h.pci} ${h.port_type || ""} ${h.name || ""} ${h.link || ""}${h.max_link ? " (max " + h.max_link + ")" : ""}`.replace(/\s+/g, " ").trim()).join("\n"))}"` : "";
+}
 function fmt(v) { return Math.abs(v) >= 100 ? v.toFixed(0) : Math.abs(v) >= 10 ? v.toFixed(1) : v.toFixed(2); }
 function predCell(m) {
   const [p, ...older] = m.predictions || [];
@@ -195,7 +205,7 @@ function resultsTable(r) {
   const rows = (r.results || []);
   if (!rows.length) return "";
   return `<h3>Results</h3><table class="results"><thead><tr><th>Value</th><th>Device</th><th>Measured</th><th>rigsim predicts</th></tr></thead><tbody>`
-    + rows.map(m => `<tr><td>${esc(m.key)}</td><td>${esc(m.gpu)}${m.pci ? `<div class="machine">${esc(m.pci)}</div>` : ""}</td><td class="num">${fmt(m.value)} ${esc(m.unit)}</td>`
+    + rows.map(m => `<tr><td>${esc(m.key)}</td><td>${esc(m.gpu)}${m.pci ? `<div class="machine"${pathTitle(m)}>${esc(m.pci)}${pathShort(m)}</div>` : ""}</td><td class="num">${fmt(m.value)} ${esc(m.unit)}</td>`
       + `<td class="pred">${predCell(m)}</td></tr>`).join("") + `</tbody></table>`;
 }
 

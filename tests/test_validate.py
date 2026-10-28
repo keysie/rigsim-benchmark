@@ -138,3 +138,11 @@ def test_manifest_required(tmp_path):
     d = make_run(tmp_path)
     (d / "manifest.json").unlink()
     assert any("manifest.json: missing" in e for e in V.check_run(d))
+
+
+def test_pcie_json_allowed_and_parsed(tmp_path):
+    d = make_run(tmp_path)
+    (d / "inventory" / "pcie.json").write_text('{"devices": {}, "gpus": []}')
+    assert V.check_run(d) == []
+    (d / "inventory" / "pcie.json").write_text("{broken")
+    assert any("pcie.json: not valid JSON" in e for e in V.check_run(d))

@@ -8,7 +8,8 @@ runs/<UTC time>-<machine>-<random>/
     run.json          format version, stick version, machine (salted hash), CPU, board, RAM, GPUs, every step's
                       result and the exact tool versions behind it
     manifest.json     every component's version: system image, seed, and what actually ran
-    inventory/        lscpu, dmidecode, lshw, lspci, memory SPD, nvidia-smi … (serials, UUIDs, MACs removed)
+    inventory/        lscpu, dmidecode, lshw, lspci, memory SPD, nvidia-smi … (serials, UUIDs, MACs removed);
+                      pcie.json: every card's path through root ports and switches, with each link
     q/<question>/     bench runner output per question (results.jsonl, samples, baseline)
     vkprobe/ rocm/ oneapi/ llama/ mlc/ opencl/ blender/   raw output per tool
     samples-drm.jsonl AMD / Intel GPU clocks, busy share, power every 200 ms
