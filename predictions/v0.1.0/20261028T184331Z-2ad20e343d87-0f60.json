@@ -1,0 +1,120 @@
+{
+ "rigsim": {
+  "tag": "v0.1.0",
+  "commit": "6a1f5cdddcd6b0dd7fd44f2e36d75fc9076c65ab"
+ },
+ "run": "20261028T184331Z-2ad20e343d87-0f60",
+ "measurements_version": "1",
+ "computed_utc": "2026-10-28T21:44:03+00:00",
+ "predictions": [
+  {
+   "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
+   "value": 10073.748857166778,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/tg128",
+   "value": 144.00395309344378,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 12%, memory 88%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/pp512",
+   "value": 49023.23307365412,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/tg128",
+   "value": 469.34718253356573,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 54%, memory 46%"
+  },
+  {
+   "key": "gpu-vram/gpu0/read",
+   "value": 760.0,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured)"
+  }
+ ],
+ "unsupported": [
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/llama-2-7b-q4_0/pp512",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/llama-2-7b-q4_0/tg128",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "gpu-vram/gpu0/copy",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "gpu-vram/gpu0/write",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/idle_latency",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/max_bandwidth/all_reads",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/max_bandwidth/3to1_rw",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/max_bandwidth/2to1_rw",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/max_bandwidth/1to1_rw",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/max_bandwidth/stream_triad",
+   "reason": "not modelled yet"
+  }
+ ]
+}
