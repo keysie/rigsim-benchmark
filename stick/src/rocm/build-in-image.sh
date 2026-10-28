@@ -23,10 +23,24 @@ else
   echo "probe NOT built (probe-build.log):"; tail -5 probe-build.log; rm -f probe
 fi
 git clone -q https://github.com/ggml-org/llama.cpp /tmp/llama && cd /tmp/llama && git checkout -q "$LLAMA_REF"
-HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" cmake -B b -DGGML_HIP=ON \
-  -DGPU_TARGETS="$(cat /rigsim/TARGETS)" -DAMDGPU_TARGETS="$(cat /rigsim/TARGETS)" -DCMAKE_BUILD_TYPE=Release \
-  -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
-cmake --build b --target llama-bench test-backend-ops -j"$(nproc)"
+# A llama.cpp commit can fail to compile for single older targets (e.g. gfx1010 with a newer kernel template); then
+# those targets are dropped and the build repeats, instead of losing the whole ROCm image. TARGETS ends up holding
+# what llama.cpp was built for (the stick decides the HSA override from it); dropped ones in TARGETS_DROPPED.
+: > /rigsim/TARGETS_DROPPED
+for attempt in 1 2 3 4; do
+  rm -rf b
+  HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" cmake -B b -DGGML_HIP=ON \
+    -DGPU_TARGETS="$(cat /rigsim/TARGETS)" -DAMDGPU_TARGETS="$(cat /rigsim/TARGETS)" -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
+  if cmake --build b --target llama-bench test-backend-ops -j"$(nproc)" 2>&1 | tee /tmp/llama-build.log; then
+    break                                              # pipefail: the pipeline fails when the build does
+  fi
+  bad="$(grep -oE 'errors? generated when compiling for gfx[0-9a-f]+' /tmp/llama-build.log | awk '{print $NF}' | sort -u || true)"
+  if [ -z "$bad" ] || [ "$attempt" -eq 4 ]; then echo "llama.cpp HIP build failed (not a per-target error)"; exit 1; fi
+  echo "llama.cpp does not compile for: $bad — dropping, building again"
+  echo "$bad" >> /rigsim/TARGETS_DROPPED
+  tr ';' '\n' < /rigsim/TARGETS | grep -vxF -f <(echo "$bad") | paste -sd ';' > /tmp/t && mv /tmp/t /rigsim/TARGETS
+done
 cp b/bin/llama-bench b/bin/test-backend-ops /rigsim/ && git rev-parse HEAD > /rigsim/LLAMA_COMMIT
 cd / && rm -rf /tmp/llama
 # Blender's HIP device runs in this image (the system image has no ROCm runtime): the X / GL libraries Blender

@@ -113,8 +113,8 @@ def seed(seed_dir: Path, out: Path) -> dict:
         if not (seed_dir / "images" / f"vendor-{name}.tar").exists():
             continue
         inside = sh(["docker", "run", "--rm", "--network", "none", tag, "sh", "-c",
-                     "for f in ROCM_VERSION ONEAPI_VERSION LLAMA_COMMIT TARGETS; do [ -f /rigsim/$f ] && "
-                     "printf '%s\\t%s\\n' $f \"$(head -1 /rigsim/$f)\"; done; cd /rigsim && sha256sum probe probe_sycl "
+                     "for f in ROCM_VERSION ONEAPI_VERSION LLAMA_COMMIT TARGETS TARGETS_DROPPED; do [ -f /rigsim/$f ] && "
+                     "printf '%s\\t%s\\n' $f \"$(paste -sd, /rigsim/$f)\"; done; cd /rigsim && sha256sum probe probe_sycl "
                      "llama-bench test-backend-ops 2>/dev/null | sed 's/  /\\tsha256:/'"])
         kv = dict(l.split("\t", 1) for l in inside.splitlines() if "\t" in l)
         vendor[name] = dict(image=tag, base=image_info(base), **{k.lower(): v for k, v in kv.items()})

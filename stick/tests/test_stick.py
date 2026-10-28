@@ -822,3 +822,10 @@ def test_flash_preloads_images_with_the_sticks_own_docker():
     assert "python3 /opt/rigsim/stick.py --preload /mnt/rigsim" in f
     src = (HERE / "payload" / "stick.py").read_text()
     assert 'sys.argv[1] == "--preload"' in src and "def preload(data: Path) -> int:" in src
+
+
+def test_rocm_build_drops_targets_llama_cpp_cannot_compile():
+    s = (HERE / "src" / "rocm" / "build-in-image.sh").read_text()
+    assert "errors? generated when compiling for gfx[0-9a-f]+" in s and "/rigsim/TARGETS_DROPPED" in s
+    assert "for attempt in 1 2 3 4" in s and "not a per-target error" in s
+    assert "TARGETS_DROPPED" in (HERE / "tools" / "manifest.py").read_text()
