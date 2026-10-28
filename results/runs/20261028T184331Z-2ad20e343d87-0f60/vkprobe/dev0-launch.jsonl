@@ -1,0 +1,1 @@
+{"mode":"launch","device":"NVIDIA GeForce RTX 3080","device_type":"discrete","vendor_id":4318,"device_id":8726,"driver_version":2435612928,"api":"1.4.312","timer":"gpu timestamps","pci":"0000:01:00.0","uuid":"7503f9e5d3e5ab8bd1977a89cd8cfdcf","count":2000,"per_dispatch_s":1.27776e-07,"per_dispatch_barrier_s":1.19842e-06,"submit_roundtrip_s":2.4222e-05}

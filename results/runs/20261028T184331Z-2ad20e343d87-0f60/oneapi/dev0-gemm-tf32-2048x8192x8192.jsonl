@@ -1,0 +1,1 @@
+{"mode":"gemm","device":"Intel(R) UHD Graphics 770","driver":"1.6.33276+22","units":32,"clock_mhz":1600,"prec":"tf32","m":2048,"n":8192,"k":8192,"reps":10,"ops":274877906944,"t_median_s":0.023289864,"t_min_s":0.023270104,"ops_per_s":1.18025e+13,"lib":"onemkl"}

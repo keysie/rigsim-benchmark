@@ -1,0 +1,46 @@
+{
+ "platform": "Intel(R) OpenCL Graphics",
+ "device": "Intel(R) UHD Graphics 770",
+ "rc": 0,
+ "results": {
+  "info": {
+   "Driver version": "23.43.027642 (Linux x64)",
+   "Compute units": 32.0,
+   "Clock frequency (MHz)": 1600.0,
+   "enqueueUnmap(after write)": "inf",
+   "pci id for fd 12": "10de:2216, driver (null)",
+   "pci id for fd 13": "10de:2216, driver (null)"
+  },
+  "Global memory bandwidth (GBPS)": {
+   "float": 76.52,
+   "float2": 75.15,
+   "float4": 71.65,
+   "float8": 57.57,
+   "float16": 37.81
+  },
+  "Single-precision compute (GFLOPS)": {
+   "float": 801.05,
+   "float2": 791.54,
+   "float4": 797.33,
+   "float8": 506.34,
+   "float16": 502.72
+  },
+  "Integer compute (GIOPS)": {
+   "int": 269.98,
+   "int2": 182.31,
+   "int4": 174.12,
+   "int8": 165.52,
+   "int16": 200.95
+  },
+  "Transfer bandwidth (GBPS)": {
+   "enqueueWriteBuffer": 27.34,
+   "enqueueReadBuffer": 28.2,
+   "enqueueWriteBuffer non-blocking": 29.96,
+   "enqueueReadBuffer non-blocking": 29.83,
+   "enqueueMapBuffer(for read)": 10737398.0,
+   "memcpy from mapped ptr": 28.15,
+   "memcpy to mapped ptr": 27.35,
+   "Kernel launch latency (us)": 39.11
+  }
+ }
+}

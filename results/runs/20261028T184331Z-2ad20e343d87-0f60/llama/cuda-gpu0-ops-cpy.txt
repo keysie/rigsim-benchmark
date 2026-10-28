@@ -1,0 +1,53 @@
+/llama/test-backend-ops perf -o CPY -b CUDA0 --output sql
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:01Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=f16,ne_src=[512,3072,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '17.032716', '0.000000', '516.105122', '9216', '61897', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:03Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '198.946979', '0.000000', '314.460248', '65536', '5130', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:04Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[3072,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '75.733455', '0.000000', '309.586810', '24576', '13660', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:05Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=q4_0,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '78.013808', '0.000000', '457.346353', '37376', '13470', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:06Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=q4_0,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '406.586117', '0.000000', '87.679887', '37376', '2694', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:08Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '2437.110048', '0.000000', '629.471332', '1572864', '418', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:11Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '1369.600547', '0.000000', '553.972420', '786432', '731', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:14Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '1208.351163', '0.000000', '627.897712', '786432', '860', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:17Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=bf16,type_dst=bf16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '1208.544186', '0.000000', '627.797427', '786432', '860', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:20Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '2435.595694', '0.000000', '629.862712', '1572864', '418', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:22Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '2385.900000', '0.000000', '642.982065', '1572864', '440', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:25Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '1369.083447', '0.000000', '554.181655', '786432', '731', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:28Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '1208.247674', '0.000000', '627.951492', '786432', '860', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T20:13:31Z', '620d2225c', 'CUDA0', 'CPY', 'type_src=bf16,type_dst=bf16,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '1208.567442', '0.000000', '627.785346', '786432', '860', '', '');
+
+--- stderr ---
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 9866 MiB):
+  Device 0: NVIDIA GeForce RTX 3080, compute capability 8.6, VMM: yes, VRAM: 9866 MiB

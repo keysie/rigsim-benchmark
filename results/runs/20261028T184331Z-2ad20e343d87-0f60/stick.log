@@ -1,0 +1,59 @@
+18:43:31  run 20261028T184331Z-2ad20e343d87-0f60
+18:43:34  cpu 13th Gen Intel(R) Core(TM) i7-13700K | board Gigabyte Technology Co., Ltd. Z790 AORUS ELITE AX | 31.1 GiB | gpus ['NVIDIA GeForce RTX 3080, 10240 MiB, 00000000:01:00.0', 'Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780] (rev 04)']
+18:43:34  stick check: pass
+18:43:41  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 6.88, 'mib_per_s': 148.8}
+18:43:44  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+18:43:45  screens: [('card2', 'DP-2', '1920x1200'), ('card2', 'DP-4', '1920x1200')]
+18:43:45  screens off while measuring: ['fb0']
+18:43:45  cpu-mem-latency: start
+18:51:25  cpu-mem-latency: rc=0 {'done': 9} (460 s)
+18:51:25  cpu-mem-ladder: start
+18:58:53  cpu-mem-ladder: rc=0 {'done': 24} (448 s)
+18:58:53  cpu-gemm: start
+19:06:07  cpu-gemm: rc=0 {'done': 24} (433 s)
+19:06:07  pcie-copy: start
+19:06:48  pcie-copy: rc=0 {'done': 12} (42 s)
+19:06:48  gpu-p2p: start
+19:07:02  gpu-p2p: rc=0 {'failed': 2} (14 s)
+19:07:02  gpu-vram: start
+19:07:20  gpu-vram: rc=0 {'done': 6} (18 s)
+19:07:20  gpu-gemm: start
+19:08:06  gpu-gemm: rc=0 {'done': 21} (46 s)
+19:08:06  gpu-launch: start
+19:08:30  gpu-launch: rc=0 {'done': 3} (24 s)
+19:08:35  mlc idle_latency: rc=0 (5 s)
+19:10:59  mlc max_bandwidth: rc=0 (144 s)
+19:12:24  mlc loaded_latency: rc=0 (85 s)
+19:12:25  mlc latency_matrix: rc=0 (1 s)
+19:12:34  mlc bandwidth_matrix: rc=0 (8 s)
+19:12:34  opencl p0d0: Intel(R) UHD Graphics 770 (Intel(R) OpenCL Graphics)
+19:13:53  opencl p0d0: rc=0 (79 s)
+19:13:53  opencl p1d0: NVIDIA GeForce RTX 3080 (NVIDIA CUDA)
+19:14:15  opencl p1d0: rc=0 (21 s)
+19:14:51  vkprobe: 31 runs on 2 device(s)
+19:14:51  rocm: skipped (no AMD GPU)
+19:14:51  docker: loading vendor-oneapi.tar (4060 MiB) onto the stick
+19:15:27  docker: vendor-oneapi.tar: 0.0 GiB written, 0 MB/s, 36 s
+19:15:57  docker: vendor-oneapi.tar: 0.5 GiB written, 16 MB/s, 66 s
+19:16:27  docker: vendor-oneapi.tar: 0.5 GiB written, 0 MB/s, 96 s
+19:16:57  docker: vendor-oneapi.tar: -3.3 GiB written, -128 MB/s, 126 s
+19:16:58  docker: loaded vendor-oneapi.tar (4060 MiB in 127 s)
+20:04:58  test-backend-ops dev0: 9/12 ops
+20:04:59  oneapi device 0 (Intel(R) UHD Graphics 770): 92 runs
+20:05:02  llama cuda-gpu0-tinyllama-1.1b-q4_0: rc=0 (3 s)
+20:05:06  llama cuda-gpu0-llama-2-7b-q4_0: rc=0 (4 s)
+20:14:05  test-backend-ops cuda-gpu0: 12/12 ops
+20:14:07  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (2 s)
+20:14:12  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (5 s)
+20:23:45  test-backend-ops vulkan-dev0: 12/12 ops
+20:24:14  llama vulkan-dev1-tinyllama-1.1b-q4_0: rc=0 (29 s)
+20:26:41  llama vulkan-dev1-llama-2-7b-q4_0: rc=0 (148 s)
+21:01:45  test-backend-ops vulkan-dev1: 12/12 ops
+21:12:54  test-backend-ops cpu: 12/12 ops
+21:13:03  llama cpu-tinyllama-1.1b-q4_0: rc=0 (9 s)
+21:13:03  blender: launcher could not list devices (offline?); trying ['CPU', 'OPTIX', 'CUDA', 'ONEAPI']
+21:13:03  blender CPU: rc=1 (0 s)
+21:13:03  blender OPTIX: rc=1 (0 s)
+21:13:03  blender CUDA: rc=1 (0 s)
+21:13:03  blender ONEAPI: rc=1 (0 s)
+21:13:03  finished: done with failures
