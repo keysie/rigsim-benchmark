@@ -1179,6 +1179,7 @@ def start_docker(data: Path, log: Path) -> dict:
     Docker by data-root, containerd (its image store and snapshots, used by Docker's containerd image store) by a
     bind mount of /var/lib/containerd. A container is started once to prove it works."""
     sh(["systemctl", "stop", "docker", "docker.socket", "containerd"], timeout=120)
+    store = mount_store(data, log)
     root = data / "docker"
     croot = data / "containerd"
     root.mkdir(exist_ok=True); croot.mkdir(exist_ok=True)
@@ -1201,11 +1202,34 @@ def start_docker(data: Path, log: Path) -> dict:
         return dict(ok=False, why="no seeded image")
     rc, out = sh(["docker", "run", "--rm", "--network", "none", tags[0], "true"], timeout=300)
     _, driver = sh(["docker", "info", "--format", "{{.Driver}} / {{.DriverStatus}}"], timeout=60)
-    res = dict(ok=rc == 0, image=tags[0], storage=driver.strip()[:200])
+    res = dict(ok=rc == 0, image=tags[0], storage=driver.strip()[:200], store=store)
     if rc != 0:
         res["error"] = out.strip()[-400:]
     say(f"docker: {'works' if rc == 0 else 'BROKEN — container questions will fail'} ({res['storage'][:60]})", log)
     return res
+
+
+STORE_MNT = Path("/run/rigsim-store")
+
+
+def mount_store(data: Path, log: Path | None) -> str:
+    """The Docker / containerd store flash.sh built on the user's machine (store.img, ext4 in one file): mounted and
+    bound to data/docker and data/containerd, so everything below works on it unchanged. Without it (or if it does
+    not check clean) the store lives on the partition itself, as before."""
+    img = data / "store.img"
+    if not img.exists():
+        return "partition"
+    STORE_MNT.mkdir(parents=True, exist_ok=True)
+    rc, out = sh(["e2fsck", "-p", str(img)], timeout=600)
+    if rc not in (0, 1) or sh(["mount", "-o", "loop", str(img), str(STORE_MNT)], timeout=120)[0] != 0:
+        say(f"docker: store.img not usable (e2fsck rc={rc}); using the partition", log)
+        return "partition (store.img not usable)"
+    for sub in ("docker", "containerd"):
+        (STORE_MNT / sub).mkdir(exist_ok=True)
+        (data / sub).mkdir(exist_ok=True)
+        sh(["mount", "--bind", str(STORE_MNT / sub), str(data / sub)])
+    say("docker: using the image store built at flash time (store.img)", log)
+    return "store.img"
 
 
 def image_tags(img: Path) -> list[str]:
@@ -1569,6 +1593,8 @@ def main() -> int:
     say(f"finished: {run['status']}", log)
     sh(["systemctl", "stop", "docker", "containerd"], timeout=300)
     sh(["umount", "/var/lib/containerd"], timeout=120)
+    for m in (data / "docker", data / "containerd", STORE_MNT):        # the flash-time store, if mounted
+        sh(["umount", str(m)], timeout=120)
     os.sync()
     STATUS.stop()
     off = should_power_off(data, cmdline) and run["status"] != "stopped"

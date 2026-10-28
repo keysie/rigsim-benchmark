@@ -108,10 +108,12 @@ To force a full rebuild: `rm -rf stick/out/cache stick/out/seed`.
 
 - **New stick:** asks you to type `yes`, writes the system, creates the data partition `RIGSIM` (ext4) and copies the
   seed (images, models, tools) — expect 30 minutes or more for the copy.
-- **Then it loads the container images onto the stick** with the stick's own Docker (run from the ISO's system
-  image in a chroot), so a machine's first boot does not spend up to hours unpacking them. Progress every
-  15 seconds; how long depends on the stick's write speed (the ROCm image is about 20 GB unpacked). Unchanged
-  images are skipped on later flashes. `NO_PRELOAD=1` leaves it to the stick's first boot.
+- **Then it prepares the container images on this machine:** the stick's own Docker (run from the ISO's system
+  image in a chroot) loads them into one store file, `stick/out/store.img` (sparse; as large as the unpacked
+  images, ~40 GB with the ROCm and oneAPI images), which is then copied to the stick in one sequential write. The
+  stick mounts it at boot. Unpacking straight onto a USB stick — tens of thousands of small files — takes hours;
+  this takes minutes plus the copy. The file is reused on later flashes (only new images are loaded).
+  `NO_PRELOAD=1` leaves the images to the stick's first boot.
 - **Existing rigsim stick:** shows its version and runs, then offers `[u]pdate` (new system, results kept),
   `[s]eed only`, `[e]rase` or `[a]bort`. Update and erase first copy all runs to `~/rigsim-stick-backup-<time>`.
 

@@ -328,7 +328,7 @@ def test_flash_offers_update_backs_up_first_and_keeps_the_data_partition():
     assert upd.index("backup_runs") < upd.index("dd if=")                 # backup before anything is written
     assert "start=${start}, size=${sectors}" in upd and "mkfs" not in upd  # same sectors, no new filesystem
     assert "does not fit in front of the data partition" in upd and "e2fsck -n" in upd
-    e = f.split("e) ", 1)[1].split(";;", 1)[0]
+    e = f.split("\n    e) ", 1)[1].split(";;", 1)[0]
     assert e.index("backup_runs") < e.index("fresh")
     assert "mount -o ro" in f.split("backup_runs() {", 1)[1].split("\n}\n", 1)[0]
     assert "RESERVE_MIB" in f.split("fresh() {", 1)[1]
@@ -818,19 +818,26 @@ def test_archive_position_from_proc(tmp_path):
     assert stick.archive_position(42, img, tmp_path / "proc") == 123456
     assert stick.archive_position(43, img, tmp_path / "proc") is None
 
-def test_flash_preloads_images_with_the_sticks_own_docker():
+def test_flash_preloads_images_into_a_store_file_and_copies_it_once():
+    """Unpacking the ROCm image onto a USB stick took hours (tens of thousands of small files, read and write on the
+    same stick): the store is built in one file on the flashing machine and copied to the stick in one go."""
     f = (HERE / "flash.sh").read_text()
     seed = f.split("seed_stick() {", 1)[1].split("\n}\n", 1)[0]
     assert seed.rstrip().endswith('preload_images "$1"')                 # every mode that seeds also preloads
+    b = f.split("build_store() {", 1)[1].split("\n}\n", 1)[0]
+    assert 'truncate -s "${STORE_GB}G" "$STORE"' in b and "mkfs.ext4" in b and 'pm -o loop "$STORE" "$t/store"' in b
+    assert 'pm --bind -o ro "$OUT/seed" "$r/mnt/rigsim/seed"' in b                  # images read from this machine
+    assert 'pm --bind "$t/store/containerd" "$r/var/lib/containerd"' in b and 'chroot "$r"' in b
+    assert 'umount -l "$m"' in b and "still has mounts; left in place" in b
     pre = f.split("preload_images() {", 1)[1].split("\n}\n", 1)[0]
-    assert 'casper/filesystem.squashfs' in pre and 'chroot "$r"' in pre and "NO_PRELOAD" in pre
-    assert pre.index('pm "$1" "$r/mnt/rigsim"') < pre.index('pm --bind "$r/mnt/rigsim/containerd" "$r/var/lib/containerd"')
-    assert 'umount -l "$m"' in pre and "still has mounts; left in place" in pre and "return 0" in pre   # never fails flashing
+    assert 'dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse' in pre and "NO_PRELOAD" in pre
+    assert "not copied" in pre and pre.rstrip().endswith("return 0")              # never fails the flash
     assert "dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock" in f
-    assert "python3 /opt/rigsim/stick.py --preload /mnt/rigsim" in f
     src = (HERE / "payload" / "stick.py").read_text()
-    assert 'sys.argv[1] == "--preload"' in src and "def preload(data: Path) -> int:" in src
-
+    assert 'sys.argv[1] == "--preload"' in src and "def mount_store(" in src
+    ms = src.split("def mount_store(", 1)[1].split("\ndef ", 1)[0]
+    assert '"e2fsck", "-p"' in ms and '"mount", "-o", "loop"' in ms and 'return "partition"' in ms
+    assert src.index("store = mount_store(data, log)") < src.index('cl = Path("/var/lib/containerd")')
 
 def test_rocm_build_drops_targets_llama_cpp_cannot_compile():
     s = (HERE / "src" / "rocm" / "build-in-image.sh").read_text()

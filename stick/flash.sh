@@ -41,11 +41,15 @@ reread() {
 data_part() { lsblk -lnpo NAME,LABEL "$DEV" | awk '$2 == "RIGSIM" {print $1; exit}'; }
 mount_data() { MNT="$(mktemp -d)"; mount "$1" "$MNT"; }
 
-# Loads every seeded container image into the stick's own Docker store now, on this machine, instead of on the
-# stick's first boot on someone else's machine (hours for the ROCm image on a slow stick). It runs the stick's own
-# containerd and dockerd — from the ISO's system image, in a chroot — on the data partition, at the paths the stick
-# uses, so the store is exactly what the stick would have written. The stick still checks every image and loads
-# whatever is missing. NO_PRELOAD=1 skips this.
+# Container images are loaded here, on this machine, into the stick's Docker store kept as ONE file: STORE
+# (default stick/out/store.img, sparse, ext4 inside). Unpacking an image means tens of thousands of small files —
+# hours on a USB stick, minutes on this machine's disk — and the finished file then goes to the stick as one
+# sequential copy. The stick mounts it at boot (loop device) as its Docker / containerd store. It is the stick's
+# own containerd and dockerd that load the images (from the ISO's system image, in a chroot, at the paths the stick
+# uses), so the store is exactly what the stick would have written; the stick still checks every image and loads
+# whatever is missing. The file is reused on later flashes (only new or changed images are loaded).
+# NO_PRELOAD=1 skips all this (the stick loads the images on its first boot).
+STORE="${STORE:-$OUT/store.img}"; STORE_GB="${STORE_GB:-96}"
 PRELOAD_IN_CHROOT='
 containerd >/tmp/containerd.log 2>&1 & cpid=$!
 for i in $(seq 60); do [ -S /run/containerd/containerd.sock ] && break; sleep 1; done
@@ -58,36 +62,56 @@ fi
 python3 /opt/rigsim/stick.py --preload /mnt/rigsim; rc=$?
 kill $dpid; wait $dpid 2>/dev/null; kill $cpid; wait $cpid 2>/dev/null
 exit $rc'
-preload_images() {                                   # $1 = data partition (not mounted)
-  if [[ "${NO_PRELOAD:-0}" == 1 ]]; then echo "images: loaded on the stick's first boot (NO_PRELOAD=1)"; return 0; fi
-  if [[ ! -s "$ISO" ]]; then echo "images: no ISO at $ISO here — they load on the stick's first boot"; return 0; fi
-  modprobe overlay 2>/dev/null || true; modprobe squashfs 2>/dev/null || true; modprobe loop 2>/dev/null || true
+build_store() {                                      # loads the seed's images into $STORE (on this machine)
   local t r rc=0 ms=()
+  modprobe overlay 2>/dev/null || true; modprobe squashfs 2>/dev/null || true; modprobe loop 2>/dev/null || true
+  if [[ ! -f "$STORE" ]]; then
+    truncate -s "${STORE_GB}G" "$STORE" && mkfs.ext4 -q -F -L RIGSIM-STORE -m 0 "$STORE" || return 1
+  fi
+  e2fsck -fy "$STORE" >/dev/null 2>&1 || { echo "images: $STORE is damaged; delete it to start a fresh one" >&2; return 1; }
   t="$(mktemp -d /var/tmp/rigsim-preload.XXXXXX)"; r="$t/root"
-  mkdir -p "$t/iso" "$t/sq" "$t/up" "$t/wk" "$r"
+  mkdir -p "$t/iso" "$t/sq" "$t/up" "$t/wk" "$t/store" "$r"
   pm() { mount "$@" && ms=("${@: -1}" "${ms[@]}"); }  # remembers every mount point, newest first
-  echo "images: loading them onto the stick with the stick's own Docker (progress every 15 s)"
   {
     pm -o loop,ro "$ISO" "$t/iso" &&
     pm -o loop,ro "$t/iso/casper/filesystem.squashfs" "$t/sq" &&
     pm -t overlay overlay -o "lowerdir=$t/sq,upperdir=$t/up,workdir=$t/wk" "$r" &&
+    pm -o loop "$STORE" "$t/store" &&
+    mkdir -p "$t/store/docker" "$t/store/containerd" &&
     pm --rbind /dev "$r/dev" && pm -t proc proc "$r/proc" && pm --rbind /sys "$r/sys" &&
     pm -t tmpfs tmpfs "$r/run" && pm -t tmpfs tmpfs "$r/tmp" &&
-    mkdir -p "$r/mnt/rigsim" && pm "$1" "$r/mnt/rigsim" &&
-    mkdir -p "$r/mnt/rigsim/containerd" "$r/mnt/rigsim/docker" "$r/var/lib/containerd" &&
-    pm --bind "$r/mnt/rigsim/containerd" "$r/var/lib/containerd" &&
+    pm -t tmpfs tmpfs "$r/mnt" && mkdir -p "$r/mnt/rigsim/seed" "$r/mnt/rigsim/docker" "$r/var/lib/containerd" &&
+    pm --bind -o ro "$OUT/seed" "$r/mnt/rigsim/seed" &&
+    pm --bind "$t/store/docker" "$r/mnt/rigsim/docker" &&
+    pm --bind "$t/store/containerd" "$r/var/lib/containerd" &&
     chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"
   } || rc=$?
   sync
   for m in "${ms[@]}"; do umount -l "$m" 2>/dev/null || true; done
-  if findmnt -rn -o TARGET | grep -q "^$t"; then
-    echo "WARN: $t still has mounts; left in place" >&2
-  else
-    rm -rf "$t"
+  if findmnt -rn -o TARGET | grep -q "^$t"; then echo "WARN: $t still has mounts; left in place" >&2; else rm -rf "$t"; fi
+  return $rc
+}
+preload_images() {                                   # $1 = data partition (not mounted)
+  if [[ "${NO_PRELOAD:-0}" == 1 ]]; then echo "images: loaded on the stick's first boot (NO_PRELOAD=1)"; return 0; fi
+  if [[ ! -s "$ISO" ]]; then echo "images: no ISO at $ISO here — they load on the stick's first boot"; return 0; fi
+  echo "images: loading them into $STORE on this machine (progress every 15 s)"
+  if ! build_store; then
+    echo "images: preloading failed — the stick loads what is missing on its first boot"; return 0
   fi
-  if [[ $rc -ne 0 ]]; then
-    echo "images: preloading failed (rc=$rc) — the stick loads what is missing on its first boot"
+  local used; used="$(du -B1 "$STORE" | cut -f1)"
+  mount_data "$1"
+  local old free; old="$(du -B1 "$MNT/store.img" 2>/dev/null | cut -f1)"
+  free="$(( $(df -B1 --output=avail "$MNT" | tail -1) + ${old:-0} ))"
+  if (( used + 1073741824 > free )); then
+    echo "images: the store needs $((used >> 30)) GiB, the stick has $((free >> 30)) GiB free — not copied" >&2
+    umount "$MNT"; rmdir "$MNT"; MNT=""; return 0
   fi
+  echo "images: copying the store to the stick ($((used >> 30)) GiB, one sequential write)"
+  rm -f "$MNT/store.img"
+  # images an older stick version unpacked onto the partition itself are replaced by the store: freed
+  rm -rf "$MNT/docker" "$MNT/containerd"
+  dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse status=progress && sync
+  umount "$MNT"; rmdir "$MNT"; MNT=""
   return 0
 }
 
