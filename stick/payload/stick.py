@@ -1006,9 +1006,9 @@ def guessed_blender_types(drm: Path = DRM) -> list[str]:
 def blender_offline(b: Path, version: str) -> tuple[Path | None, dict[str, Path]]:
     """The pieces of the official offline route, from the launcher's cache in the seed: Blender's executable for
     this version and each scene's .blend (the largest in the scene's folder)."""
-    cache = b / "home"
-    exe = next((p for p in sorted(cache.rglob("blender")) if p.is_file() and os.access(p, os.X_OK)
-                and version in str(p)), None)
+    cache = b                                        # the launcher's cache and what the build unpacked from it
+    exes = [p for p in sorted(cache.rglob("blender")) if p.is_file() and os.access(p, os.X_OK)]
+    exe = next((p for p in exes if version in str(p)), exes[0] if exes else None)
     scenes = {}
     for name in BLENDER_SCENES:
         blends = [p for p in cache.rglob("*.blend") if name in p.relative_to(cache).parts]
@@ -1061,7 +1061,12 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
         return dict(rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, route="offline", blender=ver,
                     runs=runs, types_unavailable=unavailable,
                     hip_runtime=f"ROCm image {rocm_tag}" if rocm_tag and any(k.startswith("hip-") for k in runs) else "")
-    return run_blender_launcher(b, ver, d, log)
+    missing = [x for x, ok in (("Blender executable", exe), ("scenes", scenes), ("benchmark script", script.exists()))
+               if not ok]
+    say(f"blender: offline route not possible ({', '.join(missing) or 'no version'} missing in the seed); "
+        "trying the launcher", log)
+    r = run_blender_launcher(b, ver, d, log)
+    return dict(r, offline_route_missing=missing)
 
 
 def run_blender_launcher(b: Path, ver: str, d: Path, log: Path) -> dict:
@@ -1451,6 +1456,13 @@ def mlc_version(rundir: Path) -> str:
     return m.group(1) if m else ""
 
 
+def power_off() -> None:
+    """systemd stops this service on the way down (SIGTERM); waiting for systemctl here would turn that into a
+    'Stopped' traceback. Ignore the signal from now on and do not wait for the shutdown."""
+    signal.signal(signal.SIGTERM, signal.SIG_IGN)
+    subprocess.run(["systemctl", "--no-block", "poweroff"])
+
+
 def main() -> int:
     def on_term(*_):
         raise Stopped()
@@ -1462,7 +1474,7 @@ def main() -> int:
         say("no data partition labelled RIGSIM — nothing measured. Powering off in 5 minutes (Ctrl+Alt+F2: shell).")
         time.sleep(300)
         if "rigsim.nopoweroff" not in cmdline.split():
-            subprocess.run(["systemctl", "poweroff"])
+            power_off()
         return 1
     if not notice():
         return 0
@@ -1553,7 +1565,7 @@ def main() -> int:
     if off:
         say("powering off in 10 s")
         time.sleep(10)
-        subprocess.run(["systemctl", "poweroff"])
+        power_off()
     return 0
 
 

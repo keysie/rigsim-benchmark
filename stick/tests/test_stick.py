@@ -951,3 +951,16 @@ def test_status_line(tmp_path, monkeypatch):
     for hook in ('STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")', 'STATUS.set(f"{key} {k}/{len(vplan)}")',
                  'STATUS.set(f"test-backend-ops {prefix}', 'STATUS.set(question_progress(d))', 'STATUS.begin(name)'):
         assert hook in src, hook
+
+
+
+def test_unattended_shutdown():
+    """Third trial run: systemd's SIGTERM during 'systemctl poweroff' became a traceback, and casper stopped at
+    'Please remove the installation medium, then press ENTER' — no power-off without someone there."""
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert 'signal.signal(signal.SIGTERM, signal.SIG_IGN)' in src and '"systemctl", "--no-block", "poweroff"' in src
+    assert src.count("power_off()") >= 3                                    # definition + both call sites
+    g = (HERE / "ubuntu" / "grub.cfg").read_text()
+    assert all("noprompt noeject" in l for l in g.splitlines() if l.strip().startswith("linux "))
+    b = (HERE / "build.sh").read_text()
+    assert "xargs -0 -r -I{} tar -xf {}" in b and "unpack-1" in b and "offline_route_missing" in src

@@ -339,10 +339,21 @@ if [[ -n "${BLENDER_LAUNCHER_URL:-}" ]]; then
   tar -xzf "$B/benchmark-script.tar.gz" -C "$B/script"
   m="$(find "$B/script" -name main.py | head -1)"; [[ -n "$m" ]] || { echo "no main.py in the benchmark script" >&2; return 1; }
   [[ "$(dirname "$m")" == "$B/script" ]] || { mv "$(dirname "$m")"/* "$B/script/"; }
+  # the launcher may keep Blender and the scenes as archives in its cache: unpack them once for the offline route
+  rm -rf "$B/unpacked"; mkdir -p "$B/unpacked/blender" "$B/unpacked/scenes"
+  find "$B/home" -type f \( -name 'blender-*linux*.tar.xz' -o -name 'blender-*linux*.tar.gz' \) -print0 \
+    | xargs -0 -r -I{} tar -xf {} -C "$B/unpacked/blender" 2>/dev/null || true
+  find "$B/home" -type f \( -name '*.tar.bz2' -o -name '*.tar.gz' -o -name '*.tgz' -o -name '*.zip' \) ! -name 'blender-*' \
+    | while read -r a; do
+        n="$(basename "$a")"; n="${n%%.*}"; mkdir -p "$B/unpacked/scenes/$n"
+        case "$a" in *.zip) python3 -c "import sys,zipfile;zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])" "$a" "$B/unpacked/scenes/$n" ;;
+                     *) tar -xf "$a" -C "$B/unpacked/scenes/$n" ;; esac
+      done
+  echo "blender offline route: $(find "$B" -type f -name blender -perm -u+x | head -1); scenes: $(find "$B" -name '*.blend' | wc -l)"
   }
   : "${BLENDER_VERSION:=4.2.0}"; mkdir -p "$OUT/seed/blender"
   : "${BLENDER_SCRIPT_URL:=https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz}"
-  cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION" "$BLENDER_SCRIPT_URL")" "Blender Benchmark $BLENDER_VERSION" blender_seed
+  cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION" "$BLENDER_SCRIPT_URL" unpack-1)" "Blender Benchmark $BLENDER_VERSION" blender_seed
 else
   echo "== seed: Blender Benchmark skipped (set BLENDER_LAUNCHER_URL from opendata.blender.org)"
 fi
