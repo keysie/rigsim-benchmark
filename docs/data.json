@@ -1954,7 +1954,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -1964,7 +1969,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
@@ -1974,7 +1984,15 @@
      "gpu": "NVIDIA GeForce RTX 3080",
      "pci": "0000:01:00.0",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "value": 10073.748857166778,
+       "error": 0.8213661853737946,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/tg128",
@@ -1984,7 +2002,15 @@
      "gpu": "NVIDIA GeForce RTX 3080",
      "pci": "0000:01:00.0",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "value": 144.00395309344378,
+       "error": -0.05402702062529863,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 12%, memory 88%"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/pp512",
@@ -1994,7 +2020,15 @@
      "gpu": "NVIDIA GeForce RTX 3080",
      "pci": "0000:01:00.0",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "value": 49023.23307365412,
+       "error": 1.0425217444606631,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/tg128",
@@ -2004,7 +2038,15 @@
      "gpu": "NVIDIA GeForce RTX 3080",
      "pci": "0000:01:00.0",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "value": 469.34718253356573,
+       "error": -0.2338443925803434,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine, rtx-3080, kernel factors unmeasured; launch 54%, memory 46%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
@@ -2014,7 +2056,12 @@
      "gpu": "Intel(R) Graphics (RPL-S)",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
@@ -2024,7 +2071,12 @@
      "gpu": "Intel(R) Graphics (RPL-S)",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
@@ -2034,7 +2086,12 @@
      "gpu": "Intel(R) Graphics (RPL-S)",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
@@ -2044,7 +2101,12 @@
      "gpu": "Intel(R) Graphics (RPL-S)",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "llama.cpp vulkan backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "mlc/idle_latency",
@@ -2054,7 +2116,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "not modelled yet"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/all_reads",
@@ -2064,7 +2131,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "not modelled yet"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/3to1_rw",
@@ -2074,7 +2146,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "not modelled yet"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/2to1_rw",
@@ -2084,7 +2161,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "not modelled yet"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/1to1_rw",
@@ -2094,7 +2176,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "not modelled yet"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/stream_triad",
@@ -2104,10 +2191,19 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.1.0",
+       "unsupported": "not modelled yet"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.1.0",
+    "n": 4,
+    "median_abs_error": 0.8213661853737946
+   }
   }
  ]
 }
