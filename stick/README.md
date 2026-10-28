@@ -125,8 +125,11 @@ them somewhere else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-res
 - vkprobe's matrix GEMM is a plain kernel, not a tuned library: a lower bound for that path.
 - RAM timings: the modules' SPD is read (decoded where `decode-dimms` can, always as raw bytes with the serial
   number zeroed); what the BIOS actually set is often invisible from Linux.
-- **Blender (open):** the benchmark launcher asked opendata.blender.org for metadata on the offline stick and listed
-  no device in the first trial run; it is recorded as a failure until an offline way is found.
+- **Blender** runs by Blender's official offline route (opendata.blender.org/about, "Run Offline"): the Blender
+  build and scenes the launcher downloaded at build time, the benchmark script (`BLENDER_SCRIPT_URL`, default 3.1.1),
+  one device type at a time — the launcher itself needs the server even to list devices. Device types are taken
+  from the GPUs present; a type the first scene fails on is recorded as unavailable. HIP (AMD) needs a ROCm runtime
+  on the system image, which the stick does not have: AMD cards render through Blender only if a later version adds it.
 
 ## Versions
 

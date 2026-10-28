@@ -14,6 +14,7 @@
 #   LLAMA_REF=<tag|commit>   llama.cpp to build (default master, the resolved commit is recorded)
 #   SKIP_MODELS=1            no GGUF models (TinyLlama 1.1B Q4_0, Llama 2 7B Q4_0 — the scoreboards' model)
 #   BLENDER_VERSION=4.2.0  BLENDER_LAUNCHER_URL=...   Blender Benchmark launcher CLI, Blender and scenes
+#   BLENDER_SCRIPT_URL=...   the benchmark script for the offline route (default: script 3.1.1 from opendata)
 #   MLC_URL=...              Intel Memory Latency Checker archive from Intel's download page (license: Intel's,
 #                            downloaded by you at build time, not redistributed by this repository)
 #   ROCM_IMAGE=...  SKIP_ROCM=1        AMD: ROCm image the HIP probe (hipBLAS) and llama.cpp HIP are built in and run
@@ -263,9 +264,17 @@ if [[ -n "${BLENDER_LAUNCHER_URL:-}" ]]; then
   echo "$BLENDER_VERSION" > "$B/BLENDER_VERSION"
   HOME="$B/home" XDG_CACHE_HOME="$B/home/.cache" "$B/benchmark-launcher-cli" blender download "$BLENDER_VERSION"
   HOME="$B/home" XDG_CACHE_HOME="$B/home/.cache" "$B/benchmark-launcher-cli" scenes download     --blender-version "$BLENDER_VERSION" monster junkshop classroom
+  # the official offline route (opendata.blender.org/about, "Run Offline"): Blender + this script + a scene, no
+  # launcher, no network; the launcher needs the server even to list devices
+  rm -rf "$B/script" && mkdir -p "$B/script"
+  curl -fL "$BLENDER_SCRIPT_URL" -o "$B/benchmark-script.tar.gz"
+  tar -xzf "$B/benchmark-script.tar.gz" -C "$B/script"
+  m="$(find "$B/script" -name main.py | head -1)"; [[ -n "$m" ]] || { echo "no main.py in the benchmark script" >&2; return 1; }
+  [[ "$(dirname "$m")" == "$B/script" ]] || { mv "$(dirname "$m")"/* "$B/script/"; }
   }
   : "${BLENDER_VERSION:=4.2.0}"; mkdir -p "$OUT/seed/blender"
-  cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION")" "Blender Benchmark $BLENDER_VERSION" blender_seed
+  : "${BLENDER_SCRIPT_URL:=https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz}"
+  cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION" "$BLENDER_SCRIPT_URL")" "Blender Benchmark $BLENDER_VERSION" blender_seed
 else
   echo "== seed: Blender Benchmark skipped (set BLENDER_LAUNCHER_URL from opendata.blender.org)"
 fi
@@ -281,6 +290,6 @@ else
   echo "== seed: Intel MLC skipped (set MLC_URL from Intel's download page)"
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
-export LLAMA_REF AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION
+export LLAMA_REF AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
 step "manifest (seed)" env IMAGES="$CUDA_IMAGE $CPU_IMAGE" python3 "$S/tools/manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"
 echo "built $OUT/rigsim-stick$SUFFIX.iso ($VERSION) and $OUT/seed"

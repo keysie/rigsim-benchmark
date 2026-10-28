@@ -24,7 +24,7 @@ ROOTFS_PACKAGES = re.compile(
     r"shim-signed|grub-efi-amd64-signed|linux-firmware)$")
 CUDA_PACKAGES = re.compile(r"^(cuda-nvcc\S*|cuda-cudart-\S+|libcublas-\S+|cuda-toolkit-\S+)$")
 SETTINGS = ("SUITE", "KERNEL", "NVIDIA_BRANCH", "NVIDIA_FLAVOUR", "MIRROR", "LLAMA_REF", "AMDGPU_TARGETS",
-            "ROCM_IMAGE", "ONEAPI_IMAGE", "BLENDER_VERSION")
+            "ROCM_IMAGE", "ONEAPI_IMAGE", "BLENDER_VERSION", "BLENDER_SCRIPT_URL")
 
 
 def sha256(p: Path) -> str:
@@ -128,8 +128,12 @@ def seed(seed_dir: Path, out: Path) -> dict:
         tools["mlc"] = dict(sha256=sha256(mlc))
     bl = seed_dir / "blender"
     if (bl / "benchmark-launcher-cli").exists():
-        tools["blender-benchmark"] = dict(launcher_sha256=sha256(bl / "benchmark-launcher-cli"),
-                                          blender=(bl / "BLENDER_VERSION").read_text().strip() if (bl / "BLENDER_VERSION").exists() else "")
+        bb = dict(launcher_sha256=sha256(bl / "benchmark-launcher-cli"),
+                  blender=(bl / "BLENDER_VERSION").read_text().strip() if (bl / "BLENDER_VERSION").exists() else "")
+        if (bl / "benchmark-script.tar.gz").exists():
+            bb["script"] = dict(url=os.environ.get("BLENDER_SCRIPT_URL", ""), sha256=sha256(bl / "benchmark-script.tar.gz"))
+        bb["scenes"] = {p.parent.name: sha256(p) for p in sorted((bl / "home").rglob("*.blend"))}
+        tools["blender-benchmark"] = bb
     m["tools"] = tools
     out.write_text(json.dumps(m, indent=1) + "\n")
     return m

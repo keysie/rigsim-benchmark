@@ -724,3 +724,36 @@ def test_blender_types_guessed_when_the_launcher_cannot_list_devices(tmp_path):
     for card, vendor in (("card1", "0x8086"), ("card2", "0x10de")):
         (tmp_path / card / "device").mkdir(parents=True); (tmp_path / card / "device" / "vendor").write_text(vendor)
     assert stick.guessed_blender_types(tmp_path) == ["CPU", "OPTIX", "CUDA", "ONEAPI"]
+
+
+
+def test_blender_offline_route(tmp_path, monkeypatch):
+    """Official offline route: Blender from the launcher's cache + the benchmark script + a scene, per device type;
+    a guessed GPU type the first scene fails on is 'unavailable', not a failure."""
+    b = tmp_path / "seed" / "blender"
+    exe = b / "home" / ".cache" / "blender-benchmark-launcher" / "blender" / "4.2.0" / "blender-4.2.0-linux-x64" / "blender"
+    exe.parent.mkdir(parents=True); exe.write_text("#!/bin/sh\n"); exe.chmod(0o755)
+    for sc in stick.BLENDER_SCENES:
+        f = b / "home" / ".cache" / "blender-benchmark-launcher" / "scenes" / sc / "main.blend"
+        f.parent.mkdir(parents=True); f.write_bytes(b"x" * 10)
+    (b / "script").mkdir(); (b / "script" / "main.py").write_text("")
+    (b / "BLENDER_VERSION").write_text("4.2.0\n")
+    found_exe, scenes = stick.blender_offline(b, "4.2.0")
+    assert found_exe == exe and set(scenes) == set(stick.BLENDER_SCENES)
+    monkeypatch.setattr(stick, "guessed_blender_types", lambda drm=None: ["CPU", "OPTIX", "ONEAPI"])
+    calls = []
+
+    class R:
+        def __init__(self, rc): self.returncode, self.stdout, self.stderr = rc, '{"stats": {}}', ""
+
+    def fake_run(cmd, **kw):
+        calls.append(cmd)
+        assert kw["cwd"] == str(b / "script") and cmd[-2:][0] == "--device-type"
+        return R(0 if cmd[-1] in ("CPU", "OPTIX") else 1)
+    monkeypatch.setattr(stick.subprocess, "run", fake_run)
+    r = stick.run_blender(tmp_path, tmp_path / "run", tmp_path / "log")
+    assert r["route"] == "offline" and r["rc"] == 0 and r["types_unavailable"] == ["ONEAPI"]
+    assert set(r["runs"]) == {f"{t}-{s}" for t in ("cpu", "optix") for s in stick.BLENDER_SCENES}
+    assert calls[0][:2] == [str(exe), "--background"] and "--python" in calls[0]
+    b_sh = (HERE / "build.sh").read_text()
+    assert "blender-benchmark-script-3.1.1.tar.gz" in b_sh and "BLENDER_SCRIPT_URL" in b_sh

@@ -850,13 +850,60 @@ def guessed_blender_types(drm: Path = DRM) -> list[str]:
     return t
 
 
+def blender_offline(b: Path, version: str) -> tuple[Path | None, dict[str, Path]]:
+    """The pieces of the official offline route, from the launcher's cache in the seed: Blender's executable for
+    this version and each scene's .blend (the largest in the scene's folder)."""
+    cache = b / "home"
+    exe = next((p for p in sorted(cache.rglob("blender")) if p.is_file() and os.access(p, os.X_OK)
+                and version in str(p)), None)
+    scenes = {}
+    for name in BLENDER_SCENES:
+        blends = [p for p in cache.rglob("*.blend") if name in p.relative_to(cache).parts]
+        if blends:
+            scenes[name] = max(blends, key=lambda p: p.stat().st_size)
+    return exe, scenes
+
+
 def run_blender(data: Path, rundir: Path, log: Path) -> dict:
+    """Blender Benchmark by the official offline route (opendata.blender.org/about, "Run Offline"): Blender, the
+    benchmark script and a scene, one device type at a time — the same script the launcher runs, without the
+    launcher, which needs opendata.blender.org even to list devices. The launcher is the fallback."""
     b = data / "seed" / "blender"
-    cli = b / "benchmark-launcher-cli"
     ver = _read(b / "BLENDER_VERSION")
+    d = rundir / "blender"
+    exe, scenes = blender_offline(b, ver) if ver else (None, {})
+    script = b / "script" / "main.py"
+    if exe and scenes and script.exists():
+        d.mkdir(parents=True, exist_ok=True)
+        env = dict(os.environ, HOME=str(b / "home"))
+        runs, unavailable = {}, []
+        for t in guessed_blender_types():
+            for i, (name, blend) in enumerate(scenes.items()):
+                key = f"{t.lower()}-{name}"
+                t0 = time.time()
+                cmd = [str(exe), "--background", "--factory-startup", "-noaudio", "--debug-cycles", "--enable-autoexec",
+                       "--engine", "CYCLES", str(blend), "--python", str(script), "--", "--device-type", t]
+                try:
+                    rr = subprocess.run(cmd, capture_output=True, text=True, cwd=str(script.parent), env=env,
+                                        timeout=BLENDER_TIMEOUT_S)
+                    rc, out, err = rr.returncode, rr.stdout, rr.stderr
+                except subprocess.TimeoutExpired:
+                    rc, out, err = -9, "", f"timeout after {BLENDER_TIMEOUT_S} s"
+                (d / f"{key}.log").write_text(scrub(out + ("\n--- stderr ---\n" + err if err.strip() else "")))
+                say(f"blender {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
+                if rc != 0 and i == 0 and t != "CPU":
+                    unavailable.append(t)                       # guessed type this GPU / build does not offer
+                    break
+                runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
+        return dict(rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, route="offline", blender=ver,
+                    runs=runs, types_unavailable=unavailable)
+    return run_blender_launcher(b, ver, d, log)
+
+
+def run_blender_launcher(b: Path, ver: str, d: Path, log: Path) -> dict:
+    cli = b / "benchmark-launcher-cli"
     if not cli.exists() or not ver:
         return dict(skipped="Blender benchmark not in the seed")
-    d = rundir / "blender"
     d.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, HOME=str(b / "home"), XDG_CACHE_HOME=str(b / "home" / ".cache"))
     r = subprocess.run([str(cli), "devices", "--blender-version", ver], capture_output=True, text=True, env=env,
@@ -880,10 +927,10 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
         runs[t] = dict(rc=rc, seconds=round(time.time() - t0))
         say(f"blender {t}: rc={rc} ({time.time() - t0:.0f} s)", log)
     if not runs:
-        if "error" in (r.stdout + r.stderr).lower():          # e.g. the launcher wanted the network (offline stick)
+        if "error" in (r.stdout + r.stderr).lower():
             return dict(rc=1, error="the launcher failed before listing devices (blender/devices.txt)")
         return dict(skipped="the launcher found no device")
-    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, blender=ver, runs=runs,
+    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, route="launcher", blender=ver, runs=runs,
                 device_types_guessed=guessed)
 
 
