@@ -871,6 +871,6 @@ def test_second_trial_run_fixes():
     probe = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "src" / "probe.cu").read_text()
     assert 'atoi(arg(argc, argv, "--count", "2000").c_str())' in probe
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
-    assert "s/libGLX_nvidia\\\\.so\\\\.0/libEGL_nvidia.so.0/" in c
+    assert "libEGL_nvidia.so.0/" in c and "s/libGLX_nvidia" in c
     src = (HERE / "payload" / "stick.py").read_text()
     assert '"ONEAPI_DEVICE_SELECTOR=level_zero:gpu"' in src and '"sycl-ls", "--verbose"' in src

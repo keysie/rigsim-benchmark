@@ -27,4 +27,5 @@ def test_index_rows_from_run_json(tmp_path, monkeypatch):
 def test_site_reads_the_generated_table():
     html = (ROOT / "docs" / "index.html").read_text()
     assert 'fetch("data.json")' in html and "results/runs/" in html
-    assert json.loads((ROOT / "docs" / "data.json").read_text())["runs"] == []    # until runs are imported
+    runs = json.loads((ROOT / "docs" / "data.json").read_text())["runs"]
+    assert {r["run"] for r in runs} == {p.name for p in (ROOT / "results" / "runs").iterdir() if p.is_dir()}
