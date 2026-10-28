@@ -21,23 +21,61 @@ bandwidth) and on again at the end.
 
 ## Requirements
 
-- **Build:** any x86_64 Linux with Docker and internet. Everything else runs in a build container.
-- **Flash:** Linux with util-linux, e2fsprogs and rsync (most distributions have them).
 - **Stick:** 128 GB (64 GB without the AMD and Intel images, see `SKIP_ROCM` / `SKIP_ONEAPI`).
 - **Target machines:** x86_64, UEFI or legacy boot, Secure Boot may stay on.
+- **To make the stick:** a Linux host, or Windows with WSL 2 and Docker Desktop — see below. Internet for the
+  build; everything else runs in a build container.
+- **Downloads you pass to the build:** **Intel MLC** — the download link from Intel's Memory Latency Checker page
+  (Intel's licence; fetched at build time, never part of this repository); **Blender launcher** — the Linux
+  command-line launcher from opendata.blender.org. Without either, that step is recorded as skipped.
 
-## Build
+## Making the stick on Linux
+
+Needs Docker (any distribution; your user in the `docker` group or `sudo`), and for flashing util-linux, e2fsprogs
+and rsync (most distributions have them).
 
 ```bash
 git clone https://github.com/keysie/rigsim-benchmark && cd rigsim-benchmark
 MLC_URL='<Intel MLC download link>' \
 BLENDER_LAUNCHER_URL='<Blender benchmark launcher, Linux CLI>' \
-stick/build.sh            # -> stick/out/rigsim-stick.iso + stick/out/seed/
+stick/build.sh                         # -> stick/out/rigsim-stick.iso + stick/out/seed/
+
+lsblk -o NAME,SIZE,MODEL,RM,TRAN       # find the stick: RM 1, TRAN usb
+sudo stick/flash.sh /dev/sdX
 ```
 
-- **Intel MLC:** download link from Intel's Memory Latency Checker page (Intel's licence; fetched at build time,
-  never part of this repository). **Blender launcher:** the Linux command-line launcher from
-  opendata.blender.org. Without either, that step is recorded as skipped.
+## Making the stick on Windows (WSL 2 + Docker Desktop)
+
+The build only runs inside WSL 2, with Docker Desktop's WSL integration — not in PowerShell, cmd or Git Bash.
+
+1. Install WSL 2 with Ubuntu (`wsl --install -d Ubuntu` in PowerShell) and
+   [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/). In Docker Desktop:
+   *Settings → Resources → WSL integration*, turn it on for the Ubuntu distribution.
+2. Open the Ubuntu terminal. Clone **inside WSL**, in its own filesystem (`~`), not under `/mnt/c`:
+   ```bash
+   cd ~ && git clone https://github.com/keysie/rigsim-benchmark && cd rigsim-benchmark
+   docker info >/dev/null && echo "Docker reachable"
+   MLC_URL='<Intel MLC download link>' BLENDER_LAUNCHER_URL='<Blender launcher, Linux CLI>' stick/build.sh
+   ```
+   Files under `/mnt/c` are many times slower from WSL and lose their executable bits; the build moves tens of GB.
+3. Flash. WSL does not see USB sticks by itself: attach the stick with
+   [usbipd-win](https://github.com/dorssel/usbipd-win) (in an administrator PowerShell: `usbipd list`, then
+   `usbipd bind --busid <id>` once and `usbipd attach --wsl --busid <id>`), then in Ubuntu:
+   ```bash
+   lsblk -o NAME,SIZE,MODEL,RM,TRAN     # the stick appears as /dev/sdX
+   sudo stick/flash.sh /dev/sdX
+   ```
+   If the stick does not appear in WSL, flash on a Linux machine instead: copy the repository folder with its
+   `stick/out` (ISO and seed) there and run `flash.sh` as above.
+
+> **`/usr/bin/env: 'bash\r': No such file or directory`** means the repository was cloned (or pulled) on the
+> Windows side and is then built in WSL: Git for Windows converts the line endings to Windows' CRLF, which Linux
+> cannot run. The repository now forces Linux line endings, but a checkout made that way keeps the wrong ones. Clone
+> again inside WSL as in step 2 — or repair the checkout from WSL:
+> `git rm -rq --cached . && git reset -q --hard`.
+
+## Build details
+
 - The first build takes a few hours (the ROCm image alone one to two). Later builds reuse everything whose inputs
   did not change and take minutes plus the rootfs.
 - Each step shows one live line with progress; `stick/build.sh -v` prints everything instead. Full logs:
@@ -65,12 +103,7 @@ MIRROR=http://ch.archive.ubuntu.com/ubuntu stick/build.sh   # a nearby Ubuntu mi
 
 To force a full rebuild: `rm -rf stick/out/cache stick/out/seed`.
 
-## Flash
-
-```bash
-lsblk -o NAME,SIZE,MODEL,RM,TRAN       # find the stick: RM 1, TRAN usb
-sudo stick/flash.sh /dev/sdX
-```
+## Flashing details
 
 - **New stick:** asks you to type `yes`, writes the system, creates the data partition `RIGSIM` (ext4) and copies the
   seed (images, models, tools) — expect 30 minutes or more for the copy.
