@@ -1,0 +1,27 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o RMS_NORM -b CPU --output sql
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:29:18Z', 'a7af149a2', 'CPU', 'RMS_NORM', 'type=f32,ne=[4096,1,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '3.773580', '0.000000', '8.087662', '32', '270303', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:29:19Z', 'a7af149a2', 'CPU', 'RMS_NORM', 'type=f32,ne=[128,32,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '3.757269', '0.000000', '8.122773', '32', '270303', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:29:20Z', 'a7af149a2', 'CPU', 'RMS_NORM', 'type=f32,ne=[4096,512,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '164.791261', '0.000000', '94.909336', '16384', '6156', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-28T10:29:21Z', 'a7af149a2', 'CPU', 'RMS_NORM', 'type=f32,ne=[128,16384,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '197.923782', '0.000000', '79.021474', '16384', '5130', '', '');
+
+--- stderr ---
+ggml_vulkan: Found 0 Vulkan devices:

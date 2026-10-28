@@ -1,0 +1,19 @@
+09:16:29 session rigsim-hwbench-gpu-launch: setting up from nvidia/cuda:12.8.1-devel-ubuntu24.04
+09:16:30 restore: box as found
+Traceback (most recent call last):
+  File "/opt/rigsim/runner/hwq.py", line 547, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/rigsim/runner/hwq.py", line 538, in main
+    return run(a.plan, d, cfg, a.smoke, a.fresh, log)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/rigsim/runner/hwq.py", line 434, in run
+    session = start_session(rundir, plan, cfg, toolkit, testdir, log)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/rigsim/runner/hwq.py", line 362, in start_session
+    raise RuntimeError(f"toolkit setup failed (setup.log): {(r.stderr or '').strip()[-300:]}")
+RuntimeError: toolkit setup failed (setup.log): src/probe.cu(326): error: no suitable conversion function from "std::string" to "const char *" exists
+      int count = atoi(arg(argc, argv, "--count", "2000"));
+                       ^
+
+1 error detected in the compilation of "src/probe.cu".

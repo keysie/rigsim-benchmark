@@ -1,0 +1,46 @@
+{
+ "platform": "NVIDIA CUDA",
+ "device": "NVIDIA GeForce RTX 3080",
+ "rc": 0,
+ "results": {
+  "info": {
+   "Driver version": "580.178.04 (Linux x64)",
+   "Compute units": 68.0,
+   "Clock frequency (MHz)": 1710.0,
+   "pci id for fd 12": "10de:2216, driver (null)",
+   "pci id for fd 13": "10de:2216, driver (null)"
+  },
+  "Global memory bandwidth (GBPS)": {
+   "float": 662.5,
+   "float2": 682.83,
+   "float4": 694.97,
+   "float8": 608.64,
+   "float16": 676.72
+  },
+  "Single-precision compute (GFLOPS)": {
+   "float": 31209.64,
+   "float2": 30476.23,
+   "float4": 30557.22,
+   "float8": 30412.97,
+   "float16": 29999.98
+  },
+  "Integer compute (GIOPS)": {
+   "int": 16556.56,
+   "int2": 16592.05,
+   "int4": 16562.32,
+   "int8": 16525.46,
+   "int16": 16452.35
+  },
+  "Transfer bandwidth (GBPS)": {
+   "enqueueWriteBuffer": 17.46,
+   "enqueueReadBuffer": 16.24,
+   "enqueueWriteBuffer non-blocking": 16.26,
+   "enqueueReadBuffer non-blocking": 13.74,
+   "enqueueMapBuffer(for read)": 16.65,
+   "memcpy from mapped ptr": 28.28,
+   "enqueueUnmap(after write)": 21.32,
+   "memcpy to mapped ptr": 27.67,
+   "Kernel launch latency (us)": 3.58
+  }
+ }
+}

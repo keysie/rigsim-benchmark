@@ -1,0 +1,400 @@
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DRIVER:            Searching for driver manifest files
+DRIVER:               In following locations:
+DRIVER:                  /etc/xdg/vulkan/icd.d
+DRIVER:                  /etc/vulkan/icd.d
+DRIVER:                  /usr/local/share/vulkan/icd.d
+DRIVER:                  /usr/share/vulkan/icd.d
+DRIVER:               Found the following files:
+DRIVER:                  /usr/share/vulkan/icd.d/asahi_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/gfxstream_vk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_hasvk_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/intel_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/lvp_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nouveau_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/nvidia_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/radeon_icd.json
+DRIVER:                  /usr/share/vulkan/icd.d/virtio_icd.json
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/asahi_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_asahi.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/gfxstream_vk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_gfxstream.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_hasvk_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel_hasvk.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/intel_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_intel.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/lvp_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_lvp.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nouveau_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_nouveau.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/nvidia_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libGLX_nvidia.so.0
+ERROR: [Loader Message] Code 0 : loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+ERROR:             loader_scanned_icd_add: Could not get 'vkCreateInstance' via 'vk_icdGetInstanceProcAddr' for ICD libGLX_nvidia.so.0
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/radeon_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_radeon.so
+DRIVER:            Found ICD manifest file /usr/share/vulkan/icd.d/virtio_icd.json, version 1.0.1
+DEBUG | DRIVER:    Searching for ICD drivers named libvulkan_virtio.so
+DEBUG | DRIVER:    terminator_CreateInstance: ICD "libvulkan_gfxstream.so" vkEnumerateInstanceVersion returned error. The ICD will be treated as a 1.0 ICD
+'DISPLAY' environment variable not set... skipping surface info
+error: XDG_RUNTIME_DIR is invalid or not set in the environment.
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+INFO | DRIVER:     linux_read_sorted_physical_devices:
+INFO | DRIVER:          Original order:
+INFO | DRIVER:                [0] llvmpipe (LLVM 20.1.2, 256 bits)
+INFO | DRIVER:                [1] Intel(R) Graphics (RPL-S)
+INFO | DRIVER:          Sorted order:
+INFO | DRIVER:                [0] Intel(R) Graphics (RPL-S)  
+INFO | DRIVER:                [1] llvmpipe (LLVM 20.1.2, 256 bits)  
+DEBUG | DRIVER:    Copying old device 0 into new device 0
+DEBUG | DRIVER:    Copying old device 1 into new device 1
+DRIVER | LAYER:    vkCreateDevice layer callstack setup to:
+DRIVER | LAYER:       <Application>
+DRIVER | LAYER:         ||
+DRIVER | LAYER:       <Loader>
+DRIVER | LAYER:         ||
+DRIVER | LAYER:       <Device>
+DRIVER | LAYER:           Using "Intel(R) Graphics (RPL-S)" with driver: "libvulkan_intel.so"
+DRIVER | LAYER:    vkCreateDevice layer callstack setup to:
+DRIVER | LAYER:       <Application>
+DRIVER | LAYER:         ||

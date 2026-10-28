@@ -1,0 +1,24 @@
+09:12:42 session rigsim-hwbench-cpu-mem-ladder: setting up from debian:trixie
+09:14:16 restore: box as found
+Traceback (most recent call last):
+  File "/opt/rigsim/runner/hwq.py", line 547, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/rigsim/runner/hwq.py", line 538, in main
+    return run(a.plan, d, cfg, a.smoke, a.fresh, log)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/rigsim/runner/hwq.py", line 434, in run
+    session = start_session(rundir, plan, cfg, toolkit, testdir, log)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/rigsim/runner/hwq.py", line 362, in start_session
+    raise RuntimeError(f"toolkit setup failed (setup.log): {(r.stderr or '').strip()[-300:]}")
+RuntimeError: toolkit setup failed (setup.log): ms - leaving unconfigured
+dpkg: dependency problems prevent configuration of likwid:
+ likwid depends on python3:any.
+
+dpkg: error processing package likwid (--install):
+ dependency problems - leaving unconfigured
+Errors were encountered while processing:
+ debs/python3_3.13.5-1_amd64.deb
+ fio
+ likwid
