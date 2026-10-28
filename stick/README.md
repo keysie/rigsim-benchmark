@@ -128,6 +128,19 @@ them somewhere else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-res
 - **Blender (open):** the benchmark launcher asked opendata.blender.org for metadata on the offline stick and listed
   no device in the first trial run; it is recorded as a failure until an offline way is found.
 
+## Versions
+
+`stick/VERSION` is the stick's release number (semver): patch for fixes, minor for new measurements or additive
+format changes, major only for a run format that is not backwards compatible (see
+[`results/FORMAT.md`](../results/FORMAT.md)). Bump it in the commit that changes what the stick measures or
+writes.
+
+Every build records the exact versions of what it puts on the stick (`tools/manifest.py`: packages of the system
+image, container images by digest and the packages inside them, llama.cpp commits and binary hashes, vendor images,
+models, MLC, Blender, a hash over all stick scripts). Every run copies this, adds what actually ran (kernel, NVIDIA
+driver, Docker, Vulkan drivers) into `manifest.json`, and attaches to each step the versions its results came
+from. The data page shows them per run.
+
 ## Development
 
 ```bash

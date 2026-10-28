@@ -68,6 +68,10 @@ OUT="$S/out"; W="$OUT/work$SUFFIX"; ROOT="$W/rootfs"; ISO="$W/iso"
 CUDA_IMAGE="$(sed -n 's/^image = "\(nvidia[^"]*\)"/\1/p' "$S"/questions/*.toml | head -1)"
 CPU_IMAGE="$(sed -n 's/^image = "\(debian[^"]*\)"/\1/p' "$S"/questions/*.toml | head -1)"
 VERSION="$(git -C "$REPO" rev-parse --short HEAD)$(git -C "$REPO" diff --quiet -- stick bench/hw || echo -dirty)$SUFFIX"
+STICK_VERSION="$(cat "$S/VERSION")"                   # the stick's own release number (semver, see VERSION)
+export STICK_COMMIT="$(git -C "$REPO" rev-parse HEAD)"
+export STICK_DIRTY="$(git -C "$REPO" diff --quiet -- stick bench/hw && echo 0 || echo 1)"
+export SUITE KERNEL NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR
 sudo rm -rf "$W" && mkdir -p "$W" "$ISO"/{casper,boot/grub,EFI/boot,.disk} "$OUT/seed/images" "$OUT/seed/debs"
 
 # --- caches: a part is rebuilt only when what it is built from changes (its key); out/cache holds downloads ------
@@ -107,6 +111,7 @@ sudo cp -r "$S/overlay/toolkits/." "$P/toolkits/"
 sudo cp -r "$S/questions" "$P/questions"
 sudo install -m 0755 "$S/payload/stick.py" "$P/stick.py"
 echo "$VERSION" | sudo tee "$P/VERSION" >/dev/null
+echo "$STICK_VERSION" | sudo tee "$P/STICK_VERSION" >/dev/null
 sudo mkdir -p "$P/bin"
 VKK="$(key "$SUITE" "$(srckey "$S/src/vkprobe")")"; mkdir -p "$C/vkprobe"
 cached_step "$C/vkprobe/.key" "$VKK" "vkprobe (Vulkan probe)" \
@@ -115,6 +120,9 @@ cached_step "$C/vkprobe/.key" "$VKK" "vkprobe (Vulkan probe)" \
   apt-get install -y -qq gcc libc6-dev libvulkan-dev glslc >/dev/null
   cp -r /src /tmp/vk && sh /tmp/vk/build.sh /out/vkprobe'
 sudo install -m 0755 "$C/vkprobe/vkprobe" "$P/bin/vkprobe"
+# exact versions of the system image: packages, the stick's own files (merged with the seed's on every run)
+step "manifest (system image)" sudo -E python3 "$S/tools/manifest.py" rootfs "$ROOT" "$P" "$W/manifest-rootfs.json"
+sudo install -m 0644 "$W/manifest-rootfs.json" "$P/manifest.json"
 
 # A file of the rootfs, links resolved INSIDE the rootfs. Many of Ubuntu's boot files are links with absolute
 # targets (alternatives, /etc/alternatives/..., /boot/vmlinuz-...): read from outside, they would resolve against
@@ -273,4 +281,6 @@ else
   echo "== seed: Intel MLC skipped (set MLC_URL from Intel's download page)"
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
+export LLAMA_REF AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION
+step "manifest (seed)" env IMAGES="$CUDA_IMAGE $CPU_IMAGE" python3 "$S/tools/manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"
 echo "built $OUT/rigsim-stick$SUFFIX.iso ($VERSION) and $OUT/seed"

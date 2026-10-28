@@ -7,7 +7,8 @@ llama.cpp, Blender), stores the results on the stick and powers the machine off.
 machine's own disks, and no serial numbers are kept.
 
 - **Data table:** https://keysie.github.io/rigsim-benchmark/ — every run, filterable, with links to its raw files
-- **Raw data:** [`results/runs/`](results/runs), one folder per run; format in [`results/README.md`](results/README.md)
+- **Raw data:** [`results/runs/`](results/runs), one folder per run; layout in [`results/README.md`](results/README.md),
+  versioned format and compatibility rules in [`results/FORMAT.md`](results/FORMAT.md)
 - **The stick:** [`stick/README.md`](stick/README.md) — what it measures, how to build, flash and use it
 
 The data feeds [rigsim](https://github.com/keysie/rigsim), a simulator for local AI hosts, but stands on its own.

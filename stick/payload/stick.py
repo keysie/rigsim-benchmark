@@ -1065,6 +1065,88 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
     return dict(rc=rc, items=counts, seconds=round(time.time() - t0))
 
 
+# --- format and versions ---------------------------------------------------------------------------------------------
+# The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
+# or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
+FORMAT = dict(name="rigsim-stick-run", version="1.0")
+
+
+def runtime_versions() -> dict:
+    """What is actually running (a seed and a system image may come from different builds)."""
+    r = dict(kernel=sh(["uname", "-r"])[1].strip())
+    rc, drv = sh(["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"], timeout=60)
+    if rc == 0 and drv.strip():
+        r["nvidia_driver"] = drv.split("---")[0].strip().splitlines()[0]
+    rc, dk = sh(["docker", "version", "--format", "{{.Server.Version}}"], timeout=60)
+    if rc == 0:
+        r["docker"] = dk.split("---")[0].strip()
+    rc, vk = sh(["vulkaninfo", "--summary"], timeout=120)
+    devs, cur = [], {}
+    for line in vk.splitlines():
+        m = re.match(r"\s*(deviceName|driverName|driverInfo|apiVersion|conformanceVersion)\s*=\s*(.*)", line)
+        if m:
+            if m.group(1) == "apiVersion" and cur:
+                devs.append(cur); cur = {}
+            cur[m.group(1)] = m.group(2).strip()
+    if cur:
+        devs.append(cur)
+    r["vulkan_devices"] = [d for d in devs if d.get("deviceName")]
+    return r
+
+
+def load_manifest(data: Path, runtime: bool = True) -> dict:
+    """The system image's and the seed's build manifests plus what runs now: written to each run as manifest.json."""
+    def rd(p: Path) -> dict:
+        try:
+            return json.loads(p.read_text())
+        except (OSError, ValueError):
+            return {}
+    return dict(format=FORMAT, system=rd(OPT / "manifest.json"), seed=rd(data / "seed" / "MANIFEST.json"),
+                runtime=runtime_versions() if runtime else {})
+
+
+def _pkgs(man: dict, pattern: str) -> dict:
+    return {k: v for k, v in man.get("system", {}).get("packages", {}).items() if re.match(pattern, k)}
+
+
+def tools_for(step: str, man: dict, extra: dict | None = None) -> dict:
+    """The exact versions behind one step's results: copied from the manifest into the step's entry in run.json."""
+    sysm, seed, rt = man.get("system", {}), man.get("seed", {}), man.get("runtime", {})
+    t: dict = dict(stick=dict((sysm.get("stick") or {}), format=FORMAT["version"]), kernel=rt.get("kernel", ""))
+    images = seed.get("images", {})
+    cuda = {k: v for k, v in images.items() if "cuda" in k}
+    cpu = {k: v for k, v in images.items() if "cuda" not in k}
+    if step.startswith("cpu-"):
+        t["images"] = cpu
+    elif step.startswith(("gpu-", "pcie-")):
+        t.update(images=cuda, nvidia_driver=rt.get("nvidia_driver", ""))
+    elif step == "opencl":
+        t.update(packages=_pkgs(man, r"(clpeak|clinfo|ocl-icd|intel-opencl-icd|libnvidia-compute|mesa-opencl)"),
+                 nvidia_driver=rt.get("nvidia_driver", ""))
+    elif step == "vkprobe":
+        t.update(vkprobe=sysm.get("files", {}).get("bin/vkprobe", {}),
+                 packages=_pkgs(man, r"(libvulkan1|mesa-vulkan-drivers|libnvidia-gl-)"),
+                 vulkan_devices=rt.get("vulkan_devices", []))
+    elif step in ("rocm", "oneapi"):
+        t["vendor"] = seed.get("vendor", {}).get(step, {})
+    elif step == "llama-bench":
+        t.update({"llama.cpp": seed.get("llama.cpp", {}), "models": seed.get("models", {}), "images": cuda,
+                  "nvidia_driver": rt.get("nvidia_driver", ""), "vulkan_devices": rt.get("vulkan_devices", []),
+                  "packages": _pkgs(man, r"(libvulkan1|mesa-vulkan-drivers|libnvidia-gl-)")})
+    elif step == "mlc":
+        t["mlc"] = seed.get("tools", {}).get("mlc", {})
+    elif step == "blender":
+        t["blender-benchmark"] = seed.get("tools", {}).get("blender-benchmark", {})
+    t.update(extra or {})
+    return t
+
+
+def mlc_version(rundir: Path) -> str:
+    f = rundir / "mlc" / "idle_latency.txt"
+    m = re.search(r"Memory Latency Checker\s*-\s*(v[\w.]+)", f.read_text()) if f.exists() else None
+    return m.group(1) if m else ""
+
+
 def main() -> int:
     def on_term(*_):
         raise Stopped()
@@ -1084,7 +1166,10 @@ def main() -> int:
     rundir = new_run_dir(data / "runs", fp)
     log = rundir / "stick.log"
     start = dt.datetime.now(dt.timezone.utc)
-    run = dict(run=rundir.name, stick=version, fingerprint=fp, fingerprint_stable=stable,
+    man = load_manifest(data, runtime=False)          # runtime versions once drivers and Docker are up
+    stick_info = dict(man["system"].get("stick") or dict(build=version))
+    run = dict(format=FORMAT, run=rundir.name, stick=stick_info, seed=dict(build=man["seed"].get("build", "")),
+               fingerprint=fp, fingerprint_stable=stable,
                start_utc=start.isoformat(timespec="seconds"), clock_note="machine RTC; may be wrong",
                questions={}, status="running")
     (rundir / "run.json").write_text(json.dumps(run, indent=1))
@@ -1098,6 +1183,8 @@ def main() -> int:
         run["stick_read"] = stick_read_speed(data)
         say(f"stick read: {run['stick_read']}", log)
         run["docker"] = start_docker(data, log)
+        man["runtime"] = runtime_versions()
+        (rundir / "manifest.json").write_text(json.dumps(man, indent=1))
         RUN.mkdir(parents=True, exist_ok=True)
         tk = prepare_toolkits(data)
         cfg = RUN / "hwq.json"
@@ -1115,6 +1202,7 @@ def main() -> int:
                 if skip:
                     run["questions"][q] = dict(skipped=skip); say(f"{q}: skipped ({skip})", log); continue
                 run["questions"][q] = run_question(q, f, rundir, cfg, log)
+                run["questions"][q]["tools"] = tools_for(q, man)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
             for name, step in (("mlc", lambda: run_mlc(data, rundir, log)),
                                ("opencl", lambda: run_opencl(rundir, log)),
@@ -1124,6 +1212,7 @@ def main() -> int:
                                ("llama-bench", lambda: run_llama(data, rundir, cuda_image, nvidia, log)),
                                ("blender", lambda: run_blender(data, rundir, log))):
                 run["questions"][name] = step()
+                run["questions"][name]["tools"] = tools_for(name, man, dict(mlc_version=mlc_version(rundir)) if name == "mlc" else None)
                 if run["questions"][name].get("skipped"):
                     say(f"{name}: skipped ({run['questions'][name]['skipped']})", log)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
@@ -1141,7 +1230,8 @@ def main() -> int:
     hw = run.get("hardware", {})
     append_index(data, dict(run=rundir.name, start_utc=run["start_utc"], fingerprint=fp, cpu=hw.get("cpu", ""),
                             board=hw.get("board", ""), gpus="; ".join(hw.get("gpus", [])),
-                            ram=f"{hw.get('ram_gib', '')} GiB", status=run["status"], stick=version))
+                            ram=f"{hw.get('ram_gib', '')} GiB", status=run["status"],
+                            stick=f"{stick_info.get('version', '')} ({version})"))
     say(f"finished: {run['status']}", log)
     sh(["systemctl", "stop", "docker", "containerd"], timeout=300)
     sh(["umount", "/var/lib/containerd"], timeout=120)

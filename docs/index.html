@@ -70,6 +70,19 @@
   .steps { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .machine { font-size: 0.85rem; color: var(--muted); }
   .empty { padding: 40px 20px; text-align: center; color: var(--muted); }
+  .versions { font-size: 0.9rem; color: var(--muted); }
+  .versions b { font-weight: 500; color: var(--ink); }
+  tr.run { cursor: pointer; }
+  tr.run:hover td { background: color-mix(in srgb, var(--chip) 45%, transparent); }
+  tr.run td:first-child button { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+  tr.detail td { background: var(--paper); padding: 16px 20px 22px; }
+  .detail h3 { font: 600 1.05rem "Barlow Semi Condensed", sans-serif; margin: 0 0 6px; }
+  .detail .meta { color: var(--muted); margin: 0 0 14px; font-size: 0.92rem; }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px 22px; }
+  .step h4 { font: 600 0.98rem "Barlow Semi Condensed", sans-serif; margin: 0 0 4px; }
+  .step .result-failed { color: var(--warn); } .step .result-ok { color: var(--ok); } .step .result-skipped { color: var(--muted); }
+  .step dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 12px; margin: 0; font-size: 0.86rem; }
+  .step dt { color: var(--muted); overflow-wrap: anywhere; } .step dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; text-align: right; }
   footer { margin-top: 28px; color: var(--muted); font-size: 0.92rem; max-width: 80ch; }
   @media (max-width: 640px) { header { grid-template-columns: 1fr; } main { padding-top: 28px; } }
 </style>
@@ -84,7 +97,8 @@
       <a href="data.json">data.json</a>
     </nav>
     <p class="lede">Every run of the rigsim measurement stick: a machine booted from the stick, measured its CPU,
-      memory, GPUs, llama.cpp and Blender unattended, and powered off. Open a run for its raw files.</p>
+      memory, GPUs, llama.cpp and Blender unattended, and powered off. Select a run for the exact versions of
+      every tool behind it; “files” opens its raw data.</p>
   </header>
 
   <div class="tools">
@@ -95,7 +109,7 @@
   <div class="table-wrap">
     <table>
       <thead><tr id="head"></tr></thead>
-      <tbody id="rows"><tr><td class="empty" colspan="8">Loading runs…</td></tr></tbody>
+      <tbody id="rows"><tr><td class="empty" colspan="10">Loading runs…</td></tr></tbody>
     </table>
   </div>
 
@@ -114,10 +128,12 @@ const COLS = [
   { key: "ram_gib", label: "RAM (GiB)", cls: "num", num: true },
   { key: "board", label: "Board" },
   { key: "steps_ok", label: "Steps", num: true },
+  { key: "versions", label: "Versions", sortVal: r => r.versions.nvidia_driver || r.versions.kernel || "" },
+  { key: "stick", label: "Stick", sortVal: r => r.stick.split(".").map(n => n.padStart(4, "0")).join(".") },
   { key: "status", label: "Status" },
   { key: "run", label: "Run" },
 ];
-let runs = [], sort = { key: "date", dir: -1 };
+let runs = [], sort = { key: "date", dir: -1 }, open = new Set();
 
 function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
@@ -128,8 +144,27 @@ function cell(r, c) {
       + (r.steps_skipped ? `, ${r.steps_skipped} skipped` : "") + `</span>`;
     case "status": return `<span class="${r.status === "done" ? "status-ok" : "status-bad"}">${esc(r.status)}</span>`;
     case "run": return `<a href="${REPO}${encodeURIComponent(r.run)}">files</a><div class="machine">machine ${esc(r.machine.slice(0, 8))}</div>`;
+    case "date": return `<button type="button" aria-expanded="${open.has(r.run)}" aria-label="Show versions and steps of this run">${esc(r.date)}</button>`;
+    case "versions": {
+      const v = r.versions || {};
+      const parts = [["driver", v.nvidia_driver], ["llama.cpp", v.llama_cpp], ["CUDA", v.cuda]].filter(x => x[1]);
+      return `<span class="versions">${parts.map(([k, x]) => `${k} <b>${esc(x)}</b>`).join("<br>") || "—"}</span>`;
+    }
+    case "stick": return `${esc(r.stick || "—")}<div class="machine">${esc(r.stick_build)}${r.stick_dirty ? " (local changes)" : ""}</div>`;
     default: return esc(r[c.key]);
   }
+}
+
+function detail(r) {
+  const v = r.versions || {};
+  const meta = [`stick ${r.stick || "?"} (${r.stick_build}${r.stick_dirty ? ", local changes" : ""})`,
+    r.stick_commit ? `commit ${r.stick_commit.slice(0, 12)}` : "", r.format ? `format ${r.format}` : "",
+    v.kernel ? `kernel ${v.kernel}` : "", v.mesa ? `Mesa ${v.mesa}` : ""].filter(Boolean).map(esc).join(", ");
+  const steps = (r.steps || []).map(s => `<div class="step"><h4>${esc(s.name)} <span class="result-${s.result}">${s.result}</span></h4>`
+    + (s.note ? `<p class="meta">${esc(s.note)}</p>` : "")
+    + `<dl>${s.tools.map(([k, x]) => `<dt>${esc(k)}</dt><dd>${esc(x)}</dd>`).join("")}</dl></div>`).join("");
+  return `<tr class="detail"><td colspan="${COLS.length}"><h3>Versions behind this run</h3><p class="meta">${meta}</p>`
+    + `<div class="steps-grid">${steps || "<p class=meta>No per-step versions in this run.</p>"}</div></td></tr>`;
 }
 
 function head() {
@@ -154,7 +189,8 @@ function render() {
   } else if (!list.length) {
     body.innerHTML = `<tr><td class="empty" colspan="${COLS.length}">No run matches “${esc(q)}”.</td></tr>`;
   } else {
-    body.innerHTML = list.map(r => `<tr>${COLS.map(c => `<td class="${c.cls || ""}">${cell(r, c)}</td>`).join("")}</tr>`).join("");
+    body.innerHTML = list.map(r => `<tr class="run" data-run="${esc(r.run)}">${COLS.map(c => `<td class="${c.cls || ""}">${cell(r, c)}</td>`).join("")}</tr>`
+      + (open.has(r.run) ? detail(r) : "")).join("");
   }
   const machines = new Set(runs.map(r => r.machine)).size;
   document.getElementById("headline").textContent =
@@ -170,6 +206,14 @@ document.getElementById("head").addEventListener("click", e => {
   render();
 });
 document.getElementById("filter").addEventListener("input", render);
+document.getElementById("rows").addEventListener("click", e => {
+  if (e.target.closest("a")) return;
+  const tr = e.target.closest("tr.run");
+  if (!tr) return;
+  const id = tr.dataset.run;
+  open.has(id) ? open.delete(id) : open.add(id);
+  render();
+});
 
 fetch("data.json").then(r => r.json()).then(d => { runs = d.runs || []; render(); })
   .catch(() => { document.getElementById("rows").innerHTML =

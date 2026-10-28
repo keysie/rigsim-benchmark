@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "stick" / "payload"))
 from stick import INVENTORY, MAC, PRIVATE_IPV4, SENSITIVE  # noqa: E402  (the stick's own definitions: one source of truth)
 
+FORMAT_NAME = "rigsim-stick-run"
+KNOWN_VERSIONS = {"1.0"}                           # results/FORMAT.md: minor versions only add
 RUN_ID = re.compile(r"^(\d{8}T\d{6}Z)-([0-9a-f]{12})-([0-9a-f]{4})$")
 COMPLETE = {"done", "done with failures"}          # finished; "stopped" and "error: ..." are not complete
 MAX_FILE = 25 * 2**20
@@ -28,7 +30,7 @@ N = r"[A-Za-z0-9][A-Za-z0-9._+-]*"                  # a name the stick builds fr
 INVENTORY_FILES = sorted({name for name, _ in INVENTORY} | {"summary.json"})
 RUNNER_FILES = "baseline.json|restore.json|results.jsonl|session.json|setup.log|state.json|stopped.json|testdirs.json|runner.log"
 LAYOUT = [re.compile(p) for p in (
-    r"run\.json", r"stick\.log", r"samples-drm\.jsonl", r"samples-nvidia\.csv",
+    r"run\.json", r"manifest\.json", r"stick\.log", r"samples-drm\.jsonl", r"samples-nvidia\.csv",
     r"inventory/spd-\d+-[0-9a-f]{4}\.hex",
     r"inventory/(" + "|".join(map(re.escape, INVENTORY_FILES)) + r")",
     rf"q/{N}/({RUNNER_FILES})", rf"q/{N}/samples/[0-9a-f]{{10}}\.csv",
@@ -39,7 +41,7 @@ LAYOUT = [re.compile(p) for p in (
     rf"(rocm|oneapi)/(info\.jsonl|image\.txt|dev\d+-{N}\.(jsonl|txt))",
     rf"blender/(devices\.txt|{N}\.(json|log))",
 )]
-STRICT_JSON = re.compile(r"(run|inventory/summary|inventory/lshw|q/[^/]+/(baseline|restore|session|state|stopped|testdirs)"
+STRICT_JSON = re.compile(r"(run|manifest|inventory/summary|inventory/lshw|q/[^/]+/(baseline|restore|session|state|stopped|testdirs)"
                          r"|opencl/clpeak-[^/]+)\.json$")
 
 
@@ -93,6 +95,19 @@ def check_run(d: Path) -> list[str]:
         r = json.loads(rj.read_text())
     except ValueError:
         return errs                                                     # reported above
+    fmt = r.get("format") or {}
+    if fmt.get("name") != FORMAT_NAME:
+        e("run.json", "no run format (stick builds before 0.9.0 are not accepted)")
+        return errs
+    if fmt.get("version") not in KNOWN_VERSIONS:
+        major = str(fmt.get("version", "")).split(".")[0]
+        e("run.json", f"format {fmt.get('version')!r} is " + ("newer than this repository knows: update it"
+                                                              if major == "1" else "not a known version"))
+        return errs
+    st = r.get("stick") or {}
+    if not (isinstance(st, dict) and re.fullmatch(r"\d+\.\d+\.\d+", str(st.get("version", "")))
+            and re.fullmatch(r"[0-9a-f]{40}", str(st.get("commit", ""))) and st.get("scripts_sha256")):
+        e("run.json", "stick without version, commit and scripts_sha256")
     if r.get("run") != d.name:
         e("run.json", f"names run {r.get('run')!r}, folder is {d.name!r}")
     if r.get("fingerprint") != m.group(2):
@@ -109,7 +124,16 @@ def check_run(d: Path) -> list[str]:
     for q, v in (r.get("questions") or {}).items():
         if not isinstance(v, dict) or not ("rc" in v or "skipped" in v):
             e("run.json", f"step {q!r} has no result")
-    for f in ("stick.log", "inventory/summary.json", "inventory/cpuinfo.txt", "inventory/dmidecode.txt"):
+        elif not isinstance(v.get("tools"), dict) or "stick" not in v["tools"]:
+            e("run.json", f"step {q!r} has no tool versions")
+    try:
+        man = json.loads((d / "manifest.json").read_text())
+        for k in ("system", "seed", "runtime"):
+            if not isinstance(man.get(k), dict):
+                e("manifest.json", f"no {k!r} part")
+    except (OSError, ValueError):
+        pass                                                            # missing / invalid: reported below / above
+    for f in ("manifest.json", "stick.log", "inventory/summary.json", "inventory/cpuinfo.txt", "inventory/dmidecode.txt"):
         if not (d / f).is_file():
             e(f, "missing")
     return errs

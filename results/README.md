@@ -1,10 +1,13 @@
 # Results
 
-One folder per run in `runs/`, exactly as the stick wrote it. Licence: [CC BY 4.0](LICENSE).
+One folder per run in `runs/`, exactly as the stick wrote it. Licence: [CC BY 4.0](LICENSE). The format, its
+version and the compatibility rules: [FORMAT.md](FORMAT.md).
 
 ```
 runs/<UTC time>-<machine>-<random>/
-    run.json          what ran: machine (salted hash), CPU, board, RAM, GPUs, driver, status of every step
+    run.json          format version, stick version, machine (salted hash), CPU, board, RAM, GPUs, every step's
+                      result and the exact tool versions behind it
+    manifest.json     every component's version: system image, seed, and what actually ran
     inventory/        lscpu, dmidecode, lshw, lspci, memory SPD, nvidia-smi … (serials, UUIDs, MACs removed)
     q/<question>/     bench runner output per question (results.jsonl, samples, baseline)
     vkprobe/ rocm/ oneapi/ llama/ mlc/ opencl/ blender/   raw output per tool

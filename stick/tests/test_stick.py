@@ -654,3 +654,66 @@ def test_spd_dump_zeroes_serial_bytes(tmp_path):
         assert all(b[i] == 0 for i in serial) and b[serial.start - 1] == 0xAB and b[serial.stop] == 0xAB
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
     assert "nvidia-modprobe" in c and "the NVIDIA Vulkan driver misses libraries" in c
+
+
+# --- versions: format, manifest, tools per step ------------------------------------------------------------------
+def test_tools_for_each_step_come_from_the_manifest():
+    man = dict(system=dict(stick=dict(version="0.9.0", commit="a" * 40), packages={"clpeak": "1.1.2-1", "libvulkan1": "1.3.275",
+                                                                              "mesa-vulkan-drivers": "25.0.7", "docker.io": "26"},
+                           files={"bin/vkprobe": dict(sha256="c" * 64)}),
+               seed={"images": {"nvidia/cuda:12.8.1-devel-ubuntu24.04": dict(digest="nvidia/cuda@sha256:1"),
+                                "debian:trixie": dict(digest="debian@sha256:2")},
+                     "llama.cpp": {"cuda": dict(commit="d" * 40)}, "models": {"m.gguf": dict(sha256="e" * 64)},
+                     "vendor": {"rocm": dict(rocm_version="6.4.1")}, "tools": {"mlc": dict(sha256="f" * 64)}},
+               runtime=dict(kernel="7.0.0", nvidia_driver="580.178.04", vulkan_devices=[dict(deviceName="RTX 3080")]))
+    t = stick.tools_for
+    assert t("cpu-gemm", man)["images"] == {"debian:trixie": dict(digest="debian@sha256:2")}
+    assert set(t("gpu-gemm", man)["images"]) == {"nvidia/cuda:12.8.1-devel-ubuntu24.04"} and t("gpu-gemm", man)["nvidia_driver"]
+    assert t("opencl", man)["packages"] == {"clpeak": "1.1.2-1"}
+    assert t("vkprobe", man)["vkprobe"]["sha256"] == "c" * 64 and t("vkprobe", man)["vulkan_devices"]
+    assert t("rocm", man)["vendor"] == dict(rocm_version="6.4.1")
+    assert t("llama-bench", man)["llama.cpp"]["cuda"]["commit"] == "d" * 40 and t("llama-bench", man)["models"]
+    assert t("mlc", man, dict(mlc_version="v3.11b"))["mlc_version"] == "v3.11b"
+    for step in ("cpu-gemm", "blender", "mlc", "anything"):
+        assert t(step, man)["stick"]["version"] == "0.9.0" and t(step, man)["stick"]["format"] == stick.FORMAT["version"]
+
+
+def test_mlc_version_from_its_output(tmp_path):
+    (tmp_path / "mlc").mkdir()
+    (tmp_path / "mlc" / "idle_latency.txt").write_text("Intel(R) Memory Latency Checker - v3.11b\nCommand line parameters\n")
+    assert stick.mlc_version(tmp_path) == "v3.11b"
+
+
+def test_build_writes_both_manifests_and_the_stick_version():
+    b = (HERE / "build.sh").read_text()
+    assert 'STICK_VERSION="$(cat "$S/VERSION")"' in b and '"$P/STICK_VERSION"' in b
+    assert 'manifest.py" rootfs "$ROOT" "$P"' in b and 'manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"' in b
+    assert b.index('manifest.py" rootfs') < b.index('step "squashfs"')        # inside the image, before it is packed
+    import re
+    assert re.fullmatch(r"\d+\.\d+\.\d+", (HERE / "VERSION").read_text().strip())
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert 'run["questions"][q]["tools"] = tools_for(q, man)' in src and '(rundir / "manifest.json").write_text' in src
+
+
+def test_manifest_tool(tmp_path, monkeypatch):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("manifest", HERE / "tools" / "manifest.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    assert M.dpkg_list("nvidia-utils-580\t580.178.04\nlibfoo\t1\nmesa-vulkan-drivers\t25.0.7\n", M.ROOTFS_PACKAGES) == \
+        {"mesa-vulkan-drivers": "25.0.7", "nvidia-utils-580": "580.178.04"}
+    p = tmp_path / "payload"; (p / "runner").mkdir(parents=True)
+    (p / "stick.py").write_text("a"); (p / "runner" / "hwq.py").write_text("b")
+    h1 = M.tree_sha256(p); (p / "stick.py").write_text("c")
+    assert M.tree_sha256(p) != h1                                         # any script change changes the fingerprint
+    seed = tmp_path / "seed"
+    (seed / "llama" / "cuda").mkdir(parents=True); (seed / "llama" / "cuda" / "COMMIT").write_text("d" * 40 + "\n")
+    (seed / "llama" / "cuda" / "llama-bench").write_bytes(b"x")
+    (seed / "models").mkdir(); (seed / "models" / "SHA256SUMS").write_text("e" * 64 + "  m.gguf\n")
+    (seed / "debs").mkdir(); (seed / "debs" / "libdnnl3_3.5.3-1_amd64.deb").write_bytes(b"")
+    (seed / "images").mkdir()
+    monkeypatch.setattr(M, "sh", lambda cmd: "")
+    monkeypatch.setenv("IMAGES", "debian:trixie")
+    m = M.seed(seed, tmp_path / "out.json")
+    assert m["llama.cpp"]["cuda"]["commit"] == "d" * 40 and "llama-bench" in m["llama.cpp"]["cuda"]["files"]
+    assert m["models"] == {"m.gguf": dict(sha256="e" * 64)}
+    assert m["images"]["debian:trixie"]["offline_packages"] == {"libdnnl3": "3.5.3-1"}

@@ -18,13 +18,18 @@ def make_run(base: Path, name: str = RUN, **over) -> Path:
     (d / "inventory").mkdir(parents=True)
     (d / "q" / "cpu-gemm" / "samples").mkdir(parents=True)
     (d / "vkprobe").mkdir(); (d / "llama").mkdir()
-    run = dict(run=name, fingerprint=name.split("-")[1], start_utc="2026-10-27T23:48:40+00:00",
-               end_utc="2026-10-28T01:30:00+00:00", stick="abc123", status="done with failures",
+    tools = dict(stick=dict(version="0.9.0", commit="a" * 40), kernel="7.0.0-38-generic")
+    run = dict(format=dict(name="rigsim-stick-run", version="1.0"), run=name, fingerprint=name.split("-")[1],
+               start_utc="2026-10-27T23:48:40+00:00", end_utc="2026-10-28T01:30:00+00:00",
+               stick=dict(version="0.9.0", build="abcdef1", commit="a" * 40, dirty=False, scripts_sha256="b" * 64),
+               status="done with failures",
                hardware=dict(cpu="i7-13700K", board="Z790", ram_gib=31.1, gpus=["NVIDIA GeForce RTX 3080"]),
-               questions={"cpu-gemm": dict(rc=0), "rocm": dict(skipped="no AMD GPU"), "gpu-gemm": dict(rc=1)})
+               questions={"cpu-gemm": dict(rc=0, tools=tools), "rocm": dict(skipped="no AMD GPU", tools=tools),
+                          "gpu-gemm": dict(rc=1, tools=tools)})
     run.update(over)
     (d / "run.json").write_text(json.dumps(run))
     (d / "stick.log").write_text("23:48:40 run\n")
+    (d / "manifest.json").write_text(json.dumps(dict(format=run["format"], system={}, seed={}, runtime={})))
     (d / "samples-drm.jsonl").write_text('{"t": 1}\n')
     for f in ("cpuinfo.txt", "dmidecode.txt", "lspci.txt"):
         (d / "inventory" / f).write_text("Base Board Information\n\tManufacturer: Gigabyte\n")
@@ -114,3 +119,22 @@ def test_new_stick_files_allowed_and_local_ips_rejected(tmp_path):
     assert V.check_run(d) == []
     (d / "llama" / "x.log").write_text("dial udp 192.168.130.5:53: unreachable\n")
     assert any("local IP address" in e for e in V.check_run(d))
+
+
+
+@pytest.mark.parametrize("change, expect", [
+    (dict(format=None), "no run format"),
+    (dict(format=dict(name="rigsim-stick-run", version="1.7")), "newer than this repository knows"),
+    (dict(format=dict(name="rigsim-stick-run", version="2.0")), "not a known version"),
+    (dict(stick="abcdef1"), "stick without version"),
+    (dict(questions={"cpu-gemm": dict(rc=0)}), "no tool versions"),
+])
+def test_format_versions_and_tool_versions_required(tmp_path, change, expect):
+    errs = V.check_run(make_run(tmp_path, **change))
+    assert any(expect in e for e in errs), errs
+
+
+def test_manifest_required(tmp_path):
+    d = make_run(tmp_path)
+    (d / "manifest.json").unlink()
+    assert any("manifest.json: missing" in e for e in V.check_run(d))
