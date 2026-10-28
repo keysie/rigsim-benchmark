@@ -107,7 +107,7 @@ def main(argv: list[str]) -> int:
     for src, dst, n, skip, label in items:
         if not os.path.exists(dst):
             bad.append(f"{label}: missing on the stick"); bar.add(2 * n); continue
-        if os.path.isfile(dst) and os.path.getsize(dst) != n:
+        if skip is None and os.path.isfile(dst) and os.path.getsize(dst) != n:    # the image: a prefix of the device
             bad.append(f"{label}: size {os.path.getsize(dst)} on the stick, {n} here"); bar.add(2 * n); continue
         if digest(src, n, bar, label, skip) != digest(dst, n, bar, label, skip):
             bad.append(f"{label}: content differs")
