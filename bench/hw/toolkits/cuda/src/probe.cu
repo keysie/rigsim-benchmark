@@ -323,7 +323,7 @@ __global__ void k_empty(int* p, int n) { if (n == -1) p[threadIdx.x] = 1; }
 static double median_of(std::vector<double> v) { std::sort(v.begin(), v.end()); return v[v.size() / 2]; }
 
 static int launch_mode(int argc, char** argv) {
-    int count = atoi(arg(argc, argv, "--count", "2000"));
+    int count = atoi(arg(argc, argv, "--count", "2000").c_str());
     int* d; CK(cudaMalloc(&d, 1024));
     cudaStream_t s; CK(cudaStreamCreateWithFlags(&s, cudaStreamNonBlocking));
     cudaEvent_t a, b; CK(cudaEventCreate(&a)); CK(cudaEventCreate(&b));

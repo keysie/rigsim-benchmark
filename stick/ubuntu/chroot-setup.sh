@@ -43,6 +43,13 @@ apt-get install -y --no-install-recommends "libnvidia-gl-${NVIDIA_BRANCH}" || ec
 # nvidia-modprobe creates the device nodes the Vulkan driver opens (nvidia-uvm, nvidia-modeset) without X;
 # first trial run: the NVIDIA ICD was installed but the loader could not create an instance through it
 apt-get install -y --no-install-recommends nvidia-modprobe || echo "WARN: no nvidia-modprobe"
+# NVIDIA's Vulkan ICD points at libGLX_nvidia, which cannot create an instance without an X server (second trial
+# run: modules, device nodes and libraries all there, still "Could not get vkCreateInstance"). The EGL library
+# carries the same Vulkan driver and works headless (NVIDIA container toolkit issue 191).
+ICD=/usr/share/vulkan/icd.d/nvidia_icd.json
+if [ -f "$ICD" ] && [ -e /usr/lib/x86_64-linux-gnu/libEGL_nvidia.so.0 ]; then
+  sed -i 's/libGLX_nvidia\.so\.0/libEGL_nvidia.so.0/' "$ICD"; grep library_path "$ICD"
+fi
 GLX=/usr/lib/x86_64-linux-gnu/libGLX_nvidia.so.0
 if [ -e "$GLX" ] && ldd "$GLX" | grep -q 'not found'; then
   echo "the NVIDIA Vulkan driver misses libraries:" >&2; ldd "$GLX" | grep 'not found' >&2; exit 1

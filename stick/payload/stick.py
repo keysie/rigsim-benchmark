@@ -784,6 +784,12 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
     sh(["docker", "rm", "-f", name], timeout=60)
     base = ["docker", "run", "--rm", "--network", "none", *devs, "-v", f"{data / 'seed' / 'models'}:/models:ro", tag]
     probe = "/rigsim/probe" if kind == "rocm" else "/rigsim/probe_sycl"
+    # oneAPI's device discovery hung past 300 s on an i7-13700K's UHD 770 (second trial run): only Level Zero GPUs,
+    # and sycl-ls's own account first (bounded), so the next run shows where it stops
+    if kind == "oneapi":
+        base = [*base[:-1], "-e", "ONEAPI_DEVICE_SELECTOR=level_zero:gpu", base[-1]]
+        _, ls = sh([*base, "/rigsim/run.sh", "timeout", "180", "sycl-ls", "--verbose"], timeout=240)
+        (d / "sycl-ls.txt").write_text(scrub(ls))
     _, info = sh([*base, "/rigsim/run.sh", probe, "info"], timeout=300)
     (d / "info.jsonl").write_text(scrub(info))
     _, meta = sh([*base, "sh", "-c", "cat /rigsim/TARGETS /rigsim/ROCM_VERSION /rigsim/ONEAPI_VERSION /rigsim/LLAMA_COMMIT 2>/dev/null; "

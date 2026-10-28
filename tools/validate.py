@@ -38,7 +38,7 @@ LAYOUT = [re.compile(p) for p in (
     rf"opencl/clinfo-list\.txt", rf"opencl/clpeak-{N}\.(txt|json)",
     rf"llama/{N}\.(jsonl|log|txt)",
     rf"vkprobe/(list|dev\d+-{N})\.jsonl",
-    rf"(rocm|oneapi)/(info\.jsonl|image\.txt|dev\d+-{N}\.(jsonl|txt))",
+    rf"(rocm|oneapi)/(info\.jsonl|image\.txt|sycl-ls\.txt|dev\d+-{N}\.(jsonl|txt))",
     rf"blender/(devices\.txt|{N}\.(json|log))",
 )]
 STRICT_JSON = re.compile(r"(run|manifest|inventory/summary|inventory/lshw|q/[^/]+/(baseline|restore|session|state|stopped|testdirs)"

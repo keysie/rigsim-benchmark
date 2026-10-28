@@ -862,3 +862,15 @@ def test_rootfs_cached_for_a_week_unless_forced():
     assert b.index('export ROOTFS_BUILT') < b.index('manifest.py" rootfs')
     assert "ROOTFS_BUILT" in (HERE / "tools" / "manifest.py").read_text()
     assert "REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS" in b                                       # passed into the build container
+
+
+def test_second_trial_run_fixes():
+    setup = (HERE / "overlay" / "toolkits" / "cpu" / "setup.sh").read_text()
+    assert "apt-get install -y -qq --no-install-recommends --no-download" in setup and "dpkg --configure -a" in setup
+    assert "offline packages incomplete" in setup
+    probe = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "src" / "probe.cu").read_text()
+    assert 'atoi(arg(argc, argv, "--count", "2000").c_str())' in probe
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    assert "s/libGLX_nvidia\\\\.so\\\\.0/libEGL_nvidia.so.0/" in c
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert '"ONEAPI_DEVICE_SELECTOR=level_zero:gpu"' in src and '"sycl-ls", "--verbose"' in src
