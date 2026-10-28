@@ -580,6 +580,8 @@ def test_flash_rereads_without_partprobe():
 def test_stick_checks_itself_before_measuring(tmp_path):
     b = (HERE / "build.sh").read_text()
     assert "md5sum > md5sum.txt" in b and b.index("md5sum.txt") < b.index('step "ISO (BIOS + UEFI)"')
+    assert "! -path ./boot/grub/bios.img" in b                       # xorriso patches it: never matches
+    assert b.index('step "ISO checksums') > b.index('step "ISO (BIOS + UEFI)"') and "md5sum --quiet -c md5sum.txt" in b
     unit = (HERE / "ubuntu/rootfs/etc/systemd/system/rigsim-stick.service").read_text()
     assert "casper-md5check.service" in unit.split("After=")[1].splitlines()[0]
     f = tmp_path / "r.json"

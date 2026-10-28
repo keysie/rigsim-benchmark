@@ -168,13 +168,24 @@ sudo chown -R "$(id -u):$(id -g)" "$ISO"
 
 # checksums of every file on the ISO: casper-md5check verifies the stick on each boot (a corrupted stick shows in
 # the run's record instead of as odd measurements)
-(cd "$ISO" && find . -type f ! -name md5sum.txt -print0 | sort -z | xargs -0 md5sum > md5sum.txt)
+# the BIOS boot image is left out: xorriso writes the boot-info table into it (-boot-info-table, --grub2-boot-info),
+# so its bytes on the ISO differ from the file here (first stick check after the fix: "fail")
+(cd "$ISO" && find . -type f ! -name md5sum.txt ! -path ./boot/grub/bios.img ! -path ./boot/grub/boot.cat -print0 \
+  | sort -z | xargs -0 md5sum > md5sum.txt)
 step "ISO (BIOS + UEFI)" xorriso -as mkisofs -iso-level 3 -full-iso9660-filenames -volid "RIGSIM-STICK" \
   -eltorito-boot boot/grub/bios.img -no-emul-boot -boot-load-size 4 -boot-info-table --eltorito-catalog boot/grub/boot.cat \
   --grub2-boot-info --grub2-mbr "$W/boot_hybrid.img" \
   -eltorito-alt-boot -e boot/grub/efiboot.img -no-emul-boot -append_partition 2 0xef "$ISO/boot/grub/efiboot.img" \
   -output "$OUT/rigsim-stick$SUFFIX.iso" -graft-points "$ISO" /boot/grub/bios.img="$ISO/boot/grub/bios.img" \
   /boot/grub/efiboot.img="$ISO/boot/grub/efiboot.img"
+# the same check the stick runs at boot, here: every listed file read back out of the finished ISO
+verify_iso() {
+  local x="$W/iso-check"; rm -rf "$x"; mkdir -p "$x"
+  xorriso -osirrox on -indev "$OUT/rigsim-stick$SUFFIX.iso" -extract / "$x" >/dev/null 2>&1
+  (cd "$x" && md5sum --quiet -c md5sum.txt); local rc=$?
+  chmod -R u+w "$x"; rm -rf "$x"; return $rc
+}
+step "ISO checksums (as casper-md5check sees them)" verify_iso
 
 : > "$OUT/seed/images/DIGESTS"
 image_id() { docker image inspect -f '{{.Id}}' "$1"; }
