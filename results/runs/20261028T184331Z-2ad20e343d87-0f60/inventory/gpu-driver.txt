@@ -1,0 +1,22 @@
+xe                   4378624  0
+nvidia              14716928  2 nvidia_uvm,nvidia_modeset
+i915                 5025792  1
+ls: cannot access '/dev/kfd': No such file or directory
+crw-rw-rw- 1 root root 195, 254 Oct 28 18:42 /dev/nvidia-modeset
+crw-rw-rw- 1 root root 506,   0 Oct 28 18:42 /dev/nvidia-uvm
+crw-rw-rw- 1 root root 506,   1 Oct 28 18:42 /dev/nvidia-uvm-tools
+crw-rw-rw- 1 root root 195,   0 Oct 28 18:42 /dev/nvidia0
+crw-rw-rw- 1 root root 195, 255 Oct 28 18:42 /dev/nvidiactl
+
+/dev/dri:
+total 0
+drwxr-xr-x 2 root root        120 Oct 28 18:42 by-path
+crw-rw---- 1 root video  226,   1 Oct 28 18:42 card1
+crw-rw---- 1 root video  226,   2 Oct 28 18:42 card2
+crw-rw---- 1 root render 226, 128 Oct 28 18:42 renderD128
+crw-rw---- 1 root render 226, 129 Oct 28 18:42 renderD129
+
+/dev/nvidia-caps:
+total 0
+cr-------- 1 root root 509, 1 Oct 28 18:42 nvidia-cap1
+cr--r--r-- 1 root root 509, 2 Oct 28 18:42 nvidia-cap2

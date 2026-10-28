@@ -1,0 +1,20 @@
+NAME        MODEL                       SIZE ROTA TRAN   TYPE
+loop0                                   1.6G    1        loop
+sda         Samsung SSD 840 Series    232.9G    0 sata   disk
+├─sda1                                    1G    0        part
+├─sda2                                216.9G    0        part
+└─sda4                                 14.9G    0        part
+sdb         Samsung SSD 860 EVO 500GB 465.8G    0 sata   disk
+├─sdb1                                 23.4G    0        part
+└─sdb2                                419.1G    0        part
+sdc         SanDisk 3.2Gen1           114.6G    1 usb    disk
+├─sdc1                                  1.7G    1        part
+├─sdc2                                   10M    1        part
+└─sdc3                                106.6G    1        part
+nvme1n1     Samsung SSD 980 PRO 2TB     1.8T    0 nvme   disk
+└─nvme1n1p2                             1.6T    0 nvme   part
+nvme0n1     Samsung SSD 980 PRO 2TB     1.8T    0 nvme   disk
+├─nvme0n1p1                             600M    0 nvme   part
+├─nvme0n1p2                               2G    0 nvme   part
+├─nvme0n1p3                             1.7T    0 nvme   part
+└─nvme0n1p4                            68.9G    0 nvme   part

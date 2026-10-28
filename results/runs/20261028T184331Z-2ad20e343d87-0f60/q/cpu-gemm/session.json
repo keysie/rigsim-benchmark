@@ -1,0 +1,6 @@
+{
+ "name": "rigsim-hwbench-cpu-gemm",
+ "image": "debian:trixie",
+ "digest": "debian@sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259",
+ "t": 1793213934.9100075
+}
