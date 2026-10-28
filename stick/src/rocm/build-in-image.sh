@@ -31,7 +31,10 @@ for attempt in 1 2 3 4; do
   rm -rf b
   HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" cmake -B b -DGGML_HIP=ON \
     -DGPU_TARGETS="$(cat /rigsim/TARGETS)" -DAMDGPU_TARGETS="$(cat /rigsim/TARGETS)" -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
+    -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_HIP_FLAGS=-fPIC >/dev/null
+  # PIC: the HIP objects (ROCm's clang) go into a static library that the system linker puts into a PIE
+  # executable; without -fPIC: "relocation R_X86_64_32 ... can not be used when making a PIE object"
   if cmake --build b --target llama-bench test-backend-ops -j"$(nproc)" 2>&1 | tee /tmp/llama-build.log; then
     break                                              # pipefail: the pipeline fails when the build does
   fi

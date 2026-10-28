@@ -845,3 +845,8 @@ def test_llama_cpp_release_choice(tmp_path):
     assert run("release") == "v0.9.2" and run("latest-release") == "v0.10.0"
     assert 'LLAMA_REF="${LLAMA_REF:-release}"' in s and 'export LLAMA_SELECT="$LLAMA_REF"' in s
     assert "LLAMA_SELECT" in (HERE / "tools" / "manifest.py").read_text()
+
+
+def test_rocm_llama_build_is_position_independent():
+    s = (HERE / "src" / "rocm" / "build-in-image.sh").read_text()
+    assert "-DCMAKE_POSITION_INDEPENDENT_CODE=ON" in s and "-DCMAKE_HIP_FLAGS=-fPIC" in s
