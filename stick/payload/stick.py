@@ -836,6 +836,20 @@ def blender_device_types(devices_out: str) -> list[str]:
     return sorted(found, key=lambda t: ("CPU", "OPTIX", "CUDA", "HIP", "ONEAPI").index(t))
 
 
+def guessed_blender_types(drm: Path = DRM) -> list[str]:
+    """When the launcher cannot list devices (it asks opendata.blender.org first, the stick is offline): the types
+    this machine's GPUs would offer. Tried one by one; whatever the launcher refuses is recorded as failed."""
+    vendors = {_read(c / "device" / "vendor") for c in drm.glob("card[0-9]*") if "-" not in c.name}
+    t = ["CPU"]
+    if "0x10de" in vendors:
+        t += ["OPTIX", "CUDA"]
+    if "0x1002" in vendors:
+        t.append("HIP")
+    if "0x8086" in vendors:
+        t.append("ONEAPI")
+    return t
+
+
 def run_blender(data: Path, rundir: Path, log: Path) -> dict:
     b = data / "seed" / "blender"
     cli = b / "benchmark-launcher-cli"
@@ -849,7 +863,11 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                        timeout=300)
     (d / "devices.txt").write_text(scrub(r.stdout + r.stderr))
     runs = {}
-    for t in blender_device_types(r.stdout):
+    types, guessed = blender_device_types(r.stdout), False
+    if not types and "error" in (r.stdout + r.stderr).lower():
+        types, guessed = guessed_blender_types(), True
+        say(f"blender: launcher could not list devices (offline?); trying {types}", log)
+    for t in types:
         t0 = time.time()
         try:
             rr = subprocess.run([str(cli), "benchmark", "--blender-version", ver, "--device-type", t, "--json",
@@ -865,7 +883,8 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
         if "error" in (r.stdout + r.stderr).lower():          # e.g. the launcher wanted the network (offline stick)
             return dict(rc=1, error="the launcher failed before listing devices (blender/devices.txt)")
         return dict(skipped="the launcher found no device")
-    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, blender=ver, runs=runs)
+    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, blender=ver, runs=runs,
+                device_types_guessed=guessed)
 
 
 def should_power_off(data: Path, cmdline: str) -> bool:

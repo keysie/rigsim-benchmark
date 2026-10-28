@@ -717,3 +717,10 @@ def test_manifest_tool(tmp_path, monkeypatch):
     assert m["llama.cpp"]["cuda"]["commit"] == "d" * 40 and "llama-bench" in m["llama.cpp"]["cuda"]["files"]
     assert m["models"] == {"m.gguf": dict(sha256="e" * 64)}
     assert m["images"]["debian:trixie"]["offline_packages"] == {"libdnnl3": "3.5.3-1"}
+
+
+
+def test_blender_types_guessed_when_the_launcher_cannot_list_devices(tmp_path):
+    for card, vendor in (("card1", "0x8086"), ("card2", "0x10de")):
+        (tmp_path / card / "device").mkdir(parents=True); (tmp_path / card / "device" / "vendor").write_text(vendor)
+    assert stick.guessed_blender_types(tmp_path) == ["CPU", "OPTIX", "CUDA", "ONEAPI"]
