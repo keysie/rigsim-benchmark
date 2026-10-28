@@ -84,6 +84,8 @@
   .step dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 12px; margin: 0; font-size: 0.86rem; }
   .step dt { color: var(--muted); overflow-wrap: anywhere; } .step dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; text-align: right; }
   footer { margin-top: 28px; color: var(--muted); font-size: 0.92rem; max-width: 80ch; }
+  footer .promise { margin: 0 0 10px; }
+  footer .promise b { color: var(--ink); font-weight: 500; }
   @media (max-width: 640px) { header { grid-template-columns: 1fr; } main { padding-top: 28px; } }
 </style>
 </head>
@@ -114,6 +116,11 @@
   </div>
 
   <footer>
+    <p class="promise"><b>What the data promises:</b> everything that can influence a result is recorded — the exact
+      version of every tool and component, and every decision the stick made while being built or measuring
+      (fallbacks, skipped steps, overrides, the exact command lines). Runs are never changed after publication and
+      there is no list of known errors: judging whether a result is affected by a bug in some version is up to
+      whoever uses the data, from what each run records.</p>
     Data: <a href="https://github.com/keysie/rigsim-benchmark/blob/main/results/LICENSE">CC BY 4.0</a>,
     code: <a href="https://github.com/keysie/rigsim-benchmark/blob/main/LICENSE">Apache 2.0</a>.
     Machines are identified by a salted hash, never by serial numbers.

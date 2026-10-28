@@ -13,6 +13,14 @@ machine's own disks, and no serial numbers are kept.
 
 The data feeds [rigsim](https://github.com/keysie/rigsim), a simulator for local AI hosts, but stands on its own.
 
+## What the data does and does not promise
+
+Everything that can influence a result is recorded in the run: the exact version of every tool and component
+(`manifest.json`, and per step in `run.json` → `tools`), and every decision the stick made while being built or
+while measuring — fallbacks, skipped steps and why, overrides, dropped build targets, the exact command lines.
+Runs are never changed after publication, and there is no list of known errors. Judging whether a result is
+affected by a bug in some version is up to whoever uses the data, from what the data records.
+
 ## Contributing runs
 
 **The idea:** one USB stick, any machine. You build the stick once, boot your own machines and your friends' from
