@@ -104,3 +104,13 @@ def test_contribution_tools_and_licence_statement():
     wf = (ROOT / ".github" / "workflows" / "runs.yml").read_text()
     assert 'validate.py --pr "origin/${{ github.base_ref }}"' in wf and "tools/index.py" in wf
     assert shutil.which("bash") and subprocess.run(["bash", "-n", str(ROOT / "tools" / "contribute.sh")]).returncode == 0
+
+
+def test_new_stick_files_allowed_and_local_ips_rejected(tmp_path):
+    d = make_run(tmp_path)
+    (d / "samples-nvidia.csv").write_text("timestamp, index\n")
+    (d / "inventory" / "spd-0-0050.hex").write_text("# ee1004\n00 11\n")
+    (d / "inventory" / "vulkan-loader.txt").write_text("loader\n")
+    assert V.check_run(d) == []
+    (d / "llama" / "x.log").write_text("dial udp 192.168.130.5:53: unreachable\n")
+    assert any("local IP address" in e for e in V.check_run(d))

@@ -123,7 +123,10 @@ them somewhere else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-res
 - ROCm officially supports only some consumer AMD generations; unsupported cards run with the closest target
   (`HSA_OVERRIDE_GFX_VERSION`, recorded) or get Vulkan and OpenCL only.
 - vkprobe's matrix GEMM is a plain kernel, not a tuned library: a lower bound for that path.
-- RAM timings: the modules' SPD is read; what the BIOS actually set is often invisible from Linux.
+- RAM timings: the modules' SPD is read (decoded where `decode-dimms` can, always as raw bytes with the serial
+  number zeroed); what the BIOS actually set is often invisible from Linux.
+- **Blender (open):** the benchmark launcher asked opendata.blender.org for metadata on the offline stick and listed
+  no device in the first trial run; it is recorded as a failure until an offline way is found.
 
 ## Development
 

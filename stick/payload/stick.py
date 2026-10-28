@@ -47,6 +47,14 @@ LLAMA_TIMEOUT_S = 30 * 60
 # validates on top. One call per operation, on one backend device.
 BACKEND_OPS = ["MUL_MAT", "MUL_MAT_ID", "FLASH_ATTN_EXT", "RMS_NORM", "ADD", "MUL", "ROPE", "GLU", "SET_ROWS",
                "CPY", "SOFT_MAX", "GET_ROWS"]
+# The perf suite runs every case for at least a second: the full set took 1 h 50 min on an iGPU + CPU (first trial
+# run; flash attention alone timed out after 30 min). Keep the cases models actually use: common weight types,
+# head sizes 64/128/256, an f16 or q8_0 cache up to 32K.
+BACKEND_OPS_FILTER = {
+    "MUL_MAT": r"type_a=(f16|bf16|f32|q4_0|q8_0|q4_K|q5_K|q6_K|iq4_xs|mxfp4),",
+    "MUL_MAT_ID": r"type_a=(f16|q4_0|q8_0|q4_K|q6_K|mxfp4),",
+    "FLASH_ATTN_EXT": r"hsk=(64|128|256),.*kv=(4096|8192|16384|32768),.*type_K=(f16|q8_0),",
+}
 BACKEND_OPS_TIMEOUT_S = 30 * 60
 BLENDER_SCENES = ["monster", "junkshop", "classroom"]
 BLENDER_TIMEOUT_S = 90 * 60
@@ -132,9 +140,17 @@ def new_run_dir(runs: Path, fp: str, now: dt.datetime | None = None) -> Path:
 
 # --- inventory ---------------------------------------------------------------------------------------------------------
 SENSITIVE = re.compile(r"(?i)(serial|uuid|asset tag|\bsn\b|chassis id|system id)")
+# private and carrier-grade-NAT IPv4 (local resolver, LAN, tailnet) — never in a published file
+PRIVATE_IPV4 = re.compile(r"\b(?:10\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01])|192\.168|100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7]))"
+                          r"\.\d{1,3}\.\d{1,3}\b")
 MAC = re.compile(r"\b(?:[0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}\b")
 IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
 IPV6 = re.compile(r"\b(?:[0-9a-fA-F]{1,4}:){3,7}[0-9a-fA-F]{1,4}\b")
+
+
+def scrub(text: str) -> str:
+    """For every tool output: MAC and local IP addresses masked (a tool may print its resolver or a peer)."""
+    return PRIVATE_IPV4.sub("x.x.x.x", MAC.sub("<mac>", text))
 
 
 def sanitize(text: str) -> str:
@@ -149,7 +165,9 @@ def sanitize(text: str) -> str:
 INVENTORY = [
     ("lscpu.txt", ["lscpu"]), ("lscpu-e.txt", ["lscpu", "-e"]), ("cpuinfo.txt", ["cat", "/proc/cpuinfo"]),
     ("numa.txt", ["numactl", "-H"]), ("topology.txt", ["lstopo-no-graphics", "--of", "console"]),
-    ("dmidecode.txt", ["dmidecode", "-t", "bios,system,baseboard,processor,memory,cache,slot"]),
+    # one -t per type: dmidecode does not take a comma list (first trial run: rc=2, no DIMMs)
+    ("dmidecode.txt", ["dmidecode", *[x for t in ("bios", "system", "baseboard", "processor", "memory", "cache", "slot")
+                                      for x in ("-t", t)]]),
     ("lshw.json", ["lshw", "-sanitize", "-json"]),
     ("lspci-tree.txt", ["lspci", "-tvnn"]), ("lspci.txt", ["lspci", "-vvvnn"]),
     ("spd.txt", ["decode-dimms"]),
@@ -158,6 +176,10 @@ INVENTORY = [
     ("lsblk.txt", ["lsblk", "-o", "NAME,MODEL,SIZE,ROTA,TRAN,TYPE"]),
     ("sensors.txt", ["sensors"]), ("meminfo.txt", ["cat", "/proc/meminfo"]),
     ("kernel.txt", ["uname", "-srvm"]), ("cmdline.txt", ["cat", "/proc/cmdline"]),
+    # why a GPU is (not) usable through Vulkan: the loader's own account, the GPU driver modules and device nodes
+    ("vulkan-loader.txt", ["sh", "-c", "VK_LOADER_DEBUG=error,warn,driver vulkaninfo --summary 2>&1 | head -400"]),
+    ("gpu-driver.txt", ["sh", "-c", "lsmod | grep -iE '^(nvidia|amdgpu|i915|xe) '; ls -l /dev/nvidia* /dev/dri /dev/kfd 2>&1; "
+                       "for f in /usr/lib/x86_64-linux-gnu/libGLX_nvidia.so.0; do [ -e $f ] && ldd $f | grep -i 'not found'; done; true"]),
 ]
 
 
@@ -195,26 +217,57 @@ def parse_dimms(dmidecode: str) -> list[dict]:
 
 def collect_inventory(dst: Path, log: Path) -> dict:
     dst.mkdir(parents=True, exist_ok=True)
-    for mod in ("ee1004", "spd5118", "at24", "i2c-dev", "msr"):
+    for mod in ("i2c-i801", "i2c-piix4", "ee1004", "spd5118", "at24", "i2c-dev", "msr",
+                "nvidia_uvm", "nvidia_modeset", "nvidia_drm"):
         sh(["modprobe", mod], timeout=20)
+    if shutil.which("nvidia-modprobe"):                  # device nodes the Vulkan driver opens (uvm, modeset)
+        sh(["nvidia-modprobe", "-u", "-m", "-c", "0"], timeout=20)
     for name, cmd in INVENTORY:
         rc, out = sh(cmd, timeout=180)
         (dst / name).write_text(sanitize(out) if not name.endswith(".json") else MAC.sub("<mac>", out))
         if rc != 0:
             say(f"inventory: {name} rc={rc}", log)
+    spd_raw(dst)
     cpu = next(iter(re.findall(r"^model name\s*:\s*(.*)$", (dst / "cpuinfo.txt").read_text(), re.M)), "unknown")
     board = " ".join(_dmi(k) for k in ("board_vendor", "board_name")).strip() or "unknown"
     rc, gpus = sh(["nvidia-smi", "--query-gpu=name,memory.total,pci.bus_id", "--format=csv,noheader"], timeout=60)
-    gpu_list = [g.strip() for g in gpus.splitlines() if g.strip() and "---" not in g] if rc == 0 else []
-    if not gpu_list:
-        _, vga = sh(["sh", "-c", "lspci -nn | grep -Ei 'vga|3d controller|display'"], timeout=30)
-        gpu_list = [l.split(": ", 1)[-1] for l in vga.splitlines() if l.strip()]
+    gpu_list = [g.strip() for g in gpus.splitlines() if g.strip() and "---" not in g and "," in g] if rc == 0 else []
+    # every other display device too (integrated graphics, AMD, Intel); NVIDIA cards are already listed above
+    _, vga = sh(["sh", "-c", "lspci -nn | grep -Ei 'vga|3d controller|display'"], timeout=30)
+    gpu_list += [l.split(": ", 1)[-1] for l in vga.splitlines()
+                 if l.strip() and "--- stderr" not in l and not (gpu_list and "[10de:" in l)]
     mem_kb = int(next(iter(re.findall(r"MemTotal:\s*(\d+)", (dst / "meminfo.txt").read_text())), "0"))
     dimms = parse_dimms((dst / "dmidecode.txt").read_text())
     s = dict(cpu=cpu, board=board, bios=_dmi("bios_version"), gpus=gpu_list, ram_gib=round(mem_kb / 2**20, 1),
              dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip())
     (dst / "summary.json").write_text(json.dumps(s, indent=1))
     return s
+
+
+# SPD serial-number bytes, zeroed before a dump is stored (JEDEC: DDR4 bytes 325-328, DDR5 bytes 517-520)
+SPD_SERIAL = {"ee1004": range(325, 329), "spd5118": range(517, 521)}
+
+
+def spd_raw(dst: Path, i2c: Path = Path("/sys/bus/i2c/devices")) -> list[str]:
+    """The modules' SPD bytes as hex (decode-dimms cannot read DDR5 on every release): inventory/spd-<bus-addr>.hex,
+    serial-number bytes zeroed."""
+    out = []
+    for dev in sorted(i2c.glob("*-00[5-9a-f]*")):
+        drv = (dev / "driver").resolve().name if (dev / "driver").exists() else ""
+        if drv not in SPD_SERIAL or not (dev / "eeprom").exists():
+            continue
+        try:
+            b = bytearray((dev / "eeprom").read_bytes())
+        except OSError:
+            continue
+        for i in SPD_SERIAL[drv]:
+            if i < len(b):
+                b[i] = 0
+        name = f"spd-{dev.name}.hex"
+        (dst / name).write_text(f"# {drv}, {len(b)} bytes, serial bytes zeroed\n" +
+                                "\n".join(b[i:i + 16].hex(" ") for i in range(0, len(b), 16)) + "\n")
+        out.append(name)
+    return out
 
 
 def _dmi(k: str) -> str:
@@ -298,12 +351,19 @@ def parse_clpeak(text: str) -> dict:
     return res
 
 
+def clpeak_tests(help_text: str | None = None) -> list[str]:
+    """The wanted tests this clpeak knows (Ubuntu's has no --compute-hp: one unknown option ends it before any test)."""
+    if help_text is None:
+        help_text = subprocess.run(["clpeak", "--help"], capture_output=True, text=True).stdout
+    return [t for t in CLPEAK_TESTS if t in help_text] or ["--all-tests"]
+
+
 def run_opencl(rundir: Path, log: Path) -> dict:
     d = rundir / "opencl"
     d.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, RUSTICL_ENABLE="radeonsi")       # AMD through Mesa rusticl; Intel through compute-runtime
     r = subprocess.run(["clinfo", "--list"], capture_output=True, text=True, env=env, timeout=120)
-    (d / "clinfo-list.txt").write_text(r.stdout + r.stderr)
+    (d / "clinfo-list.txt").write_text(scrub(r.stdout + r.stderr))
     devices = opencl_devices(r.stdout)
     if not devices:
         say("opencl: no GPU devices", log)
@@ -314,12 +374,12 @@ def run_opencl(rundir: Path, log: Path) -> dict:
         say(f"opencl {key}: {name} ({pname})", log)
         t0 = time.time()
         try:
-            r = subprocess.run(["clpeak", "-p", str(plat), "-d", str(dev), *CLPEAK_TESTS], capture_output=True,
+            r = subprocess.run(["clpeak", "-p", str(plat), "-d", str(dev), *clpeak_tests()], capture_output=True,
                                text=True, env=env, timeout=OPENCL_TIMEOUT_S)
             rc, out = r.returncode, r.stdout + r.stderr
         except subprocess.TimeoutExpired:
             rc, out = -9, f"timeout after {OPENCL_TIMEOUT_S} s"
-        (d / f"clpeak-{key}.txt").write_text(out)
+        (d / f"clpeak-{key}.txt").write_text(scrub(out))
         parsed = parse_clpeak(out)
         (d / f"clpeak-{key}.json").write_text(json.dumps(dict(platform=pname, device=name, rc=rc, results=parsed), indent=1))
         results[key] = dict(platform=pname, device=name, rc=rc, seconds=round(time.time() - t0))
@@ -437,6 +497,30 @@ class DrmSampler:
             self.thread.join(timeout=5)
 
 
+class NvidiaSampler:
+    """NVIDIA clocks, power, utilisation every 500 ms for the whole measurement phase (the bench runner samples only
+    inside its own questions; llama.cpp, Blender and the probes run outside it)."""
+    FIELDS = "timestamp,index,pci.bus_id,clocks.sm,clocks.mem,power.draw,utilization.gpu,temperature.gpu,pstate"
+
+    def __init__(self, path: Path, enabled: bool):
+        self.path, self.enabled, self.proc = path, enabled, None
+
+    def __enter__(self):
+        if self.enabled and shutil.which("nvidia-smi"):
+            self.proc = subprocess.Popen(["nvidia-smi", f"--query-gpu={self.FIELDS}", "--format=csv,nounits",
+                                          "-lms", "500", "-f", str(self.path)], stdout=subprocess.DEVNULL,
+                                         stderr=subprocess.DEVNULL)
+        return self
+
+    def __exit__(self, *exc):
+        if self.proc:
+            self.proc.terminate()
+            try:
+                self.proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                self.proc.kill()
+
+
 # --- Intel Memory Latency Checker (downloaded from Intel at build time, not redistributed by this repository) --------
 def parse_mlc(text: str) -> dict:
     """Numbers MLC prints as 'label : value' or 'label value' rows (bandwidth in MB/s, latency in ns)."""
@@ -459,7 +543,7 @@ def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
     for name, args in MLC_RUNS:
         t0 = time.time()
         rc, out = sh([str(mlc), *args], timeout=MLC_TIMEOUT_S)
-        (d / f"{name}.txt").write_text(out)
+        (d / f"{name}.txt").write_text(scrub(out))
         res[name] = dict(rc=rc, seconds=round(time.time() - t0), values=parse_mlc(out))
         say(f"mlc {name}: rc={rc} ({time.time() - t0:.0f} s)", log)
     prefetch = "unable" in " ".join((d / f).read_text().lower() for f in ("idle_latency.txt",) if (d / f).exists())
@@ -497,8 +581,13 @@ def _run_env(cmd: list[str], timeout: float, env: dict) -> tuple[int, str]:
 
 
 def backend_ops_plan(binary: str, backend: str) -> list[tuple[str, list[str]]]:
-    """(key, command) per operation; perf mode, csv where the build offers it (the caller retries without)."""
-    return [(f"ops-{op.lower()}", [binary, "perf", "-o", op, "-b", backend, "--output", "csv"]) for op in BACKEND_OPS]
+    """(key, command) per operation; perf mode with sql output — the format that carries the timings (csv has only
+    the support columns); the caller retries without --output on builds that lack it."""
+    out = []
+    for op in BACKEND_OPS:
+        flt = ["-p", BACKEND_OPS_FILTER[op]] if op in BACKEND_OPS_FILTER else []
+        out.append((f"ops-{op.lower()}", [binary, "perf", "-o", op, *flt, "-b", backend, "--output", "sql"]))
+    return out
 
 
 def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path) -> dict:
@@ -512,7 +601,7 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
             cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
-        (d / f"{prefix}-{key}.txt").write_text(" ".join(cmd) + "\n" + out)
+        (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
         runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
@@ -535,8 +624,8 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
             rc, out, err = r.returncode, r.stdout, r.stderr
         except subprocess.TimeoutExpired:
             rc, out, err = -9, "", f"timeout after {LLAMA_TIMEOUT_S} s"
-        (d / f"{key}.jsonl").write_text(out)
-        (d / f"{key}.log").write_text(err)
+        (d / f"{key}.jsonl").write_text(scrub(out))
+        (d / f"{key}.log").write_text(scrub(err))
         runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
         say(f"llama {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
 
@@ -556,7 +645,7 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
     vk = seed / "vulkan" / "llama-bench"
     if vk.exists():
         _, summary = sh(["vulkaninfo", "--summary"], timeout=60)
-        (d / "vulkaninfo-summary.txt").write_text(summary)
+        (d / "vulkaninfo-summary.txt").write_text(scrub(summary))
         tbo = seed / "vulkan" / "test-backend-ops"
         for vi, name in vulkan_devices(summary):
             for m in models:
@@ -615,13 +704,13 @@ def run_vulkan_probe(rundir: Path, log: Path, probe: Path = VKPROBE) -> dict:
     d = rundir / "vkprobe"
     d.mkdir(parents=True, exist_ok=True)
     rc, out = sh([str(probe), "list"], timeout=120)
-    (d / "list.jsonl").write_text(out)
+    (d / "list.jsonl").write_text(scrub(out))
     devices = [r for r in parse_lines(out) if r.get("mode") == "list"]
     runs = {}
     for key, args in vk_plan(devices):
         t0 = time.time()
         rc, out = sh([str(probe), *args], timeout=PROBE_TIMEOUT_S)
-        (d / f"{key}.jsonl").write_text(out)
+        (d / f"{key}.jsonl").write_text(scrub(out))
         runs[key] = dict(rc=rc, seconds=round(time.time() - t0, 1))
     if not runs:
         return dict(skipped="no hardware Vulkan device", devices=len(devices))
@@ -696,10 +785,10 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
     base = ["docker", "run", "--rm", "--network", "none", *devs, "-v", f"{data / 'seed' / 'models'}:/models:ro", tag]
     probe = "/rigsim/probe" if kind == "rocm" else "/rigsim/probe_sycl"
     _, info = sh([*base, "/rigsim/run.sh", probe, "info"], timeout=300)
-    (d / "info.jsonl").write_text(info)
+    (d / "info.jsonl").write_text(scrub(info))
     _, meta = sh([*base, "sh", "-c", "cat /rigsim/TARGETS /rigsim/ROCM_VERSION /rigsim/ONEAPI_VERSION /rigsim/LLAMA_COMMIT 2>/dev/null; "
                   "ls /rigsim"], timeout=120)
-    (d / "image.txt").write_text(meta)
+    (d / "image.txt").write_text(scrub(meta))
     targets = meta.splitlines()[0].split(";") if kind == "rocm" and meta else []
     have_probe = (Path(probe).name in meta.split())
     devices = [r for r in parse_lines(info) if r.get("mode") == "info"]
@@ -725,7 +814,7 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
         for key, cmd in plan:
             t0 = time.time()
             rc, out = sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S)
-            (d / f"dev{i}-{key}.jsonl").write_text(out)
+            (d / f"dev{i}-{key}.jsonl").write_text(scrub(out))
             runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
         if "test-backend-ops" in meta.split():
             runs.update(run_backend_ops(lambda cmd, t, c=c: sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=t),
@@ -758,7 +847,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
     env = dict(os.environ, HOME=str(b / "home"), XDG_CACHE_HOME=str(b / "home" / ".cache"))
     r = subprocess.run([str(cli), "devices", "--blender-version", ver], capture_output=True, text=True, env=env,
                        timeout=300)
-    (d / "devices.txt").write_text(r.stdout + r.stderr)
+    (d / "devices.txt").write_text(scrub(r.stdout + r.stderr))
     runs = {}
     for t in blender_device_types(r.stdout):
         t0 = time.time()
@@ -768,11 +857,13 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
             rc, out, err = rr.returncode, rr.stdout, rr.stderr
         except subprocess.TimeoutExpired:
             rc, out, err = -9, "", f"timeout after {BLENDER_TIMEOUT_S} s"
-        (d / f"{t.lower()}.json").write_text(out)
-        (d / f"{t.lower()}.log").write_text(err)
+        (d / f"{t.lower()}.json").write_text(scrub(out))
+        (d / f"{t.lower()}.log").write_text(scrub(err))
         runs[t] = dict(rc=rc, seconds=round(time.time() - t0))
         say(f"blender {t}: rc={rc} ({time.time() - t0:.0f} s)", log)
     if not runs:
+        if "error" in (r.stdout + r.stderr).lower():          # e.g. the launcher wanted the network (offline stick)
+            return dict(rc=1, error="the launcher failed before listing devices (blender/devices.txt)")
         return dict(skipped="the launcher found no device")
     return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, blender=ver, runs=runs)
 
@@ -968,7 +1059,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
     except subprocess.TimeoutExpired as e:
         rc, out = -9, f"timeout after {QUESTION_TIMEOUT_S} s"
     d.mkdir(parents=True, exist_ok=True)
-    (d / "runner.log").write_text(out)
+    (d / "runner.log").write_text(scrub(out))
     counts = json.loads(sh([sys.executable, str(OPT / "runner" / "hwq.py"), "status", "--dir", str(d)])[1] or "{}")
     say(f"{q}: rc={rc} {counts} ({time.time() - t0:.0f} s)", log)
     return dict(rc=rc, items=counts, seconds=round(time.time() - t0))
@@ -1019,7 +1110,7 @@ def main() -> int:
         run["screens_blanked"] = blank_screens(True)
         say(f"screens off while measuring: {run['screens_blanked'] or 'not possible'}", log)
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
-        with DrmSampler(rundir / "samples-drm.jsonl"):
+        with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
             for q, f, skip in plan(OPT / "questions", nvidia, why):
                 if skip:
                     run["questions"][q] = dict(skipped=skip); say(f"{q}: skipped ({skip})", log); continue

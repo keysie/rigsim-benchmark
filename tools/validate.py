@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "stick" / "payload"))
-from stick import INVENTORY, MAC, SENSITIVE  # noqa: E402  (the stick's own definitions: one source of truth)
+from stick import INVENTORY, MAC, PRIVATE_IPV4, SENSITIVE  # noqa: E402  (the stick's own definitions: one source of truth)
 
 RUN_ID = re.compile(r"^(\d{8}T\d{6}Z)-([0-9a-f]{12})-([0-9a-f]{4})$")
 COMPLETE = {"done", "done with failures"}          # finished; "stopped" and "error: ..." are not complete
@@ -28,7 +28,8 @@ N = r"[A-Za-z0-9][A-Za-z0-9._+-]*"                  # a name the stick builds fr
 INVENTORY_FILES = sorted({name for name, _ in INVENTORY} | {"summary.json"})
 RUNNER_FILES = "baseline.json|restore.json|results.jsonl|session.json|setup.log|state.json|stopped.json|testdirs.json|runner.log"
 LAYOUT = [re.compile(p) for p in (
-    r"run\.json", r"stick\.log", r"samples-drm\.jsonl",
+    r"run\.json", r"stick\.log", r"samples-drm\.jsonl", r"samples-nvidia\.csv",
+    r"inventory/spd-\d+-[0-9a-f]{4}\.hex",
     r"inventory/(" + "|".join(map(re.escape, INVENTORY_FILES)) + r")",
     rf"q/{N}/({RUNNER_FILES})", rf"q/{N}/samples/[0-9a-f]{{10}}\.csv",
     r"mlc/(idle_latency|max_bandwidth|loaded_latency|latency_matrix|bandwidth_matrix)\.txt",
@@ -75,6 +76,9 @@ def check_run(d: Path) -> list[str]:
         bad = [l for l in text.splitlines() if MAC.search(l)]
         if bad:
             e(rel, f"contains a MAC address: {bad[0].strip()[:80]}")
+        bad = [l for l in text.splitlines() if PRIVATE_IPV4.search(l)]
+        if bad:
+            e(rel, f"contains a local IP address: {bad[0].strip()[:80]}")
         if rel.startswith("inventory/") and rel.endswith(".txt"):
             bad = [l for l in text.splitlines() if SENSITIVE.search(l)]
             if bad:

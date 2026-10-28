@@ -40,6 +40,13 @@ apt-get install -y --no-install-recommends \
 # Level Zero for Blender's oneAPI device — optional: a missing package must not stop the build
 apt-get install -y --no-install-recommends libvulkan1 mesa-vulkan-drivers vulkan-tools libgomp1
 apt-get install -y --no-install-recommends "libnvidia-gl-${NVIDIA_BRANCH}" || echo "WARN: no NVIDIA Vulkan ICD"
+# nvidia-modprobe creates the device nodes the Vulkan driver opens (nvidia-uvm, nvidia-modeset) without X;
+# first trial run: the NVIDIA ICD was installed but the loader could not create an instance through it
+apt-get install -y --no-install-recommends nvidia-modprobe || echo "WARN: no nvidia-modprobe"
+GLX=/usr/lib/x86_64-linux-gnu/libGLX_nvidia.so.0
+if [ -e "$GLX" ] && ldd "$GLX" | grep -q 'not found'; then
+  echo "the NVIDIA Vulkan driver misses libraries:" >&2; ldd "$GLX" | grep 'not found' >&2; exit 1
+fi
 apt-get install -y --no-install-recommends libze1 intel-level-zero-gpu || echo "WARN: no Level Zero (Blender oneAPI)"
 apt-get install -y --no-install-recommends libxrender1 libxi6 libxkbcommon0 libsm6 libgl1 || echo "WARN: Blender libs"
 if dpkg -l | grep -q '^ii  nvidia-dkms'; then echo "DKMS slipped in: its modules would not load under Secure Boot" >&2; exit 1; fi

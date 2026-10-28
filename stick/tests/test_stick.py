@@ -439,8 +439,10 @@ def test_backend_ops_per_device_with_fallbacks(tmp_path):
 
     r = stick.run_backend_ops(run, tmp_path, "cuda-gpu0", "/llama/test-backend-ops", "CUDA0", tmp_path / "log")
     assert len(r) == len(stick.BACKEND_OPS) and all(v["rc"] == 0 for v in r.values())
-    assert calls[1] == ["/llama/test-backend-ops", "perf", "-o", "MUL_MAT", "-b", "CUDA0"]      # csv dropped once
-    assert (tmp_path / "cuda-gpu0-ops-mul_mat.txt").read_text().startswith("/llama/test-backend-ops perf -o MUL_MAT -b CUDA0\n")
+    flt = stick.BACKEND_OPS_FILTER["MUL_MAT"]
+    assert calls[0][-2:] == ["--output", "sql"]                                  # the format that carries timings
+    assert calls[1] == ["/llama/test-backend-ops", "perf", "-o", "MUL_MAT", "-p", flt, "-b", "CUDA0"]   # output dropped once
+    assert (tmp_path / "cuda-gpu0-ops-mul_mat.txt").read_text().startswith(f"/llama/test-backend-ops perf -o MUL_MAT -p {flt} -b CUDA0\n")
     for f in ("build.sh", "src/rocm/build-in-image.sh", "src/oneapi/build-in-image.sh"):
         assert "test-backend-ops" in (HERE / f).read_text() and "LLAMA_BUILD_TESTS=ON" in (HERE / f).read_text()
     src = (HERE / "payload" / "stick.py").read_text()
@@ -609,3 +611,46 @@ def test_containerd_store_on_the_data_partition_and_loaded_images_verified(tmp_p
     assert stick._loaded(img, tmp_path) is False                       # marker there, image gone: load again
     monkeypatch.setattr(stick, "sh", lambda cmd, timeout=0: (0, ""))
     assert stick._loaded(img, tmp_path) is True
+
+
+
+# --- findings of the first trial run (i7-13700K, RTX 3080, UHD 770; stick 1543d5a) -----------------------------------
+def test_trial_run_fixes_inventory_and_tools(tmp_path):
+    import re
+    inv = dict(stick.INVENTORY)
+    assert inv["dmidecode.txt"][1:] == ["-t", "bios", "-t", "system", "-t", "baseboard", "-t", "processor", "-t", "memory",
+                                        "-t", "cache", "-t", "slot"]
+    assert "vulkan-loader.txt" in inv and "gpu-driver.txt" in inv
+    # clpeak: only the options this clpeak knows (Ubuntu's has no --compute-hp)
+    assert "--compute-hp" not in stick.clpeak_tests("--global-bandwidth --compute-sp --compute-integer --kernel-latency")
+    assert stick.clpeak_tests("nothing known") == ["--all-tests"]
+    # test-backend-ops: sql (timings), filtered cases
+    plan = dict(stick.backend_ops_plan("t", "Vulkan0"))
+    assert plan["ops-mul_mat"][-2:] == ["--output", "sql"] and "-p" in plan["ops-flash_attn_ext"] and "-p" not in plan["ops-add"]
+    assert re.search(stick.BACKEND_OPS_FILTER["FLASH_ATTN_EXT"], "hsk=128,hsv=128,nh=8,nr23=[4,1],kv=8192,nb=1,mask=1,"
+                     "sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,")
+    assert not re.search(stick.BACKEND_OPS_FILTER["FLASH_ATTN_EXT"], "hsk=576,hsv=512,kv=8192,type_K=f16,")
+    assert not re.search(stick.BACKEND_OPS_FILTER["MUL_MAT"], "type_a=iq2_xxs,type_b=f32,m=4096,n=1")
+    # tool outputs: local IPs and MACs masked (the Blender launcher printed the LAN resolver)
+    assert stick.scrub("lookup on 192.168.130.5:53 via 100.101.1.2, mac aa:bb:cc:dd:ee:ff, driver 580.178.04, 8.8.8.8") == \
+        "lookup on x.x.x.x:53 via x.x.x.x, mac <mac>, driver 580.178.04, 8.8.8.8"
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert src.count("write_text(scrub(") >= 15 and "NvidiaSampler(rundir / \"samples-nvidia.csv\", nvidia)" in src
+    assert "the launcher failed before listing devices" in src
+
+
+def test_spd_dump_zeroes_serial_bytes(tmp_path):
+    i2c = tmp_path / "i2c"
+    for name, drv, size, serial in (("0-0050", "ee1004", 512, range(325, 329)), ("1-0051", "spd5118", 1024, range(517, 521))):
+        dev = i2c / name; dev.mkdir(parents=True)
+        (tmp_path / "drivers" / drv).mkdir(parents=True, exist_ok=True)
+        (dev / "driver").symlink_to(tmp_path / "drivers" / drv)
+        (dev / "eeprom").write_bytes(bytes([0xAB]) * size)
+    (i2c / "0-0060").mkdir()                                                        # not an SPD: ignored
+    dst = tmp_path / "inv"; dst.mkdir()
+    assert stick.spd_raw(dst, i2c) == ["spd-0-0050.hex", "spd-1-0051.hex"]
+    for name, serial in (("spd-0-0050.hex", range(325, 329)), ("spd-1-0051.hex", range(517, 521))):
+        b = bytes.fromhex("".join(dst.joinpath(name).read_text().splitlines()[1:]).replace(" ", ""))
+        assert all(b[i] == 0 for i in serial) and b[serial.start - 1] == 0xAB and b[serial.stop] == 0xAB
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    assert "nvidia-modprobe" in c and "the NVIDIA Vulkan driver misses libraries" in c
