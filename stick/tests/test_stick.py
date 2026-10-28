@@ -787,28 +787,36 @@ def test_blender_hip_runs_inside_the_rocm_image(tmp_path, monkeypatch):
 
 
 def test_image_load_reports_progress(tmp_path, monkeypatch, capsys):
-    img = tmp_path / "seed" / "images" / "nvidia_cuda.tar"; img.parent.mkdir(parents=True); img.write_bytes(b"x" * 1024)
+    img = tmp_path / "seed" / "images" / "nvidia_cuda.tar"; img.parent.mkdir(parents=True); img.write_bytes(b"x" * (4 << 20))
     (tmp_path / "docker").mkdir()
-    sizes = iter([0, 3 * 2**30, 6 * 2**30])
-    monkeypatch.setattr(stick, "_du", lambda p: next(sizes))
+    positions = iter([1 << 20, 3 << 20, 4 << 20])
+    monkeypatch.setattr(stick, "archive_position", lambda pid, path: next(positions))
     monkeypatch.setattr(stick, "_loaded", lambda img, data: False)
 
     class P:
         n = 0
         returncode = None
+        pid = 1
         def __init__(self, *a, **k): pass
         def wait(self, timeout=None):
             P.n += 1
-            if P.n < 3:
+            if P.n < 4:
                 raise stick.subprocess.TimeoutExpired("docker", timeout)
             self.returncode = 0
             return 0
     monkeypatch.setattr(stick.subprocess, "Popen", P)
     r = stick.load_image(img, tmp_path, None, every=0.01)
     out = capsys.readouterr().out
-    assert r["rc"] == 0 and "3.0 GiB written" in out and "6.0 GiB written" in out and "MB/s" in out
-    assert (tmp_path / "docker" / ".loaded-nvidia_cuda.tar").read_text() == "1024"
+    assert r["rc"] == 0 and "(25%)" in out and "(75%)" in out and "archive read, unpacking" in out and "-" not in out.split("GiB")[0][-6:]
+    assert (tmp_path / "docker" / ".loaded-nvidia_cuda.tar").read_text() == str(4 << 20)
 
+
+def test_archive_position_from_proc(tmp_path):
+    img = tmp_path / "a.tar"; img.write_bytes(b"x")
+    pr = tmp_path / "proc" / "42"; (pr / "fd").mkdir(parents=True); (pr / "fdinfo").mkdir()
+    (pr / "fd" / "7").symlink_to(img); (pr / "fdinfo" / "7").write_text("pos:\t123456\nflags:\t0100000\n")
+    assert stick.archive_position(42, img, tmp_path / "proc") == 123456
+    assert stick.archive_position(43, img, tmp_path / "proc") is None
 
 def test_flash_preloads_images_with_the_sticks_own_docker():
     f = (HERE / "flash.sh").read_text()

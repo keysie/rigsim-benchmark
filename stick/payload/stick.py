@@ -1135,6 +1135,23 @@ def image_tags(img: Path) -> list[str]:
     return []
 
 
+def archive_position(pid: int, img: Path, proc: Path = Path("/proc")) -> int | None:
+    """How far process `pid` has read file `img`: the position of its descriptor for it (fdinfo `pos`)."""
+    try:
+        target = img.resolve()
+        for fd in (proc / str(pid) / "fd").iterdir():
+            try:
+                if Path(os.readlink(fd)) == target:
+                    for line in (proc / str(pid) / "fdinfo" / fd.name).read_text().splitlines():
+                        if line.startswith("pos:"):
+                            return int(line.split()[1])
+            except OSError:
+                continue
+    except OSError:
+        pass
+    return None
+
+
 def _du(p: Path) -> int:
     rc, out = sh(["du", "-sb", str(p)], timeout=300)
     try:
@@ -1151,9 +1168,8 @@ def load_image(img: Path, data: Path, log: Path | None, every: float = 30.0) -> 
     mib = img.stat().st_size / 2**20
     say(f"docker: loading {img.name} ({mib:.0f} MiB) onto the stick", log)
     t0 = time.time()
-    store = data / "containerd"
-    base = last = _du(store)
-    t_last = t0
+    size_b = img.stat().st_size
+    last, t_last = 0, t0
     p = subprocess.Popen(["docker", "load", "-q", "-i", str(img)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          text=True)
     while True:
@@ -1163,10 +1179,17 @@ def load_image(img: Path, data: Path, log: Path | None, every: float = 30.0) -> 
         except subprocess.TimeoutExpired:
             if time.time() - t0 > 3 * 3600:
                 p.kill(); p.wait(); break
-            now, size = time.time(), _du(store)
-            say(f"docker: {img.name}: {(size - base) / 2**30:.1f} GiB written, "
-                f"{(size - last) / 2**20 / max(now - t_last, 1e-6):.0f} MB/s, {now - t0:.0f} s", log)
-            last, t_last = size, now
+            # progress = how far docker has read the archive (its file position): exact and monotonic, unlike the
+            # store's size, which also shrinks while containerd removes temporary and unreferenced data
+            now, pos = time.time(), archive_position(p.pid, img)
+            if pos is None:
+                say(f"docker: {img.name}: loading, {now - t0:.0f} s", log)
+            elif pos >= size_b:
+                say(f"docker: {img.name}: archive read, unpacking onto the stick, {now - t0:.0f} s", log)
+            else:
+                say(f"docker: {img.name}: {pos / 2**30:.1f} of {size_b / 2**30:.1f} GiB ({pos / size_b:.0%}), "
+                    f"{(pos - last) / 2**20 / max(now - t_last, 1e-6):.0f} MB/s, {now - t0:.0f} s", log)
+                last, t_last = pos, now
     rc = p.returncode if p.returncode is not None else -9
     sec = time.time() - t0
     if rc == 0:
