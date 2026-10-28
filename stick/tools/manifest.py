@@ -24,7 +24,7 @@ ROOTFS_PACKAGES = re.compile(
     r"shim-signed|grub-efi-amd64-signed|linux-firmware)$")
 CUDA_PACKAGES = re.compile(r"^(cuda-nvcc\S*|cuda-cudart-\S+|libcublas-\S+|cuda-toolkit-\S+)$")
 SETTINGS = ("SUITE", "KERNEL", "NVIDIA_BRANCH", "NVIDIA_FLAVOUR", "MIRROR", "LLAMA_SELECT", "LLAMA_REF", "AMDGPU_TARGETS",
-            "ROCM_IMAGE", "ONEAPI_IMAGE", "BLENDER_VERSION", "BLENDER_SCRIPT_URL")
+            "ROCM_IMAGE", "ONEAPI_IMAGE", "BLENDER_VERSION", "BLENDER_SCRIPT_URL", "ROOTFS_BUILT")
 
 
 def sha256(p: Path) -> str:

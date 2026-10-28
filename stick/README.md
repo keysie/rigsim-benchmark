@@ -77,7 +77,7 @@ The build only runs inside WSL 2, with Docker Desktop's WSL integration — not 
 ## Build details
 
 - The first build takes a few hours (the ROCm image alone one to two). Later builds reuse everything whose inputs
-  did not change and take minutes plus the rootfs.
+  did not change — the system image for up to a week — and take minutes.
 - Each step shows one live line with progress; `stick/build.sh -v` prints everything instead. Full logs:
   `stick/out/logs/<time>/`.
 
@@ -99,6 +99,7 @@ MIRROR=http://ch.archive.ubuntu.com/ubuntu stick/build.sh   # a nearby Ubuntu mi
 | `ONEAPI_IMAGE` | see `build.sh` | oneAPI base image |
 | `SKIP_ROCM`, `SKIP_ONEAPI`, `SKIP_MODELS` | — | leave that part off the stick |
 | `MIRROR` | archive.ubuntu.com | Ubuntu mirror |
+| `REBUILD_ROOTFS` / `ROOTFS_MAX_AGE_DAYS` | — / `7` | the finished system image is reused while younger than this and its inputs are unchanged; `REBUILD_ROOTFS=1` forces a fresh one (newer drivers, security updates) |
 | `BUILD_IN_CONTAINER` | `1` | `0`: build on a Debian/Ubuntu host directly |
 
 To force a full rebuild: `rm -rf stick/out/cache stick/out/seed`.

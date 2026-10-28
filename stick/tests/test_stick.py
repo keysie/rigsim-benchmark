@@ -850,3 +850,15 @@ def test_llama_cpp_release_choice(tmp_path):
 def test_rocm_llama_build_is_position_independent():
     s = (HERE / "src" / "rocm" / "build-in-image.sh").read_text()
     assert "-DCMAKE_POSITION_INDEPENDENT_CODE=ON" in s and "-DCMAKE_HIP_FLAGS=-fPIC" in s
+
+
+def test_rootfs_cached_for_a_week_unless_forced():
+    b = (HERE / "build.sh").read_text()
+    assert 'MAX_DAYS="${ROOTFS_MAX_AGE_DAYS:-7}"' in b and '"${REBUILD_ROOTFS:-0}" != 1' in b
+    assert 'srckey "$S/ubuntu/chroot-setup.sh" "$S/ubuntu/rootfs"' in b                  # its inputs, not grub.cfg
+    cached, built = b.split('if [[ "${REBUILD_ROOTFS:-0}" != 1', 1)[1].split("\nelse\n", 1)
+    assert 'cp -a "$RCACHE/." "$ROOT/"' in cached and "rootfs_mounts" in cached and "mmdebstrap" not in cached
+    assert built.index("chroot-setup.sh") < built.index('step "rootfs cache') and 'cp -ax "$ROOT/."' in built
+    assert b.index('export ROOTFS_BUILT') < b.index('manifest.py" rootfs')
+    assert "ROOTFS_BUILT" in (HERE / "tools" / "manifest.py").read_text()
+    assert "REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS" in b                                       # passed into the build container

@@ -7,6 +7,7 @@
 #   stick/build.sh                    NVIDIA open modules: Turing (RTX 20) .. Blackwell (RTX 50)
 #   NVIDIA_FLAVOUR=legacy stick/build.sh   proprietary modules: Maxwell (GTX 900) .. Ada, not Blackwell
 #   stick/build.sh -v                 every step's output live (as before the ticker), logs kept as well
+#   REBUILD_ROOTFS=1 stick/build.sh   a fresh rootfs even if the cached one is younger than ROOTFS_MAX_AGE_DAYS (7)
 #   SUITE=resolute stick/build.sh     another Ubuntu release (default: noble, 24.04 LTS)
 #   KERNEL=ga                         Ubuntu's release kernel instead of the newer HWE kernel (default: hwe — newer
 #                                     AMD and Intel GPUs need it; NVIDIA's signed modules exist for both)
@@ -37,7 +38,7 @@ if [[ "${RIGSIM_IN_CONTAINER:-0}" != 1 && "${BUILD_IN_CONTAINER:-1}" == 1 ]]; th
   BUILDER="rigsim/stick-builder:$(sha256sum "$S/builder/Dockerfile" | cut -c1-12)"
   docker image inspect "$BUILDER" >/dev/null 2>&1 || { echo "building the build container $BUILDER"; docker build -q -t "$BUILDER" "$S/builder"; }
   envs=()
-  for v in VERBOSE SUITE NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR KERNEL ROCM_IMAGE ONEAPI_IMAGE AMDGPU_TARGETS LLAMA_REF \
+  for v in VERBOSE REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS SUITE NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR KERNEL ROCM_IMAGE ONEAPI_IMAGE AMDGPU_TARGETS LLAMA_REF \
            SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL; do
     [[ -n "${!v:-}" ]] && envs+=(-e "$v=${!v}")
   done
@@ -89,6 +90,24 @@ cached_step() {   # marker key label command...: skip when the marker holds the 
 }
 APT_CACHE="$C/apt-$SUITE"; mkdir -p "$APT_CACHE"
 
+# The finished rootfs (base + packages, before the stick's own files) is reused for ROOTFS_MAX_AGE_DAYS (default 7)
+# while its inputs are unchanged (release, kernel, NVIDIA branch and flavour, mirror, chroot-setup.sh, the overlay);
+# older, it is built again so driver and security updates come in. REBUILD_ROOTFS=1 forces a fresh one. The build
+# date is recorded in the manifest (ROOTFS_BUILT), the packages as always.
+RKEY="$(key "$SUITE" "$KERNEL" "$NVIDIA_BRANCH" "$NVIDIA_FLAVOUR" "$MODSUFFIX" "$MIRROR" "$(srckey "$S/ubuntu/chroot-setup.sh" "$S/ubuntu/rootfs")")"
+RCACHE="$C/rootfs/$RKEY"; MAX_DAYS="${ROOTFS_MAX_AGE_DAYS:-7}"
+rootfs_mounts() {
+  sudo mkdir -p "$ROOT/dev" "$ROOT/proc" "$ROOT/sys"
+  sudo mount --bind /dev "$ROOT/dev"; sudo mount -t proc proc "$ROOT/proc"; sudo mount -t sysfs sys "$ROOT/sys"
+  trap 'sudo umount -l "$ROOT/var/cache/apt/archives" "$ROOT/dev" "$ROOT/proc" "$ROOT/sys" 2>/dev/null || true' EXIT
+}
+built=0; [[ -f "$RCACHE.built" ]] && built="$(cat "$RCACHE.built")"
+age_days=$(( ($(date +%s) - built) / 86400 ))
+if [[ "${REBUILD_ROOTFS:-0}" != 1 && -d "$RCACHE" && $built -gt 0 && $age_days -lt $MAX_DAYS ]]; then
+  sudo mkdir -p "$ROOT"
+  step "rootfs (cached, built $age_days day(s) ago; REBUILD_ROOTFS=1 for a fresh one)" sudo cp -a "$RCACHE/." "$ROOT/"
+  rootfs_mounts
+else
 step "rootfs base ($SUITE)" sudo mmdebstrap --variant=minbase --components="main restricted universe multiverse" \
   --include=apt,ca-certificates,curl,gnupg --skip=essential/unlink \
   --setup-hook='mkdir -p "$1"/var/cache/apt/archives' --setup-hook="sync-in $APT_CACHE /var/cache/apt/archives" \
@@ -98,14 +117,23 @@ sudo chroot "$ROOT" test -x /usr/bin/apt-get || { echo "the rootfs has no apt-ge
 sudo mkdir -p "$ROOT/opt/rigsim" "$ROOT/tmp/rigsim-build"
 sudo cp "$S/ubuntu/chroot-setup.sh" "$ROOT/tmp/rigsim-build/"
 sudo cp -r "$S/ubuntu/rootfs/." "$ROOT/"
-sudo mount --bind /dev "$ROOT/dev"; sudo mount -t proc proc "$ROOT/proc"; sudo mount -t sysfs sys "$ROOT/sys"
+rootfs_mounts
 sudo mkdir -p "$ROOT/var/cache/apt/archives"; sudo mount --bind "$APT_CACHE" "$ROOT/var/cache/apt/archives"
-trap 'sudo umount -l "$ROOT/var/cache/apt/archives" "$ROOT/dev" "$ROOT/proc" "$ROOT/sys" 2>/dev/null || true' EXIT
 step "rootfs packages (kernel, NVIDIA $NVIDIA_BRANCH $NVIDIA_FLAVOUR, tools)" \
   sudo chroot "$ROOT" env SUITE="$SUITE" NVIDIA_BRANCH="$NVIDIA_BRANCH" MODSUFFIX="$MODSUFFIX" KERNEL="$KERNEL" MIRROR="$MIRROR" \
   KEEP_APT_CACHE=1 sh /tmp/rigsim-build/chroot-setup.sh
 sudo umount "$ROOT/var/cache/apt/archives"
 echo "apt cache: $(ls "$APT_CACHE"/*.deb 2>/dev/null | wc -l) packages, $(du -sh "$APT_CACHE" | cut -f1)"
+# keep it: one rootfs per key, older ones (other settings, outdated) removed; -x leaves /dev /proc /sys out
+save_rootfs() {
+  sudo rm -rf "$C/rootfs" && mkdir -p "$C/rootfs"
+  sudo cp -ax "$ROOT/." "$RCACHE.tmp/" && sudo mv "$RCACHE.tmp" "$RCACHE" && date +%s > "$RCACHE.built"
+}
+step "rootfs cache (reused for $MAX_DAYS days)" save_rootfs
+built="$(cat "$RCACHE.built")"
+fi
+export ROOTFS_BUILT="$(date -u -d "@$built" +%Y-%m-%dT%H:%MZ)"
+sudo mkdir -p "$ROOT/opt/rigsim" "$ROOT/tmp/rigsim-build"
 
 P="$ROOT/opt/rigsim"
 sudo cp -r "$REPO/bench/hw/runner" "$REPO/bench/hw/toolkits" "$P/"
