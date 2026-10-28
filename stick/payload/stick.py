@@ -1011,10 +1011,20 @@ def blender_offline(b: Path, version: str) -> tuple[Path | None, dict[str, Path]
     exe = next((p for p in exes if version in str(p)), exes[0] if exes else None)
     scenes = {}
     for name in BLENDER_SCENES:
-        blends = [p for p in cache.rglob("*.blend") if name in p.relative_to(cache).parts]
+        blends = [p for p in cache.rglob("*.blend") if name in p.relative_to(cache).parts
+                  and not any(x.startswith("._") for x in p.relative_to(cache).parts)]
         if blends:
             scenes[name] = max(blends, key=lambda p: p.stat().st_size)
     return exe, scenes
+
+
+def benchmark_script(b: Path) -> Path:
+    """The benchmark script's main.py: the launcher's own copy in its cache (benchmark-scripts/<hash>/
+    blender_benchmark_script-<version>/, the version the launcher itself runs, newest first), else the one the
+    build fetched (script/). macOS resource forks ('._*') are not scripts."""
+    found = [p for p in (b / "home").rglob("main.py") if "benchmark-scripts" in p.parts and not p.name.startswith("._")]
+    ver = lambda p: tuple(int(x) for x in re.findall(r"\d+", p.parent.name)[-3:])
+    return max(found, key=ver) if found else b / "script" / "main.py"
 
 
 def run_blender(data: Path, rundir: Path, log: Path) -> dict:
@@ -1025,7 +1035,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
     ver = _read(b / "BLENDER_VERSION")
     d = rundir / "blender"
     exe, scenes = blender_offline(b, ver) if ver else (None, {})
-    script = b / "script" / "main.py"
+    script = benchmark_script(b)
     if exe and scenes and script.exists():
         d.mkdir(parents=True, exist_ok=True)
         env = dict(os.environ, HOME=str(b / "home"))
@@ -1059,6 +1069,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                     break
                 runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
         return dict(rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, route="offline", blender=ver,
+                    script=str(script.relative_to(b)),
                     runs=runs, types_unavailable=unavailable,
                     hip_runtime=f"ROCm image {rocm_tag}" if rocm_tag and any(k.startswith("hip-") for k in runs) else "")
     missing = [x for x, ok in (("Blender executable", exe), ("scenes", scenes), ("benchmark script", script.exists()))

@@ -964,3 +964,19 @@ def test_unattended_shutdown():
     assert all("noprompt noeject" in l for l in g.splitlines() if l.strip().startswith("linux "))
     b = (HERE / "build.sh").read_text()
     assert "xargs -0 -r -I{} tar -xf {}" in b and "unpack-1" in b and "offline_route_missing" in src
+
+
+
+def test_blender_uses_the_launchers_own_script_and_skips_resource_forks(tmp_path):
+    """The launcher's cache as found on the user's build: Blender, scenes and its script already unpacked."""
+    b = tmp_path / "blender"; c = b / "home" / ".cache" / "blender-benchmark-launcher"
+    exe = c / "blender-versions" / "4f4f" / "blender-4.2.0-linux-x64" / "blender"; exe.parent.mkdir(parents=True)
+    exe.write_text(""); exe.chmod(0o755)
+    for v in ("3.1.2", "3.0.0"):
+        m = c / "benchmark-scripts" / f"h{v}" / f"blender_benchmark_script-{v}" / "main.py"; m.parent.mkdir(parents=True); m.write_text("")
+    for sc in stick.BLENDER_SCENES:
+        f = c / "scenes" / f"h-{sc}" / sc / "main.blend"; f.parent.mkdir(parents=True); f.write_bytes(b"x" * 100)
+    junk = c / "scenes" / "h-classroom" / "._classroom" / "main.blend"; junk.parent.mkdir(parents=True); junk.write_bytes(b"x" * 999)
+    assert stick.benchmark_script(b).parent.name == "blender_benchmark_script-3.1.2"
+    found, scenes = stick.blender_offline(b, "4.2.0")
+    assert found == exe and "._classroom" not in str(scenes["classroom"]) and set(scenes) == set(stick.BLENDER_SCENES)
