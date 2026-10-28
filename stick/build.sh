@@ -26,6 +26,12 @@
 # squashfs-tools, xorriso, mtools, dosfstools on a Debian / Ubuntu host, with sudo).
 set -euo pipefail
 S="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$S/.." && pwd)"
+# Tools the build downloads itself, straight from their makers (nothing of them is in this repository). Update the
+# links here when newer versions come out; set a variable to "" to leave that tool off the stick.
+#   Intel MLC is Intel's software under Intel's licence (shown on Intel's MLC download page): building the stick
+#   with it means accepting that licence. The Blender Benchmark launcher is open source.
+MLC_URL="${MLC_URL-https://downloadmirror.intel.com/926327/mlc_v3.13.tgz}"
+BLENDER_LAUNCHER_URL="${BLENDER_LAUNCHER_URL-https://download.blender.org/release/BlenderBenchmark2.0/launcher/benchmark-launcher-cli-3.3.0-linux.tar.gz}"
 [[ "${1:-}" == -v || "${1:-}" == --verbose ]] && { export VERBOSE=1; shift; }   # every step's output live
 # By default the whole build runs inside an Ubuntu build container (builder/Dockerfile): the host needs only Docker,
 # whatever its distribution or SELinux. The repository is mounted at the same path, so paths handed to the host's
@@ -40,7 +46,7 @@ if [[ "${RIGSIM_IN_CONTAINER:-0}" != 1 && "${BUILD_IN_CONTAINER:-1}" == 1 ]]; th
   envs=()
   for v in VERBOSE REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS SUITE NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR KERNEL ROCM_IMAGE ONEAPI_IMAGE AMDGPU_TARGETS LLAMA_REF \
            SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL; do
-    [[ -n "${!v:-}" ]] && envs+=(-e "$v=${!v}")
+    [[ -n "${!v+x}" ]] && envs+=(-e "$v=${!v}")          # set, even if empty ("" leaves a tool out)
   done
   tty=(); [[ -t 0 && -t 1 ]] && tty=(-it)
   rc=0
@@ -355,7 +361,7 @@ if [[ -n "${BLENDER_LAUNCHER_URL:-}" ]]; then
   : "${BLENDER_SCRIPT_URL:=https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz}"
   cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION" "$BLENDER_SCRIPT_URL" unpack-1)" "Blender Benchmark $BLENDER_VERSION" blender_seed
 else
-  echo "== seed: Blender Benchmark skipped (set BLENDER_LAUNCHER_URL from opendata.blender.org)"
+  echo "== seed: Blender Benchmark left out (BLENDER_LAUNCHER_URL is empty)"
 fi
 if [[ -n "${MLC_URL:-}" ]]; then
   mlc_seed() {
@@ -364,9 +370,10 @@ if [[ -n "${MLC_URL:-}" ]]; then
   m="$(find "$T" -path '*Linux*' -name mlc -type f | head -1)"; cp "$m" "$T/mlc" && chmod +x "$T/mlc"
   }
   mkdir -p "$OUT/seed/tools"
+  echo "    Intel MLC is downloaded from Intel under Intel's licence; building with it means accepting that licence."
   cached_step "$OUT/seed/tools/mlc.key" "$(key "$MLC_URL")" "Intel MLC" mlc_seed
 else
-  echo "== seed: Intel MLC skipped (set MLC_URL from Intel's download page)"
+  echo "== seed: Intel MLC left out (MLC_URL is empty)"
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
 export LLAMA_REF LLAMA_SELECT AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL

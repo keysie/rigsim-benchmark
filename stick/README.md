@@ -25,9 +25,11 @@ bandwidth) and on again at the end.
 - **Target machines:** x86_64, UEFI or legacy boot, Secure Boot may stay on.
 - **To make the stick:** a Linux host, or Windows with WSL 2 and Docker Desktop — see below. Internet for the
   build; everything else runs in a build container.
-- **Downloads you pass to the build:** **Intel MLC** — the download link from Intel's Memory Latency Checker page
-  (Intel's licence; fetched at build time, never part of this repository); **Blender launcher** — the Linux
-  command-line launcher from opendata.blender.org. Without either, that step is recorded as skipped.
+- **Tools the build downloads itself,** directly from their makers (never part of this repository; links in
+  `build.sh`, updated there when new versions come out): **Intel MLC** — Intel's software under Intel's licence,
+  shown on Intel's MLC download page; **building the stick with it means accepting that licence**
+  (`MLC_URL=""` leaves it out). The **Blender Benchmark launcher** is open source (`BLENDER_LAUNCHER_URL=""` leaves
+  it out).
 
 ## Making the stick on Linux
 
@@ -36,8 +38,6 @@ and rsync (most distributions have them).
 
 ```bash
 git clone https://github.com/keysie/rigsim-benchmark && cd rigsim-benchmark
-MLC_URL='<Intel MLC download link>' \
-BLENDER_LAUNCHER_URL='<Blender benchmark launcher, Linux CLI>' \
 stick/build.sh                         # -> stick/out/rigsim-stick.iso + stick/out/seed/
 
 lsblk -o NAME,SIZE,MODEL,RM,TRAN       # find the stick: RM 1, TRAN usb
@@ -55,7 +55,7 @@ The build only runs inside WSL 2, with Docker Desktop's WSL integration — not 
    ```bash
    cd ~ && git clone https://github.com/keysie/rigsim-benchmark && cd rigsim-benchmark
    docker info >/dev/null && echo "Docker reachable"
-   MLC_URL='<Intel MLC download link>' BLENDER_LAUNCHER_URL='<Blender launcher, Linux CLI>' stick/build.sh
+   stick/build.sh
    ```
    Files under `/mnt/c` are many times slower from WSL and lose their executable bits; the build moves tens of GB.
 3. Flash. WSL does not see USB sticks by itself: attach the stick with
