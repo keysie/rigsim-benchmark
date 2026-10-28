@@ -84,9 +84,75 @@ class Stopped(Exception):
     pass
 
 
+class Status:
+    """One live line at the bottom of the console, redrawn four times a second: a spinner (so a long step visibly
+    lives), the step ('5/14 vkprobe'), what runs inside it ('dev0-gemm-f16 7/42'), its time and the run's. say()
+    prints above it. Only on a terminal; in logs and pipes nothing changes."""
+    SPIN = "|/-\\"
+
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.on = sys.stdout.isatty()
+        self.step = self.detail = ""
+        self.i = self.n = 0
+        self.t_run = self.t_step = time.time()
+        self.k = 0
+        self._stop = threading.Event()
+        self._thread = None
+
+    def start(self, total_steps: int = 0) -> None:
+        self.n, self.t_run = total_steps, time.time()
+        if self.on and not self._thread:
+            self._thread = threading.Thread(target=self._loop, daemon=True)
+            self._thread.start()
+
+    def begin(self, step: str) -> None:
+        with self.lock:
+            self.i += 1
+            self.step, self.detail, self.t_step = step, "", time.time()
+
+    def set(self, detail: str) -> None:
+        with self.lock:
+            self.detail = detail
+
+    def stop(self) -> None:
+        self._stop.set()
+        if self._thread:
+            self._thread.join(timeout=2)
+        self.clear()
+
+    def clear(self) -> None:
+        if self.on:
+            sys.stdout.write("\r\033[K"); sys.stdout.flush()
+
+    @staticmethod
+    def _t(sec: float) -> str:
+        sec = int(sec)
+        return f"{sec // 3600}:{sec % 3600 // 60:02d}:{sec % 60:02d}" if sec >= 3600 else f"{sec // 60}:{sec % 60:02d}"
+
+    def line(self) -> str:
+        now = time.time()
+        step = f"{self.i}/{self.n} {self.step}" if self.n else self.step
+        parts = [self.SPIN[self.k % 4], f"[{step}]" if self.step else "", self.detail,
+                 self._t(now - self.t_step) if self.step else "", f"(run {self._t(now - self.t_run)})"]
+        return " ".join(x for x in parts if x)
+
+    def _loop(self) -> None:
+        while not self._stop.wait(0.25):
+            with self.lock:
+                self.k += 1
+                width = max(20, shutil.get_terminal_size((100, 24)).columns - 1)
+                sys.stdout.write("\r\033[K" + self.line()[:width]); sys.stdout.flush()
+
+
+STATUS = Status()
+
+
 def say(msg: str, log: Path | None = None) -> None:
     line = f"{time.strftime('%H:%M:%S')}  {msg}"
-    print(line, flush=True)
+    with STATUS.lock:
+        STATUS.clear()
+        print(line, flush=True)
     if log:
         with open(log, "a") as f:
             f.write(line + "\n")
@@ -222,7 +288,8 @@ def collect_inventory(dst: Path, log: Path) -> dict:
         sh(["modprobe", mod], timeout=20)
     if shutil.which("nvidia-modprobe"):                  # device nodes the Vulkan driver opens (uvm, modeset)
         sh(["nvidia-modprobe", "-u", "-m", "-c", "0"], timeout=20)
-    for name, cmd in INVENTORY:
+    for k, (name, cmd) in enumerate(INVENTORY, 1):
+        STATUS.set(f"{name} {k}/{len(INVENTORY)}")
         rc, out = sh(cmd, timeout=180)
         (dst / name).write_text(sanitize(out) if not name.endswith(".json") else MAC.sub("<mac>", out))
         if rc != 0:
@@ -440,7 +507,8 @@ def run_opencl(rundir: Path, log: Path) -> dict:
         say("opencl: no GPU devices", log)
         return dict(skipped="no OpenCL GPU devices")
     results = {}
-    for plat, dev, pname, name in devices:
+    for k, (plat, dev, pname, name) in enumerate(devices, 1):
+        STATUS.set(f"clpeak {name[:30]} {k}/{len(devices)}")
         key = f"p{plat}d{dev}"
         say(f"opencl {key}: {name} ({pname})", log)
         t0 = time.time()
@@ -611,7 +679,8 @@ def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
     d.mkdir(parents=True, exist_ok=True)
     sh(["modprobe", "msr"], timeout=20)
     res = {}
-    for name, args in MLC_RUNS:
+    for k, (name, args) in enumerate(MLC_RUNS, 1):
+        STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")
         t0 = time.time()
         rc, out = sh([str(mlc), *args], timeout=MLC_TIMEOUT_S)
         (d / f"{name}.txt").write_text(scrub(out))
@@ -665,7 +734,9 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
     """run(cmd, timeout) -> (rc, output). Older builds lack --output: then plain console output. A build that does
     not know the backend name: once more without -b (every backend it sees, CPU included)."""
     runs = {}
-    for key, cmd in backend_ops_plan(binary, backend):
+    ops = backend_ops_plan(binary, backend)
+    for k, (key, cmd) in enumerate(ops, 1):
+        STATUS.set(f"test-backend-ops {prefix} {key[4:]} {k}/{len(ops)}")
         t0 = time.time()
         rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
@@ -688,6 +759,7 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
     runs = {}
 
     def one(key: str, cmd: list[str], env: dict | None = None):
+        STATUS.set(f"llama-bench {key}")
         t0 = time.time()
         try:
             r = subprocess.run(cmd, capture_output=True, text=True, timeout=LLAMA_TIMEOUT_S,
@@ -778,7 +850,9 @@ def run_vulkan_probe(rundir: Path, log: Path, probe: Path = VKPROBE) -> dict:
     (d / "list.jsonl").write_text(scrub(out))
     devices = [r for r in parse_lines(out) if r.get("mode") == "list"]
     runs = {}
-    for key, args in vk_plan(devices):
+    vplan = vk_plan(devices)
+    for k, (key, args) in enumerate(vplan, 1):
+        STATUS.set(f"{key} {k}/{len(vplan)}")
         t0 = time.time()
         rc, out = sh([str(probe), *args], timeout=PROBE_TIMEOUT_S)
         (d / f"{key}.jsonl").write_text(scrub(out))
@@ -889,7 +963,8 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
             runs[f"dev{i}"] = dict(rc=rc, error="container did not start"); continue
         plan = vendor_plan(kind) if have_probe else []
         plan += [(f"llama-{m.stem}", ["/rigsim/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS]) for m in models]
-        for key, cmd in plan:
+        for k, (key, cmd) in enumerate(plan, 1):
+            STATUS.set(f"dev{i} {key} {k}/{len(plan)}")
             t0 = time.time()
             rc, out = sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S)
             (d / f"dev{i}-{key}.jsonl").write_text(scrub(out))
@@ -958,6 +1033,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
         runs, unavailable = {}, []
         for t in guessed_blender_types():
             for i, (name, blend) in enumerate(scenes.items()):
+                STATUS.set(f"{t} {name}")
                 key = f"{t.lower()}-{name}"
                 t0 = time.time()
                 cmd = [str(exe), "--background", "--factory-startup", "-noaudio", "--debug-cycles", "--enable-autoexec",
@@ -1185,8 +1261,10 @@ def load_image(img: Path, data: Path, log: Path | None, every: float = 30.0) -> 
             if pos is None:
                 say(f"docker: {img.name}: loading, {now - t0:.0f} s", log)
             elif pos >= size_b:
+                STATUS.set(f"loading {img.name}: unpacking")
                 say(f"docker: {img.name}: archive read, unpacking onto the stick, {now - t0:.0f} s", log)
             else:
+                STATUS.set(f"loading {img.name}: {pos / size_b:.0%}")
                 say(f"docker: {img.name}: {pos / 2**30:.1f} of {size_b / 2**30:.1f} GiB ({pos / size_b:.0%}), "
                     f"{(pos - last) / 2**20 / max(now - t_last, 1e-6):.0f} MB/s, {now - t0:.0f} s", log)
                 last, t_last = pos, now
@@ -1252,16 +1330,35 @@ def prepare_toolkits(data: Path) -> Path:
     return tk
 
 
+def question_progress(d: Path) -> str:
+    """'7/24 items' from the runner's state.json while a question runs."""
+    try:
+        st = json.loads((d / "state.json").read_text())
+    except (OSError, ValueError):
+        return "preparing"
+    done = sum(1 for v in st.values() if v.get("status") not in ("pending", "running"))
+    return f"{done}/{len(st)} items"
+
+
 def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dict:
     d = rundir / "q" / q
     say(f"{q}: start", log)
     t0 = time.time()
-    try:
-        r = subprocess.run([sys.executable, str(OPT / "runner" / "hwq.py"), "run", str(qfile), "--dir", str(d),
-                            "--config", str(cfg)], capture_output=True, text=True, timeout=QUESTION_TIMEOUT_S)
-        rc, out = r.returncode, r.stdout + r.stderr
-    except subprocess.TimeoutExpired as e:
-        rc, out = -9, f"timeout after {QUESTION_TIMEOUT_S} s"
+    pr = subprocess.Popen([sys.executable, str(OPT / "runner" / "hwq.py"), "run", str(qfile), "--dir", str(d),
+                           "--config", str(cfg)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    out_parts: list[str] = []
+    reader = threading.Thread(target=lambda: out_parts.append(pr.stdout.read()), daemon=True)
+    reader.start()
+    while True:
+        try:
+            pr.wait(timeout=2)
+            break
+        except subprocess.TimeoutExpired:
+            if time.time() - t0 > QUESTION_TIMEOUT_S:
+                pr.kill(); pr.wait(); out_parts.append(f"\ntimeout after {QUESTION_TIMEOUT_S} s"); break
+            STATUS.set(question_progress(d))
+    reader.join(timeout=10)
+    rc, out = (pr.returncode if pr.returncode is not None else -9), "".join(out_parts)
     d.mkdir(parents=True, exist_ok=True)
     (d / "runner.log").write_text(scrub(out))
     counts = json.loads(sh([sys.executable, str(OPT / "runner" / "hwq.py"), "status", "--dir", str(d)])[1] or "{}")
@@ -1381,6 +1478,8 @@ def main() -> int:
                questions={}, status="running")
     (rundir / "run.json").write_text(json.dumps(run, indent=1))
     say(f"run {rundir.name}", log)
+    STATUS.start()
+    STATUS.begin("inventory")
     try:
         run["hardware"] = collect_inventory(rundir / "inventory", log)
         say(f"cpu {run['hardware']['cpu']} | board {run['hardware']['board']} | {run['hardware']['ram_gib']} GiB | "
@@ -1389,6 +1488,7 @@ def main() -> int:
         say(f"stick check: {run['stick_check'].get('result', run['stick_check'])}", log)
         run["stick_read"] = stick_read_speed(data)
         say(f"stick read: {run['stick_read']}", log)
+        STATUS.begin("docker")
         run["docker"] = start_docker(data, log)
         man["runtime"] = runtime_versions()
         (rundir / "manifest.json").write_text(json.dumps(man, indent=1))
@@ -1405,7 +1505,10 @@ def main() -> int:
         say(f"screens off while measuring: {run['screens_blanked'] or 'not possible'}", log)
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
-            for q, f, skip in plan(OPT / "questions", nvidia, why):
+            qplan = list(plan(OPT / "questions", nvidia, why))
+            STATUS.n = len(qplan) + 7
+            for q, f, skip in qplan:
+                STATUS.begin(q)
                 if skip:
                     run["questions"][q] = dict(skipped=skip); say(f"{q}: skipped ({skip})", log); continue
                 run["questions"][q] = run_question(q, f, rundir, cfg, log)
@@ -1418,6 +1521,7 @@ def main() -> int:
                                ("oneapi", lambda: run_vendor("oneapi", data, rundir, log)),
                                ("llama-bench", lambda: run_llama(data, rundir, cuda_image, nvidia, log)),
                                ("blender", lambda: run_blender(data, rundir, log))):
+                STATUS.begin(name)
                 run["questions"][name] = step()
                 run["questions"][name]["tools"] = tools_for(name, man, dict(mlc_version=mlc_version(rundir)) if name == "mlc" else None)
                 if run["questions"][name].get("skipped"):
@@ -1443,6 +1547,7 @@ def main() -> int:
     sh(["systemctl", "stop", "docker", "containerd"], timeout=300)
     sh(["umount", "/var/lib/containerd"], timeout=120)
     os.sync()
+    STATUS.stop()
     off = should_power_off(data, cmdline) and run["status"] != "stopped"
     sh(["umount", str(MNT)], timeout=120)
     if off:

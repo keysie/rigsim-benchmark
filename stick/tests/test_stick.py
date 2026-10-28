@@ -931,3 +931,23 @@ def test_pcie_topology_from_sysfs(tmp_path):
     assert d["0000:00:1c.0"]["name"] == "Raptor Lake PCH PCI Express Root Port" and d["0000:01:00.0"]["parent"] == "0000:00:01.0"
     assert d["0000:01:00.0"]["host_bridge"] == "pci0000:00"
     assert stick.pcie_port_type(b"") == "" and "pcie.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.2"
+
+
+def test_status_line(tmp_path, monkeypatch):
+    import json
+    st = stick.Status()
+    st.start(total_steps=14)
+    st.begin("cpu-gemm"); st.set("7/24 items")
+    line = st.line()
+    assert line[0] in st.SPIN and "[1/14 cpu-gemm]" in line and "7/24 items" in line and "(run 0:00)" in line
+    st.begin("vkprobe")
+    assert "[2/14 vkprobe]" in st.line() and "7/24" not in st.line()                  # detail resets per step
+    st.stop()
+    d = tmp_path / "q"; d.mkdir()
+    assert stick.question_progress(d) == "preparing"
+    (d / "state.json").write_text(json.dumps({"a": {"status": "done"}, "b": {"status": "failed"}, "c": {"status": "pending"}}))
+    assert stick.question_progress(d) == "2/3 items"
+    src = (HERE / "payload" / "stick.py").read_text()
+    for hook in ('STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")', 'STATUS.set(f"{key} {k}/{len(vplan)}")',
+                 'STATUS.set(f"test-backend-ops {prefix}', 'STATUS.set(question_progress(d))', 'STATUS.begin(name)'):
+        assert hook in src, hook
