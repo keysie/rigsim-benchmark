@@ -124,7 +124,9 @@ To force a full rebuild: `rm -rf stick/out/cache stick/out/seed`.
 3. Walk away. The first boot of a stick loads its container images (a few minutes more). At the end the machine
    powers off.
 
-While it runs: `Ctrl+Alt+F2` opens a shell; `systemctl stop rigsim-stick` stops cleanly. To keep the machine on
+While it runs: **Enter pressed twice** (within 5 s) skips the running measurement step — the stick goes on with
+the next one and records the step as skipped by the operator (the first key press after the screens were switched
+off only wakes them). `Ctrl+Alt+F2` opens a shell; `systemctl stop rigsim-stick` stops cleanly. To keep the machine on
 after the run, add `rigsim.nopoweroff` to the kernel line in the boot menu (`e` to edit), or put a file
 `NO_POWEROFF` on the data partition.
 

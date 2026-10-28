@@ -94,6 +94,7 @@ class Status:
         self.lock = threading.Lock()
         self.on = sys.stdout.isatty()
         self.step = self.detail = ""
+        self.skippable = False
         self.i = self.n = 0
         self.t_run = self.t_step = time.time()
         self.k = 0
@@ -106,10 +107,12 @@ class Status:
             self._thread = threading.Thread(target=self._loop, daemon=True)
             self._thread.start()
 
-    def begin(self, step: str) -> None:
+    def begin(self, step: str, skippable: bool = False) -> None:
         with self.lock:
             self.i += 1
             self.step, self.detail, self.t_step = step, "", time.time()
+            self.skippable = skippable
+            SKIP.clear()
 
     def set(self, detail: str) -> None:
         with self.lock:
@@ -134,7 +137,8 @@ class Status:
         now = time.time()
         step = f"{self.i}/{self.n} {self.step}" if self.n else self.step
         parts = [self.SPIN[self.k % 4], f"[{step}]" if self.step else "", self.detail,
-                 self._t(now - self.t_step) if self.step else "", f"(run {self._t(now - self.t_run)})"]
+                 self._t(now - self.t_step) if self.step else "", f"(run {self._t(now - self.t_run)})",
+                 "· Enter twice: skip step" if self.skippable else ""]
         return " ".join(x for x in parts if x)
 
     def _loop(self) -> None:
@@ -158,9 +162,87 @@ def say(msg: str, log: Path | None = None) -> None:
             f.write(line + "\n")
 
 
+# --- skipping a step from the console --------------------------------------------------------------------------------
+# Pressing Enter twice (within 5 s) during a measurement step stops it and goes on with the next: the step's process
+# group is killed, any container still running is stopped, and run.json records the step as skipped by the operator.
+# Twice, because the first key press after the screens were switched off only wakes them.
+SKIP = threading.Event()
+SKIP_ARM_S = 5.0
+
+
+class StepSkipped(Exception):
+    pass
+
+
+OPERATOR_SKIP = "skipped by the operator (Enter pressed twice during the step)"
+
+
+def _kill_containers() -> None:
+    try:
+        ids = subprocess.run(["docker", "ps", "-q"], capture_output=True, text=True, timeout=30).stdout.split()
+        if ids:
+            subprocess.run(["docker", "kill", *ids], capture_output=True, timeout=60)
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+
+
+def run_cmd(cmd: list[str], capture_output: bool = True, text: bool = True, timeout: float | None = None,
+            env: dict | None = None, cwd: str | None = None) -> subprocess.CompletedProcess:
+    """subprocess.run for measurement commands, but stoppable: raises StepSkipped when the operator skips the step
+    (its whole process group is killed, running containers too)."""
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE if capture_output else None,
+                         stderr=subprocess.PIPE if capture_output else None, text=text, env=env, cwd=cwd,
+                         start_new_session=True)
+    t0 = time.time()
+    while True:
+        try:
+            out, err = p.communicate(timeout=0.5)
+            return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+        except subprocess.TimeoutExpired:
+            if SKIP.is_set():
+                _killpg(p); _kill_containers()
+                raise StepSkipped()
+            if timeout is not None and time.time() - t0 > timeout:
+                _killpg(p)
+                raise subprocess.TimeoutExpired(cmd, timeout)
+
+
+def _killpg(p: subprocess.Popen) -> None:
+    try:
+        os.killpg(p.pid, signal.SIGKILL)
+    except OSError:
+        pass
+    try:
+        p.communicate(timeout=10)
+    except (subprocess.TimeoutExpired, ValueError, OSError):
+        pass
+
+
+def operator_keys() -> None:
+    """Background reader of the console: Enter twice within SKIP_ARM_S skips the running measurement step."""
+    armed = 0.0
+    while True:
+        try:
+            line = sys.stdin.readline()
+        except (OSError, ValueError):
+            return
+        if not line:
+            return
+        if not STATUS.skippable:
+            continue
+        now = time.time()
+        if now - armed <= SKIP_ARM_S:
+            SKIP.set()
+            say(f"{STATUS.step}: skipping (Enter pressed twice)")
+            armed = 0.0
+        else:
+            armed = now
+            say(f"press Enter again within {SKIP_ARM_S:.0f} s to skip {STATUS.step}")
+
+
 def sh(cmd: list[str], timeout: float = 120) -> tuple[int, str]:
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        r = run_cmd(cmd, capture_output=True, text=True, timeout=timeout)
         return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
     except (OSError, subprocess.TimeoutExpired) as e:
         return 127, f"{type(e).__name__}: {e}"
@@ -500,7 +582,7 @@ def run_opencl(rundir: Path, log: Path) -> dict:
     d = rundir / "opencl"
     d.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, RUSTICL_ENABLE="radeonsi")       # AMD through Mesa rusticl; Intel through compute-runtime
-    r = subprocess.run(["clinfo", "--list"], capture_output=True, text=True, env=env, timeout=120)
+    r = run_cmd(["clinfo", "--list"], capture_output=True, text=True, env=env, timeout=120)
     (d / "clinfo-list.txt").write_text(scrub(r.stdout + r.stderr))
     devices = opencl_devices(r.stdout)
     if not devices:
@@ -513,7 +595,7 @@ def run_opencl(rundir: Path, log: Path) -> dict:
         say(f"opencl {key}: {name} ({pname})", log)
         t0 = time.time()
         try:
-            r = subprocess.run(["clpeak", "-p", str(plat), "-d", str(dev), *clpeak_tests()], capture_output=True,
+            r = run_cmd(["clpeak", "-p", str(plat), "-d", str(dev), *clpeak_tests()], capture_output=True,
                                text=True, env=env, timeout=OPENCL_TIMEOUT_S)
             rc, out = r.returncode, r.stdout + r.stderr
         except subprocess.TimeoutExpired:
@@ -714,7 +796,7 @@ def llama_models(data: Path) -> list[Path]:
 
 def _run_env(cmd: list[str], timeout: float, env: dict) -> tuple[int, str]:
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, env=env)
+        r = run_cmd(cmd, capture_output=True, text=True, timeout=timeout, env=env)
         return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
     except (OSError, subprocess.TimeoutExpired) as e:
         return 127, f"{type(e).__name__}: {e}"
@@ -762,7 +844,7 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
         STATUS.set(f"llama-bench {key}")
         t0 = time.time()
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=LLAMA_TIMEOUT_S,
+            r = run_cmd(cmd, capture_output=True, text=True, timeout=LLAMA_TIMEOUT_S,
                                env=dict(os.environ, **(env or {})))
             rc, out, err = r.returncode, r.stdout, r.stderr
         except subprocess.TimeoutExpired:
@@ -1057,7 +1139,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                     cmd = ["docker", "run", "--rm", "--network", "none", *AMD_DEVICES, "-v", f"{b}:{b}:ro",
                            "-w", str(script.parent), "-e", "HOME=/tmp", rocm_tag, "/rigsim/run.sh", *cmd]
                 try:
-                    rr = subprocess.run(cmd, capture_output=True, text=True, cwd=str(script.parent), env=env,
+                    rr = run_cmd(cmd, capture_output=True, text=True, cwd=str(script.parent), env=env,
                                         timeout=BLENDER_TIMEOUT_S)
                     rc, out, err = rr.returncode, rr.stdout, rr.stderr
                 except subprocess.TimeoutExpired:
@@ -1086,7 +1168,7 @@ def run_blender_launcher(b: Path, ver: str, d: Path, log: Path) -> dict:
         return dict(skipped="Blender benchmark not in the seed")
     d.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, HOME=str(b / "home"), XDG_CACHE_HOME=str(b / "home" / ".cache"))
-    r = subprocess.run([str(cli), "devices", "--blender-version", ver], capture_output=True, text=True, env=env,
+    r = run_cmd([str(cli), "devices", "--blender-version", ver], capture_output=True, text=True, env=env,
                        timeout=300)
     (d / "devices.txt").write_text(scrub(r.stdout + r.stderr))
     runs = {}
@@ -1097,7 +1179,7 @@ def run_blender_launcher(b: Path, ver: str, d: Path, log: Path) -> dict:
     for t in types:
         t0 = time.time()
         try:
-            rr = subprocess.run([str(cli), "benchmark", "--blender-version", ver, "--device-type", t, "--json",
+            rr = run_cmd([str(cli), "benchmark", "--blender-version", ver, "--device-type", t, "--json",
                                  *BLENDER_SCENES], capture_output=True, text=True, env=env, timeout=BLENDER_TIMEOUT_S)
             rc, out, err = rr.returncode, rr.stdout, rr.stderr
         except subprocess.TimeoutExpired:
@@ -1295,6 +1377,8 @@ def load_image(img: Path, data: Path, log: Path | None, every: float = 30.0) -> 
         except subprocess.TimeoutExpired:
             if time.time() - t0 > 3 * 3600:
                 p.kill(); p.wait(); break
+            if SKIP.is_set():
+                p.kill(); p.wait(); raise StepSkipped()
             # progress = how far docker has read the archive (its file position): exact and monotonic, unlike the
             # store's size, which also shrinks while containerd removes temporary and unreferenced data
             now, pos = time.time(), archive_position(p.pid, img)
@@ -1385,7 +1469,8 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
     say(f"{q}: start", log)
     t0 = time.time()
     pr = subprocess.Popen([sys.executable, str(OPT / "runner" / "hwq.py"), "run", str(qfile), "--dir", str(d),
-                           "--config", str(cfg)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                           "--config", str(cfg)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                          start_new_session=True)
     out_parts: list[str] = []
     reader = threading.Thread(target=lambda: out_parts.append(pr.stdout.read()), daemon=True)
     reader.start()
@@ -1396,6 +1481,13 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
         except subprocess.TimeoutExpired:
             if time.time() - t0 > QUESTION_TIMEOUT_S:
                 pr.kill(); pr.wait(); out_parts.append(f"\ntimeout after {QUESTION_TIMEOUT_S} s"); break
+            if SKIP.is_set():                                  # the operator skips: stop, then restore the machine
+                _killpg(pr); _kill_containers()
+                subprocess.run([sys.executable, str(OPT / "runner" / "hwq.py"), "restore", "--dir", str(d)],
+                               capture_output=True, timeout=300)
+                d.mkdir(parents=True, exist_ok=True)
+                (d / "runner.log").write_text(scrub("".join(out_parts)) + "\nskipped by the operator\n")
+                raise StepSkipped()
             STATUS.set(question_progress(d))
     reader.join(timeout=10)
     rc, out = (pr.returncode if pr.returncode is not None else -9), "".join(out_parts)
@@ -1409,7 +1501,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.2")
+FORMAT = dict(name="rigsim-stick-run", version="1.3")
 
 
 def runtime_versions() -> dict:
@@ -1554,11 +1646,16 @@ def main() -> int:
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
             qplan = list(plan(OPT / "questions", nvidia, why))
             STATUS.n = len(qplan) + 7
+            threading.Thread(target=operator_keys, daemon=True).start()
             for q, f, skip in qplan:
-                STATUS.begin(q)
+                STATUS.begin(q, skippable=not skip)
                 if skip:
                     run["questions"][q] = dict(skipped=skip); say(f"{q}: skipped ({skip})", log); continue
-                run["questions"][q] = run_question(q, f, rundir, cfg, log)
+                try:
+                    run["questions"][q] = run_question(q, f, rundir, cfg, log)
+                except StepSkipped:
+                    run["questions"][q] = dict(skipped=OPERATOR_SKIP)
+                    run.setdefault("operator_skips", []).append(q)
                 run["questions"][q]["tools"] = tools_for(q, man)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
             for name, step in (("mlc", lambda: run_mlc(data, rundir, log)),
@@ -1568,8 +1665,12 @@ def main() -> int:
                                ("oneapi", lambda: run_vendor("oneapi", data, rundir, log)),
                                ("llama-bench", lambda: run_llama(data, rundir, cuda_image, nvidia, log)),
                                ("blender", lambda: run_blender(data, rundir, log))):
-                STATUS.begin(name)
-                run["questions"][name] = step()
+                STATUS.begin(name, skippable=True)
+                try:
+                    run["questions"][name] = step()
+                except StepSkipped:
+                    run["questions"][name] = dict(skipped=OPERATOR_SKIP)
+                    run.setdefault("operator_skips", []).append(name)
                 run["questions"][name]["tools"] = tools_for(name, man, dict(mlc_version=mlc_version(rundir)) if name == "mlc" else None)
                 if run["questions"][name].get("skipped"):
                     say(f"{name}: skipped ({run['questions'][name]['skipped']})", log)

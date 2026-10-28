@@ -44,5 +44,6 @@ Files: see [README.md](README.md) and the layout in `tools/validate.py` (the exa
 | Version | Stick | Change |
 |---|---|---|
 | 1.0 | 0.9.0 | first versioned format: `format`, `stick` as an object, `tools` per step, `manifest.json` |
+| 1.3 | 0.12.0 | `operator_skips` in `run.json`: steps the person at the machine skipped (Enter twice); each such step has `skipped` = "skipped by the operator …" |
 | 1.2 | 0.11.0 | `inventory/pcie.json`: every PCI device with its parent, path from the root complex, PCIe port type (root port, switch upstream / downstream port, endpoint, …), current and maximum link width and speed, names, driver, NUMA node — the route of each card through CPU or chipset ports and switches |
 | 1.1 | 0.10.0 | the card behind every GPU result: `pci` and `uuid` in every vkprobe line, `pci` in the SYCL probe's device list and in `questions` → `rocm` / `oneapi` → `devices`; `oneapi/sycl-ls.txt`; Blender's offline route (`route`, `types_unavailable`, `hip_runtime`) |

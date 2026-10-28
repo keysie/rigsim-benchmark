@@ -752,7 +752,7 @@ def test_blender_offline_route(tmp_path, monkeypatch):
         calls.append(cmd)
         assert kw["cwd"] == str(b / "script") and cmd[-2:][0] == "--device-type"
         return R(0 if cmd[-1] in ("CPU", "OPTIX") else 1)
-    monkeypatch.setattr(stick.subprocess, "run", fake_run)
+    monkeypatch.setattr(stick, "run_cmd", fake_run)
     r = stick.run_blender(tmp_path, tmp_path / "run", tmp_path / "log")
     assert r["route"] == "offline" and r["rc"] == 0 and r["types_unavailable"] == ["ONEAPI"]
     assert set(r["runs"]) == {f"{t}-{s}" for t in ("cpu", "optix") for s in stick.BLENDER_SCENES}
@@ -775,7 +775,7 @@ def test_blender_hip_runs_inside_the_rocm_image(tmp_path, monkeypatch):
 
     class R:
         returncode, stdout, stderr = 0, "{}", ""
-    monkeypatch.setattr(stick.subprocess, "run", lambda cmd, **kw: calls.append(cmd) or R())
+    monkeypatch.setattr(stick, "run_cmd", lambda cmd, **kw: calls.append(cmd) or R())
     r = stick.run_blender(tmp_path, tmp_path / "run", tmp_path / "log")
     hip = next(c for c in calls if c[-1] == "HIP")
     assert hip[:2] == ["docker", "run"] and "/dev/kfd" in hip and f"{b}:{b}:ro" in hip and "rigsim/rocm:k1" in hip
@@ -943,7 +943,7 @@ def test_pcie_topology_from_sysfs(tmp_path):
     assert d["0000:04:00.0"]["link"] == dict(speed="8.0 GT/s PCIe", width="4", max_speed="16.0 GT/s PCIe", max_width="16")
     assert d["0000:00:1c.0"]["name"] == "Raptor Lake PCH PCI Express Root Port" and d["0000:01:00.0"]["parent"] == "0000:00:01.0"
     assert d["0000:01:00.0"]["host_bridge"] == "pci0000:00"
-    assert stick.pcie_port_type(b"") == "" and "pcie.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.2"
+    assert stick.pcie_port_type(b"") == "" and "pcie.json" in stick.INVENTORY_EXTRA and tuple(map(int, stick.FORMAT["version"].split("."))) >= (1, 2)
 
 
 def test_status_line(tmp_path, monkeypatch):
@@ -962,7 +962,7 @@ def test_status_line(tmp_path, monkeypatch):
     assert stick.question_progress(d) == "2/3 items"
     src = (HERE / "payload" / "stick.py").read_text()
     for hook in ('STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")', 'STATUS.set(f"{key} {k}/{len(vplan)}")',
-                 'STATUS.set(f"test-backend-ops {prefix}', 'STATUS.set(question_progress(d))', 'STATUS.begin(name)'):
+                 'STATUS.set(f"test-backend-ops {prefix}', 'STATUS.set(question_progress(d))', 'STATUS.begin(name, skippable=True)'):
         assert hook in src, hook
 
 
@@ -1017,3 +1017,31 @@ def test_flash_verifies_everything_it_wrote(tmp_path):
     (src / "images" / "c.tar").write_bytes(b"x")
     r = run("--iso", str(iso), str(dev), "--tree", str(src), str(dst))
     assert r.returncode == 1 and "system image: content differs" in r.stdout and "images/c.tar: missing on the stick" in r.stdout
+
+
+def test_operator_can_skip_a_step(tmp_path, monkeypatch):
+    import threading as th
+    # a running command is stopped when the step is skipped, and the skip surfaces as StepSkipped
+    stick.SKIP.clear()
+    th.Timer(0.6, stick.SKIP.set).start()
+    import time as tm
+    t0 = tm.time()
+    try:
+        stick.run_cmd(["sleep", "30"])
+        raised = False
+    except stick.StepSkipped:
+        raised = True
+    assert raised and tm.time() - t0 < 5
+    stick.SKIP.clear()
+    assert stick.run_cmd(["echo", "hi"]).stdout.strip() == "hi"
+    # Enter twice within the window arms and skips; only while a skippable step runs
+    st = stick.STATUS
+    st.begin("vkprobe", skippable=True)
+    assert "Enter twice: skip step" in st.line() and not stick.SKIP.is_set()
+    st.begin("docker")
+    assert "Enter twice" not in st.line()
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert 'run["questions"][q] = dict(skipped=OPERATOR_SKIP)' in src and 'run.setdefault("operator_skips", [])' in src
+    assert '"hwq.py"), "restore", "--dir", str(d)]' in src                         # a skipped question still restores
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    assert "41apt_cdrom" in c and c.index("30accessibility") < c.index("update-initramfs -u -k all")

@@ -69,6 +69,14 @@ systemctl disable docker.service docker.socket containerd.service || true
 systemctl enable rigsim-stick.service
 systemctl mask getty@tty1.service
 echo rigsim-stick > /etc/hostname
+# casper's live-session steps for a desktop install image that this stick has none of (accessibility settings, the
+# CD-ROM as apt source, update notifier, apport crash reports, keyboard / locale setup on the console, desktop
+# services): they only printed errors at every boot. Removed from the initramfs; the boot itself is untouched.
+for f in 14locales 19keyboard 30accessibility 31disable_update_notifier 32disable_hibernation 33enable_apport_crashes \
+         34disable_kde_services 35fix_language_selector 36disable_trackerd 41apt_cdrom 44pk_allow_ubuntu 45jackd2 \
+         48kubuntu_disable_restart_notifications 49kubuntu_mobile_session 50ubiquity-bluetooth-agent; do
+  rm -f "/usr/share/initramfs-tools/scripts/casper-bottom/$f"
+done
 update-initramfs -u -k all
 # relative links: seen from outside the chroot, an absolute /boot/... would point at the build host's own /boot
 ln -sf "$(basename "$(ls /boot/vmlinuz-* | sort -V | tail -1)")" /boot/vmlinuz
