@@ -993,3 +993,27 @@ def test_blender_uses_the_launchers_own_script_and_skips_resource_forks(tmp_path
     assert stick.benchmark_script(b).parent.name == "blender_benchmark_script-3.1.2"
     found, scenes = stick.blender_offline(b, "4.2.0")
     assert found == exe and "._classroom" not in str(scenes["classroom"]) and set(scenes) == set(stick.BLENDER_SCENES)
+
+
+def test_flash_verifies_everything_it_wrote(tmp_path):
+    import subprocess
+    f = (HERE / "flash.sh").read_text()
+    for mode in ('verify_stick "$part" 1\n  echo "stick ready', 'verify_stick "$part" 1\n  echo "stick updated',
+                 's) seed_stick "$part"; verify_stick "$part" 0'):
+        assert mode in f, mode
+    v = f.split("verify_stick() {", 1)[1].split("\n}\n", 1)[0]
+    assert 'mount -o ro "$1"' in v and "--tree \"$OUT/seed\"" in v and '--file "$STORE"' in v and "exit 5" in v
+    # the verifier itself: identical passes (the MBR table flash.sh rewrites is ignored), a changed byte fails
+    src, dst = tmp_path / "src", tmp_path / "dst"
+    (src / "images").mkdir(parents=True); (dst / "images").mkdir(parents=True)
+    (src / "images" / "a.tar").write_bytes(bytes(range(256)) * 4000); (dst / "images" / "a.tar").write_bytes(bytes(range(256)) * 4000)
+    iso, dev = tmp_path / "iso", tmp_path / "dev"
+    iso.write_bytes(b"\x01" * 100000); d = bytearray(iso.read_bytes()); d[450:460] = b"\xff" * 10; dev.write_bytes(bytes(d) + b"rest")
+    run = lambda *a: subprocess.run(["python3", str(HERE / "tools" / "verify.py"), *a], capture_output=True, text=True)
+    r = run("--iso", str(iso), str(dev), "--tree", str(src), str(dst))
+    assert r.returncode == 0 and "verification passed: 2 item(s)" in r.stdout
+    d[5000] = 0; dev.write_bytes(bytes(d))
+    (dst / "images" / "b.tar").write_bytes(b"")
+    (src / "images" / "c.tar").write_bytes(b"x")
+    r = run("--iso", str(iso), str(dev), "--tree", str(src), str(dst))
+    assert r.returncode == 1 and "system image: content differs" in r.stdout and "images/c.tar: missing on the stick" in r.stdout

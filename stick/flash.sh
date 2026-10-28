@@ -12,13 +12,14 @@
 #   [a]bort
 # Before update or erase the runs are always copied to $BACKUP (default ~/rigsim-stick-backup-<time>).
 # After seeding, the container images are loaded into the stick's Docker store here (NO_PRELOAD=1: on first boot).
+# At the end everything written is read back and compared (NO_VERIFY=1 skips it).
 # New sticks keep room for larger images: the data partition starts at RESERVE_MIB (default 8192) or 2 GiB after
 # the image, whichever is later.
 # Needs: util-linux (sfdisk, partx, lsblk), e2fsprogs, rsync.
 set -euo pipefail
 S="$(cd "$(dirname "$0")" && pwd)"; OUT="$S/out"; ISO="${ISO:-$OUT/rigsim-stick.iso}"
 source "$S/tools/deps.sh"
-need sfdisk:fdisk partx:util-linux blockdev:util-linux lsblk:util-linux e2fsck:e2fsprogs \
+need sfdisk:fdisk partx:util-linux blockdev:util-linux lsblk:util-linux e2fsck:e2fsprogs python3:python3 \
      mkfs.ext4:e2fsprogs rsync:rsync
 RESERVE_MIB="${RESERVE_MIB:-8192}"
 reseed=0; [[ "${1:-}" == --reseed ]] && { reseed=1; shift; }
@@ -125,6 +126,25 @@ preload_images() {                                   # $1 = data partition (not 
   return 0
 }
 
+# Read-back verification of everything written, with a progress bar (tools/verify.py): the system image against the
+# ISO, every seed file, the image store. Minutes here instead of a failed run on someone else's machine.
+# NO_VERIFY=1 skips it.
+verify_stick() {                                     # $1 = data partition, $2 = 1 if the system image was written
+  if [[ "${NO_VERIFY:-0}" == 1 ]]; then echo "verification skipped (NO_VERIFY=1)"; return 0; fi
+  local args=() rc=0
+  MNT="$(mktemp -d)"; mount -o ro "$1" "$MNT"
+  [[ "${2:-0}" == 1 ]] && args+=(--iso "$ISO" "$DEV")
+  args+=(--tree "$OUT/seed" "$MNT/seed")
+  [[ -f "$STORE" && -f "$MNT/store.img" ]] && args+=(--file "$STORE" "$MNT/store.img")
+  echo "verifying the stick: reading back everything written"
+  python3 "$S/tools/verify.py" "${args[@]}" || rc=$?
+  umount "$MNT"; rmdir "$MNT"; MNT=""
+  if [[ $rc -ne 0 ]]; then
+    echo "the stick does not hold what was written — flash again; if it fails again, the stick is failing" >&2
+    exit 5
+  fi
+}
+
 seed_stick() {                                       # $1 = data partition
   mount_data "$1"
   mkdir -p "$MNT/runs" "$MNT/seed"
@@ -156,6 +176,7 @@ fresh() {
     echo "the kernel does not show the new data partition on $DEV (unplug and replug the stick, then run again)" >&2; exit 4; }
   mkfs.ext4 -F -L RIGSIM "$part"
   seed_stick "$part"
+  verify_stick "$part" 1
   echo "stick ready: $DEV (data partition $part from ${start} MiB)"
 }
 
@@ -181,13 +202,14 @@ update() {                                           # $1 = data partition
     return 4
   fi
   seed_stick "$part"
+  verify_stick "$part" 1
   echo "stick updated: $DEV (results kept, $part)"
 }
 
 part="$(data_part || true)"
 if [[ $reseed == 1 ]]; then
   [[ -n "$part" ]] || { echo "$DEV is not a rigsim stick (no RIGSIM partition)" >&2; exit 2; }
-  seed_stick "$part"; echo "seed refreshed on $DEV"; exit 0
+  seed_stick "$part"; verify_stick "$part" 0; echo "seed refreshed on $DEV"; exit 0
 fi
 if [[ -z "$part" ]]; then fresh; exit 0; fi
 
@@ -202,7 +224,7 @@ while true; do
   read -rp "[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort? " c
   case "$c" in
     u) update "$part" && exit 0 || true ;;
-    s) seed_stick "$part"; echo "seed refreshed on $DEV"; exit 0 ;;
+    s) seed_stick "$part"; verify_stick "$part" 0; echo "seed refreshed on $DEV"; exit 0 ;;
     e) backup_runs "$part"; fresh; exit 0 ;;
     a) exit 1 ;;
   esac
