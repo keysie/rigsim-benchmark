@@ -195,7 +195,7 @@ function resultsTable(r) {
   const rows = (r.results || []);
   if (!rows.length) return "";
   return `<h3>Results</h3><table class="results"><thead><tr><th>Value</th><th>Device</th><th>Measured</th><th>rigsim predicts</th></tr></thead><tbody>`
-    + rows.map(m => `<tr><td>${esc(m.key)}</td><td>${esc(m.gpu)}</td><td class="num">${fmt(m.value)} ${esc(m.unit)}</td>`
+    + rows.map(m => `<tr><td>${esc(m.key)}</td><td>${esc(m.gpu)}${m.pci ? `<div class="machine">${esc(m.pci)}</div>` : ""}</td><td class="num">${fmt(m.value)} ${esc(m.unit)}</td>`
       + `<td class="pred">${predCell(m)}</td></tr>`).join("") + `</tbody></table>`;
 }
 

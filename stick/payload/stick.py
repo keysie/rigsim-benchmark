@@ -807,7 +807,8 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
         ov = hsa_override(dev.get("arch", ""), targets) if kind == "rocm" else None
         if ov:
             env["HSA_OVERRIDE_GFX_VERSION"] = ov
-        res["devices"].append(dict(index=dev["index"], name=dev.get("name"), arch=dev.get("arch"), hsa_override=ov))
+        res["devices"].append(dict(index=dev["index"], pci=dev.get("pci", ""), name=dev.get("name"), arch=dev.get("arch"),
+                                   hsa_override=ov))
         c = f"{name}-{i}"
         sh(["docker", "rm", "-f", c], timeout=60)
         envargs = [x for k, v in env.items() for x in ("-e", f"{k}={v}")]
@@ -1177,7 +1178,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.0")
+FORMAT = dict(name="rigsim-stick-run", version="1.1")
 
 
 def runtime_versions() -> dict:

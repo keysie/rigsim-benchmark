@@ -46,7 +46,7 @@ def results(run: Path, pred: Path) -> tuple[list[dict], dict]:
             elif miss or p.get("error"):
                 hist.append(dict(tag=tag, unsupported=(miss or {}).get("reason") or p.get("error", "")))
         rows.append(dict(key=m["key"], value=m["value"], unit=m["unit"], spread=m.get("spread", 0),
-                         gpu=m["conditions"].get("gpu", ""), predictions=hist))
+                         gpu=m["conditions"].get("gpu", ""), pci=m["conditions"].get("pci", ""), predictions=hist))
     latest = (preds[0].get("rigsim") or {}).get("tag", "") if preds else ""
     errs = [abs(r["predictions"][0]["error"]) for r in rows if r["predictions"] and r["predictions"][0].get("tag") == latest
             and r["predictions"][0].get("error") is not None and not r["predictions"][0].get("calibration")]

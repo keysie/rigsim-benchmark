@@ -29,3 +29,20 @@ def test_site_reads_the_generated_table():
     assert 'fetch("data.json")' in html and "results/runs/" in html
     runs = json.loads((ROOT / "docs" / "data.json").read_text())["runs"]
     assert {r["run"] for r in runs} == {p.name for p in (ROOT / "results" / "runs").iterdir() if p.is_dir()}
+
+
+def test_measurements_carry_the_cards_pci_address(tmp_path):
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"; (run / "llama").mkdir(parents=True); (run / "vkprobe").mkdir()
+    (run / "run.json").write_text(js.dumps(dict(hardware=dict(gpus=[
+        "NVIDIA GeForce RTX 3090, 24576 MiB, 00000000:17:00.0", "NVIDIA GeForce RTX 3090, 24576 MiB, 00000000:65:00.0",
+        "Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780]"]))))
+    (run / "vkprobe" / "list.jsonl").write_text('{"mode":"list","index":0,"pci":"0000:65:00.0"}\n{"mode":"list","index":1,"pci":"0000:17:00.0"}\n')
+    line = '{"n_prompt":0,"n_gen":128,"avg_ts":%s,"gpu_info":"NVIDIA GeForce RTX 3090"}\n'
+    for name, v in (("cuda-gpu0", 150), ("cuda-gpu1", 140), ("vulkan-dev0", 120), ("vulkan-dev1", 130)):
+        (run / "llama" / f"{name}-m.jsonl").write_text(line % v)
+    got = {m["key"]: m["conditions"]["pci"] for m in M.extract(run)["measurements"]}
+    assert got == {"llama-bench/cuda/gpu0/m/tg128": "0000:17:00.0", "llama-bench/cuda/gpu1/m/tg128": "0000:65:00.0",
+                   "llama-bench/vulkan/dev0/m/tg128": "0000:65:00.0", "llama-bench/vulkan/dev1/m/tg128": "0000:17:00.0"}

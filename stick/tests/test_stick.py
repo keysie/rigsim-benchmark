@@ -874,3 +874,13 @@ def test_second_trial_run_fixes():
     assert "libEGL_nvidia.so.0/" in c and "s/libGLX_nvidia" in c
     src = (HERE / "payload" / "stick.py").read_text()
     assert '"ONEAPI_DEVICE_SELECTOR=level_zero:gpu"' in src and '"sycl-ls", "--verbose"' in src
+
+
+def test_identical_gpus_stay_apart():
+    """Two cards of the same model: every GPU result can be traced to its card's PCI address."""
+    vk = (HERE / "src" / "vkprobe" / "vkprobe.c").read_text()
+    assert "VkPhysicalDevicePCIBusInfoPropertiesEXT" in vk and '\\"pci\\":\\"%s\\",\\"uuid\\"' in vk
+    assert "ext_intel_pci_address" in (HERE / "src" / "syclprobe" / "probe_sycl.cpp").read_text()
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert 'pci=dev.get("pci", "")' in src and '"CUDA_DEVICE_ORDER=PCI_BUS_ID"' in src
+    assert stick.FORMAT["version"] == "1.1"

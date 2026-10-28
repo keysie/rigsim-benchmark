@@ -191,12 +191,16 @@ int main(int argc, char** argv) {
     try {
         if (mode == "info") {
             int i = 0;
-            for (auto& d : sycl::device::get_devices(sycl::info::device_type::gpu))
-                printf("{\"mode\":\"info\",\"index\":%d,\"name\":\"%s\",\"backend\":\"%s\",\"units\":%u,\"clock_mhz\":%u,"
-                       "\"mem_bytes\":%llu}\n", i++, d.get_info<sycl::info::device::name>().c_str(),
+            for (auto& d : sycl::device::get_devices(sycl::info::device_type::gpu)) {
+                // which physical card: identical models stay apart (Intel's PCI-address extension, where offered)
+                std::string pci;
+                if (d.has(sycl::aspect::ext_intel_pci_address)) pci = d.get_info<sycl::ext::intel::info::device::pci_address>();
+                printf("{\"mode\":\"info\",\"index\":%d,\"pci\":\"%s\",\"name\":\"%s\",\"backend\":\"%s\",\"units\":%u,\"clock_mhz\":%u,"
+                       "\"mem_bytes\":%llu}\n", i++, pci.c_str(), d.get_info<sycl::info::device::name>().c_str(),
                        d.get_backend() == sycl::backend::ext_oneapi_level_zero ? "level_zero" : "other",
                        d.get_info<sycl::info::device::max_compute_units>(), d.get_info<sycl::info::device::max_clock_frequency>(),
                        (unsigned long long)d.get_info<sycl::info::device::global_mem_size>());
+            }
             return 0;
         }
         sycl::queue q = make_queue();

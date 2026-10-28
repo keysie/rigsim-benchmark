@@ -76,6 +76,7 @@ typedef struct {
     VkDescriptorSetLayout dsl; VkPipelineLayout pl; VkDescriptorPool dp; VkDescriptorSet ds;
     VkCommandPool cp; VkCommandBuffer cb; VkFence fence; VkQueryPool qp;
     int has_ts; double ts_ns; uint64_t ts_mask; uint32_t subgroup;
+    char pci[32]; char uuid[40];       /* which physical card this is: identical models stay apart */
     int f16, i8, s16, s8, cm, mm;
     PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR cm_props;
 } Ctx;
@@ -140,9 +141,14 @@ static void open_device(Ctx* c, int index) {
     c->ts_ns = c->props.limits.timestampPeriod;
     c->ts_mask = c->ts_mask >= 64 ? ~0ULL : ((1ULL << c->ts_mask) - 1);
     // features
-    VkPhysicalDeviceSubgroupProperties sg = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_PROPERTIES};
+    int pci_ext = has_ext(c->pd, VK_EXT_PCI_BUS_INFO_EXTENSION_NAME);
+    VkPhysicalDevicePCIBusInfoPropertiesEXT pbi = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PCI_BUS_INFO_PROPERTIES_EXT};
+    VkPhysicalDeviceIDProperties idp = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ID_PROPERTIES, pci_ext ? &pbi : NULL};
+    VkPhysicalDeviceSubgroupProperties sg = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_PROPERTIES, &idp};
     VkPhysicalDeviceProperties2 p2 = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2, &sg};
     vkGetPhysicalDeviceProperties2(c->pd, &p2);
+    if (pci_ext) snprintf(c->pci, sizeof c->pci, "%04x:%02x:%02x.%x", pbi.pciDomain, pbi.pciBus, pbi.pciDevice, pbi.pciFunction);
+    for (int i = 0; i < 16; ++i) snprintf(c->uuid + 2 * i, 3, "%02x", idp.deviceUUID[i]);
     c->subgroup = sg.subgroupSize ? sg.subgroupSize : 32;
     int v12 = c->props.apiVersion >= VK_API_VERSION_1_2;
     int cm_ext = v12 && has_ext(c->pd, VK_KHR_COOPERATIVE_MATRIX_EXTENSION_NAME);
@@ -280,7 +286,7 @@ static void head(Ctx* c, const char* mode) {
            type_name(c->props.deviceType), c->props.vendorID, c->props.deviceID, c->props.driverVersion,
            VK_API_VERSION_MAJOR(c->props.apiVersion), VK_API_VERSION_MINOR(c->props.apiVersion),
            VK_API_VERSION_PATCH(c->props.apiVersion));
-    printf(",\"timer\":\"%s\"", c->has_ts ? "gpu timestamps" : "wall clock");
+    printf(",\"timer\":\"%s\",\"pci\":\"%s\",\"uuid\":\"%s\"", c->has_ts ? "gpu timestamps" : "wall clock", c->pci, c->uuid);
 }
 
 // ---- list -----------------------------------------------------------------------------------------------------------
