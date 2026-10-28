@@ -23,7 +23,7 @@ ROOTFS_PACKAGES = re.compile(
     r"docker\.io|containerd|runc|i2c-tools|dmidecode|lshw|hwloc|numactl|pciutils|lm-sensors|python3|casper|"
     r"shim-signed|grub-efi-amd64-signed|linux-firmware)$")
 CUDA_PACKAGES = re.compile(r"^(cuda-nvcc\S*|cuda-cudart-\S+|libcublas-\S+|cuda-toolkit-\S+)$")
-SETTINGS = ("SUITE", "KERNEL", "NVIDIA_BRANCH", "NVIDIA_FLAVOUR", "MIRROR", "LLAMA_REF", "AMDGPU_TARGETS",
+SETTINGS = ("SUITE", "KERNEL", "NVIDIA_BRANCH", "NVIDIA_FLAVOUR", "MIRROR", "LLAMA_SELECT", "LLAMA_REF", "AMDGPU_TARGETS",
             "ROCM_IMAGE", "ONEAPI_IMAGE", "BLENDER_VERSION", "BLENDER_SCRIPT_URL")
 
 
@@ -102,8 +102,10 @@ def seed(seed_dir: Path, out: Path) -> dict:
     # llama.cpp per backend
     llama = {}
     for b in sorted(p for p in (seed_dir / "llama").glob("*") if p.is_dir()):
-        llama[b.name] = dict(commit=(b / "COMMIT").read_text().strip() if (b / "COMMIT").exists() else "",
-                             files={f.name: sha256(f) for f in sorted(b.iterdir()) if f.is_file() and f.name != "COMMIT"})
+        llama[b.name] = dict(tag=(b / "TAG").read_text().strip() if (b / "TAG").exists() else "",
+                             commit=(b / "COMMIT").read_text().strip() if (b / "COMMIT").exists() else "",
+                             files={f.name: sha256(f) for f in sorted(b.iterdir())
+                                    if f.is_file() and f.name not in ("COMMIT", "TAG")})
     m["llama.cpp"] = llama
     # vendor images (ROCm, oneAPI): versions inside, as built
     vendor = {}
@@ -113,7 +115,7 @@ def seed(seed_dir: Path, out: Path) -> dict:
         if not (seed_dir / "images" / f"vendor-{name}.tar").exists():
             continue
         inside = sh(["docker", "run", "--rm", "--network", "none", tag, "sh", "-c",
-                     "for f in ROCM_VERSION ONEAPI_VERSION LLAMA_COMMIT TARGETS TARGETS_DROPPED; do [ -f /rigsim/$f ] && "
+                     "for f in ROCM_VERSION ONEAPI_VERSION LLAMA_TAG LLAMA_COMMIT TARGETS TARGETS_DROPPED; do [ -f /rigsim/$f ] && "
                      "printf '%s\\t%s\\n' $f \"$(paste -sd, /rigsim/$f)\"; done; cd /rigsim && sha256sum probe probe_sycl "
                      "llama-bench test-backend-ops 2>/dev/null | sed 's/  /\\tsha256:/'"])
         kv = dict(l.split("\t", 1) for l in inside.splitlines() if "\t" in l)

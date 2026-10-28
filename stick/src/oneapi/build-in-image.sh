@@ -31,7 +31,7 @@ git clone -q https://github.com/ggml-org/llama.cpp /tmp/llama && cd /tmp/llama &
 cmake -B b -DGGML_SYCL=ON -DGGML_SYCL_F16=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
 cmake --build b --target llama-bench test-backend-ops -j"$(nproc)"
-cp b/bin/llama-bench b/bin/test-backend-ops /rigsim/ && git rev-parse HEAD > /rigsim/LLAMA_COMMIT
+cp b/bin/llama-bench b/bin/test-backend-ops /rigsim/ && git rev-parse HEAD > /rigsim/LLAMA_COMMIT && echo "${LLAMA_TAG:-}" > /rigsim/LLAMA_TAG
 cd / && rm -rf /tmp/llama && apt-get clean && rm -rf /var/lib/apt/lists/*
 printf '#!/bin/bash\nsource /opt/intel/oneapi/setvars.sh >/dev/null 2>&1 || true\nexec "$@"\n' > /rigsim/run.sh && chmod +x /rigsim/run.sh
 echo "oneapi image ready"

@@ -546,7 +546,7 @@ def test_build_caches_every_expensive_part():
     assert 'mount --bind "$APT_CACHE" "$ROOT/var/cache/apt/archives"' in b and "KEEP_APT_CACHE=1" in b
     assert '[ "${KEEP_APT_CACHE:-0}" = 1 ] || apt-get clean' in c
     # llama.cpp keyed by the resolved commit, image and build script; vendor images by base digest + commit + sources
-    assert "git ls-remote https://github.com/ggml-org/llama.cpp" in b
+    assert "LLAMA_URL=https://github.com/ggml-org/llama.cpp" in b and 'git ls-remote "$LLAMA_URL"' in b
     assert 'cached_step "$C/llama-cuda.key" "$(key "$LLAMA_COMMIT" "$(image_id "$CUDA_IMAGE")" "$LLAMA_CUDA")"' in b
     assert 'tag="rigsim/$name:$k"' in b and 'docker image inspect "$tag"' in b and 'cache_ok "$tar.key" "$k"' in b
     assert 'cached_step "$tar.key" "$(image_id "$img")" "save $img"' in b
@@ -829,3 +829,19 @@ def test_rocm_build_drops_targets_llama_cpp_cannot_compile():
     assert "errors? generated when compiling for gfx[0-9a-f]+" in s and "/rigsim/TARGETS_DROPPED" in s
     assert "for attempt in 1 2 3 4" in s and "not a per-target error" in s
     assert "TARGETS_DROPPED" in (HERE / "tools" / "manifest.py").read_text()
+
+
+def test_llama_cpp_release_choice(tmp_path):
+    """Releases only; default 'release' = newest patch of the previous release line (time for hotfixes)."""
+    import subprocess
+    s = (HERE / "build.sh").read_text()
+    fn = s[s.index("pick_release() {"):s.index("\n}\n", s.index("pick_release() {")) + 3]
+    git = tmp_path / "git"
+    git.write_text("#!/bin/sh\nfor t in v0.4.0 v0.4.1 v0.5.0 v0.9.0 v0.9.2 v0.9.1 v0.10.0 b10549 v0.10.0-rc1; do "
+                   "printf 'x\\trefs/tags/%s\\n' $t; done\n")
+    git.chmod(0o755)
+    run = lambda mode: subprocess.run(["bash", "-c", f"set -euo pipefail\nLLAMA_URL=x\n{fn}pick_release {mode}"],
+                                      capture_output=True, text=True, env=dict(PATH=f"{tmp_path}:/usr/bin:/bin")).stdout.strip()
+    assert run("release") == "v0.9.2" and run("latest-release") == "v0.10.0"
+    assert 'LLAMA_REF="${LLAMA_REF:-release}"' in s and 'export LLAMA_SELECT="$LLAMA_REF"' in s
+    assert "LLAMA_SELECT" in (HERE / "tools" / "manifest.py").read_text()

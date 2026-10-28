@@ -38,7 +38,8 @@ def summary(steps: dict, man: dict) -> dict:
     rt = man.get("runtime", {})
     pk = man.get("system", {}).get("packages", {})
     llama = man.get("seed", {}).get("llama.cpp", {}) or (steps.get("llama-bench", {}).get("tools", {}).get("llama.cpp", {}))
-    commits = sorted({b.get("commit", "")[:9] for b in llama.values() if isinstance(b, dict) and b.get("commit")})
+    commits = sorted({b.get("tag") or b.get("commit", "")[:9] for b in llama.values()
+                      if isinstance(b, dict) and (b.get("tag") or b.get("commit"))})
     cuda = ""
     for img in man.get("seed", {}).get("images", {}).values():
         for k, v in (img.get("packages") or {}).items():

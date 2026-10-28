@@ -41,7 +41,7 @@ for attempt in 1 2 3 4; do
   echo "$bad" >> /rigsim/TARGETS_DROPPED
   tr ';' '\n' < /rigsim/TARGETS | grep -vxF -f <(echo "$bad") | paste -sd ';' > /tmp/t && mv /tmp/t /rigsim/TARGETS
 done
-cp b/bin/llama-bench b/bin/test-backend-ops /rigsim/ && git rev-parse HEAD > /rigsim/LLAMA_COMMIT
+cp b/bin/llama-bench b/bin/test-backend-ops /rigsim/ && git rev-parse HEAD > /rigsim/LLAMA_COMMIT && echo "${LLAMA_TAG:-}" > /rigsim/LLAMA_TAG
 cd / && rm -rf /tmp/llama
 # Blender's HIP device runs in this image (the system image has no ROCm runtime): the X / GL libraries Blender
 # loads at start, even in background mode

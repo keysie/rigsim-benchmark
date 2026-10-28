@@ -11,7 +11,8 @@
 #   KERNEL=ga                         Ubuntu's release kernel instead of the newer HWE kernel (default: hwe — newer
 #                                     AMD and Intel GPUs need it; NVIDIA's signed modules exist for both)
 # Seed extras (each optional; the stick records "not in the seed" when one is missing):
-#   LLAMA_REF=<tag|commit>   llama.cpp to build (default master, the resolved commit is recorded)
+#   LLAMA_REF=release|latest-release|<tag|branch|commit>   llama.cpp to build; default "release": the newest patch
+#                            of the previous release line (see below); tag and commit are recorded
 #   SKIP_MODELS=1            no GGUF models (TinyLlama 1.1B Q4_0, Llama 2 7B Q4_0 — the scoreboards' model)
 #   BLENDER_VERSION=4.2.0  BLENDER_LAUNCHER_URL=...   Blender Benchmark launcher CLI, Blender and scenes
 #   BLENDER_SCRIPT_URL=...   the benchmark script for the offline route (default: script 3.1.1 from opendata)
@@ -203,11 +204,38 @@ cached_step "$OUT/seed/debs/.key" "$(key "$(image_id "$CPU_IMAGE")" "$DEBS")" "o
 
 # llama.cpp: the ref is resolved to a commit first, so every backend (and the vendor images) builds the same one, and
 # a build is reused while commit, image and build script stay the same
-LLAMA_REF="${LLAMA_REF:-master}"; L="$OUT/seed/llama"; mkdir -p "$L/cuda" "$L/vulkan"
+# Releases only (vX.Y.Z, every one to two weeks, with release notes; the b<N> tags are pre-releases, many a day),
+# and defensively: "release" (default) takes the previous release line — when v0.8.0 is out, the newest v0.7.x —
+# so the line has had time for its hotfixes (v0.4.1 followed v0.4.0); "latest-release" takes the newest release.
+# Any other LLAMA_REF (tag, branch, commit) is built as given. The rule and the result are recorded.
+LLAMA_URL=https://github.com/ggml-org/llama.cpp
+LLAMA_REF="${LLAMA_REF:-release}"; L="$OUT/seed/llama"; mkdir -p "$L/cuda" "$L/vulkan"
+export LLAMA_SELECT="$LLAMA_REF"
+pick_release() {   # release | latest-release
+  local tags lines line
+  tags="$(git ls-remote --tags --refs "$LLAMA_URL" 'refs/tags/v*' | awk '{print $2}' | sed 's#^refs/tags/##' \
+          | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V || true)"
+  [[ -n "$tags" ]] || return 1
+  lines="$(sed -E 's/^(v[0-9]+\.[0-9]+)\..*/\1/' <<<"$tags" | uniq)"
+  if [[ "$1" == release && "$(wc -l <<<"$lines")" -ge 2 ]]; then line="$(tail -2 <<<"$lines" | head -1)"
+  else line="$(tail -1 <<<"$lines")"; fi
+  awk -v l="$line" 'index($0, l ".") == 1' <<<"$tags" | tail -1
+}
+if [[ "$LLAMA_REF" == release || "$LLAMA_REF" == latest-release ]]; then
+  LLAMA_REF="$(pick_release "$LLAMA_REF")"
+  [[ -n "$LLAMA_REF" ]] || { echo "no llama.cpp release tag found" >&2; exit 1; }
+fi
+LLAMA_TAG=""
 if [[ "$LLAMA_REF" =~ ^[0-9a-f]{7,40}$ ]]; then LLAMA_COMMIT="$LLAMA_REF"
-else LLAMA_COMMIT="$(git ls-remote https://github.com/ggml-org/llama.cpp "refs/heads/$LLAMA_REF" "refs/tags/$LLAMA_REF" | head -1 | cut -f1)"; fi
+else
+  refs="$(git ls-remote "$LLAMA_URL" "refs/tags/$LLAMA_REF^{}" "refs/tags/$LLAMA_REF" "refs/heads/$LLAMA_REF")"
+  # an annotated tag: the commit it points to (^{}), not the tag object
+  LLAMA_COMMIT="$( (grep -F "refs/tags/$LLAMA_REF^{}" <<<"$refs" || grep -F "refs/tags/$LLAMA_REF" <<<"$refs" \
+                    || grep -F "refs/heads/$LLAMA_REF" <<<"$refs" || true) | head -1 | cut -f1)"
+  grep -qF "refs/tags/$LLAMA_REF" <<<"$refs" && LLAMA_TAG="$LLAMA_REF"
+fi
 [[ -n "$LLAMA_COMMIT" ]] || { echo "llama.cpp ref $LLAMA_REF not found" >&2; exit 1; }
-echo "llama.cpp $LLAMA_REF = $LLAMA_COMMIT"
+echo "llama.cpp ${LLAMA_TAG:-$LLAMA_REF} = $LLAMA_COMMIT"
 LLAMA_CUDA='
   set -e; apt-get update -qq && apt-get install -y -qq git cmake >/dev/null
   git clone -q https://github.com/ggml-org/llama.cpp /src && cd /src && git checkout -q "$REF"
@@ -224,6 +252,7 @@ LLAMA_VULKAN='
 llama_build() {   # backend image script
   rm -f "$L/$1"/*; mkdir -p "$L/$1"
   docker run --rm --security-opt label=disable -v "$L/$1:/out" -e REF="$LLAMA_COMMIT" "$2" sh -c "$3"
+  echo "$LLAMA_TAG" > "$L/$1/TAG"
 }
 docker pull -q "ubuntu:$SUITE" >/dev/null
 cached_step "$C/llama-cuda.key" "$(key "$LLAMA_COMMIT" "$(image_id "$CUDA_IMAGE")" "$LLAMA_CUDA")" \
@@ -235,7 +264,7 @@ vendor_build() {  # name base src tag
   local c="rigsim-build-$1"
   docker rm -f "$c" >/dev/null 2>&1 || true
   if docker run --security-opt label=disable --name "$c" -v "$S/src/$1/build-in-image.sh:/build.sh:ro" -v "$3:/src:ro" \
-       -e LLAMA_REF="$LLAMA_COMMIT" -e AMDGPU_TARGETS="$AMDGPU_TARGETS" "$2" bash /build.sh; then
+       -e LLAMA_REF="$LLAMA_COMMIT" -e LLAMA_TAG="$LLAMA_TAG" -e AMDGPU_TARGETS="$AMDGPU_TARGETS" "$2" bash /build.sh; then
     docker commit "$c" "$4" >/dev/null && docker rm "$c" >/dev/null
   else
     docker rm -f "$c" >/dev/null 2>&1 || true; return 1
@@ -301,6 +330,6 @@ else
   echo "== seed: Intel MLC skipped (set MLC_URL from Intel's download page)"
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
-export LLAMA_REF AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
+export LLAMA_REF LLAMA_SELECT AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
 step "manifest (seed)" env IMAGES="$CUDA_IMAGE $CPU_IMAGE" python3 "$S/tools/manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"
 echo "built $OUT/rigsim-stick$SUFFIX.iso ($VERSION) and $OUT/seed"

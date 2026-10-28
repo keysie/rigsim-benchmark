@@ -94,7 +94,7 @@ MIRROR=http://ch.archive.ubuntu.com/ubuntu stick/build.sh   # a nearby Ubuntu mi
 | `NVIDIA_FLAVOUR` | `open` | `legacy`: proprietary modules for pre-Turing cards (no Blackwell) |
 | `NVIDIA_BRANCH` | `580` | NVIDIA driver branch (580 is the last one for Maxwell, Pascal, Volta) |
 | `SUITE` / `KERNEL` | `noble` / `hwe` | Ubuntu release / `ga` for its release kernel instead of the newer HWE kernel |
-| `LLAMA_REF` | `master` | llama.cpp branch, tag or commit (resolved to one commit for all backends) |
+| `LLAMA_REF` | `release` | llama.cpp releases only: `release` = newest patch of the previous release line (time for hotfixes), `latest-release` = newest release; or any tag, branch or commit. One commit for all backends; rule, tag and commit recorded |
 | `ROCM_IMAGE` / `AMDGPU_TARGETS` | see `build.sh` | ROCm base image / gfx targets to compile; check against current releases |
 | `ONEAPI_IMAGE` | see `build.sh` | oneAPI base image |
 | `SKIP_ROCM`, `SKIP_ONEAPI`, `SKIP_MODELS` | — | leave that part off the stick |
