@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   submit:
-    if: contains(github.event.issue.body, '### Zip with the runs') && github.event.issue.state == 'open'
+    if: contains(github.event.issue.body, '### Archive with the runs') && github.event.issue.state == 'open'
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}

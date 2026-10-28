@@ -32,9 +32,10 @@ off at the end. Every boot leaves one run folder on the stick; one stick collect
 like. How to build and use it: [`stick/README.md`](stick/README.md).
 
 **Easiest — no git, just a browser:** open a [**Submit runs** issue](https://github.com/keysie/rigsim-benchmark/issues/new?template=submit-runs.yml),
-drop a zip of the run folders from the stick's `runs/` folder into it and tick the three confirmations. A check
+drop a `.zip` or `.tar.gz` of the run folders from the stick's `runs/` folder into it (GitHub accepts no other
+archive types there) and tick the three confirmations. A check
 runs within a minute and comments on the issue; valid runs become a pull request automatically. Fix something by
-editing the issue (e.g. dropping a corrected zip) — the check runs again. (The stick's data partition is Linux ext4:
+editing the issue (e.g. dropping a corrected archive) — the check runs again. (The stick's data partition is Linux ext4:
 copy the runs off it on a Linux machine, or on Windows from WSL with `wsl --mount`.)
 
 **With git:** plug the stick into a Linux machine and run

@@ -1,21 +1,22 @@
 name: Submit runs
-description: Share runs from a rigsim stick — drop a zip, no git needed
+description: Share runs from a rigsim stick — drop a .zip or .tar.gz, no git needed
 title: "Runs: "
 labels: ["runs-submission"]
 body:
   - type: markdown
     attributes:
       value: |
-        Put the run folders from the stick's `runs/` folder into one zip (several zips are fine too) and drop it
-        into the field below. A check runs right away: the runs must come unchanged from a stick and be complete.
+        Pack the run folders from the stick's `runs/` folder into a **.zip** or **.tar.gz** (several archives are
+        fine too) and drop it into the field below. GitHub does not accept .tar.xz, .7z or .rar here —
+        on Linux: `tar -czf runs.tar.gz <run folders>`, on Windows: right-click → *Compress to ZIP file*. A check runs right away: the runs must come unchanged from a stick and be complete.
         Valid runs become a pull request, linked here; the result of the check is posted as a comment. If
         something needs fixing, edit this issue (e.g. drop a new zip) and the check runs again.
   - type: textarea
     id: zip
     attributes:
-      label: Zip with the runs
-      description: Drag the zip file here (up to 25 MB per file on GitHub; several files are fine).
-      placeholder: Drop the zip here…
+      label: Archive with the runs
+      description: Drag the .zip or .tar.gz here (up to 25 MB per file on GitHub; several files are fine).
+      placeholder: Drop the archive here…
     validations:
       required: true
   - type: checkboxes

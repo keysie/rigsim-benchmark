@@ -12,7 +12,7 @@ S = importlib.util.module_from_spec(spec); spec.loader.exec_module(S)
 spec = importlib.util.spec_from_file_location("tv", ROOT / "tests" / "test_validate.py")
 TV = importlib.util.module_from_spec(spec); spec.loader.exec_module(TV)
 
-BODY = """### Zip with the runs
+BODY = """### Archive with the runs
 
 [runs.zip](https://github.com/user-attachments/files/123456/runs.zip)
 
@@ -63,8 +63,8 @@ def test_a_run_already_in_the_repository_is_skipped(monkeypatch, tmp_path, stick
 
 
 @pytest.mark.parametrize("extra, expect", [
-    ({"../evil.txt": "x"}, "path outside the zip"),
-    ({"/etc/x": "x"}, "path outside the zip"),
+    ({"../evil.txt": "x"}, "path outside the archive"),
+    ({"/etc/x": "x"}, "path outside the archive"),
     ({"notes.txt": "hello"}, "files outside a run folder"),
 ])
 def test_unsafe_or_foreign_content_refused(monkeypatch, tmp_path, stick, extra, expect):
@@ -91,7 +91,7 @@ def test_confirmations_and_zip_link_required(monkeypatch, tmp_path, stick):
     (report, added), _ = run(monkeypatch, tmp_path, zip_of(stick), BODY.replace("- [X] I agree", "- [ ] I agree"))
     assert not added and "tick all confirmations" in report and "CC BY 4.0" in report
     (report, added), _ = run(monkeypatch, tmp_path, zip_of(stick), BODY.replace("https://github.com/user-attachments/files/123456/runs.zip", "https://evil.example/runs.zip"))
-    assert not added and "No zip file found" in report
+    assert not added and "No archive found" in report
 
 
 def test_size_limits(monkeypatch, tmp_path, stick):
@@ -107,4 +107,51 @@ def test_workflow_and_form():
     form = (ROOT / ".github" / "ISSUE_TEMPLATE" / "submit-runs.yml").read_text()
     for c in S.CONFIRMATIONS:
         assert c in form
-    assert "label: Zip with the runs" in form and "### Zip with the runs" in wf
+    assert "label: Archive with the runs" in form and "### Archive with the runs" in wf
+
+
+
+def tgz_of(tree, extra=None, link=None):
+    import tarfile
+    b = io.BytesIO()
+    with tarfile.open(fileobj=b, mode="w:gz") as t:
+        for f in sorted(tree.rglob("*")):
+            t.add(f, "runs/" + f.relative_to(tree).as_posix(), recursive=False)
+        for name, data in (extra or {}).items():
+            i = tarfile.TarInfo(name); i.size = len(data); t.addfile(i, io.BytesIO(data.encode()))
+        if link:
+            i = tarfile.TarInfo(link); i.type = tarfile.SYMTYPE; i.linkname = "/etc/passwd"; t.addfile(i)
+    return b.getvalue()
+
+
+def test_tar_gz_accepted_by_content(monkeypatch, tmp_path, stick):
+    (report, added), _ = run(monkeypatch, tmp_path, tgz_of(stick, {"runs/.DS_Store": "x"}),
+                             BODY.replace("runs.zip", "runs.tar.gz"))
+    assert len(added) == 2 and "2 run(s) accepted" in report
+
+
+@pytest.mark.parametrize("kind, expect", [
+    ("link", "a link"), ("dotdot", "path outside the archive"), ("plain-gz", "does not hold a tar"), ("junk", "neither a zip"),
+])
+def test_tar_gz_unsafe_refused(monkeypatch, tmp_path, stick, kind, expect):
+    import gzip
+    data = {"link": lambda: tgz_of(stick, link=f"runs/{TV.RUN}/x.log"),
+            "dotdot": lambda: tgz_of(stick, {"../evil": "x"}),
+            "plain-gz": lambda: gzip.compress(b"just text"),
+            "junk": lambda: b"7z\xbc\xaf'\x1c"}[kind]()
+    (report, added), _ = run(monkeypatch, tmp_path, data, BODY.replace("runs.zip", "runs.tgz"))
+    assert not added and expect in report
+
+
+def test_gzip_bomb_bounded(monkeypatch, tmp_path):
+    import gzip
+    monkeypatch.setattr(S, "MAX_TOTAL", 1 << 20)
+    (report, added), _ = run(monkeypatch, tmp_path, gzip.compress(b"\0" * (4 << 20)), BODY.replace("runs.zip", "x.gz"))
+    assert not added and "unpacked" in report
+
+
+def test_only_github_archive_types_are_fetched():
+    assert S.zip_urls("[a](https://github.com/user-attachments/files/1/a.tar.gz) [b](https://github.com/user-attachments/files/2/b.tgz) "
+                      "[c](https://github.com/user-attachments/files/3/c.zip) [d](https://github.com/user-attachments/files/4/d.tar.xz)") == \
+        ["https://github.com/user-attachments/files/1/a.tar.gz", "https://github.com/user-attachments/files/2/b.tgz",
+         "https://github.com/user-attachments/files/3/c.zip"]
