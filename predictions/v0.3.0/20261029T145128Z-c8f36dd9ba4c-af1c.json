@@ -1,0 +1,171 @@
+{
+ "rigsim": {
+  "tag": "v0.3.0",
+  "commit": "34e9c363ef9bd64a4c21c5152fca12c7fb31d38c"
+ },
+ "run": "20261029T145128Z-c8f36dd9ba4c-af1c",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-29T19:23:28+00:00",
+ "predictions": [
+  {
+   "key": "cpu-mem-ladder/load_avx/1",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/2",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/4",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/8",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/16",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/32",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/1",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/2",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/4",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/8",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/16",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/32",
+   "value": 42.777256847837194,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/1",
+   "value": 42.777258563362615,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/2",
+   "value": 42.777258563362615,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/4",
+   "value": 42.777258563362615,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/8",
+   "value": 42.777258563362615,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/16",
+   "value": 42.777258563362615,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/32",
+   "value": 42.777258563362615,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+  }
+ ],
+ "unsupported": [
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/1",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/2",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/4",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/8",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/16",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/32",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  }
+ ]
+}

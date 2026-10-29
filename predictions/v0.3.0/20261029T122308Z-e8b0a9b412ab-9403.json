@@ -1,0 +1,199 @@
+{
+ "rigsim": {
+  "tag": "v0.3.0",
+  "commit": "34e9c363ef9bd64a4c21c5152fca12c7fb31d38c"
+ },
+ "run": "20261029T122308Z-e8b0a9b412ab-9403",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-29T19:23:22+00:00",
+ "predictions": [
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+   "value": 48.43946377302609,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+   "value": 9.727234910227104,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 1%, memory 99%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+   "value": 314.40121766286137,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 3%, compute 97%, launch 0%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+   "value": 58.29176908788692,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 4%, memory 96%"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/1",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/2",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/4",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/8",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/16",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/32",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/1",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/2",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/4",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/8",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/16",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/32",
+   "value": 37.571794549776655,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/1",
+   "value": 37.57179560877124,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/2",
+   "value": 37.57179560877124,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/4",
+   "value": 37.57179560877124,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/8",
+   "value": 37.57179560877124,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/16",
+   "value": 37.57179560877124,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/32",
+   "value": 37.57179560877124,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+  }
+ ],
+ "unsupported": [
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/1",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/2",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/4",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/8",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/16",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/32",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  }
+ ]
+}

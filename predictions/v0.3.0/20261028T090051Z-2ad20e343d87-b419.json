@@ -1,0 +1,107 @@
+{
+ "rigsim": {
+  "tag": "v0.3.0",
+  "commit": "34e9c363ef9bd64a4c21c5152fca12c7fb31d38c"
+ },
+ "run": "20261028T090051Z-2ad20e343d87-b419",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-29T19:22:51+00:00",
+ "predictions": [
+  {
+   "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
+   "value": 10073.748857166778,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/tg128",
+   "value": 144.00395309344378,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 12%, memory 88%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/pp512",
+   "value": 49023.23307365411,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/tg128",
+   "value": 469.3471825335656,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 54%, memory 46%"
+  },
+  {
+   "key": "mlc/idle_latency",
+   "value": 76.91979166666667,
+   "unit": "ns",
+   "calibration": false,
+   "basis": "MLC engine: dependent reads p <- ram, path latency in the graph, fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "mlc/max_bandwidth/all_reads",
+   "value": 77.2368906275543,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, all_reads, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "mlc/max_bandwidth/3to1_rw",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, 3to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  },
+  {
+   "key": "mlc/max_bandwidth/2to1_rw",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, 2to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  },
+  {
+   "key": "mlc/max_bandwidth/1to1_rw",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, 1to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  },
+  {
+   "key": "mlc/max_bandwidth/stream_triad",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, stream_triad, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  }
+ ],
+ "unsupported": [
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+   "reason": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+   "reason": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+   "reason": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+   "reason": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+  }
+ ]
+}

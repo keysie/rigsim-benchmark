@@ -1957,6 +1957,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       },
@@ -1976,6 +1980,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       },
@@ -1994,6 +2002,13 @@
      "pci": "0000:01:00.0",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 10073.748857166778,
+       "error": 0.8213661853737946,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      },
       {
        "tag": "v0.2.0",
        "value": 10073.748857166778,
@@ -2020,6 +2035,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 144.00395309344378,
+       "error": -0.05402702062529863,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 12%, memory 88%"
+      },
+      {
        "tag": "v0.2.0",
        "value": 144.00395309344378,
        "error": -0.05402702062529863,
@@ -2044,6 +2066,13 @@
      "pci": "0000:01:00.0",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 49023.23307365411,
+       "error": 1.0425217444606627,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      },
       {
        "tag": "v0.2.0",
        "value": 49023.23307365412,
@@ -2070,6 +2099,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 469.3471825335656,
+       "error": -0.2338443925803435,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 54%, memory 46%"
+      },
+      {
        "tag": "v0.2.0",
        "value": 469.34718253356573,
        "error": -0.2338443925803434,
@@ -2095,6 +2131,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -2113,6 +2153,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -2133,6 +2177,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -2152,6 +2200,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) Graphics (RPL-S))"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -2170,6 +2222,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 76.91979166666667,
+       "error": 0.1907088493292055,
+       "calibration": false,
+       "basis": "MLC engine: dependent reads p <- ram, path latency in the graph, fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "value": 75.35,
@@ -2193,6 +2252,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.1350697142663888,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, all_reads, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "value": 93.91715976331362,
        "error": 0.05172276057928937,
@@ -2215,6 +2281,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.10678741266504621,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 3to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       },
@@ -2233,6 +2306,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09227601963293364,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 2to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
@@ -2253,6 +2333,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.057703758930261806,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 1to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       },
@@ -2272,6 +2359,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09877113502502244,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, stream_triad, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       },
@@ -2283,9 +2377,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
-    "n": 6,
-    "median_abs_error": 0.2338443925803434
+    "tag": "v0.3.0",
+    "n": 10,
+    "median_abs_error": 0.1350697142663888
    }
   },
   {
@@ -4454,6 +4548,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       },
@@ -4472,6 +4570,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
@@ -4506,6 +4608,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 10073.748857166778,
+       "error": 0.8154012271201421,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      },
       {
        "tag": "v0.2.0",
        "value": 10073.748857166778,
@@ -4547,6 +4656,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 144.00395309344378,
+       "error": -0.04406589796820204,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 12%, memory 88%"
+      },
+      {
        "tag": "v0.2.0",
        "value": 144.00395309344378,
        "error": -0.04406589796820204,
@@ -4586,6 +4702,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 49023.23307365411,
+       "error": 1.0995081115007297,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      },
       {
        "tag": "v0.2.0",
        "value": 49023.23307365412,
@@ -4627,6 +4750,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 469.3471825335656,
+       "error": -0.22483567588886488,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 54%, memory 46%"
+      },
+      {
        "tag": "v0.2.0",
        "value": 469.34718253356573,
        "error": -0.22483567588886466,
@@ -4667,6 +4797,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 3100.670351353715,
+       "error": -0.27293596497811323,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 6%, compute 94%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -4700,6 +4837,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 156.73828409539277,
+       "error": 0.11160692671739958,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 13%, memory 87%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -4735,6 +4879,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18949.513717346763,
+       "error": 0.10833752957941822,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 11%, compute 88%, launch 1%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -4769,6 +4920,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 573.8774419602706,
+       "error": -0.00910315517260174,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 40%, memory 60%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -4795,6 +4953,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 86.53708377496534,
+       "error": 2.381602989906913,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 1%, compute 99%, launch 0%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -4823,6 +4988,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 23.828393746043734,
+       "error": 3.0823819119348306,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 2%, memory 98%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -4850,6 +5022,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 563.9735444750509,
+       "error": 3.3909043356604807,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       },
@@ -4876,6 +5055,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 134.37891687246966,
+       "error": 3.160388346263562,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 8%, memory 92%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -4911,6 +5097,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.1267998217877122,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       },
@@ -4944,6 +5137,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.05143597100803632,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared"
+      },
       {
        "tag": "v0.2.0",
        "value": 760.0,
@@ -4985,6 +5185,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.10980255006341189,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       },
@@ -5004,6 +5211,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 20.384870603848704,
+       "error": -0.35166192814935104,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5018,6 +5232,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 40.76974120769741,
+       "error": 0.07654634262241977,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -5034,6 +5255,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 59.59589164326447,
+       "error": -0.028678664291147404,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5048,6 +5276,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 72.91988303813704,
+       "error": 0.06603613283716037,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -5064,6 +5299,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.1094557363574512,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5078,6 +5320,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.04998696966601779,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -5094,6 +5343,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 20.384870603848704,
+       "error": -0.2850824105536778,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5108,6 +5364,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 40.76974120769741,
+       "error": 0.09330906980843934,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -5124,6 +5387,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 59.59589164326447,
+       "error": -0.03346992496364154,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5138,6 +5408,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 72.91988303813704,
+       "error": 0.016394871966545876,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -5154,6 +5431,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.13904766492051168,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5169,6 +5453,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.07317495921812478,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -5183,6 +5474,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 76.91979166666667,
+       "error": 0.19812759605399788,
+       "calibration": false,
+       "basis": "MLC engine: dependent reads p <- ram, path latency in the graph, fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "value": 75.35,
@@ -5206,6 +5504,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.13532244090306356,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, all_reads, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "value": 93.91715976331362,
        "error": 0.051415454475688405,
@@ -5228,6 +5533,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.10674187085723708,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 3to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       },
@@ -5246,6 +5558,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09224504680941237,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 2to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
@@ -5266,6 +5585,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.05942872651504216,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 1to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       },
@@ -5285,6 +5611,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09867388043696557,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, stream_triad, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       },
@@ -5296,9 +5629,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
-    "n": 7,
-    "median_abs_error": 0.17367601246105902
+    "tag": "v0.3.0",
+    "n": 33,
+    "median_abs_error": 0.1094557363574512
    }
   },
   {
@@ -7477,6 +7810,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -7491,6 +7828,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
@@ -7521,6 +7862,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 10073.748857166778,
+       "error": 0.8178237328686337,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      },
       {
        "tag": "v0.2.0",
        "value": 10073.748857166778,
@@ -7555,6 +7903,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 144.00395309344378,
+       "error": -0.044720867481592985,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 12%, memory 88%"
+      },
+      {
        "tag": "v0.2.0",
        "value": 144.00395309344378,
        "error": -0.044720867481592985,
@@ -7587,6 +7942,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 49023.23307365411,
+       "error": 1.1101765925224631,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      },
       {
        "tag": "v0.2.0",
        "value": 49023.23307365412,
@@ -7621,6 +7983,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 469.3471825335656,
+       "error": -0.21503266192258186,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 54%, memory 46%"
+      },
+      {
        "tag": "v0.2.0",
        "value": 469.34718253356573,
        "error": -0.21503266192258164,
@@ -7654,6 +8023,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 3100.670351353715,
+       "error": -0.2737446214354432,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 6%, compute 94%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -7683,6 +8059,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 156.73828409539277,
+       "error": 0.10956962169981721,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 13%, memory 87%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -7714,6 +8097,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18949.513717346763,
+       "error": 0.10466182589229533,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 11%, compute 88%, launch 1%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -7744,6 +8134,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 573.8774419602706,
+       "error": -0.01079377088146738,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 40%, memory 60%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -7766,6 +8163,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 86.53708377496534,
+       "error": 2.3815772222882967,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 1%, compute 99%, launch 0%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -7790,6 +8194,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 23.828393746043734,
+       "error": 3.081632980112172,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 2%, memory 98%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -7813,6 +8224,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 563.9735444750509,
+       "error": 3.391242291003703,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -7835,6 +8253,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 134.37891687246966,
+       "error": 3.1606023042847697,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 8%, memory 92%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -7866,6 +8291,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.12857850340095633,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -7895,6 +8327,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.05185507097945674,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared"
+      },
       {
        "tag": "v0.2.0",
        "value": 760.0,
@@ -7929,6 +8368,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.11676596332452394,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -7943,6 +8389,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 20.384870603848704,
+       "error": -0.3514604051465864,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -7959,6 +8412,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 40.76974120769741,
+       "error": 0.0764798280921144,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -7973,6 +8433,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 59.59589164326447,
+       "error": -0.028125608694366755,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -7989,6 +8456,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 72.91988303813704,
+       "error": 0.06389195027941508,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -8003,6 +8477,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.11001432483440798,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -8019,6 +8500,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.04998515846410334,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -8033,6 +8521,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 20.384870603848704,
+       "error": -0.28441786387113244,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -8049,6 +8544,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 40.76974120769741,
+       "error": 0.09320235936118215,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -8063,6 +8565,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 59.59589164326447,
+       "error": -0.033243521360189154,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -8079,6 +8588,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 72.91988303813704,
+       "error": 0.01870145863889494,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -8093,6 +8609,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.13883844846922144,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -8109,6 +8632,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.07315544024333764,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -8123,6 +8653,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 76.91979166666667,
+       "error": 0.19255490956072352,
+       "calibration": false,
+       "basis": "MLC engine: dependent reads p <- ram, path latency in the graph, fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "value": 75.35,
@@ -8142,6 +8679,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.13518689708875997,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, all_reads, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "value": 93.91715976331362,
        "error": 0.05158027066597559,
@@ -8160,6 +8704,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.10721372525807749,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 3to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -8174,6 +8725,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09124820043408799,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 2to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
@@ -8190,6 +8748,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.058813744478617314,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 1to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -8205,6 +8770,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09905373270341056,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, stream_triad, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -8212,9 +8784,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
-    "n": 7,
-    "median_abs_error": 0.1682170542635657
+    "tag": "v0.3.0",
+    "n": 33,
+    "median_abs_error": 0.10956962169981721
    }
   },
   {
@@ -9825,6 +10397,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -9839,6 +10415,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -9855,6 +10435,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -9869,6 +10453,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -9885,6 +10473,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -9899,6 +10491,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -9915,6 +10511,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -9929,6 +10529,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -9945,6 +10549,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -9959,6 +10567,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -9975,6 +10587,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -9989,6 +10605,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -10005,6 +10625,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
       }
@@ -10019,6 +10643,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
@@ -10035,6 +10663,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -10049,6 +10681,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
@@ -10065,6 +10701,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -10080,6 +10720,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -10087,7 +10731,7 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
+    "tag": "v0.3.0",
     "n": 0,
     "median_abs_error": null
    }
@@ -11977,6 +12621,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -11991,6 +12639,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
@@ -12015,6 +12667,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 48.43946377302609,
+       "error": 0.9129242475991959,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -12037,6 +12696,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 9.727234910227104,
+       "error": 1.8046820971569808,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 1%, memory 99%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -12061,6 +12727,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 314.40121766286137,
+       "error": 3.8241322547132173,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 3%, compute 97%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -12084,6 +12757,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 58.29176908788692,
+       "error": 1.9670403877775549,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 4%, memory 96%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -12098,6 +12778,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.5952860656603436,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -12114,6 +12801,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.1014097063001802,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -12128,6 +12822,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.010001264787442121,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -12144,6 +12845,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.026991602271646542,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -12158,6 +12866,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.03605287808130764,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -12174,6 +12889,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.05577050072453682,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -12188,6 +12910,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.7084868017980159,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -12204,6 +12933,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.2615113557384998,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -12218,6 +12954,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.06299491797765211,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -12234,6 +12977,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.02985701376772898,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -12248,6 +12998,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.0379175277520325,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -12264,6 +13021,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.04575624855513727,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -12278,6 +13042,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 90.55677988289018,
+       "error": 0.5586364867967328,
+       "calibration": false,
+       "basis": "MLC engine: dependent reads core <- ram, path latency in the graph, CAS + fixed term; cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
       {
        "tag": "v0.2.0",
        "value": 88.85337584396099,
@@ -12297,6 +13068,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.022954652622517502,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, all_reads, one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      },
+      {
        "tag": "v0.2.0",
        "value": 37.57182590704205,
        "error": 0.02295550637626853,
@@ -12315,6 +13093,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.57178554832507,
+       "error": 0.22006519093502708,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 3to1_rw, one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -12329,6 +13114,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571785548325074,
+       "error": 0.24507595524716663,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 2to1_rw, one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count; write-allocate (RFO) reads not modelled"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
@@ -12345,6 +13137,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.57178554832507,
+       "error": 0.3397250626979027,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 1to1_rw, one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -12360,6 +13159,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 37.571785548325074,
+       "error": 0.23324062470910345,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, stream_triad, one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count; write-allocate (RFO) reads not modelled"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "write traffic not modelled yet (reads only)"
       }
@@ -12367,9 +13173,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
-    "n": 2,
-    "median_abs_error": 0.5293180007566436
+    "tag": "v0.3.0",
+    "n": 22,
+    "median_abs_error": 0.23324062470910345
    }
   },
   {
@@ -12624,7 +13430,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -12634,7 +13445,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
@@ -12652,7 +13468,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 48.43946377302609,
+       "error": 0.9041431678762182,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
@@ -12670,7 +13494,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 9.727234910227104,
+       "error": 1.7723377451286764,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 1%, memory 99%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
@@ -12688,7 +13520,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 314.40121766286137,
+       "error": 3.8454017325335874,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 3%, compute 97%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
@@ -12706,7 +13546,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 58.29176908788692,
+       "error": 1.9754119747528422,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 4%, memory 96%"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/1",
@@ -12716,7 +13564,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.5791222252319512,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/2",
@@ -12726,7 +13582,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.13111534175472728,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/4",
@@ -12736,7 +13600,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": -0.0073739439049962385,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/8",
@@ -12746,7 +13618,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.030394911451884,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/16",
@@ -12756,7 +13636,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.03722626726050082,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/32",
@@ -12766,7 +13654,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.04731477915178384,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/1",
@@ -12776,7 +13672,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.7135265697847524,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/2",
@@ -12786,7 +13690,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.27589838974428593,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/4",
@@ -12796,7 +13708,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.03955212992249946,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/8",
@@ -12806,7 +13726,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.040530696537268485,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/16",
@@ -12816,7 +13744,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.04826195615189488,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/32",
@@ -12826,7 +13762,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.06704389282235401,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/1",
@@ -12836,7 +13780,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/2",
@@ -12846,7 +13795,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/4",
@@ -12856,7 +13810,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/8",
@@ -12866,7 +13825,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/16",
@@ -12876,7 +13840,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/32",
@@ -12886,7 +13855,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/1",
@@ -12896,7 +13870,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.08483804493112956,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/2",
@@ -12906,7 +13888,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.06679288638637748,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/4",
@@ -12916,7 +13906,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.04683597752621127,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/8",
@@ -12926,7 +13924,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.029769304040035638,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/16",
@@ -12936,7 +13942,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.02305816780621539,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/32",
@@ -12946,10 +13960,22 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.00809051081369283,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 22,
+    "median_abs_error": 0.06679288638637748
+   }
   },
   {
    "run": "20261029T130632Z-04c49a9737b9-e963",
@@ -13204,6 +14230,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -13218,6 +14248,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
@@ -13242,6 +14276,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 47.617733331706866,
+       "error": 0.876302710645962,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 3%, compute 97%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -13264,6 +14305,13 @@
       }
      ],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 4.897210974463643,
+       "error": 0.4791208820290005,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 0%, memory 100%"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
@@ -13288,6 +14336,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 304.5029924893706,
+       "error": 3.703575077200365,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 6%, compute 94%, launch 0%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -13311,6 +14366,13 @@
      ],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 29.99573479118505,
+       "error": 0.5658797849942354,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 2%, memory 98%"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp vulkan backend not modelled yet"
       }
@@ -13325,6 +14387,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.0031484107098838088,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13341,6 +14410,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.009181856133722688,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13355,6 +14431,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.01995266084502234,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13371,6 +14454,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.013039486279813217,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13385,6 +14475,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.003171177250306245,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13401,6 +14498,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.013504566846882504,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13415,6 +14519,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.05943939064734671,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13431,6 +14542,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.018700681778142547,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13445,6 +14563,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.01845410107050982,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13461,6 +14586,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.00710845890142886,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13475,6 +14607,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.0010568498514070823,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13491,6 +14630,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.00974463394832803,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13505,6 +14651,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13521,6 +14671,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13535,6 +14689,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13551,6 +14709,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13565,6 +14727,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13581,6 +14747,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13595,6 +14765,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.061633010596753746,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13611,6 +14788,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.0359547985968639,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13625,6 +14809,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.024859289904924142,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13641,6 +14832,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.022575905851812794,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13655,6 +14853,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.014654614459239212,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -13671,6 +14876,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.008555493599183506,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -13678,9 +14890,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
-    "n": 0,
-    "median_abs_error": null
+    "tag": "v0.3.0",
+    "n": 22,
+    "median_abs_error": 0.018700681778142547
    }
   },
   {
@@ -13935,7 +15147,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -13945,7 +15162,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
@@ -13963,7 +15185,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
@@ -13981,7 +15208,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
@@ -13999,7 +15231,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
@@ -14017,7 +15254,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/1",
@@ -14027,7 +15269,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/2",
@@ -14037,7 +15284,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/4",
@@ -14047,7 +15299,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/8",
@@ -14057,7 +15314,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/16",
@@ -14067,7 +15329,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/32",
@@ -14077,7 +15344,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/1",
@@ -14087,7 +15359,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/2",
@@ -14097,7 +15374,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/4",
@@ -14107,7 +15389,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/8",
@@ -14117,7 +15404,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/16",
@@ -14127,7 +15419,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/32",
@@ -14137,7 +15434,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/1",
@@ -14147,7 +15449,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/2",
@@ -14157,7 +15464,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/4",
@@ -14167,7 +15479,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/8",
@@ -14177,7 +15494,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/16",
@@ -14187,7 +15509,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/32",
@@ -14197,7 +15524,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/1",
@@ -14207,7 +15539,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/2",
@@ -14217,7 +15554,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/4",
@@ -14227,7 +15569,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/8",
@@ -14237,7 +15584,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/16",
@@ -14247,7 +15599,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/32",
@@ -14257,10 +15614,19 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 0,
+    "median_abs_error": null
+   }
   },
   {
    "run": "20261029T135940Z-8cc30c2e9b80-8728",
@@ -14481,7 +15847,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -14491,7 +15862,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/1",
@@ -14501,7 +15877,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/2",
@@ -14511,7 +15892,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/4",
@@ -14521,7 +15907,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/8",
@@ -14531,7 +15922,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/16",
@@ -14541,7 +15937,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/32",
@@ -14551,7 +15952,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/1",
@@ -14561,7 +15967,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/2",
@@ -14571,7 +15982,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/4",
@@ -14581,7 +15997,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/8",
@@ -14591,7 +16012,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/16",
@@ -14601,7 +16027,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/32",
@@ -14611,7 +16042,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/1",
@@ -14621,7 +16057,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/2",
@@ -14631,7 +16072,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/4",
@@ -14641,7 +16087,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/8",
@@ -14651,7 +16102,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/16",
@@ -14661,7 +16117,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/32",
@@ -14671,7 +16132,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/1",
@@ -14681,7 +16147,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/2",
@@ -14691,7 +16162,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/4",
@@ -14701,7 +16177,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/8",
@@ -14711,7 +16192,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/16",
@@ -14721,7 +16207,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/32",
@@ -14731,10 +16222,19 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 0,
+    "median_abs_error": null
+   }
   },
   {
    "run": "20261029T145128Z-c8f36dd9ba4c-af1c",
@@ -14957,6 +16457,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
       }
@@ -14971,6 +16475,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "llama.cpp cpu backend not modelled yet"
@@ -14987,6 +16495,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.273152916209743,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15001,6 +16516,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.05745259816392889,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15017,6 +16539,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": -0.01461751674976175,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15031,6 +16560,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.04723526965557978,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15047,6 +16583,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.018507691686598937,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15061,6 +16604,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.01604221305802933,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15077,6 +16627,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.34933663132933446,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15091,6 +16648,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.060807454394498084,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15107,6 +16671,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": -0.014516725197317948,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15121,6 +16692,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.046498582080539475,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15137,6 +16715,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.019156070075575293,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15151,6 +16736,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777256847837194,
+       "error": 0.013964760399012732,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15167,6 +16759,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15181,6 +16777,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15197,6 +16797,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15211,6 +16815,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15227,6 +16835,10 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15241,6 +16853,10 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15257,6 +16873,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777258563362615,
+       "error": 0.681050309710048,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15271,6 +16894,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777258563362615,
+       "error": 0.6789360312386348,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15287,6 +16917,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777258563362615,
+       "error": 0.686147499799471,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15301,6 +16938,13 @@
      "pci": "",
      "pcie_path": [],
      "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 42.777258563362615,
+       "error": 0.6783800579098873,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
       {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
@@ -15317,6 +16961,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777258563362615,
+       "error": 0.3361807415329616,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15332,6 +16983,13 @@
      "pcie_path": [],
      "predictions": [
       {
+       "tag": "v0.3.0",
+       "value": 42.777258563362615,
+       "error": 0.16846405044773816,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu vermeer, cores {'ccds': 1, 'zen3': 12}, fclk_mhz 1600 (AMD's default rule, not read from the machine), mem DDR4-3200, channels 2, cl 22, density_gbit 16, channels_from locators"
+      },
+      {
        "tag": "v0.2.0",
        "unsupported": "not modelled yet"
       }
@@ -15339,9 +16997,9 @@
     }
    ],
    "rigsim": {
-    "tag": "v0.2.0",
-    "n": 0,
-    "median_abs_error": null
+    "tag": "v0.3.0",
+    "n": 18,
+    "median_abs_error": 0.060807454394498084
    }
   }
  ]
