@@ -49,7 +49,8 @@ It copies the runs that are not here yet, keeps the complete ones, commits them 
 request (with the [GitHub CLI](https://cli.github.com) logged in; otherwise it prints the two commands to push).
 
 Every submission and pull request is checked automatically: it may only add new run folders under `results/runs/`,
-each exactly as the stick wrote it (no other files, nothing edited), from a run that finished, with nothing
+each exactly as the stick wrote it (no other files, nothing edited), from a run that finished — or was stopped,
+of which only the finished steps are kept (the submission check drops the interrupted step) — with nothing
 identifying in it. After
 merging, the table updates itself.
 

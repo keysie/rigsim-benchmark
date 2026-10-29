@@ -50,7 +50,7 @@ def test_a_stick_run_passes(tmp_path):
     (lambda d: (d / "notes.txt").write_text("hi"), "not a file the stick writes"),
     (lambda d: (d / "inventory" / "extra.txt").write_text("x"), "not a file the stick writes"),
     (lambda d: (d / "q" / "cpu-gemm" / "samples" / "x.csv").write_text("x"), "not a file the stick writes"),
-    (lambda d: (d / "run.json").write_text(json.dumps(dict(json.loads((d / "run.json").read_text()), status="stopped"))), "not complete"),
+    (lambda d: (d / "run.json").write_text(json.dumps(dict(json.loads((d / "run.json").read_text()), status="error: RuntimeError: x"))), "not complete"),
     (lambda d: (d / "run.json").write_text(json.dumps(dict(json.loads((d / "run.json").read_text()), status="error: X"))), "not complete"),
     (lambda d: (d / "run.json").write_text(json.dumps(dict(json.loads((d / "run.json").read_text()), end_utc=None))), "missing 'end_utc'"),
     (lambda d: (d / "inventory" / "summary.json").unlink(), "inventory/summary.json: missing"),
@@ -167,3 +167,21 @@ def test_skipped_steps_need_no_tool_versions(tmp_path):
     r["questions"]["gpu-vram"] = {"rc": 0}
     (d / "run.json").write_text(json.dumps(r))
     assert any("has no tool versions" in x for x in V.check_run(d))                 # a step that ran still needs them
+
+
+def test_stopped_run_keeps_finished_steps(tmp_path):
+    d = make_run(tmp_path)
+    r = json.loads((d / "run.json").read_text())
+    r["status"] = "stopped"
+    (d / "run.json").write_text(json.dumps(r))
+    (d / "llama").mkdir(exist_ok=True)
+    (d / "llama" / "cuda-gpu0-tinyllama.jsonl").write_text("{}\n")             # llama-bench was running: not in run.json
+    r["questions"].pop("llama-bench", None); (d / "run.json").write_text(json.dumps(r))
+    errs = V.check_run(d)
+    assert any("file of step 'llama-bench', which did not finish" in x for x in errs)
+    gone = V.prune_interrupted(d)
+    assert "llama/cuda-gpu0-tinyllama.jsonl" in gone and not (d / "llama").exists() and V.check_run(d) == []
+    assert not any(g.startswith(("inventory/", "q/")) and V.step_of(g) in V.completed_steps(r) for g in gone)
+    r["questions"] = {}; (d / "run.json").write_text(json.dumps(r))
+    assert any("stopped before any step finished" in x for x in V.check_run(d))
+    assert V.step_of("q/gpu-vram/results.jsonl") == "gpu-vram" and V.step_of("inventory/lscpu.txt") is None

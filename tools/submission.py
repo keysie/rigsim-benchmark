@@ -209,6 +209,11 @@ def process(body: str, dest: Path = ROOT / "results" / "runs", author: str | Non
                 if (dest / r.name).exists() or r.name in added:
                     lines.append(f"- ↩️ `{r.name}`: already in the repository")
                     continue
+                pruned = validate.prune_interrupted(r)       # a stopped run: keep the steps that finished
+                if pruned:
+                    steps = sorted({validate.step_of(x) for x in pruned})
+                    lines.append(f"- ✂️ `{r.name}` was stopped: dropped the unfinished step(s) {', '.join(steps)} "
+                                 f"({len(pruned)} file(s)); the finished steps are kept")
                 errs = validate.check_run(r)
                 if errs:
                     short = [e[len(r.name) + 1:] if e.startswith(r.name + "/") else e.removeprefix(r.name + ": ")

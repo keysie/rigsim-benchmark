@@ -29,7 +29,8 @@ itself is not identifiable from it.
 
 See [Contributing runs](../README.md#contributing-runs): `tools/contribute.sh` or an upload on GitHub, both ending
 in a pull request that `tools/validate.py` checks — only new run folders, exactly the files the stick writes, from
-a finished run (`status` "done" or "done with failures"), no MAC addresses or identifier lines. By sharing runs you
+a finished run (`status` "done" or "done with failures") or a stopped one (`status` "stopped": only the steps
+`run.json` records as finished, the files of the interrupted step removed — the submission check does that), no MAC addresses or identifier lines. By sharing runs you
 agree to their publication under CC BY 4.0 and confirm the machines' owners agreed.
 
 Check runs yourself before sharing: `python3 tools/validate.py results/runs/<run>`.

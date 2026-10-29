@@ -23,7 +23,45 @@ from stick import INVENTORY, INVENTORY_EXTRA, MAC, PRIVATE_IPV4, SENSITIVE  # no
 FORMAT_NAME = "rigsim-stick-run"
 KNOWN_VERSIONS = {"1.0", "1.1", "1.2", "1.3"}                           # results/FORMAT.md: minor versions only add
 RUN_ID = re.compile(r"^(\d{8}T\d{6}Z)-([0-9a-f]{12})-([0-9a-f]{4})$")
-COMPLETE = {"done", "done with failures"}          # finished; "stopped" and "error: ..." are not complete
+COMPLETE = {"done", "done with failures"}          # finished; "error: ..." is not complete
+STOPPED = "stopped"                                 # ended early: its completed steps count, the interrupted one not
+# which step wrote a file (run-level files — run.json, manifest, inventory, samples, the log — belong to none)
+STEP_DIRS = {"mlc": "mlc", "opencl": "opencl", "vkprobe": "vkprobe", "rocm": "rocm", "oneapi": "oneapi",
+             "llama": "llama-bench", "blender": "blender"}
+
+
+def step_of(rel: str) -> str | None:
+    """The step a file in a run folder belongs to: q/<question>/... is that question, mlc/ is 'mlc', llama/ is
+    'llama-bench' and so on; None for the run's own files."""
+    parts = rel.split("/")
+    if parts[0] == "q" and len(parts) > 2:
+        return parts[1]
+    return STEP_DIRS.get(parts[0]) if len(parts) > 1 else None
+
+
+def completed_steps(r: dict) -> set[str]:
+    """Steps run.json records as finished (with a result or as skipped)."""
+    return {q for q, v in (r.get("questions") or {}).items() if isinstance(v, dict) and ("rc" in v or "skipped" in v)}
+
+
+def prune_interrupted(d: Path) -> list[str]:
+    """For a stopped run: remove the files of every step run.json does not record as finished (the step that was
+    running when the run was stopped). Returns what was removed (relative paths)."""
+    try:
+        r = json.loads((d / "run.json").read_text())
+    except (OSError, ValueError):
+        return []
+    if r.get("status") != STOPPED:
+        return []
+    done, gone = completed_steps(r), []
+    for p in sorted(d.rglob("*"), reverse=True):
+        rel = p.relative_to(d).as_posix()
+        st = step_of(rel)
+        if p.is_file() and st and st not in done:
+            p.unlink(); gone.append(rel)
+        elif p.is_dir() and not any(p.iterdir()):
+            p.rmdir()
+    return sorted(gone)
 MAX_FILE = 25 * 2**20
 MAX_RUN = 300 * 2**20
 
@@ -113,7 +151,15 @@ def check_run(d: Path) -> list[str]:
         e("run.json", f"names run {r.get('run')!r}, folder is {d.name!r}")
     if r.get("fingerprint") != m.group(2):
         e("run.json", "fingerprint does not match the folder name")
-    if r.get("status") not in COMPLETE:
+    if r.get("status") == STOPPED:
+        done = completed_steps(r)
+        if not done:
+            e("run.json", "stopped before any step finished")
+        for p in sorted(d.rglob("*")):
+            st = step_of(p.relative_to(d).as_posix())
+            if p.is_file() and st and st not in done:
+                e(p.relative_to(d).as_posix(), f"file of step {st!r}, which did not finish (stopped run)")
+    elif r.get("status") not in COMPLETE:
         e("run.json", f"run not complete: status {r.get('status')!r}")
     for k in ("start_utc", "end_utc", "stick", "hardware", "questions"):
         if not r.get(k):
