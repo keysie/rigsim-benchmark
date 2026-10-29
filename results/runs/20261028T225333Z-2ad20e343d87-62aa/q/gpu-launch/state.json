@@ -1,0 +1,14 @@
+{
+ "gpu-launch/gpu=gpu0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-launch/gpu=gpu0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-launch/gpu=gpu0/rep=2": {
+  "status": "done",
+  "attempts": 1
+ }
+}

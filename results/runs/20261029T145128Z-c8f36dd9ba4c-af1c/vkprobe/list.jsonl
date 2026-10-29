@@ -1,0 +1,1 @@
+{"mode":"list","device":"llvmpipe (LLVM 20.1.2, 256 bits)","device_type":"cpu","vendor_id":65541,"device_id":0,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"","uuid":"6d65736132352e322e382d3075627500","index":0,"subgroup":8,"f16":true,"int8":true,"device_local_bytes":67295887360,"heap_bytes":67295887360,"max_workgroup":1024,"coopmat":[]}

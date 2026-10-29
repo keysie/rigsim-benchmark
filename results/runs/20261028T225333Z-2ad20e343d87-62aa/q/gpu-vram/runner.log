@@ -1,0 +1,8 @@
+23:17:53 session rigsim-hwbench-gpu-vram: setting up from nvidia/cuda:12.8.1-devel-ubuntu24.04
+23:18:00 ok   gpu-vram/gpu=gpu0/op=read/rep=0 rc=0
+23:18:02 ok   gpu-vram/gpu=gpu0/op=read/rep=1 rc=0
+23:18:04 ok   gpu-vram/gpu=gpu0/op=write/rep=0 rc=0
+23:18:06 ok   gpu-vram/gpu=gpu0/op=write/rep=1 rc=0
+23:18:08 ok   gpu-vram/gpu=gpu0/op=copy/rep=0 rc=0
+23:18:09 ok   gpu-vram/gpu=gpu0/op=copy/rep=1 rc=0
+23:18:10 restore: box as found

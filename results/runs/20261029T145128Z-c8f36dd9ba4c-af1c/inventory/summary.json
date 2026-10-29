@@ -1,0 +1,59 @@
+{
+ "cpu": "AMD Ryzen 9 5900X 12-Core Processor",
+ "board": "ASUSTeK COMPUTER INC. ROG STRIX B550-A GAMING",
+ "bios": "3611",
+ "gpus": [
+  "NVIDIA Corporation GM204 [GeForce GTX 970] [10de:13c2] (rev a1)"
+ ],
+ "ram_gib": 62.7,
+ "dimms": [
+  {
+   "Locator": "DIMM_A1",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "3200 MT/s",
+   "Configured Memory Speed": "3200 MT/s",
+   "Rank": "1",
+   "Manufacturer": "Kingston",
+   "Part Number": "HP37D4U1S8HC-16XR   "
+  },
+  {
+   "Locator": "DIMM_A2",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "3200 MT/s",
+   "Configured Memory Speed": "3200 MT/s",
+   "Rank": "1",
+   "Manufacturer": "Kingston",
+   "Part Number": "HP37D4U1S8HC-16XR   "
+  },
+  {
+   "Locator": "DIMM_B1",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "3200 MT/s",
+   "Configured Memory Speed": "3200 MT/s",
+   "Rank": "1",
+   "Manufacturer": "Kingston",
+   "Part Number": "HP37D4U1S8HC-16XR   "
+  },
+  {
+   "Locator": "DIMM_B2",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "3200 MT/s",
+   "Configured Memory Speed": "3200 MT/s",
+   "Rank": "1",
+   "Manufacturer": "Kingston",
+   "Part Number": "HP37D4U1S8HC-16XR   "
+  }
+ ],
+ "cpufreq": {
+  "cpuinfo_min_freq": "567089",
+  "cpuinfo_max_freq": "4954565",
+  "scaling_driver": "amd-pstate-epp",
+  "scaling_governor": "powersave"
+ },
+ "secure_boot": false,
+ "kernel": "7.0.0-42-generic"
+}

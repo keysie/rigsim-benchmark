@@ -1,0 +1,73 @@
+
+--- stderr ---
+Build with Macros:
+  GGML_SYCL_DNNL: yes
+  GGML_SYCL_F16: yes
+  GGML_SYCL_FORCE_MMQ: no
+  GGML_SYCL_GRAPH: yes
+  GGML_SYCL_SUPPORT_LEVEL_ZERO_API: yes
+  GGML_SYCL_SUPPORT_VMM: yes
+Running with Environment Variables:
+  GGML_SYCL_DEBUG: 0
+  GGML_SYCL_DEV_DEBUG: 0
+  GGML_SYCL_DEV2DEV_MEMCPY: 0 (SYCL API)
+  GGML_SYCL_GET_MEM_API: 0 (Level Zero API)
+  GGML_SYCL_ENABLE_DNN: 1
+  GGML_SYCL_FA_ONEDNN: 1
+  GGML_SYCL_FA_ONEDNN_MAX_KV: 0
+  GGML_SYCL_ENABLE_MKL_FA: 1
+  GGML_SYCL_MEMTRACE: 0
+  GGML_SYCL_MEMTRACE_STEP: 64
+  GGML_SYCL_ENABLE_FLASH_ATTN: 1
+  GGML_SYCL_ENABLE_GRAPH: 0
+  GGML_SYCL_ENABLE_OPT: 1
+  GGML_SYCL_XMX_GATHER_TYPES: -1
+  GGML_SYCL_XMX_GATHER_SHAPES: 255
+  GGML_SYCL_DYNAMIC_PRECISION: F16
+  GGML_SYCL_DYNAMIC_REQUIRED_PRECISION: F32
+  GGML_SYCL_ENABLE_VMM: 1
+  GGML_SYCL_ENABLE_FUSION: 1
+  GGML_SYCL_UPLOAD_STAGING_SLOTS: 4
+  GGML_SYCL_ENABLE_ESIMD: 1
+  GGML_SYCL_MMVQ_WIDE: 1
+  GGML_SYCL_PRIORITIZE_DMMV: 0
+  GGML_SYCL_USE_ASYNC_MEM_OP: 1
+  GGML_SYCL_USE_LEVEL_ZERO_API: 1
+  GGML_SYCL_USM_SYSTEM: 0
+  GGML_SYCL_ENABLE_HOST_PINNED_MEM: 1
+  GGML_SYCL_HOST_PINNED_MEM_2G: 0
+  GGML_SYCL_SPARSE_FA: 0
+  GGML_SYCL_SPARSE_FA_DEBUG: 0
+  GGML_SYCL_SPARSE_FA_MARGIN: 256
+Found 1 SYCL devices:
+|  |                   |                                       |       |Max    |        |Max  |Global |                     |
+|  |                   |                                       |       |compute|Max work|sub  |mem    |                     |
+|ID|        Device Type|                                   Name|Version|units  |group   |group|size   |       Driver version|
+|--|-------------------|---------------------------------------|-------|-------|--------|-----|-------|---------------------|
+| 0| [level_zero:gpu:0]|                 Intel UHD Graphics 770|   12.2|     32|     512|   32| 30920M|         1.6.33276+22|
+SYCL Optimization Feature:
+|ID|        Device Type|Reorder|
+|--|-------------------|-------|
+| 0| [level_zero:gpu:0]|      Y|
+could not create a memory object
+Exception caught at file:/tmp/llama/ggml/src/ggml-sycl/ggml-sycl.cpp, line:3743, func:operator()
+SYCL error: CHECK_TRY_ERROR(op(ctx, src0, src1, dst, src0_dd_i, src1_ddf_i, src1_ddq_i, dst_dd_i, dev[i].row_low, dev[i].row_high, src1_ncols, src1_padded_col_size, stream)): Exception caught in this line of code.
+  in function ggml_sycl_op_mul_mat at /tmp/llama/ggml/src/ggml-sycl/ggml-sycl.cpp:3743
+/tmp/llama/ggml/src/ggml-sycl/../ggml-sycl/common.hpp:200: SYCL error
+/rigsim/llama-bench[0x1fac2f8]
+/rigsim/llama-bench[0x1fac2d0]
+/rigsim/llama-bench[0x41b12f]
+/rigsim/llama-bench[0x41a78a]
+/rigsim/llama-bench[0xbc4477]
+/rigsim/llama-bench[0xbb8a06]
+/rigsim/llama-bench[0xbaab20]
+/rigsim/llama-bench[0xba8858]
+/rigsim/llama-bench[0x1fd2dee]
+/rigsim/llama-bench[0x77c86c]
+/rigsim/llama-bench[0x77bf2e]
+/rigsim/llama-bench[0x77e0c5]
+/rigsim/llama-bench[0x440a0c]
+/rigsim/llama-bench[0x43ae8c]
+/lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x705faff141ca]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x705faff1428b]
+/rigsim/llama-bench[0x438795]

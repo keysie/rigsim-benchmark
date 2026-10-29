@@ -1,0 +1,1 @@
+{"mode":"stream","device":"Intel(R) UHD Graphics 630 (CFL GT2)","device_type":"integrated","vendor_id":32902,"device_id":16024,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"0000:00:02.0","uuid":"8680983e020000000002000000000000","op":"copy","bytes":2147483648,"reps":20,"t_median_s":0.0845870859,"t_min_s":0.0839956692,"bytes_per_s":2.53878e+10}

@@ -1,0 +1,50 @@
+{
+ "pcie-copy/gpu=gpu0/dir=h2d/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=gpu0/dir=h2d/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=gpu0/dir=d2h/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=gpu0/dir=d2h/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=gpu0/dir=bidir/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=gpu0/dir=bidir/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=@together/dir=h2d/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=@together/dir=h2d/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=@together/dir=d2h/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=@together/dir=d2h/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=@together/dir=bidir/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "pcie-copy/gpu=@together/dir=bidir/rep=1": {
+  "status": "done",
+  "attempts": 1
+ }
+}

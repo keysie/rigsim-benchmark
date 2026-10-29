@@ -1,0 +1,750 @@
+{
+ "format": {
+  "name": "rigsim-stick-run",
+  "version": "1.2"
+ },
+ "run": "20261029T080537Z-6a1ce581151e-65e0",
+ "stick": {
+  "version": "0.11.0",
+  "build": "af74af4",
+  "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+  "dirty": false,
+  "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5"
+ },
+ "seed": {
+  "build": "af74af4"
+ },
+ "fingerprint": "6a1ce581151e",
+ "fingerprint_stable": true,
+ "start_utc": "2026-10-29T08:05:37+00:00",
+ "clock_note": "machine RTC; may be wrong",
+ "questions": {
+  "cpu-mem-latency": {
+   "rc": 0,
+   "items": {
+    "done": 9
+   },
+   "seconds": 555,
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "images": {
+     "debian:trixie": {
+      "ref": "debian:trixie",
+      "id": "sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+      "digest": "debian@sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+      "offline_packages": {
+       "adduser": "3.152",
+       "binutils-common": "2.44-3",
+       "binutils-x86-64-linux-gnu": "2.44-3",
+       "binutils": "2.44-3",
+       "cpp-14-x86-64-linux-gnu": "14.2.0-19",
+       "cpp-14": "14.2.0-19",
+       "cpp-x86-64-linux-gnu": "4:14.2.0-1",
+       "cpp": "4:14.2.0-1",
+       "dmsetup": "2:1.02.205-2",
+       "fio": "3.39-1",
+       "gcc-14-x86-64-linux-gnu": "14.2.0-19",
+       "gcc-14": "14.2.0-19",
+       "gcc-x86-64-linux-gnu": "4:14.2.0-1",
+       "gcc": "4:14.2.0-1",
+       "libaio1t64": "0.3.113-8+b1",
+       "libasan8": "14.2.0-19",
+       "libatomic1": "14.2.0-19",
+       "libbinutils": "2.44-3",
+       "libboost-iostreams1.83.0": "1.83.0-4.2",
+       "libboost-thread1.83.0": "1.83.0-4.2",
+       "libc-dev-bin": "2.41-12+deb13u4",
+       "libc6-dev": "2.41-12+deb13u4",
+       "libcc1-0": "14.2.0-19",
+       "libcom-err2": "1.47.2-3+b12",
+       "libcrypt-dev": "1:4.4.38-1",
+       "libcryptsetup12": "2:2.7.5-2",
+       "libctf-nobfd0": "2.44-3",
+       "libctf0": "2.44-3",
+       "libdaxctl1": "81-1",
+       "libdevmapper1.02.1": "2:1.02.205-2",
+       "libdnnl-dev": "3.7.2+ds-2",
+       "libdnnl3.6": "3.7.2+ds-2",
+       "libexpat1": "2.9.0-1~deb13u1",
+       "libffi8": "3.4.8-2",
+       "libfmt10": "10.1.1+ds1-4",
+       "libgcc-14-dev": "14.2.0-19",
+       "libgdbm-compat4t64": "1.24-2",
+       "libgdbm6t64": "1.24-2",
+       "libgfapi0": "11.1-6",
+       "libgfortran5": "14.2.0-19",
+       "libgfrpc0": "11.1-6",
+       "libgfxdr0": "11.1-6",
+       "libglusterfs0": "11.1-6",
+       "libgnutls30t64": "3.8.9-3+deb13u4",
+       "libgomp1": "14.2.0-19",
+       "libgprofng0": "2.44-3",
+       "libgssapi-krb5-2": "1.21.3-5+deb13u1",
+       "libhwasan0": "14.2.0-19",
+       "libhwloc15": "2.12.0-4",
+       "libibverbs1": "56.1-1",
+       "libidn2-0": "2.3.8-2",
+       "libisl23": "0.27-1",
+       "libitm1": "14.2.0-19",
+       "libjansson4": "2.14-2+b3",
+       "libjson-c5": "0.18+ds-1",
+       "libk5crypto3": "1.21.3-5+deb13u1",
+       "libkeyutils1": "1.6.3-6",
+       "libkmod2": "34.2-2",
+       "libkrb5-3": "1.21.3-5+deb13u1",
+       "libkrb5support0": "1.21.3-5+deb13u1",
+       "liblsan0": "14.2.0-19",
+       "liblua5.3-0": "5.3.6-2+b4",
+       "libmpc3": "1.3.1-1+b3",
+       "libmpfr6": "4.2.2-1",
+       "libnbd0": "1.22.2-1+b1",
+       "libncursesw6": "6.5+20250216-2",
+       "libndctl6": "81-1",
+       "libnfs14": "5.0.2-1+deb13u1",
+       "libnl-3-200": "3.7.0-2",
+       "libnl-route-3-200": "3.7.0-2",
+       "libnuma1": "2.0.19-1",
+       "libopenblas-dev": "0.3.29+ds-3",
+       "libopenblas-pthread-dev": "0.3.29+ds-3",
+       "libopenblas0-pthread": "0.3.29+ds-3",
+       "libopenblas0": "0.3.29+ds-3",
+       "libp11-kit0": "0.25.5-3",
+       "libperl5.40": "5.40.1-6+deb13u1",
+       "libpmem1": "1.13.1-1.1+b1",
+       "libpython3-stdlib": "3.13.5-1",
+       "libpython3.13-minimal": "3.13.5-2+deb13u5",
+       "libpython3.13-stdlib": "3.13.5-2+deb13u5",
+       "libquadmath0": "14.2.0-19",
+       "librados2": "18.2.7+ds-1+deb13u1",
+       "librbd1": "18.2.7+ds-1+deb13u1",
+       "librdmacm1t64": "56.1-1",
+       "libreadline8t64": "8.2-6",
+       "libsframe1": "2.44-3",
+       "libtasn1-6": "4.20.0-2+deb13u1",
+       "libtirpc-common": "1.3.6+ds-1",
+       "libtirpc3t64": "1.3.6+ds-1",
+       "libtsan2": "14.2.0-19",
+       "libubsan1": "14.2.0-19",
+       "libunistring5": "1.3-2",
+       "libxml2": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+       "likwid": "5.4.1+dfsg-1",
+       "linux-libc-dev": "6.12.113-1",
+       "lua5.3": "5.3.6-2+b4",
+       "media-types": "13.0.0",
+       "netbase": "6.5",
+       "perl-modules-5.40": "5.40.1-6+deb13u1",
+       "perl": "5.40.1-6+deb13u1",
+       "python3-minimal": "3.13.5-1",
+       "python3.13-minimal": "3.13.5-2+deb13u5",
+       "python3.13": "3.13.5-2+deb13u5",
+       "python3": "3.13.5-1",
+       "readline-common": "8.2-6",
+       "rpcsvc-proto": "1.4.3-1"
+      }
+     }
+    }
+   }
+  },
+  "cpu-mem-ladder": {
+   "rc": 0,
+   "items": {
+    "done": 24
+   },
+   "seconds": 443,
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "images": {
+     "debian:trixie": {
+      "ref": "debian:trixie",
+      "id": "sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+      "digest": "debian@sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+      "offline_packages": {
+       "adduser": "3.152",
+       "binutils-common": "2.44-3",
+       "binutils-x86-64-linux-gnu": "2.44-3",
+       "binutils": "2.44-3",
+       "cpp-14-x86-64-linux-gnu": "14.2.0-19",
+       "cpp-14": "14.2.0-19",
+       "cpp-x86-64-linux-gnu": "4:14.2.0-1",
+       "cpp": "4:14.2.0-1",
+       "dmsetup": "2:1.02.205-2",
+       "fio": "3.39-1",
+       "gcc-14-x86-64-linux-gnu": "14.2.0-19",
+       "gcc-14": "14.2.0-19",
+       "gcc-x86-64-linux-gnu": "4:14.2.0-1",
+       "gcc": "4:14.2.0-1",
+       "libaio1t64": "0.3.113-8+b1",
+       "libasan8": "14.2.0-19",
+       "libatomic1": "14.2.0-19",
+       "libbinutils": "2.44-3",
+       "libboost-iostreams1.83.0": "1.83.0-4.2",
+       "libboost-thread1.83.0": "1.83.0-4.2",
+       "libc-dev-bin": "2.41-12+deb13u4",
+       "libc6-dev": "2.41-12+deb13u4",
+       "libcc1-0": "14.2.0-19",
+       "libcom-err2": "1.47.2-3+b12",
+       "libcrypt-dev": "1:4.4.38-1",
+       "libcryptsetup12": "2:2.7.5-2",
+       "libctf-nobfd0": "2.44-3",
+       "libctf0": "2.44-3",
+       "libdaxctl1": "81-1",
+       "libdevmapper1.02.1": "2:1.02.205-2",
+       "libdnnl-dev": "3.7.2+ds-2",
+       "libdnnl3.6": "3.7.2+ds-2",
+       "libexpat1": "2.9.0-1~deb13u1",
+       "libffi8": "3.4.8-2",
+       "libfmt10": "10.1.1+ds1-4",
+       "libgcc-14-dev": "14.2.0-19",
+       "libgdbm-compat4t64": "1.24-2",
+       "libgdbm6t64": "1.24-2",
+       "libgfapi0": "11.1-6",
+       "libgfortran5": "14.2.0-19",
+       "libgfrpc0": "11.1-6",
+       "libgfxdr0": "11.1-6",
+       "libglusterfs0": "11.1-6",
+       "libgnutls30t64": "3.8.9-3+deb13u4",
+       "libgomp1": "14.2.0-19",
+       "libgprofng0": "2.44-3",
+       "libgssapi-krb5-2": "1.21.3-5+deb13u1",
+       "libhwasan0": "14.2.0-19",
+       "libhwloc15": "2.12.0-4",
+       "libibverbs1": "56.1-1",
+       "libidn2-0": "2.3.8-2",
+       "libisl23": "0.27-1",
+       "libitm1": "14.2.0-19",
+       "libjansson4": "2.14-2+b3",
+       "libjson-c5": "0.18+ds-1",
+       "libk5crypto3": "1.21.3-5+deb13u1",
+       "libkeyutils1": "1.6.3-6",
+       "libkmod2": "34.2-2",
+       "libkrb5-3": "1.21.3-5+deb13u1",
+       "libkrb5support0": "1.21.3-5+deb13u1",
+       "liblsan0": "14.2.0-19",
+       "liblua5.3-0": "5.3.6-2+b4",
+       "libmpc3": "1.3.1-1+b3",
+       "libmpfr6": "4.2.2-1",
+       "libnbd0": "1.22.2-1+b1",
+       "libncursesw6": "6.5+20250216-2",
+       "libndctl6": "81-1",
+       "libnfs14": "5.0.2-1+deb13u1",
+       "libnl-3-200": "3.7.0-2",
+       "libnl-route-3-200": "3.7.0-2",
+       "libnuma1": "2.0.19-1",
+       "libopenblas-dev": "0.3.29+ds-3",
+       "libopenblas-pthread-dev": "0.3.29+ds-3",
+       "libopenblas0-pthread": "0.3.29+ds-3",
+       "libopenblas0": "0.3.29+ds-3",
+       "libp11-kit0": "0.25.5-3",
+       "libperl5.40": "5.40.1-6+deb13u1",
+       "libpmem1": "1.13.1-1.1+b1",
+       "libpython3-stdlib": "3.13.5-1",
+       "libpython3.13-minimal": "3.13.5-2+deb13u5",
+       "libpython3.13-stdlib": "3.13.5-2+deb13u5",
+       "libquadmath0": "14.2.0-19",
+       "librados2": "18.2.7+ds-1+deb13u1",
+       "librbd1": "18.2.7+ds-1+deb13u1",
+       "librdmacm1t64": "56.1-1",
+       "libreadline8t64": "8.2-6",
+       "libsframe1": "2.44-3",
+       "libtasn1-6": "4.20.0-2+deb13u1",
+       "libtirpc-common": "1.3.6+ds-1",
+       "libtirpc3t64": "1.3.6+ds-1",
+       "libtsan2": "14.2.0-19",
+       "libubsan1": "14.2.0-19",
+       "libunistring5": "1.3-2",
+       "libxml2": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+       "likwid": "5.4.1+dfsg-1",
+       "linux-libc-dev": "6.12.113-1",
+       "lua5.3": "5.3.6-2+b4",
+       "media-types": "13.0.0",
+       "netbase": "6.5",
+       "perl-modules-5.40": "5.40.1-6+deb13u1",
+       "perl": "5.40.1-6+deb13u1",
+       "python3-minimal": "3.13.5-1",
+       "python3.13-minimal": "3.13.5-2+deb13u5",
+       "python3.13": "3.13.5-2+deb13u5",
+       "python3": "3.13.5-1",
+       "readline-common": "8.2-6",
+       "rpcsvc-proto": "1.4.3-1"
+      }
+     }
+    }
+   }
+  },
+  "cpu-gemm": {
+   "rc": 0,
+   "items": {
+    "done": 24
+   },
+   "seconds": 510,
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "images": {
+     "debian:trixie": {
+      "ref": "debian:trixie",
+      "id": "sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+      "digest": "debian@sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+      "offline_packages": {
+       "adduser": "3.152",
+       "binutils-common": "2.44-3",
+       "binutils-x86-64-linux-gnu": "2.44-3",
+       "binutils": "2.44-3",
+       "cpp-14-x86-64-linux-gnu": "14.2.0-19",
+       "cpp-14": "14.2.0-19",
+       "cpp-x86-64-linux-gnu": "4:14.2.0-1",
+       "cpp": "4:14.2.0-1",
+       "dmsetup": "2:1.02.205-2",
+       "fio": "3.39-1",
+       "gcc-14-x86-64-linux-gnu": "14.2.0-19",
+       "gcc-14": "14.2.0-19",
+       "gcc-x86-64-linux-gnu": "4:14.2.0-1",
+       "gcc": "4:14.2.0-1",
+       "libaio1t64": "0.3.113-8+b1",
+       "libasan8": "14.2.0-19",
+       "libatomic1": "14.2.0-19",
+       "libbinutils": "2.44-3",
+       "libboost-iostreams1.83.0": "1.83.0-4.2",
+       "libboost-thread1.83.0": "1.83.0-4.2",
+       "libc-dev-bin": "2.41-12+deb13u4",
+       "libc6-dev": "2.41-12+deb13u4",
+       "libcc1-0": "14.2.0-19",
+       "libcom-err2": "1.47.2-3+b12",
+       "libcrypt-dev": "1:4.4.38-1",
+       "libcryptsetup12": "2:2.7.5-2",
+       "libctf-nobfd0": "2.44-3",
+       "libctf0": "2.44-3",
+       "libdaxctl1": "81-1",
+       "libdevmapper1.02.1": "2:1.02.205-2",
+       "libdnnl-dev": "3.7.2+ds-2",
+       "libdnnl3.6": "3.7.2+ds-2",
+       "libexpat1": "2.9.0-1~deb13u1",
+       "libffi8": "3.4.8-2",
+       "libfmt10": "10.1.1+ds1-4",
+       "libgcc-14-dev": "14.2.0-19",
+       "libgdbm-compat4t64": "1.24-2",
+       "libgdbm6t64": "1.24-2",
+       "libgfapi0": "11.1-6",
+       "libgfortran5": "14.2.0-19",
+       "libgfrpc0": "11.1-6",
+       "libgfxdr0": "11.1-6",
+       "libglusterfs0": "11.1-6",
+       "libgnutls30t64": "3.8.9-3+deb13u4",
+       "libgomp1": "14.2.0-19",
+       "libgprofng0": "2.44-3",
+       "libgssapi-krb5-2": "1.21.3-5+deb13u1",
+       "libhwasan0": "14.2.0-19",
+       "libhwloc15": "2.12.0-4",
+       "libibverbs1": "56.1-1",
+       "libidn2-0": "2.3.8-2",
+       "libisl23": "0.27-1",
+       "libitm1": "14.2.0-19",
+       "libjansson4": "2.14-2+b3",
+       "libjson-c5": "0.18+ds-1",
+       "libk5crypto3": "1.21.3-5+deb13u1",
+       "libkeyutils1": "1.6.3-6",
+       "libkmod2": "34.2-2",
+       "libkrb5-3": "1.21.3-5+deb13u1",
+       "libkrb5support0": "1.21.3-5+deb13u1",
+       "liblsan0": "14.2.0-19",
+       "liblua5.3-0": "5.3.6-2+b4",
+       "libmpc3": "1.3.1-1+b3",
+       "libmpfr6": "4.2.2-1",
+       "libnbd0": "1.22.2-1+b1",
+       "libncursesw6": "6.5+20250216-2",
+       "libndctl6": "81-1",
+       "libnfs14": "5.0.2-1+deb13u1",
+       "libnl-3-200": "3.7.0-2",
+       "libnl-route-3-200": "3.7.0-2",
+       "libnuma1": "2.0.19-1",
+       "libopenblas-dev": "0.3.29+ds-3",
+       "libopenblas-pthread-dev": "0.3.29+ds-3",
+       "libopenblas0-pthread": "0.3.29+ds-3",
+       "libopenblas0": "0.3.29+ds-3",
+       "libp11-kit0": "0.25.5-3",
+       "libperl5.40": "5.40.1-6+deb13u1",
+       "libpmem1": "1.13.1-1.1+b1",
+       "libpython3-stdlib": "3.13.5-1",
+       "libpython3.13-minimal": "3.13.5-2+deb13u5",
+       "libpython3.13-stdlib": "3.13.5-2+deb13u5",
+       "libquadmath0": "14.2.0-19",
+       "librados2": "18.2.7+ds-1+deb13u1",
+       "librbd1": "18.2.7+ds-1+deb13u1",
+       "librdmacm1t64": "56.1-1",
+       "libreadline8t64": "8.2-6",
+       "libsframe1": "2.44-3",
+       "libtasn1-6": "4.20.0-2+deb13u1",
+       "libtirpc-common": "1.3.6+ds-1",
+       "libtirpc3t64": "1.3.6+ds-1",
+       "libtsan2": "14.2.0-19",
+       "libubsan1": "14.2.0-19",
+       "libunistring5": "1.3-2",
+       "libxml2": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+       "likwid": "5.4.1+dfsg-1",
+       "linux-libc-dev": "6.12.113-1",
+       "lua5.3": "5.3.6-2+b4",
+       "media-types": "13.0.0",
+       "netbase": "6.5",
+       "perl-modules-5.40": "5.40.1-6+deb13u1",
+       "perl": "5.40.1-6+deb13u1",
+       "python3-minimal": "3.13.5-1",
+       "python3.13-minimal": "3.13.5-2+deb13u5",
+       "python3.13": "3.13.5-2+deb13u5",
+       "python3": "3.13.5-1",
+       "readline-common": "8.2-6",
+       "rpcsvc-proto": "1.4.3-1"
+      }
+     }
+    }
+   }
+  },
+  "pcie-copy": {
+   "skipped": "no NVIDIA GPU"
+  },
+  "gpu-p2p": {
+   "skipped": "no NVIDIA GPU"
+  },
+  "gpu-vram": {
+   "skipped": "no NVIDIA GPU"
+  },
+  "gpu-gemm": {
+   "skipped": "no NVIDIA GPU"
+  },
+  "gpu-launch": {
+   "skipped": "no NVIDIA GPU"
+  },
+  "mlc": {
+   "rc": 0,
+   "runs": {
+    "idle_latency": {
+     "rc": 0,
+     "seconds": 5
+    },
+    "max_bandwidth": {
+     "rc": 0,
+     "seconds": 142
+    },
+    "loaded_latency": {
+     "rc": 0,
+     "seconds": 83
+    },
+    "latency_matrix": {
+     "rc": 0,
+     "seconds": 1
+    },
+    "bandwidth_matrix": {
+     "rc": 0,
+     "seconds": 9
+    }
+   },
+   "prefetchers_left_on": true,
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "mlc": {
+     "sha256": "bc347e01bec7ed66a2b37a1e0a7ea09ad30446bc66c4b32605e3928c7642ab05"
+    },
+    "mlc_version": "v3.13"
+   }
+  },
+  "opencl": {
+   "rc": 0,
+   "devices": {
+    "p0d0": {
+     "platform": "Intel(R) OpenCL Graphics",
+     "device": "Intel(R) HD Graphics 620",
+     "rc": 0,
+     "seconds": 119
+    }
+   },
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "packages": {
+     "clinfo": "3.0.23.01.25-1build1",
+     "clpeak": "1.1.2-1",
+     "intel-opencl-icd": "23.43.27642.40-1ubuntu3",
+     "libnvidia-compute-580": "580.178.04-0ubuntu0.24.04.1",
+     "mesa-opencl-icd": "25.2.8-0ubuntu0.24.04.4",
+     "ocl-icd-libopencl1": "2.3.2-1build1"
+    },
+    "nvidia_driver": ""
+   }
+  },
+  "vkprobe": {
+   "rc": 0,
+   "runs": {
+    "dev0-stream-read": {
+     "rc": 0,
+     "seconds": 1.9
+    },
+    "dev0-stream-write": {
+     "rc": 0,
+     "seconds": 1.8
+    },
+    "dev0-stream-copy": {
+     "rc": 0,
+     "seconds": 3.0
+    },
+    "dev0-launch": {
+     "rc": 0,
+     "seconds": 0.2
+    },
+    "dev0-fma-fp32": {
+     "rc": 0,
+     "seconds": 4.2
+    },
+    "dev0-fma-fp16": {
+     "rc": 0,
+     "seconds": 2.3
+    },
+    "dev0-gemm-f16-512x4096x4096": {
+     "rc": 0,
+     "seconds": 0.0
+    },
+    "dev0-gemm-f16-2048x2048x2048": {
+     "rc": 0,
+     "seconds": 0.1
+    },
+    "dev0-gemm-f16-4096x4096x4096": {
+     "rc": 0,
+     "seconds": 0.0
+    },
+    "dev0-gemm-f16f32-512x4096x4096": {
+     "rc": 0,
+     "seconds": 0.0
+    },
+    "dev0-gemm-f16f32-2048x2048x2048": {
+     "rc": 0,
+     "seconds": 0.0
+    },
+    "dev0-gemm-f16f32-4096x4096x4096": {
+     "rc": 0,
+     "seconds": 0.1
+    },
+    "dev0-gemm-i8-512x4096x4096": {
+     "rc": 0,
+     "seconds": 0.0
+    },
+    "dev0-gemm-i8-2048x2048x2048": {
+     "rc": 0,
+     "seconds": 0.0
+    },
+    "dev0-gemm-i8-4096x4096x4096": {
+     "rc": 0,
+     "seconds": 0.1
+    },
+    "dev0-shared": {
+     "rc": 0,
+     "seconds": 25.4
+    }
+   },
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "vkprobe": {
+     "sha256": "affe2ce5c3186b3feee52492e3fa49f0b13928aca243015224c05f3e9dbd5fba"
+    },
+    "packages": {
+     "libnvidia-gl-580": "580.178.04-0ubuntu0.24.04.1",
+     "libvulkan1": "1.3.275.0-1build1",
+     "mesa-vulkan-drivers": "25.2.8-0ubuntu0.24.04.4"
+    },
+    "vulkan_devices": [
+     {
+      "apiVersion": "1.4.318",
+      "deviceName": "Intel(R) HD Graphics 620 (KBL GT2)",
+      "driverName": "Intel open-source Mesa driver",
+      "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4",
+      "conformanceVersion": "1.4.0.0"
+     },
+     {
+      "apiVersion": "1.4.318",
+      "deviceName": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "driverName": "llvmpipe",
+      "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)",
+      "conformanceVersion": "1.3.1.1"
+     }
+    ]
+   }
+  },
+  "rocm": {
+   "skipped": "no AMD GPU",
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "vendor": {
+     "image": "rigsim/rocm:eafe315fa1478566",
+     "base": {
+      "ref": "rocm/dev-ubuntu-24.04:6.4.1-complete",
+      "id": "sha256:40eb8498dbfd1770da15b811d5fcfdf0341531dd71f87fea92ea6ae6596bafa3",
+      "digest": "rocm/dev-ubuntu-24.04@sha256:40eb8498dbfd1770da15b811d5fcfdf0341531dd71f87fea92ea6ae6596bafa3"
+     },
+     "rocm_version": "6.4.1-83",
+     "llama_tag": "v0.7.0",
+     "llama_commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
+     "targets": "gfx900;gfx906;gfx908;gfx90a;gfx942;gfx1010;gfx1012;gfx1030;gfx1031;gfx1032;gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1200;gfx1201",
+     "targets_dropped": "",
+     "8b05cbe7d62fb9184beeefc3a870e12ea41315482b34a52ce07327c4d610f981": "sha256:llama-bench",
+     "ed6bf06881aef66c3ef065a9cd372f2ebb1dc8a1597e5ddf216bbdf08392fd08": "sha256:test-backend-ops"
+    }
+   }
+  },
+  "oneapi": {
+   "load": {
+    "rc": 0,
+    "cached": true
+   },
+   "rc": 1,
+   "error": "the runtime sees no GPU (info.jsonl)",
+   "tools": {
+    "stick": {
+     "version": "0.11.0",
+     "build": "af74af4",
+     "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+     "dirty": false,
+     "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5",
+     "format": "1.2"
+    },
+    "kernel": "7.0.0-42-generic",
+    "vendor": {
+     "image": "rigsim/oneapi:1496a64fbba1b73a",
+     "base": {
+      "ref": "intel/oneapi-basekit:2025.2.0-0-devel-ubuntu24.04",
+      "id": "sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0",
+      "digest": "intel/oneapi-basekit@sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0"
+     },
+     "oneapi_version": "Intel(R) oneAPI DPC++/C++ Compiler 2025.2.0 (2025.2.0.20250605)",
+     "llama_tag": "v0.7.0",
+     "llama_commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
+     "a5d398ec1cd69361e14d667ad1ada92e3c5a3e4318d13f7a27d8f525180acb5f": "sha256:probe_sycl",
+     "8ed673bf7600b70aa2fe2118beb9782ca1bcc98da31a6f2e9da067321d5caa9a": "sha256:llama-bench",
+     "9181f8820bf3c851421a3a4264c446edacfc7bdc84b4b3d3c30dead24890aa45": "sha256:test-backend-ops"
+    }
+   }
+  }
+ },
+ "status": "stopped",
+ "hardware": {
+  "cpu": "Intel(R) Core(TM) i7-7600U CPU @ 2.80GHz",
+  "board": "LENOVO 20JES00N00",
+  "bios": "N1NET62W (1.49 )",
+  "gpus": [
+   "Intel Corporation HD Graphics 620 [8086:5916] (rev 02)",
+   "Intel Corporation Sunrise Point-LP Integrated Sensor Hub [8086:9d35] (rev 21)"
+  ],
+  "ram_gib": 15.4,
+  "dimms": [
+   {
+    "Locator": "ChannelA-DIMM0",
+    "Size": "8 GB",
+    "Type": "LPDDR3",
+    "Speed": "2133 MT/s",
+    "Configured Memory Speed": "2133 MT/s",
+    "Rank": "2",
+    "Manufacturer": "Micron",
+    "Part Number": "MT52L1G32D4PG-093 "
+   },
+   {
+    "Locator": "ChannelB-DIMM0",
+    "Size": "8 GB",
+    "Type": "LPDDR3",
+    "Speed": "2133 MT/s",
+    "Configured Memory Speed": "2133 MT/s",
+    "Rank": "2",
+    "Manufacturer": "Micron",
+    "Part Number": "MT52L1G32D4PG-093 "
+   }
+  ],
+  "cpufreq": {
+   "cpuinfo_min_freq": "400000",
+   "cpuinfo_max_freq": "3900000",
+   "scaling_driver": "intel_pstate",
+   "scaling_governor": "powersave",
+   "base_frequency": "2800000"
+  },
+  "secure_boot": true,
+  "kernel": "7.0.0-42-generic"
+ },
+ "stick_check": {
+  "result": "pass",
+  "mismatched": []
+ },
+ "stick_read": {
+  "file": "nvidia_cuda_12.8.1-devel-ubuntu24.04.tar",
+  "mib": 1024,
+  "seconds": 7.08,
+  "mib_per_s": 144.6
+ },
+ "docker": {
+  "ok": true,
+  "image": "debian:trixie",
+  "storage": "overlayfs / [[driver-type io.containerd.snapshotter.v1]]",
+  "store": "partition"
+ },
+ "displays": [
+  {
+   "connector": "eDP-1",
+   "card": "card1",
+   "pci": "0000:00:02.0",
+   "mode": "2560x1440",
+   "enabled": "enabled",
+   "dpms": "On"
+  }
+ ],
+ "screens_blanked": [
+  "fb0"
+ ],
+ "end_utc": "2026-10-29T09:37:46+00:00"
+}

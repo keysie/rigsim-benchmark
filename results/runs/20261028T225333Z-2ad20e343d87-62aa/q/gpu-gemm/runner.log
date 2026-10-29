@@ -1,0 +1,23 @@
+23:18:11 session rigsim-hwbench-gpu-gemm: setting up from nvidia/cuda:12.8.1-devel-ubuntu24.04
+23:18:19 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=8x2048x2048/rep=0 rc=0
+23:18:20 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=512x2048x2048/rep=0 rc=0
+23:18:22 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=2048x2048x2048/rep=0 rc=0
+23:18:24 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=8x4096x4096/rep=0 rc=0
+23:18:26 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=512x4096x4096/rep=0 rc=0
+23:18:28 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=4096x4096x4096/rep=0 rc=0
+23:18:31 ok   gpu-gemm/gpu=gpu0/prec=fp32/shape=8192x8192x8192/rep=0 rc=0
+23:18:32 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=8x2048x2048/rep=0 rc=0
+23:18:34 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=512x2048x2048/rep=0 rc=0
+23:18:36 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=2048x2048x2048/rep=0 rc=0
+23:18:38 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=8x4096x4096/rep=0 rc=0
+23:18:39 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=512x4096x4096/rep=0 rc=0
+23:18:41 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=4096x4096x4096/rep=0 rc=0
+23:18:43 ok   gpu-gemm/gpu=gpu0/prec=fp16/shape=8192x8192x8192/rep=0 rc=0
+23:18:45 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=8x2048x2048/rep=0 rc=0
+23:18:47 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=512x2048x2048/rep=0 rc=0
+23:18:48 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=2048x2048x2048/rep=0 rc=0
+23:18:50 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=8x4096x4096/rep=0 rc=0
+23:18:52 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=512x4096x4096/rep=0 rc=0
+23:18:54 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=4096x4096x4096/rep=0 rc=0
+23:18:55 ok   gpu-gemm/gpu=gpu0/prec=int8/shape=8192x8192x8192/rep=0 rc=0
+23:18:56 restore: box as found

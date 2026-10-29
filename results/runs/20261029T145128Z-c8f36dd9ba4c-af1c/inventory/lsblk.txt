@@ -1,0 +1,16 @@
+NAME        MODEL                                SIZE ROTA TRAN   TYPE
+loop0                                            1.6G    1        loop
+sda         SanDisk 3.2Gen1                    114.6G    1 usb    disk
+├─sda1                                           1.7G    1        part
+├─sda2                                            10M    1        part
+└─sda3                                         106.6G    1        part
+sr0         ASUS DVD-E818AT                     1024M    0 sata   rom
+nvme0n1     WD WD_BLACK Gen4 SDCPNRY-1T00-1106 953.9G    0 nvme   disk
+├─nvme0n1p1                                      260M    0 nvme   part
+├─nvme0n1p2                                       16M    0 nvme   part
+└─nvme0n1p3                                      716M    0 nvme   part
+nvme1n1     CT1000P3SSD8                       931.5G    0 nvme   disk
+├─nvme1n1p1                                      128M    0 nvme   part
+├─nvme1n1p2                                      450M    0 nvme   part
+├─nvme1n1p3                                       99M    0 nvme   part
+└─nvme1n1p4                                      730G    0 nvme   part

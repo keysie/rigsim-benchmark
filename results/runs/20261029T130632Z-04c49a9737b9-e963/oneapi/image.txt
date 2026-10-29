@@ -1,0 +1,10 @@
+Intel(R) oneAPI DPC++/C++ Compiler 2025.2.0 (2025.2.0.20250605)
+620d2225cc436ab0b001e3200e590e3b286ef9ab
+LLAMA_COMMIT
+LLAMA_TAG
+ONEAPI_VERSION
+llama-bench
+probe-build.log
+probe_sycl
+run.sh
+test-backend-ops

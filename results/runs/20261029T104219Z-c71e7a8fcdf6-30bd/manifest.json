@@ -1,0 +1,348 @@
+{
+ "format": {
+  "name": "rigsim-stick-run",
+  "version": "1.2"
+ },
+ "system": {
+  "part": "rootfs",
+  "stick": {
+   "version": "0.11.0",
+   "build": "af74af4",
+   "commit": "af74af4727dd75d4e5b117d222ec04c8427e75fc",
+   "dirty": false,
+   "scripts_sha256": "c206b69520c18a313c9f8c7d60782101dcd9c6a84458b689565a22db92f4a5c5"
+  },
+  "settings": {
+   "SUITE": "noble",
+   "KERNEL": "hwe",
+   "NVIDIA_BRANCH": "580",
+   "NVIDIA_FLAVOUR": "open",
+   "MIRROR": "http://archive.ubuntu.com/ubuntu",
+   "ROOTFS_BUILT": "2026-10-28T22:12Z"
+  },
+  "packages": {
+   "casper": "1.498",
+   "clinfo": "3.0.23.01.25-1build1",
+   "clpeak": "1.1.2-1",
+   "containerd": "2.2.1-0ubuntu1~24.04.4",
+   "dmidecode": "3.5-3ubuntu0.2",
+   "docker.io": "29.1.3-0ubuntu3~24.04.2",
+   "grub-efi-amd64-signed": "1.202.5+2.12-1ubuntu7.3",
+   "hwloc": "2.10.0-1build1",
+   "i2c-tools": "4.3-4build2",
+   "intel-opencl-icd": "23.43.27642.40-1ubuntu3",
+   "libgl1-mesa-dri": "25.2.8-0ubuntu0.24.04.4",
+   "libigdgmm12": "22.3.17+ds1-1ubuntu1",
+   "libnvidia-cfg1-580": "580.178.04-0ubuntu0.24.04.1",
+   "libnvidia-common-580": "580.178.04-0ubuntu0.24.04.1",
+   "libnvidia-compute-580": "580.178.04-0ubuntu0.24.04.1",
+   "libnvidia-container-tools": "1.20.1-1",
+   "libnvidia-container1": "1.20.1-1",
+   "libnvidia-egl-wayland1": "1:1.1.13-1ubuntu0.1",
+   "libnvidia-gl-580": "580.178.04-0ubuntu0.24.04.1",
+   "libvulkan1": "1.3.275.0-1build1",
+   "linux-firmware": "20240318.git3b128b60.0ubuntu3.1",
+   "linux-image-7.0.0-42-generic": "7.0.0-42.42~24.04.1",
+   "linux-image-generic-hwe-24.04": "7.0.0-42.42~24.04.1",
+   "linux-modules-nvidia-580-open-7.0.0-42-generic": "7.0.0-42.42~24.04.1",
+   "linux-modules-nvidia-580-open-generic-hwe-24.04": "7.0.0-42.42~24.04.1",
+   "lm-sensors": "1:3.6.0-9build1",
+   "lshw": "02.19.git.2021.06.19.996aaad9c7-2ubuntu0.24.04.1",
+   "mesa-libgallium": "25.2.8-0ubuntu0.24.04.4",
+   "mesa-opencl-icd": "25.2.8-0ubuntu0.24.04.4",
+   "mesa-vulkan-drivers": "25.2.8-0ubuntu0.24.04.4",
+   "numactl": "2.0.18-1ubuntu0.24.04.1",
+   "nvidia-compute-utils-580": "580.178.04-0ubuntu0.24.04.1",
+   "nvidia-container-toolkit": "1.20.1-1",
+   "nvidia-container-toolkit-base": "1.20.1-1",
+   "nvidia-firmware-580-580.178.04": "580.178.04-0ubuntu0.24.04.1",
+   "nvidia-headless-no-dkms-580-open": "580.178.04-0ubuntu0.24.04.1",
+   "nvidia-kernel-common-580": "580.178.04-0ubuntu0.24.04.1",
+   "nvidia-kernel-source-580-open": "580.178.04-0ubuntu0.24.04.1",
+   "nvidia-modprobe": "535.54.03-1",
+   "nvidia-utils-580": "580.178.04-0ubuntu0.24.04.1",
+   "ocl-icd-libopencl1": "2.3.2-1build1",
+   "pciutils": "1:3.10.0-2build1",
+   "python3": "3.12.3-0ubuntu2.1",
+   "runc": "1.3.4-0ubuntu1~24.04.1",
+   "shim-signed": "1.58+15.8-0ubuntu1",
+   "vulkan-tools": "1.3.275.0+dfsg1-1"
+  },
+  "files": {
+   "stick.py": {
+    "sha256": "dc18dbdf7a1fe22d1dea94f3acbc351ca5ffc61b6143f728a5324be50791d58a"
+   },
+   "runner/hwq.py": {
+    "sha256": "d72d5f884075fa946d523d9c51c10f08e8b6035d7b59489260dcbe294c45aad2"
+   },
+   "bin/vkprobe": {
+    "sha256": "affe2ce5c3186b3feee52492e3fa49f0b13928aca243015224c05f3e9dbd5fba"
+   }
+  },
+  "kernel": [
+   "7.0.0-42-generic",
+   "kernel"
+  ]
+ },
+ "seed": {
+  "part": "seed",
+  "build": "af74af4",
+  "settings": {
+   "SUITE": "noble",
+   "KERNEL": "hwe",
+   "NVIDIA_BRANCH": "580",
+   "NVIDIA_FLAVOUR": "open",
+   "MIRROR": "http://archive.ubuntu.com/ubuntu",
+   "LLAMA_SELECT": "release",
+   "LLAMA_REF": "v0.7.0",
+   "AMDGPU_TARGETS": "gfx900 gfx906 gfx908 gfx90a gfx942 gfx1010 gfx1012 gfx1030 gfx1031 gfx1032 gfx1100 gfx1101 gfx1102 gfx1103 gfx1150 gfx1151 gfx1200 gfx1201",
+   "ROCM_IMAGE": "rocm/dev-ubuntu-24.04:6.4.1-complete",
+   "ONEAPI_IMAGE": "intel/oneapi-basekit:2025.2.0-0-devel-ubuntu24.04",
+   "BLENDER_VERSION": "4.2.0",
+   "BLENDER_SCRIPT_URL": "https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz",
+   "ROOTFS_BUILT": "2026-10-28T22:12Z"
+  },
+  "images": {
+   "nvidia/cuda:12.8.1-devel-ubuntu24.04": {
+    "ref": "nvidia/cuda:12.8.1-devel-ubuntu24.04",
+    "id": "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+    "digest": "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+    "packages": {
+     "cuda-cudart-12-8": "12.8.90-1",
+     "cuda-cudart-dev-12-8": "12.8.90-1",
+     "cuda-nvcc-12-8": "12.8.93-1",
+     "cuda-toolkit-12-8-config-common": "12.8.90-1",
+     "cuda-toolkit-12-config-common": "12.8.90-1",
+     "cuda-toolkit-config-common": "12.8.90-1",
+     "libcublas-12-8": "12.8.4.1-1",
+     "libcublas-dev-12-8": "12.8.4.1-1"
+    }
+   },
+   "debian:trixie": {
+    "ref": "debian:trixie",
+    "id": "sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+    "digest": "debian@sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+    "offline_packages": {
+     "adduser": "3.152",
+     "binutils-common": "2.44-3",
+     "binutils-x86-64-linux-gnu": "2.44-3",
+     "binutils": "2.44-3",
+     "cpp-14-x86-64-linux-gnu": "14.2.0-19",
+     "cpp-14": "14.2.0-19",
+     "cpp-x86-64-linux-gnu": "4:14.2.0-1",
+     "cpp": "4:14.2.0-1",
+     "dmsetup": "2:1.02.205-2",
+     "fio": "3.39-1",
+     "gcc-14-x86-64-linux-gnu": "14.2.0-19",
+     "gcc-14": "14.2.0-19",
+     "gcc-x86-64-linux-gnu": "4:14.2.0-1",
+     "gcc": "4:14.2.0-1",
+     "libaio1t64": "0.3.113-8+b1",
+     "libasan8": "14.2.0-19",
+     "libatomic1": "14.2.0-19",
+     "libbinutils": "2.44-3",
+     "libboost-iostreams1.83.0": "1.83.0-4.2",
+     "libboost-thread1.83.0": "1.83.0-4.2",
+     "libc-dev-bin": "2.41-12+deb13u4",
+     "libc6-dev": "2.41-12+deb13u4",
+     "libcc1-0": "14.2.0-19",
+     "libcom-err2": "1.47.2-3+b12",
+     "libcrypt-dev": "1:4.4.38-1",
+     "libcryptsetup12": "2:2.7.5-2",
+     "libctf-nobfd0": "2.44-3",
+     "libctf0": "2.44-3",
+     "libdaxctl1": "81-1",
+     "libdevmapper1.02.1": "2:1.02.205-2",
+     "libdnnl-dev": "3.7.2+ds-2",
+     "libdnnl3.6": "3.7.2+ds-2",
+     "libexpat1": "2.9.0-1~deb13u1",
+     "libffi8": "3.4.8-2",
+     "libfmt10": "10.1.1+ds1-4",
+     "libgcc-14-dev": "14.2.0-19",
+     "libgdbm-compat4t64": "1.24-2",
+     "libgdbm6t64": "1.24-2",
+     "libgfapi0": "11.1-6",
+     "libgfortran5": "14.2.0-19",
+     "libgfrpc0": "11.1-6",
+     "libgfxdr0": "11.1-6",
+     "libglusterfs0": "11.1-6",
+     "libgnutls30t64": "3.8.9-3+deb13u4",
+     "libgomp1": "14.2.0-19",
+     "libgprofng0": "2.44-3",
+     "libgssapi-krb5-2": "1.21.3-5+deb13u1",
+     "libhwasan0": "14.2.0-19",
+     "libhwloc15": "2.12.0-4",
+     "libibverbs1": "56.1-1",
+     "libidn2-0": "2.3.8-2",
+     "libisl23": "0.27-1",
+     "libitm1": "14.2.0-19",
+     "libjansson4": "2.14-2+b3",
+     "libjson-c5": "0.18+ds-1",
+     "libk5crypto3": "1.21.3-5+deb13u1",
+     "libkeyutils1": "1.6.3-6",
+     "libkmod2": "34.2-2",
+     "libkrb5-3": "1.21.3-5+deb13u1",
+     "libkrb5support0": "1.21.3-5+deb13u1",
+     "liblsan0": "14.2.0-19",
+     "liblua5.3-0": "5.3.6-2+b4",
+     "libmpc3": "1.3.1-1+b3",
+     "libmpfr6": "4.2.2-1",
+     "libnbd0": "1.22.2-1+b1",
+     "libncursesw6": "6.5+20250216-2",
+     "libndctl6": "81-1",
+     "libnfs14": "5.0.2-1+deb13u1",
+     "libnl-3-200": "3.7.0-2",
+     "libnl-route-3-200": "3.7.0-2",
+     "libnuma1": "2.0.19-1",
+     "libopenblas-dev": "0.3.29+ds-3",
+     "libopenblas-pthread-dev": "0.3.29+ds-3",
+     "libopenblas0-pthread": "0.3.29+ds-3",
+     "libopenblas0": "0.3.29+ds-3",
+     "libp11-kit0": "0.25.5-3",
+     "libperl5.40": "5.40.1-6+deb13u1",
+     "libpmem1": "1.13.1-1.1+b1",
+     "libpython3-stdlib": "3.13.5-1",
+     "libpython3.13-minimal": "3.13.5-2+deb13u5",
+     "libpython3.13-stdlib": "3.13.5-2+deb13u5",
+     "libquadmath0": "14.2.0-19",
+     "librados2": "18.2.7+ds-1+deb13u1",
+     "librbd1": "18.2.7+ds-1+deb13u1",
+     "librdmacm1t64": "56.1-1",
+     "libreadline8t64": "8.2-6",
+     "libsframe1": "2.44-3",
+     "libtasn1-6": "4.20.0-2+deb13u1",
+     "libtirpc-common": "1.3.6+ds-1",
+     "libtirpc3t64": "1.3.6+ds-1",
+     "libtsan2": "14.2.0-19",
+     "libubsan1": "14.2.0-19",
+     "libunistring5": "1.3-2",
+     "libxml2": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+     "likwid": "5.4.1+dfsg-1",
+     "linux-libc-dev": "6.12.113-1",
+     "lua5.3": "5.3.6-2+b4",
+     "media-types": "13.0.0",
+     "netbase": "6.5",
+     "perl-modules-5.40": "5.40.1-6+deb13u1",
+     "perl": "5.40.1-6+deb13u1",
+     "python3-minimal": "3.13.5-1",
+     "python3.13-minimal": "3.13.5-2+deb13u5",
+     "python3.13": "3.13.5-2+deb13u5",
+     "python3": "3.13.5-1",
+     "readline-common": "8.2-6",
+     "rpcsvc-proto": "1.4.3-1"
+    }
+   }
+  },
+  "llama.cpp": {
+   "cuda": {
+    "tag": "v0.7.0",
+    "commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
+    "files": {
+     "llama-bench": "a55afc7bb86051a2216734eca8fe18790600125c24c4e122b0d18ace9bd3b486",
+     "test-backend-ops": "2916a1c8be70ea40a923f713df82b4fffb48f19dd42e8b73673fe40c352ecb2f"
+    }
+   },
+   "vulkan": {
+    "tag": "v0.7.0",
+    "commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
+    "files": {
+     "llama-bench": "1063137dad0075076481b49294e7b4aaac98b24b5d8952ebf22dbe1b0960b644",
+     "test-backend-ops": "8445c531c93b27b86ea0f49652d616d4bebeddd10d8bebfc5653142cb7ef8f3d"
+    }
+   }
+  },
+  "vendor": {
+   "rocm": {
+    "image": "rigsim/rocm:eafe315fa1478566",
+    "base": {
+     "ref": "rocm/dev-ubuntu-24.04:6.4.1-complete",
+     "id": "sha256:40eb8498dbfd1770da15b811d5fcfdf0341531dd71f87fea92ea6ae6596bafa3",
+     "digest": "rocm/dev-ubuntu-24.04@sha256:40eb8498dbfd1770da15b811d5fcfdf0341531dd71f87fea92ea6ae6596bafa3"
+    },
+    "rocm_version": "6.4.1-83",
+    "llama_tag": "v0.7.0",
+    "llama_commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
+    "targets": "gfx900;gfx906;gfx908;gfx90a;gfx942;gfx1010;gfx1012;gfx1030;gfx1031;gfx1032;gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1200;gfx1201",
+    "targets_dropped": "",
+    "8b05cbe7d62fb9184beeefc3a870e12ea41315482b34a52ce07327c4d610f981": "sha256:llama-bench",
+    "ed6bf06881aef66c3ef065a9cd372f2ebb1dc8a1597e5ddf216bbdf08392fd08": "sha256:test-backend-ops"
+   },
+   "oneapi": {
+    "image": "rigsim/oneapi:1496a64fbba1b73a",
+    "base": {
+     "ref": "intel/oneapi-basekit:2025.2.0-0-devel-ubuntu24.04",
+     "id": "sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0",
+     "digest": "intel/oneapi-basekit@sha256:4900a466d7b105eed1b69efc4b44552404bf1bc3dc9c1352bea6b927d8a4f1a0"
+    },
+    "oneapi_version": "Intel(R) oneAPI DPC++/C++ Compiler 2025.2.0 (2025.2.0.20250605)",
+    "llama_tag": "v0.7.0",
+    "llama_commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
+    "a5d398ec1cd69361e14d667ad1ada92e3c5a3e4318d13f7a27d8f525180acb5f": "sha256:probe_sycl",
+    "8ed673bf7600b70aa2fe2118beb9782ca1bcc98da31a6f2e9da067321d5caa9a": "sha256:llama-bench",
+    "9181f8820bf3c851421a3a4264c446edacfc7bdc84b4b3d3c30dead24890aa45": "sha256:test-backend-ops"
+   }
+  },
+  "models": {
+   "llama-2-7b-q4_0.gguf": {
+    "sha256": "78b8f9777dd620ad29cd2cffb6653b17fa8a5b1fddc1b8821180d60eedd24d48"
+   },
+   "tinyllama-1.1b-q4_0.gguf": {
+    "sha256": "da3087fb14aede55fde6eb81a0e55e886810e43509ec82ecdc7aa5d62a03b556"
+   }
+  },
+  "tools": {
+   "mlc": {
+    "sha256": "bc347e01bec7ed66a2b37a1e0a7ea09ad30446bc66c4b32605e3928c7642ab05"
+   },
+   "blender-benchmark": {
+    "launcher_sha256": "c52cd088936d7cd8fac9b72f0d14055744e5d4ddd40f85ba299892350c494515",
+    "blender": "4.2.0",
+    "script": {
+     "url": "https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz",
+     "sha256": "5a706e14279da13b2bed2dbb9e0a47c2588b9ea4f37cf8f9c7d79c8b7c634c1f"
+    },
+    "scenes": {
+     "geometry_nodes": "25bc52499f2198abe432afa65403f3f9634b780c1d918e42f3f8d61f37a10048",
+     "2D_Animation": "25b8def08a030f267f2b7c7c7baa2182eb62cefd67b509e7861655091ae8e51b",
+     "Sculpting": "a6a34aaed752f75b20ddd6c024794634b179fef00abdf5ee1fbad78f70cce2c2",
+     "VFX": "632c50a8858a3893a044818e53572970a6ecf80fd3d33f70fd10c6bf016e7156",
+     "Video_Editing": "02b0432069396c8f3fef0d11fe26f980df47b9e0b6fce8955be29310f6244723",
+     "monster": "b904c57e966156868c0f5afab656950a656e30fea84831eb6ca656b3e680d982",
+     "classroom": "e2e565f9068393720a37e38bf6e85083c47ef06e5100933801cc883e533a28f3",
+     "books": "e64070311d5298200308e2e4f6934d24ff3e23d87f4b81a29b565f1bbd4482dd",
+     "chairs": "8fccd6246902c39a3a11ce7c5e1764334efae84c1880c7291313b035af570888",
+     "coatStand": "b7b4107b0225f6f523776dbc002f76fae4794c9f917a9a795c68a2711a1bd864",
+     "desks": "1b14411d8c426902de78abf530be6861b5ee3ba076b77cfcbd715d6f873a552a",
+     "dustBin": "0d54233933e5e3c1fbb397b5a1188e4f17c18d7d401a3f16b8601b2d90deaf49",
+     "lamps": "f54ae226615ac19a7572532aa3aa1044998d32633f8da3265c20a470b385b154",
+     "officeSupplies": "01d38109a8345242a643b25c8c12cebb2347cf6d3b98a8141e8a33030fc3d352",
+     "radiator": "8114445192611935726e56a97a5597f677691fa0cac41470d98c96352186ad4c",
+     "suitcase": "fdf6b9939ac6e9a14ceddf9ce1e6aad210d396d635fecd5212afbebd386be192",
+     "wallClock": "7e71d76235d5072695ea5cf783e48e7354e2a7bd297f93c06cbf15aa405269f3",
+     "wastes": "830258380dc4af157ffcfe63f99e5c64e415a05e1144dda055ed98b90c11b5f9",
+     "junkshop": "197988106ac3232219cf62d2b26de9541a8326fde960abd0718e043049467afb"
+    }
+   }
+  }
+ },
+ "runtime": {
+  "kernel": "7.0.0-42-generic",
+  "docker": "29.1.3",
+  "vulkan_devices": [
+   {
+    "apiVersion": "1.4.318",
+    "deviceName": "Intel(R) UHD Graphics 630 (CFL GT2)",
+    "driverName": "Intel open-source Mesa driver",
+    "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4",
+    "conformanceVersion": "1.4.0.0"
+   },
+   {
+    "apiVersion": "1.4.318",
+    "deviceName": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "driverName": "llvmpipe",
+    "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)",
+    "conformanceVersion": "1.3.1.1"
+   }
+  ]
+ }
+}

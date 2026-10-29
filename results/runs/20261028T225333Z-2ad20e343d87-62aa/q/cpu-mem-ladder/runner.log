@@ -1,0 +1,26 @@
+23:01:12 session rigsim-hwbench-cpu-mem-ladder: setting up from debian:trixie
+23:07:28 ok   cpu-mem-ladder/kernel=load_sse/threads=1/rep=0 rc=0
+23:07:32 ok   cpu-mem-ladder/kernel=load_sse/threads=1/rep=1 rc=0
+23:07:35 ok   cpu-mem-ladder/kernel=load_sse/threads=2/rep=0 rc=0
+23:07:39 ok   cpu-mem-ladder/kernel=load_sse/threads=2/rep=1 rc=0
+23:07:42 ok   cpu-mem-ladder/kernel=load_sse/threads=4/rep=0 rc=0
+23:07:45 ok   cpu-mem-ladder/kernel=load_sse/threads=4/rep=1 rc=0
+23:07:49 ok   cpu-mem-ladder/kernel=load_sse/threads=8/rep=0 rc=0
+23:07:52 ok   cpu-mem-ladder/kernel=load_sse/threads=8/rep=1 rc=0
+23:07:55 ok   cpu-mem-ladder/kernel=load_sse/threads=16/rep=0 rc=0
+23:07:58 ok   cpu-mem-ladder/kernel=load_sse/threads=16/rep=1 rc=0
+23:08:02 ok   cpu-mem-ladder/kernel=load_sse/threads=32/rep=0 rc=0
+23:08:05 ok   cpu-mem-ladder/kernel=load_sse/threads=32/rep=1 rc=0
+23:08:08 ok   cpu-mem-ladder/kernel=load_avx/threads=1/rep=0 rc=0
+23:08:12 ok   cpu-mem-ladder/kernel=load_avx/threads=1/rep=1 rc=0
+23:08:16 ok   cpu-mem-ladder/kernel=load_avx/threads=2/rep=0 rc=0
+23:08:19 ok   cpu-mem-ladder/kernel=load_avx/threads=2/rep=1 rc=0
+23:08:23 ok   cpu-mem-ladder/kernel=load_avx/threads=4/rep=0 rc=0
+23:08:26 ok   cpu-mem-ladder/kernel=load_avx/threads=4/rep=1 rc=0
+23:08:29 ok   cpu-mem-ladder/kernel=load_avx/threads=8/rep=0 rc=0
+23:08:32 ok   cpu-mem-ladder/kernel=load_avx/threads=8/rep=1 rc=0
+23:08:36 ok   cpu-mem-ladder/kernel=load_avx/threads=16/rep=0 rc=0
+23:08:39 ok   cpu-mem-ladder/kernel=load_avx/threads=16/rep=1 rc=0
+23:08:42 ok   cpu-mem-ladder/kernel=load_avx/threads=32/rep=0 rc=0
+23:08:45 ok   cpu-mem-ladder/kernel=load_avx/threads=32/rep=1 rc=0
+23:08:46 restore: box as found
