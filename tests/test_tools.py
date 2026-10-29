@@ -58,8 +58,7 @@ def test_page_shows_the_credit(tmp_path):
     import importlib.util
     spec = importlib.util.spec_from_file_location("ix3", ROOT / "tools" / "index.py")
     IX = importlib.util.module_from_spec(spec); spec.loader.exec_module(IX)
-    (tmp_path / "a.json").write_text('{"github": "keysie"}'); (tmp_path / "b.json").write_text('{"withheld": true}')
-    assert IX.contributor("a", tmp_path) == {"github": "keysie"} and IX.contributor("b", tmp_path) == {"withheld": True}
-    assert IX.contributor("c", tmp_path) == {}
+    (tmp_path / "a.json").write_text('{"github": "keysie"}')
+    assert IX.contributor("a", tmp_path) == {"github": "keysie"} and IX.contributor("c", tmp_path) == {}
     html = (ROOT / "docs" / "index.html").read_text()
-    assert 'href="https://github.com/${encodeURIComponent(c.github)}"' in html and "withheld at their request" in html
+    assert 'href="https://github.com/${encodeURIComponent(c.github)}"' in html and "Submitted by someone" in html

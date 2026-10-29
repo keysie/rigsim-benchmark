@@ -46,9 +46,10 @@ def withheld(body: str) -> bool:
 
 
 def attribution(author: str | None, body: str) -> dict:
-    """What results/attribution/<run>.json says: the submitter's GitHub username, or that it is withheld."""
+    """What results/attribution/<run>.json says: the submitter's GitHub username. Withheld: no file at all (no
+    attribution found counts as withheld everywhere)."""
     if withheld(body):
-        return {"withheld": True}
+        return {}
     return {"github": author} if author and LOGIN.match(author) else {}
 MAX_ZIP = 100 * 2**20            # per zip, as downloaded
 MAX_TOTAL = 400 * 2**20          # all zips of one submission, unpacked
@@ -224,7 +225,7 @@ def process(body: str, dest: Path = ROOT / "results" / "runs", author: str | Non
                 lines.append(f"- ✅ `{r.name}`: {hw.get('cpu', '?')}, " + (", ".join(hw.get("gpus", [])) or "no GPU"))
     credit = attribution(author, body)
     who = ("Credited on the results page to @" + credit["github"] if credit.get("github")
-           else "Your username is kept out of the result data and the results page" if credit.get("withheld") else "")
+           else "Your username is kept out of the result data and the results page" if withheld(body) else "")
     head = (f"**{len(added)} run(s) accepted**" if added else "**No run accepted**") + \
         " — checked like every contribution (exact stick format, complete, nothing identifying).\n\n"
     return head + "\n".join(lines) + (f"\n\n{who}." if added and who else ""), added

@@ -153,5 +153,5 @@ def test_attribution_rules(tmp_path):
     f.write_text('{"github": "keysie"}'); assert V.check_attribution(f, True, "Keysie") == []
     assert "credits @keysie, but the contribution is from @mallory" in V.check_attribution(f, True, "mallory")[0]
     assert "does not add" in V.check_attribution(f, False, None)[0]
-    f.write_text('{"withheld": true}'); assert V.check_attribution(f, True, "anyone") == []
+    f.write_text('{"withheld": true}'); assert "must be" in V.check_attribution(f, True, "anyone")[0]
     f.write_text('{"github": "x", "email": "a@b"}'); assert "must be" in V.check_attribution(f, True, None)[0]

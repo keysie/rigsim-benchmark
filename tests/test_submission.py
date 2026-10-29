@@ -167,8 +167,7 @@ def test_credit_by_default_withheld_on_request(monkeypatch, tmp_path, stick):
     body = BODY + "\n### Your name on the results\n\n- [X] Keep my username out of the stored result data and do not display it on the results page\n"
     dest2, credits2 = tmp_path / "runs2", tmp_path / "attribution2"; dest2.mkdir()
     report, added = S.process(body, dest2, author="keysie", credits=credits2)
-    assert all(json.loads((credits2 / f"{a}.json").read_text()) == {"withheld": True} for a in added)
-    assert "keysie" not in "".join((credits2 / f"{a}.json").read_text() for a in added) and "kept out" in report
+    assert not credits2.exists() and "kept out" in report                     # withheld: no file at all
     assert S.attribution("bad name!", BODY) == {}                              # not a GitHub username: no credit
 
 

@@ -31,12 +31,9 @@ done
 
 login=""
 if [[ "${WITHHOLD_USERNAME:-0}" != 1 ]] && command -v gh >/dev/null; then login="$(gh api user -q .login 2>/dev/null || true)"; fi
-if [[ ${#added[@]} -gt 0 ]] && { [[ "${WITHHOLD_USERNAME:-0}" == 1 ]] || [[ -n "$login" ]]; }; then
+if [[ ${#added[@]} -gt 0 && -n "$login" ]]; then          # withheld (or no GitHub CLI): no credit file at all
   mkdir -p results/attribution
-  for id in "${added[@]}"; do
-    if [[ "${WITHHOLD_USERNAME:-0}" == 1 ]]; then echo '{"withheld": true}'; else printf '{"github": "%s"}\n' "$login"; fi \
-      > "results/attribution/$id.json"
-  done
+  for id in "${added[@]}"; do printf '{"github": "%s"}\n' "$login" > "results/attribution/$id.json"; done
 fi
 
 if [[ ${#added[@]} -eq 0 ]]; then

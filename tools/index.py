@@ -46,12 +46,12 @@ def pcie_paths(run: Path) -> dict[str, list[dict]]:
 
 
 def contributor(run_id: str, credits: Path = CREDITS) -> dict:
-    """{"github": login} as the submitter chose, {"withheld": true}, or {} (not recorded)."""
+    """{"github": login}, or {} — no attribution found counts as withheld."""
     try:
         d = json.loads((credits / f"{run_id}.json").read_text())
     except (OSError, ValueError):
         return {}
-    return {"github": d["github"]} if isinstance(d.get("github"), str) else {"withheld": True} if d.get("withheld") else {}
+    return {"github": d["github"]} if isinstance(d, dict) and isinstance(d.get("github"), str) else {}
 
 
 def results(run: Path, pred: Path) -> tuple[list[dict], dict]:

@@ -144,8 +144,8 @@ LOGIN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$")
 
 
 def check_attribution(path: Path, run_added: bool, pr_author: str | None) -> list[str]:
-    """results/attribution/<run>.json: {"github": "<username>"} or {"withheld": true}, only for a run added in the
-    same contribution, and only the contributor's own username."""
+    """results/attribution/<run>.json: {"github": "<username>"}, only for a run added in the same contribution, and
+    only the contributor's own username. A withheld username has no file at all."""
     rel = f"results/attribution/{path.name}"
     if not run_added:
         return [f"{rel}: credits a run this contribution does not add"]
@@ -153,10 +153,8 @@ def check_attribution(path: Path, run_added: bool, pr_author: str | None) -> lis
         d = json.loads(path.read_text())
     except ValueError:
         return [f"{rel}: not valid JSON"]
-    if d == {"withheld": True}:
-        return []
-    if set(d) != {"github"} or not isinstance(d["github"], str) or not LOGIN.match(d["github"]):
-        return [f'{rel}: must be {{"github": "<username>"}} or {{"withheld": true}}']
+    if not isinstance(d, dict) or set(d) != {"github"} or not isinstance(d["github"], str) or not LOGIN.match(d["github"]):
+        return [f'{rel}: must be {{"github": "<username>"}}']
     if pr_author and d["github"].lower() != pr_author.lower():
         return [f"{rel}: credits @{d['github']}, but the contribution is from @{pr_author}"]
     return []
