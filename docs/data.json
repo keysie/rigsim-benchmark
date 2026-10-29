@@ -12373,6 +12373,585 @@
    }
   },
   {
+   "run": "20261029T122308Z-e8b0a9b412ab-9403",
+   "date": "2026-10-29",
+   "machine": "e8b0a9b412ab",
+   "cpu": "Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz",
+   "board": "LENOVO 314F",
+   "ram_gib": 31.2,
+   "gpus": [
+    "Intel Corporation CoffeeLake-S GT2 [UHD Graphics 630] [8086:3e98] (rev 02)",
+    "NVIDIA Corporation GP107GL [Quadro P400] [10de:1cb3] (rev a1)"
+   ],
+   "stick": "0.12.0",
+   "stick_build": "3cf4732",
+   "stick_commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+   "stick_dirty": false,
+   "format": "1.3",
+   "versions": {
+    "kernel": "7.0.0-42-generic",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done with failures",
+   "steps_ok": 5,
+   "steps_failed": 2,
+   "steps_skipped": 8,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "pcie-copy",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-vram",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-launch",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "mlc",
+     "result": "skipped",
+     "note": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+     "tools": []
+    },
+    {
+     "name": "opencl",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "vkprobe / sha256",
+       "affe2ce5c318"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": []
+    },
+    {
+     "name": "oneapi",
+     "result": "failed",
+     "note": "the runtime sees no GPU (info.jsonl)",
+     "tools": []
+    },
+    {
+     "name": "llama-bench",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "skipped",
+     "note": "Blender benchmark not in the seed",
+     "tools": [
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ]
+     ]
+    }
+   ],
+   "contributor": {
+    "github": "keysie"
+   },
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 247.598953,
+     "unit": "tok/s",
+     "spread": 0.324304,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 52.348348,
+     "unit": "tok/s",
+     "spread": 0.000204,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+     "value": 25.438982,
+     "unit": "tok/s",
+     "spread": 0.0359,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+     "value": 3.508676,
+     "unit": "tok/s",
+     "spread": 0.000407,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+     "value": 64.886512,
+     "unit": "tok/s",
+     "spread": 0.013997,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+     "value": 19.591159,
+     "unit": "tok/s",
+     "spread": 0.001881,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 23.792835,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 33.21659,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 37.850905,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 36.46349,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 36.223335,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 35.874405,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 21.92659,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 29.447325,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 36.14229,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 36.1083,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 35.84199,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 35.211105,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/1",
+     "value": 15.651945,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/2",
+     "value": 17.482025,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/4",
+     "value": 16.90041,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/8",
+     "value": 16.365135,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/16",
+     "value": 16.306485,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/32",
+     "value": 16.18978,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/1",
+     "value": 41.054805,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/2",
+     "value": 40.26094,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/4",
+     "value": 39.417975,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/8",
+     "value": 38.7246,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/16",
+     "value": 38.45858,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/32",
+     "value": 37.87825,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    }
+   ],
+   "rigsim": {}
+  },
+  {
    "run": "20261029T130632Z-04c49a9737b9-e963",
    "date": "2026-10-29",
    "machine": "04c49a9737b9",
@@ -13103,6 +13682,1059 @@
     "n": 0,
     "median_abs_error": null
    }
+  },
+  {
+   "run": "20261029T133344Z-1a862184b096-2c59",
+   "date": "2026-10-29",
+   "machine": "1a862184b096",
+   "cpu": "Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz",
+   "board": "LENOVO 3138",
+   "ram_gib": 15.5,
+   "gpus": [
+    "Intel Corporation CoffeeLake-S GT2 [UHD Graphics P630] [8086:3e96]",
+    "NVIDIA Corporation GP107GL [Quadro P1000] [10de:1cb1] (rev a1)"
+   ],
+   "stick": "0.12.0",
+   "stick_build": "3cf4732",
+   "stick_commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+   "stick_dirty": false,
+   "format": "1.3",
+   "versions": {
+    "kernel": "7.0.0-42-generic",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done with failures",
+   "steps_ok": 5,
+   "steps_failed": 2,
+   "steps_skipped": 8,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "pcie-copy",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-vram",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-launch",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "mlc",
+     "result": "skipped",
+     "note": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+     "tools": []
+    },
+    {
+     "name": "opencl",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "vkprobe / sha256",
+       "affe2ce5c318"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": []
+    },
+    {
+     "name": "oneapi",
+     "result": "failed",
+     "note": "the runtime sees no GPU (info.jsonl)",
+     "tools": []
+    },
+    {
+     "name": "llama-bench",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "skipped",
+     "note": "Blender benchmark not in the seed",
+     "tools": [
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ]
+     ]
+    }
+   ],
+   "contributor": {
+    "github": "keysie"
+   },
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 232.814224,
+     "unit": "tok/s",
+     "spread": 0.016801,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 50.968222,
+     "unit": "tok/s",
+     "spread": 0.010359,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+     "value": 25.249811,
+     "unit": "tok/s",
+     "spread": 0.055025,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+     "value": 3.2864,
+     "unit": "tok/s",
+     "spread": 0.00023,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+     "value": 59.696834,
+     "unit": "tok/s",
+     "spread": 0.114948,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+     "value": 18.474682,
+     "unit": "tok/s",
+     "spread": 0.000204,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 23.46795,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 26.934365,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 32.38316,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 35.85604,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 33.5796,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 34.099545,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 21.96875,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 25.123065,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 31.304795,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 35.51883,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 33.61334,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 34.305305,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/1",
+     "value": 13.963735,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/2",
+     "value": 14.49472,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/4",
+     "value": 14.222805,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/8",
+     "value": 13.29818,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/16",
+     "value": 12.936605,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/32",
+     "value": 12.65421,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/1",
+     "value": 39.55805,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/2",
+     "value": 38.503775,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/4",
+     "value": 37.748085,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/8",
+     "value": 37.52212,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/16",
+     "value": 37.243565,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/32",
+     "value": 36.77221,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    }
+   ],
+   "rigsim": {}
+  },
+  {
+   "run": "20261029T135940Z-8cc30c2e9b80-8728",
+   "date": "2026-10-29",
+   "machine": "8cc30c2e9b80",
+   "cpu": "Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz",
+   "board": "Intel Corporation S2600KPR",
+   "ram_gib": 62.7,
+   "gpus": [
+    "Matrox Electronics Systems Ltd. MGA G200e [Pilot] ServerEngines (SEP1) [102b:0522] (rev 05)"
+   ],
+   "stick": "0.12.0",
+   "stick_build": "3cf4732",
+   "stick_commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+   "stick_dirty": false,
+   "format": "1.3",
+   "versions": {
+    "kernel": "7.0.0-42-generic",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done",
+   "steps_ok": 4,
+   "steps_failed": 0,
+   "steps_skipped": 11,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "pcie-copy",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-vram",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-launch",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "mlc",
+     "result": "skipped",
+     "note": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+     "tools": []
+    },
+    {
+     "name": "opencl",
+     "result": "skipped",
+     "note": "no OpenCL GPU devices",
+     "tools": [
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "skipped",
+     "note": "no hardware Vulkan device",
+     "tools": [
+      [
+       "vkprobe / sha256",
+       "affe2ce5c318"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": []
+    },
+    {
+     "name": "oneapi",
+     "result": "skipped",
+     "note": "no INTEL GPU",
+     "tools": []
+    },
+    {
+     "name": "llama-bench",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "skipped",
+     "note": "Blender benchmark not in the seed",
+     "tools": [
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ]
+     ]
+    }
+   ],
+   "contributor": {
+    "github": "keysie"
+   },
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 176.93389,
+     "unit": "tok/s",
+     "spread": 0.002437,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 67.151894,
+     "unit": "tok/s",
+     "spread": 0.013285,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 15.455045,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 27.87444,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 45.20182,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 53.63407,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 53.051265,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 51.88032,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 14.732125,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 26.91491,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 43.677155,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 53.4931,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 52.84054,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 51.94863,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/1",
+     "value": 11.02374,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/2",
+     "value": 18.628635,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/4",
+     "value": 23.83307,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/8",
+     "value": 23.68392,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/16",
+     "value": 23.626785,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/32",
+     "value": 23.350875,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/1",
+     "value": 18.451955,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/2",
+     "value": 34.130215,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/4",
+     "value": 45.857145,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/8",
+     "value": 46.823295,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/16",
+     "value": 46.29685,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/32",
+     "value": 45.924265,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    }
+   ],
+   "rigsim": {}
   },
   {
    "run": "20261029T145128Z-c8f36dd9ba4c-af1c",
