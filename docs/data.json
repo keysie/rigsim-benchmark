@@ -4993,6 +4993,126 @@
      ]
     },
     {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 31.44173,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 37.870865,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 61.355485,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 68.402825,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 86.729985,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 81.300875,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 28.513595,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 37.290225,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 61.659635,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 71.743655,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 89.710995,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 83.33492,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": []
+    },
+    {
      "key": "mlc/idle_latency",
      "value": 64.2,
      "unit": "ns",
