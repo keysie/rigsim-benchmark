@@ -1,0 +1,40 @@
+
+Platform: Intel(R) OpenCL Graphics
+  Device: Intel(R) UHD Graphics P630
+    Driver version  : 23.43.027642 (Linux x64)
+    Compute units   : 24
+    Clock frequency : 1150 MHz
+
+    Global memory bandwidth (GBPS)
+      float   : 32.15
+      float2  : 32.33
+      float4  : 33.40
+      float8  : 30.25
+      float16 : 26.85
+
+    Single-precision compute (GFLOPS)
+      float   : 416.98
+      float2  : 411.95
+      float4  : 415.03
+      float8  : 412.28
+      float16 : 405.86
+
+    Integer compute (GIOPS)
+      int   : 139.30
+      int2  : 138.82
+      int4  : 139.16
+      int8  : 138.66
+      int16 : 134.17
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 15.14
+      enqueueReadBuffer               : 15.85
+      enqueueWriteBuffer non-blocking : 13.74
+      enqueueReadBuffer non-blocking  : 13.81
+      enqueueMapBuffer(for read)      : 199765.53
+        memcpy from mapped ptr        : 15.77
+      enqueueUnmap(after write)       : inf
+        memcpy to mapped ptr          : 15.15
+
+    Kernel launch latency : 30.82 us
+

@@ -1,0 +1,1 @@
+{"mode":"launch","device":"Intel(R) UHD Graphics P630 (CFL GT2)","device_type":"integrated","vendor_id":32902,"device_id":16022,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"0000:00:02.0","uuid":"8680963e000000000002000000000000","count":2000,"per_dispatch_s":3.29917e-07,"per_dispatch_barrier_s":2.62571e-06,"submit_roundtrip_s":0.000101121}

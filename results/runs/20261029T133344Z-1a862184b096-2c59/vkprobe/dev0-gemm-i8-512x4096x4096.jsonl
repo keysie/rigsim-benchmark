@@ -1,0 +1,1 @@
+{"mode":"gemm","device":"Intel(R) UHD Graphics P630 (CFL GT2)","device_type":"integrated","vendor_id":32902,"device_id":16022,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"0000:00:02.0","uuid":"8680963e000000000002000000000000","type":"i8","m":512,"n":4096,"k":4096,"unsupported":true,"why":"no VK_KHR_cooperative_matrix"}

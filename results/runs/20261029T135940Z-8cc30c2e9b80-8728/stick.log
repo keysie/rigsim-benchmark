@@ -1,0 +1,29 @@
+13:59:40  run 20261029T135940Z-8cc30c2e9b80-8728
+13:59:41  cpu Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz | board Intel Corporation S2600KPR | 62.7 GiB | gpus ['Matrox Electronics Systems Ltd. MGA G200e [Pilot] ServerEngines (SEP1) [102b:0522] (rev 05)']
+13:59:41  stick check: pass
+14:00:08  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 26.81, 'mib_per_s': 38.2}
+14:00:11  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+14:00:14  screens: [('card0', 'VGA-1', '1280x1024')]
+14:00:14  screens off while measuring: ['fb0']
+14:00:14  cpu-mem-latency: start
+14:05:22  cpu-mem-latency: rc=0 {'done': 9} (307 s)
+14:05:22  cpu-mem-ladder: start
+14:11:19  cpu-mem-ladder: rc=0 {'done': 48} (358 s)
+14:11:19  cpu-gemm: start
+14:16:00  cpu-gemm: rc=0 {'done': 24} (281 s)
+14:16:00  pcie-copy: skipped (no NVIDIA GPU)
+14:16:00  gpu-p2p: skipped (no NVIDIA GPU)
+14:16:00  gpu-vram: skipped (no NVIDIA GPU)
+14:16:00  gpu-gemm: skipped (no NVIDIA GPU)
+14:16:00  gpu-launch: skipped (no NVIDIA GPU)
+14:16:00  mlc: skipped (Intel MLC not in the seed (build without MLC_URL or download failed))
+14:16:00  opencl: no GPU devices
+14:16:00  opencl: skipped (no OpenCL GPU devices)
+14:16:00  vkprobe: skipped (no hardware Vulkan device)
+14:16:00  rocm: skipped (no AMD GPU)
+14:16:00  oneapi: skipped (no INTEL GPU)
+14:44:11  test-backend-ops cpu: 12/12 ops
+14:44:46  llama cpu-tinyllama-1.1b-q4_0: rc=0 (34 s)
+14:44:46  blender: offline route not possible (Blender executable, scenes, benchmark script missing in the seed); trying the launcher
+14:44:46  blender: skipped (Blender benchmark not in the seed)
+14:44:46  finished: done

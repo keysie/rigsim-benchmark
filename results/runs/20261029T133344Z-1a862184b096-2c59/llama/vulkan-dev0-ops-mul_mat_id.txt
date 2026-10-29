@@ -1,0 +1,69 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o MUL_MAT_ID -p type_a=(f16|q4_0|q8_0|q4_K|q6_K|mxfp4),
+Testing 2 devices
+
+Backend 1/2: Vulkan0
+  Device description: Intel(R) UHD Graphics P630 (CFL GT2)
+  Device memory: 11867 MB (10680 MB free)
+
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  3974 runs -  1102.54 us/run -  25.17 MFLOP/run - [1;34m 22.83 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -   609.82 us/run -  25.17 MFLOP/run - [1;34m 41.27 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -  1519.11 us/run -  25.17 MFLOP/run - [1;34m 16.57 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -   656.81 us/run -  25.17 MFLOP/run - [1;34m 38.31 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -   961.18 us/run -  25.17 MFLOP/run - [1;34m 26.18 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                   994 runs -  4271.96 us/run - 100.66 MFLOP/run - [1;34m 23.56 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  2469.48 us/run - 100.66 MFLOP/run - [1;34m 40.76 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  6492.96 us/run - 100.66 MFLOP/run - [1;34m 15.50 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  2897.04 us/run - 100.66 MFLOP/run - [1;34m 34.75 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  4136.02 us/run - 100.66 MFLOP/run - [1;34m 24.34 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                   497 runs -  8449.60 us/run - 201.33 MFLOP/run - [1;34m 23.83 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs -  4894.54 us/run - 201.33 MFLOP/run - [1;34m 41.13 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs - 12668.02 us/run - 201.33 MFLOP/run - [1;34m 15.89 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs -  5750.74 us/run - 201.33 MFLOP/run - [1;34m 35.01 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs -  8099.28 us/run - 201.33 MFLOP/run - [1;34m 24.86 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=32,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  125 runs - 326071.30 us/run - 805.31 MFLOP/run - [1;34m  2.47 GFLOPS[0m
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Intel(R) UHD Graphics P630 (CFL GT2) (Intel open-source Mesa driver) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 65536 | int dot: 0 | matrix cores: none
+Batch offset=0x4000 len=0x0 on queue 0 (aperture: 493.2Mb, 42.0Mb VRAM only)
+   BO: addr=0x0000000540000000-0x0000000546ec3fff size= 113424KB handle=00011 capture=0 vram_only=0 name=user
+   BO: addr=0x00000002bfe00000-0x00000002bfffffff size=   2048KB handle=00013 capture=1 vram_only=0 name=slab_parent
+   BO: addr=0x0000000300000000-0x000000030003ffff size=    256KB handle=00003 capture=1 vram_only=0 name=instruction pool
+   BO: addr=0x00000000c0000000-0x00000000c00fffff size=   1024KB handle=00006 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000bd0c0000-0x00000000bfabffff size=  43008KB handle=00055 capture=0 vram_only=1 name=scratch
+   BO: addr=0x0000000140000000-0x000000014000ffff size=     64KB handle=00005 capture=1 vram_only=0 name=bindless surface state pool
+   BO: addr=0x00000002c0000000-0x00000002c000ffff size=     64KB handle=00007 capture=1 vram_only=0 name=indirect push descriptor pool
+   BO: addr=0x0000000100000000-0x000000010000ffff size=     64KB handle=00004 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100010000-0x000000010001ffff size=     64KB handle=00018 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100020000-0x000000010003ffff size=    128KB handle=00022 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100040000-0x000000010007ffff size=    256KB handle=00023 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100080000-0x00000001000fffff size=    512KB handle=00027 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100100000-0x00000001001fffff size=   1024KB handle=00035 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100200000-0x00000001003fffff size=   2048KB handle=00043 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100400000-0x00000001007fffff size=   4096KB handle=00049 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x00000003c0000000-0x00000003c003ffff size=    256KB handle=00002 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0040000-0x00000003c007ffff size=    256KB handle=00010 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0080000-0x00000003c00fffff size=    512KB handle=00014 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0100000-0x00000003c01fffff size=   1024KB handle=00017 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0200000-0x00000003c03fffff size=   2048KB handle=00020 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0400000-0x00000003c07fffff size=   4096KB handle=00024 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0800000-0x00000003c0ffffff size=   8192KB handle=00028 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c1000000-0x00000003c1ffffff size=  16384KB handle=00032 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c2000000-0x00000003c3ffffff size=  32768KB handle=00039 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x0000000000200000-0x000000000023ffff size=    256KB handle=00001 capture=1 vram_only=0 name=general pool
+   BO: addr=0x0000000300040000-0x000000030007ffff size=    256KB handle=00052 capture=1 vram_only=0 name=instruction pool
+   BO: addr=0x0000000300080000-0x00000003007fffff size=   7680KB handle=00054 capture=1 vram_only=0 name=instruction pool
+   BO: addr=0x00000000c0100000-0x00000000c01fffff size=   1024KB handle=00015 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c0200000-0x00000000c03fffff size=   2048KB handle=00016 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c0400000-0x00000000c07fffff size=   4096KB handle=00019 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c0800000-0x00000000c0ffffff size=   8192KB handle=00021 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c1000000-0x00000000c1ffffff size=  16384KB handle=00026 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c2000000-0x00000000c3ffffff size=  32768KB handle=00030 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c4000000-0x00000000c7ffffff size=  65536KB handle=00034 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c8000000-0x00000000cfffffff size= 131072KB handle=00041 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x000000053ffff000-0x000000053fffffff size=      4KB handle=00012 capture=0 vram_only=0 name=user
+   BO: addr=0x00000005582c4000-0x00000005582c8fff size=     20KB handle=00051 capture=0 vram_only=0 name=user
+   BO: addr=0xffffeffeffe00000-0xffffeffeffffffff size=   2048KB handle=00008 capture=1 vram_only=0 name=slab_parent
+ggml_vulkan: device lost on Vulkan0
+terminate called after throwing an instance of 'vk::DeviceLostError'
+  what():  vk::Queue::submit: ErrorDeviceLost

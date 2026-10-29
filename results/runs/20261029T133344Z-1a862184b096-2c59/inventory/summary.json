@@ -1,0 +1,41 @@
+{
+ "cpu": "Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz",
+ "board": "LENOVO 3138",
+ "bios": "M1VKT79A",
+ "gpus": [
+  "Intel Corporation CoffeeLake-S GT2 [UHD Graphics P630] [8086:3e96]",
+  "NVIDIA Corporation GP107GL [Quadro P1000] [10de:1cb1] (rev a1)"
+ ],
+ "ram_gib": 15.5,
+ "dimms": [
+  {
+   "Locator": "ChannelA-DIMM1",
+   "Size": "8 GB",
+   "Type": "DDR4",
+   "Speed": "2667 MT/s",
+   "Configured Memory Speed": "2666 MT/s",
+   "Rank": "1",
+   "Manufacturer": "SK Hynix",
+   "Part Number": "HMA81GU7CJR8N-VK    "
+  },
+  {
+   "Locator": "ChannelB-DIMM1",
+   "Size": "8 GB",
+   "Type": "DDR4",
+   "Speed": "2667 MT/s",
+   "Configured Memory Speed": "2666 MT/s",
+   "Rank": "1",
+   "Manufacturer": "SK Hynix",
+   "Part Number": "HMA81GU7CJR8N-VK    "
+  }
+ ],
+ "cpufreq": {
+  "cpuinfo_min_freq": "800000",
+  "cpuinfo_max_freq": "4500000",
+  "scaling_driver": "intel_pstate",
+  "scaling_governor": "powersave",
+  "base_frequency": "3500000"
+ },
+ "secure_boot": true,
+ "kernel": "7.0.0-42-generic"
+}

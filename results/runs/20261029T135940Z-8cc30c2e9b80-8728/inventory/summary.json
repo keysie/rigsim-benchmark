@@ -1,0 +1,59 @@
+{
+ "cpu": "Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz",
+ "board": "Intel Corporation S2600KPR",
+ "bios": "SE5C610.86B.01.01.3029.022420221031",
+ "gpus": [
+  "Matrox Electronics Systems Ltd. MGA G200e [Pilot] ServerEngines (SEP1) [102b:0522] (rev 05)"
+ ],
+ "ram_gib": 62.7,
+ "dimms": [
+  {
+   "Locator": "DIMM_A1",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "2133 MT/s",
+   "Configured Memory Speed": "1866 MT/s",
+   "Rank": "2",
+   "Manufacturer": "Samsung",
+   "Part Number": "M393A2G40DB0-CPB    "
+  },
+  {
+   "Locator": "DIMM_B1",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "2133 MT/s",
+   "Configured Memory Speed": "1866 MT/s",
+   "Rank": "2",
+   "Manufacturer": "Samsung",
+   "Part Number": "M393A2G40DB0-CPB    "
+  },
+  {
+   "Locator": "DIMM_C1",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "2133 MT/s",
+   "Configured Memory Speed": "1866 MT/s",
+   "Rank": "2",
+   "Manufacturer": "Samsung",
+   "Part Number": "M393A2G40DB0-CPB    "
+  },
+  {
+   "Locator": "DIMM_D1",
+   "Size": "16 GB",
+   "Type": "DDR4",
+   "Speed": "2133 MT/s",
+   "Configured Memory Speed": "1866 MT/s",
+   "Rank": "2",
+   "Manufacturer": "Samsung",
+   "Part Number": "M393A2G40DB0-CPB    "
+  }
+ ],
+ "cpufreq": {
+  "cpuinfo_min_freq": "1200000",
+  "cpuinfo_max_freq": "3200000",
+  "scaling_driver": "intel_cpufreq",
+  "scaling_governor": "schedutil"
+ },
+ "secure_boot": true,
+ "kernel": "7.0.0-42-generic"
+}

@@ -1,0 +1,2246 @@
+{
+ "devices": {
+  "0000:00:00.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f00",
+   "class_": "0x060000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMI2",
+   "vendor_name": "Intel Corporation",
+   "kind": "Host bridge",
+   "port_type": "root port",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:00.0"
+   ]
+  },
+  "0000:00:01.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f02",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 1",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:01.0"
+   ]
+  },
+  "0000:00:02.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f04",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 2",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "2",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:02.0"
+   ]
+  },
+  "0000:00:02.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f05",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 2",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "2",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:02.1"
+   ]
+  },
+  "0000:00:02.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f06",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 2",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "2",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:02.2"
+   ]
+  },
+  "0000:00:03.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f08",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:03.0"
+   ]
+  },
+  "0000:00:03.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f0a",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "8",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:03.2"
+   ]
+  },
+  "0000:00:04.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f20",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 0",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.0"
+   ]
+  },
+  "0000:00:04.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f21",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 1",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.1"
+   ]
+  },
+  "0000:00:04.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f22",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 2",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.2"
+   ]
+  },
+  "0000:00:04.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f23",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.3"
+   ]
+  },
+  "0000:00:04.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f24",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 4",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.4"
+   ]
+  },
+  "0000:00:04.5": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f25",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 5",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.5"
+   ]
+  },
+  "0000:00:04.6": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f26",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 6",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.6"
+   ]
+  },
+  "0000:00:04.7": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f27",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DMA Channel 7",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "ioatdma",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:04.7"
+   ]
+  },
+  "0000:00:05.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f28",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Address Map, VTd_Misc, System Management",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:05.0"
+   ]
+  },
+  "0000:00:05.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f29",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Hot Plug",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:05.1"
+   ]
+  },
+  "0000:00:05.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f2a",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 RAS, Control Status and Global Errors",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "root complex integrated endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:05.2"
+   ]
+  },
+  "0000:00:05.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x2f2c",
+   "class_": "0x080020",
+   "subsystem": "0x8086:0x35c6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 I/O APIC",
+   "vendor_name": "Intel Corporation",
+   "kind": "PIC",
+   "port_type": "root complex integrated endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:05.4"
+   ]
+  },
+  "0000:00:11.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d7c",
+   "class_": "0xff0000",
+   "subsystem": "0x8086:0x0000",
+   "name": "C610/X99 series chipset SPSR",
+   "vendor_name": "Intel Corporation",
+   "kind": "Unassigned class [ff00]",
+   "port_type": "root complex integrated endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:11.0"
+   ]
+  },
+  "0000:00:11.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d62",
+   "class_": "0x010601",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset sSATA Controller [AHCI mode]",
+   "vendor_name": "Intel Corporation",
+   "kind": "SATA controller",
+   "port_type": "",
+   "driver": "ahci",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:11.4"
+   ]
+  },
+  "0000:00:16.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d3a",
+   "class_": "0x078000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset MEI Controller #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "Communication controller",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.0"
+   ]
+  },
+  "0000:00:16.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d3b",
+   "class_": "0x078000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset MEI Controller #2",
+   "vendor_name": "Intel Corporation",
+   "kind": "Communication controller",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.1"
+   ]
+  },
+  "0000:00:1a.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d2d",
+   "class_": "0x0c0320",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset USB Enhanced Host Controller #2",
+   "vendor_name": "Intel Corporation",
+   "kind": "USB controller",
+   "port_type": "",
+   "driver": "ehci-pci",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1a.0"
+   ]
+  },
+  "0000:00:1c.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d10",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset PCI Express Root Port #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.0"
+   ]
+  },
+  "0000:00:1c.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d16",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset PCI Express Root Port #4",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "1",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.3"
+   ]
+  },
+  "0000:00:1c.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d18",
+   "class_": "0x060400",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset PCI Express Root Port #5",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1c.4"
+   ]
+  },
+  "0000:00:1d.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d26",
+   "class_": "0x0c0320",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset USB Enhanced Host Controller #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "USB controller",
+   "port_type": "",
+   "driver": "ehci-pci",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1d.0"
+   ]
+  },
+  "0000:00:1f.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d44",
+   "class_": "0x060100",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset LPC Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "ISA bridge",
+   "port_type": "",
+   "driver": "lpc_ich",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.0"
+   ]
+  },
+  "0000:00:1f.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d02",
+   "class_": "0x010601",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset 6-Port SATA Controller [AHCI mode]",
+   "vendor_name": "Intel Corporation",
+   "kind": "SATA controller",
+   "port_type": "",
+   "driver": "ahci",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.2"
+   ]
+  },
+  "0000:00:1f.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x8d22",
+   "class_": "0x0c0500",
+   "subsystem": "0x8086:0x35c6",
+   "name": "C610/X99 series chipset SMBus Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "SMBus",
+   "port_type": "",
+   "driver": "i801_smbus",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.3"
+   ]
+  },
+  "0000:02:00.0": {
+   "parent": "0000:00:02.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1179",
+   "device": "0x0113",
+   "class_": "0x010802",
+   "subsystem": "0x1179:0x0001",
+   "name": "BG3 x2 NVMe SSD Controller (DRAM-less)",
+   "vendor_name": "Toshiba Corporation",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "2",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "2"
+   },
+   "path": [
+    "0000:00:02.0",
+    "0000:02:00.0"
+   ]
+  },
+  "0000:03:00.0": {
+   "parent": "0000:00:02.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x15b7",
+   "device": "0x5003",
+   "class_": "0x010802",
+   "subsystem": "0x15b7:0x5003",
+   "name": "WD Blue SN500 / PC SN520 x2 M.2 2280 NVMe SSD",
+   "vendor_name": "Sandisk Corp",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "2",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "2"
+   },
+   "path": [
+    "0000:00:02.1",
+    "0000:03:00.0"
+   ]
+  },
+  "0000:04:00.0": {
+   "parent": "0000:00:02.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x15b7",
+   "device": "0x5003",
+   "class_": "0x010802",
+   "subsystem": "0x15b7:0x5003",
+   "name": "WD Blue SN500 / PC SN520 x2 M.2 2280 NVMe SSD",
+   "vendor_name": "Sandisk Corp",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "2",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "2"
+   },
+   "path": [
+    "0000:00:02.2",
+    "0000:04:00.0"
+   ]
+  },
+  "0000:06:00.0": {
+   "parent": "0000:00:03.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x1528",
+   "class_": "0x020000",
+   "subsystem": "0x8086:0x355b",
+   "name": "Ethernet Controller 10-Gigabit X540-AT2",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "ixgbe",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "8",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:03.2",
+    "0000:06:00.0"
+   ]
+  },
+  "0000:06:00.1": {
+   "parent": "0000:00:03.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x1528",
+   "class_": "0x020000",
+   "subsystem": "0x8086:0x355b",
+   "name": "Ethernet Controller 10-Gigabit X540-AT2",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "ixgbe",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "8",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:03.2",
+    "0000:06:00.1"
+   ]
+  },
+  "0000:09:00.0": {
+   "parent": "0000:00:1c.3",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x102b",
+   "device": "0x0522",
+   "class_": "0x030000",
+   "subsystem": "0x8086:0x0103",
+   "name": "MGA G200e [Pilot] ServerEngines (SEP1)",
+   "vendor_name": "Matrox Electronics Systems Ltd.",
+   "kind": "VGA compatible controller",
+   "port_type": "legacy endpoint",
+   "driver": "mgag200",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "1",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.3",
+    "0000:09:00.0"
+   ]
+  },
+  "0000:0a:00.0": {
+   "parent": "0000:00:1c.4",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x1521",
+   "class_": "0x020000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "I350 Gigabit Network Connection",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "igb",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1c.4",
+    "0000:0a:00.0"
+   ]
+  },
+  "0000:0a:00.1": {
+   "parent": "0000:00:1c.4",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x1521",
+   "class_": "0x020000",
+   "subsystem": "0x8086:0x35c6",
+   "name": "I350 Gigabit Network Connection",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "igb",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1c.4",
+    "0000:0a:00.1"
+   ]
+  },
+  "0000:ff:0b.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f81",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f81",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0b.0"
+   ]
+  },
+  "0000:ff:0b.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f36",
+   "class_": "0x110100",
+   "subsystem": "0x8086:0x2f36",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring",
+   "vendor_name": "Intel Corporation",
+   "kind": "Performance counters",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0b.1"
+   ]
+  },
+  "0000:ff:0b.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f37",
+   "class_": "0x110100",
+   "subsystem": "0x8086:0x2f37",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring",
+   "vendor_name": "Intel Corporation",
+   "kind": "Performance counters",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0b.2"
+   ]
+  },
+  "0000:ff:0c.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe0",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.0"
+   ]
+  },
+  "0000:ff:0c.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe1",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe1",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.1"
+   ]
+  },
+  "0000:ff:0c.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe2",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe2",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.2"
+   ]
+  },
+  "0000:ff:0c.3": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe3",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe3",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.3"
+   ]
+  },
+  "0000:ff:0c.4": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe4",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe4",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.4"
+   ]
+  },
+  "0000:ff:0c.5": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe5",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe5",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.5"
+   ]
+  },
+  "0000:ff:0c.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe6",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.6"
+   ]
+  },
+  "0000:ff:0c.7": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fe7",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe7",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0c.7"
+   ]
+  },
+  "0000:ff:0f.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2ff8",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0f.0"
+   ]
+  },
+  "0000:ff:0f.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2ff9",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0f.1"
+   ]
+  },
+  "0000:ff:0f.4": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2ffc",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0f.4"
+   ]
+  },
+  "0000:ff:0f.5": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2ffd",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0f.5"
+   ]
+  },
+  "0000:ff:0f.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2ffe",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fe0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:0f.6"
+   ]
+  },
+  "0000:ff:10.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f1d",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f1d",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCIe Ring Interface",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:10.0"
+   ]
+  },
+  "0000:ff:10.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f34",
+   "class_": "0x110100",
+   "subsystem": "0x8086:0x2f34",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 PCIe Ring Interface",
+   "vendor_name": "Intel Corporation",
+   "kind": "Performance counters",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:10.1"
+   ]
+  },
+  "0000:ff:10.5": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f1e",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f1e",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:10.5"
+   ]
+  },
+  "0000:ff:10.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f7d",
+   "class_": "0x110100",
+   "subsystem": "0x8086:0x2f7d",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "Performance counters",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:10.6"
+   ]
+  },
+  "0000:ff:10.7": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f1f",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f1f",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:10.7"
+   ]
+  },
+  "0000:ff:12.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fa0",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fa0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:12.0"
+   ]
+  },
+  "0000:ff:12.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f30",
+   "class_": "0x110100",
+   "subsystem": "0x8086:0x2f30",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0",
+   "vendor_name": "Intel Corporation",
+   "kind": "Performance counters",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:12.1"
+   ]
+  },
+  "0000:ff:13.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fa8",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fa8",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Target Address, Thermal & RAS Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.0"
+   ]
+  },
+  "0000:ff:13.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f71",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f71",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Target Address, Thermal & RAS Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.1"
+   ]
+  },
+  "0000:ff:13.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2faa",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2faa",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.2"
+   ]
+  },
+  "0000:ff:13.3": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fab",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fab",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.3"
+   ]
+  },
+  "0000:ff:13.4": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fac",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fac",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.4"
+   ]
+  },
+  "0000:ff:13.5": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fad",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fad",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.5"
+   ]
+  },
+  "0000:ff:13.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fae",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Channel 0/1 Broadcast",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.6"
+   ]
+  },
+  "0000:ff:13.7": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2faf",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Global Broadcast",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:13.7"
+   ]
+  },
+  "0000:ff:14.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb0",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 0 Thermal Control",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.0"
+   ]
+  },
+  "0000:ff:14.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb1",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb1",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 1 Thermal Control",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.1"
+   ]
+  },
+  "0000:ff:14.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb2",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb2",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 0 ERROR Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.2"
+   ]
+  },
+  "0000:ff:14.3": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb3",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb3",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 1 ERROR Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.3"
+   ]
+  },
+  "0000:ff:14.4": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fbc",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.4"
+   ]
+  },
+  "0000:ff:14.5": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fbd",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.5"
+   ]
+  },
+  "0000:ff:14.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fbe",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.6"
+   ]
+  },
+  "0000:ff:14.7": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fbf",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:14.7"
+   ]
+  },
+  "0000:ff:15.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb4",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb4",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 2 Thermal Control",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:15.0"
+   ]
+  },
+  "0000:ff:15.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb5",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb5",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 3 Thermal Control",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:15.1"
+   ]
+  },
+  "0000:ff:15.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb6",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb6",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 2 ERROR Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:15.2"
+   ]
+  },
+  "0000:ff:15.3": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb7",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fb7",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 3 ERROR Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:15.3"
+   ]
+  },
+  "0000:ff:16.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f68",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Target Address, Thermal & RAS Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:16.0"
+   ]
+  },
+  "0000:ff:16.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f6e",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Channel 2/3 Broadcast",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:16.6"
+   ]
+  },
+  "0000:ff:16.7": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f6f",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Global Broadcast",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:16.7"
+   ]
+  },
+  "0000:ff:17.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fd0",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 0 Thermal Control",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "hswep_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:17.0"
+   ]
+  },
+  "0000:ff:17.4": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb8",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:17.4"
+   ]
+  },
+  "0000:ff:17.5": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fb9",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:17.5"
+   ]
+  },
+  "0000:ff:17.6": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fba",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:17.6"
+   ]
+  },
+  "0000:ff:17.7": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fbb",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:17.7"
+   ]
+  },
+  "0000:ff:1e.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f98",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f98",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1e.0"
+   ]
+  },
+  "0000:ff:1e.1": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f99",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f99",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1e.1"
+   ]
+  },
+  "0000:ff:1e.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f9a",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f9a",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1e.2"
+   ]
+  },
+  "0000:ff:1e.3": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2fc0",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2fc0",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1e.3"
+   ]
+  },
+  "0000:ff:1e.4": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f9c",
+   "class_": "0x088000",
+   "subsystem": "0x8086:0x2f9c",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1e.4"
+   ]
+  },
+  "0000:ff:1f.0": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f88",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 VCU",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1f.0"
+   ]
+  },
+  "0000:ff:1f.2": {
+   "parent": "",
+   "host_bridge": "pci0000:ff",
+   "vendor": "0x8086",
+   "device": "0x2f8a",
+   "class_": "0x088000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Xeon E7 v3/Xeon E5 v3/Core i7 VCU",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:ff:1f.2"
+   ]
+  }
+ },
+ "gpus": [
+  "0000:09:00.0"
+ ]
+}
