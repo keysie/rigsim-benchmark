@@ -155,3 +155,15 @@ def test_attribution_rules(tmp_path):
     assert "does not add" in V.check_attribution(f, False, None)[0]
     f.write_text('{"withheld": true}'); assert "must be" in V.check_attribution(f, True, "anyone")[0]
     f.write_text('{"github": "x", "email": "a@b"}'); assert "must be" in V.check_attribution(f, True, None)[0]
+
+
+def test_skipped_steps_need_no_tool_versions(tmp_path):
+    """A machine without an NVIDIA card: the NVIDIA-only steps are skipped and ran nothing."""
+    d = make_run(tmp_path)
+    r = json.loads((d / "run.json").read_text())
+    r["questions"]["gpu-vram"] = {"skipped": "no NVIDIA GPU"}
+    (d / "run.json").write_text(json.dumps(r))
+    assert V.check_run(d) == []
+    r["questions"]["gpu-vram"] = {"rc": 0}
+    (d / "run.json").write_text(json.dumps(r))
+    assert any("has no tool versions" in x for x in V.check_run(d))                 # a step that ran still needs them

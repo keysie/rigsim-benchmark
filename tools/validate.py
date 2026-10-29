@@ -125,7 +125,8 @@ def check_run(d: Path) -> list[str]:
     for q, v in (r.get("questions") or {}).items():
         if not isinstance(v, dict) or not ("rc" in v or "skipped" in v):
             e("run.json", f"step {q!r} has no result")
-        elif not isinstance(v.get("tools"), dict) or "stick" not in v["tools"]:
+        elif "skipped" not in v and (not isinstance(v.get("tools"), dict) or "stick" not in v["tools"]):
+            # a skipped step ran nothing, so it has no tool versions (e.g. the NVIDIA steps on a machine without one)
             e("run.json", f"step {q!r} has no tool versions")
     try:
         man = json.loads((d / "manifest.json").read_text())
