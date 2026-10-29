@@ -3,6 +3,9 @@
 # checks (tools/validate.py), commits them on a new branch and opens a pull request (with the GitHub CLI `gh`;
 # without it, prints the two commands to do it yourself). Nothing on the stick is changed.
 #   tools/contribute.sh /run/media/$USER/RIGSIM
+#   WITHHOLD_USERNAME=1 tools/contribute.sh ...   keep your username out of the stored result data and off the page
+# The runs are credited to your GitHub username (from the GitHub CLI) on the results page; git history and the pull
+# request show who contributed them either way.
 set -euo pipefail
 SRC="${1:?mounted RIGSIM data partition of the stick}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; cd "$ROOT"
@@ -26,11 +29,21 @@ for d in "$SRC"/runs/*/; do
   fi
 done
 
+login=""
+if [[ "${WITHHOLD_USERNAME:-0}" != 1 ]] && command -v gh >/dev/null; then login="$(gh api user -q .login 2>/dev/null || true)"; fi
+if [[ ${#added[@]} -gt 0 ]] && { [[ "${WITHHOLD_USERNAME:-0}" == 1 ]] || [[ -n "$login" ]]; }; then
+  mkdir -p results/attribution
+  for id in "${added[@]}"; do
+    if [[ "${WITHHOLD_USERNAME:-0}" == 1 ]]; then echo '{"withheld": true}'; else printf '{"github": "%s"}\n' "$login"; fi \
+      > "results/attribution/$id.json"
+  done
+fi
+
 if [[ ${#added[@]} -eq 0 ]]; then
   git switch -q - && git branch -q -D "$BRANCH"
   echo "no new complete runs to contribute (${#rejected[@]} not included)"; exit 0
 fi
-git add results/runs
+git add results/runs; [[ -d results/attribution ]] && git add results/attribution
 git commit -q -m "runs: ${#added[@]} new run(s)" -m "$(printf '%s\n' "${added[@]}")"
 echo "${#added[@]} run(s) committed on branch $BRANCH (${#rejected[@]} not included)"
 

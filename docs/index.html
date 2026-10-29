@@ -237,7 +237,10 @@ function detail(r) {
   const steps = (r.steps || []).map(s => `<div class="step"><h4>${esc(s.name)} <span class="result-${s.result}">${s.result}</span></h4>`
     + (s.note ? `<p class="meta">${esc(s.note)}</p>` : "")
     + toolList(s.tools) + `</div>`).join("");
-  return `<tr class="detail"><td colspan="${COLS.length}">${resultsTable(r)}<h3>Versions behind this run</h3><p class="meta">${meta}</p>`
+  const c = r.contributor || {};
+  const who = c.github ? `Submitted by <a href="https://github.com/${encodeURIComponent(c.github)}">@${esc(c.github)}</a>`
+    : c.withheld ? "Submitter's username withheld at their request" : "";
+  return `<tr class="detail"><td colspan="${COLS.length}">${who ? `<p class="meta">${who}</p>` : ""}${resultsTable(r)}<h3>Versions behind this run</h3><p class="meta">${meta}</p>`
     + `<div class="steps-grid">${steps || "<p class=meta>No per-step versions in this run.</p>"}</div></td></tr>`;
 }
 

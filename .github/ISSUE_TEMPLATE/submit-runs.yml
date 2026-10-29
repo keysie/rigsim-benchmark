@@ -30,6 +30,15 @@ body:
           required: true
         - label: The run folders are unchanged from the stick
           required: true
+  - type: checkboxes
+    id: attribution
+    attributes:
+      label: Your name on the results
+      description: >-
+        By default the runs are credited to your GitHub username on the results page, with a link to your profile.
+        Git history and this issue show who submitted them either way.
+      options:
+        - label: Keep my username out of the stored result data and do not display it on the results page
   - type: input
     id: machines
     attributes:

@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 RUNS = ROOT / "results" / "runs"
 PRED = ROOT / "predictions"
+CREDITS = ROOT / "results" / "attribution"
 OUT = ROOT / "docs" / "data.json"
 sys.path.insert(0, str(ROOT / "tools"))
 import measurements  # noqa: E402
@@ -42,6 +43,15 @@ def pcie_paths(run: Path) -> dict[str, list[dict]]:
                              max_link=f"x{l.get('max_width')} {l.get('max_speed')}" if l.get("max_width") else ""))
         out[bdf] = hops
     return out
+
+
+def contributor(run_id: str, credits: Path = CREDITS) -> dict:
+    """{"github": login} as the submitter chose, {"withheld": true}, or {} (not recorded)."""
+    try:
+        d = json.loads((credits / f"{run_id}.json").read_text())
+    except (OSError, ValueError):
+        return {}
+    return {"github": d["github"]} if isinstance(d.get("github"), str) else {"withheld": True} if d.get("withheld") else {}
 
 
 def results(run: Path, pred: Path) -> tuple[list[dict], dict]:
@@ -141,6 +151,7 @@ def row(run_json: Path) -> dict:
                 steps_ok=sum(1 for s in steps if s["result"] == "ok"),
                 steps_failed=sum(1 for s in steps if s["result"] == "failed"),
                 steps_skipped=sum(1 for s in steps if s["result"] == "skipped"), steps=steps,
+                contributor=contributor(run_json.parent.name),
                 **dict(zip(("results", "rigsim"), results(run_json.parent, PRED))))
 
 

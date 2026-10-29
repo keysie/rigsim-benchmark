@@ -146,3 +146,12 @@ def test_pcie_json_allowed_and_parsed(tmp_path):
     assert V.check_run(d) == []
     (d / "inventory" / "pcie.json").write_text("{broken")
     assert any("pcie.json: not valid JSON" in e for e in V.check_run(d))
+
+
+def test_attribution_rules(tmp_path):
+    f = tmp_path / "r.json"
+    f.write_text('{"github": "keysie"}'); assert V.check_attribution(f, True, "Keysie") == []
+    assert "credits @keysie, but the contribution is from @mallory" in V.check_attribution(f, True, "mallory")[0]
+    assert "does not add" in V.check_attribution(f, False, None)[0]
+    f.write_text('{"withheld": true}'); assert V.check_attribution(f, True, "anyone") == []
+    f.write_text('{"github": "x", "email": "a@b"}'); assert "must be" in V.check_attribution(f, True, None)[0]

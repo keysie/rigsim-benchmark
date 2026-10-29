@@ -8,6 +8,11 @@ runs/<UTC time>-<machine>-<random>/
     run.json          format version, stick version, machine (salted hash), CPU, board, RAM, GPUs, every step's
                       result and the exact tool versions behind it
     manifest.json     every component's version: system image, seed, and what actually ran
+Credit lives outside the run folders (which stay exactly as the stick wrote them): `results/attribution/<run>.json`
+holds `{"github": "<username>"}` — shown on the data page with a link to the profile — or `{"withheld": true}` when the
+submitter chose to keep their username out of the stored result data and off the page. Git history and the
+submission itself show who contributed either way.
+
     inventory/        lscpu, dmidecode, lshw, lspci, memory SPD, nvidia-smi … (serials, UUIDs, MACs removed);
                       pcie.json: every card's path through root ports and switches, with each link
     q/<question>/     bench runner output per question (results.jsonl, samples, baseline)

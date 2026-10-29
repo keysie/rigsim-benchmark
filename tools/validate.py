@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -139,16 +140,41 @@ def check_run(d: Path) -> list[str]:
     return errs
 
 
-def check_pr(base: str, root: Path = ROOT) -> list[str]:
-    """Only additions, only inside new run folders under results/runs/."""
+LOGIN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$")
+
+
+def check_attribution(path: Path, run_added: bool, pr_author: str | None) -> list[str]:
+    """results/attribution/<run>.json: {"github": "<username>"} or {"withheld": true}, only for a run added in the
+    same contribution, and only the contributor's own username."""
+    rel = f"results/attribution/{path.name}"
+    if not run_added:
+        return [f"{rel}: credits a run this contribution does not add"]
+    try:
+        d = json.loads(path.read_text())
+    except ValueError:
+        return [f"{rel}: not valid JSON"]
+    if d == {"withheld": True}:
+        return []
+    if set(d) != {"github"} or not isinstance(d["github"], str) or not LOGIN.match(d["github"]):
+        return [f'{rel}: must be {{"github": "<username>"}} or {{"withheld": true}}']
+    if pr_author and d["github"].lower() != pr_author.lower():
+        return [f"{rel}: credits @{d['github']}, but the contribution is from @{pr_author}"]
+    return []
+
+
+def check_pr(base: str, root: Path = ROOT, pr_author: str | None = None) -> list[str]:
+    """Only additions: new run folders under results/runs/, and their credit in results/attribution/."""
     out = subprocess.run(["git", "diff", "--name-status", "--no-renames", f"{base}...HEAD"], cwd=root,
                          capture_output=True, text=True, check=True).stdout
-    errs, runs = [], set()
+    errs, runs, credits = [], set(), []
     existing = set(subprocess.run(["git", "ls-tree", "--name-only", f"{base}:results/runs"], cwd=root,
                                   capture_output=True, text=True).stdout.split())
     for line in out.splitlines():
         status, path = line.split("\t", 1)
         parts = path.split("/")
+        if status == "A" and len(parts) == 3 and parts[:2] == ["results", "attribution"] and parts[2].endswith(".json"):
+            credits.append(parts[2][:-5])
+            continue
         if status != "A":
             errs.append(f"{path}: {'changed' if status == 'M' else 'deleted' if status == 'D' else status} — a contribution only adds new run folders")
             continue
@@ -163,6 +189,8 @@ def check_pr(base: str, root: Path = ROOT) -> list[str]:
         errs.append("no run folders added")
     for run in sorted(runs):
         errs += check_run(root / "results" / "runs" / run)
+    for run in credits:
+        errs += check_attribution(root / "results" / "attribution" / f"{run}.json", run in runs, pr_author)
     return errs
 
 
@@ -171,7 +199,8 @@ def main() -> int:
     ap.add_argument("runs", nargs="*", type=Path)
     ap.add_argument("--pr", metavar="BASE", help="check the commits since BASE (e.g. origin/main)")
     a = ap.parse_args()
-    errs = check_pr(a.pr) if a.pr else [x for d in a.runs for x in check_run(d)]
+    # PR_AUTHOR (set by the CI): a credit may only name the contributor
+    errs = check_pr(a.pr, pr_author=os.environ.get("PR_AUTHOR")) if a.pr else [x for d in a.runs for x in check_run(d)]
     if not a.pr and not a.runs:
         ap.error("give run folders or --pr BASE")
     for x in errs:

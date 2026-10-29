@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: Only new run folders, exact stick format, complete, nothing identifying
+        env:
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: python3 tools/validate.py --pr "origin/${{ github.base_ref }}"
   table:
     if: github.event_name == 'push'

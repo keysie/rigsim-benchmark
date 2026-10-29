@@ -1945,6 +1945,7 @@
      ]
     }
    ],
+   "contributor": {},
    "results": [
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
@@ -4441,6 +4442,7 @@
      ]
     }
    ],
+   "contributor": {},
    "results": [
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",

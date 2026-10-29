@@ -19,6 +19,7 @@ from __future__ import annotations
 import gzip
 import io
 import json
+import os
 import re
 import shutil
 import sys
@@ -34,6 +35,21 @@ import validate  # noqa: E402
 
 ZIP_URL = re.compile(r"https://github\.com/user-attachments/files/\d+/[A-Za-z0-9._%+-]+\.(?:zip|tgz|gz)")
 CONFIRMATIONS = ("CC BY 4.0", "agreed to publication", "unchanged")
+WITHHOLD = "Keep my username out of the stored result data"
+LOGIN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$")
+
+
+def withheld(body: str) -> bool:
+    """The submitter ticked 'Keep my username out of the stored result data ...'."""
+    line = next((l for l in body.splitlines() if WITHHOLD in l and l.strip().startswith("- [")), "")
+    return bool(re.match(r"\s*- \[[xX]\]", line))
+
+
+def attribution(author: str | None, body: str) -> dict:
+    """What results/attribution/<run>.json says: the submitter's GitHub username, or that it is withheld."""
+    if withheld(body):
+        return {"withheld": True}
+    return {"github": author} if author and LOGIN.match(author) else {}
 MAX_ZIP = 100 * 2**20            # per zip, as downloaded
 MAX_TOTAL = 400 * 2**20          # all zips of one submission, unpacked
 MAX_FILES = 20000
@@ -156,7 +172,8 @@ def find_runs(tree: Path) -> tuple[list[Path], list[str]]:
     return runs, stray
 
 
-def process(body: str, dest: Path = ROOT / "results" / "runs") -> tuple[str, list[str]]:
+def process(body: str, dest: Path = ROOT / "results" / "runs", author: str | None = None,
+            credits: Path = ROOT / "results" / "attribution") -> tuple[str, list[str]]:
     lines = []
     missing = confirmations(body)
     if missing:
@@ -199,16 +216,23 @@ def process(body: str, dest: Path = ROOT / "results" / "runs") -> tuple[str, lis
                     continue
                 shutil.copytree(r, dest / r.name)
                 added.append(r.name)
+                credit = attribution(author, body)
+                if credit:
+                    credits.mkdir(parents=True, exist_ok=True)
+                    (credits / f"{r.name}.json").write_text(json.dumps(credit) + "\n")
                 hw = json.loads((r / "run.json").read_text()).get("hardware", {})
                 lines.append(f"- ✅ `{r.name}`: {hw.get('cpu', '?')}, " + (", ".join(hw.get("gpus", [])) or "no GPU"))
+    credit = attribution(author, body)
+    who = ("Credited on the results page to @" + credit["github"] if credit.get("github")
+           else "Your username is kept out of the result data and the results page" if credit.get("withheld") else "")
     head = (f"**{len(added)} run(s) accepted**" if added else "**No run accepted**") + \
         " — checked like every contribution (exact stick format, complete, nothing identifying).\n\n"
-    return head + "\n".join(lines), added
+    return head + "\n".join(lines) + (f"\n\n{who}." if added and who else ""), added
 
 
 def main() -> int:
     body = Path(sys.argv[1]).read_text()
-    report, added = process(body)
+    report, added = process(body, author=os.environ.get("AUTHOR"))
     Path(sys.argv[2]).write_text(report + "\n")
     Path(sys.argv[3]).write_text("".join(f"{a}\n" for a in added))
     print(report)

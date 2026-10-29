@@ -1,6 +1,7 @@
 """tools/submission.py: a zip dropped into a 'Submit runs' issue."""
 import importlib.util
 import io
+import json
 import zipfile
 from pathlib import Path
 
@@ -155,3 +156,23 @@ def test_only_github_archive_types_are_fetched():
                       "[c](https://github.com/user-attachments/files/3/c.zip) [d](https://github.com/user-attachments/files/4/d.tar.xz)") == \
         ["https://github.com/user-attachments/files/1/a.tar.gz", "https://github.com/user-attachments/files/2/b.tgz",
          "https://github.com/user-attachments/files/3/c.zip"]
+
+
+def test_credit_by_default_withheld_on_request(monkeypatch, tmp_path, stick):
+    monkeypatch.setattr(S, "fetch", lambda url, limit=0: zip_of(stick))
+    dest, credits = tmp_path / "runs", tmp_path / "attribution"; dest.mkdir()
+    report, added = S.process(BODY, dest, author="keysie", credits=credits)
+    assert len(added) == 2 and all(json.loads((credits / f"{a}.json").read_text()) == {"github": "keysie"} for a in added)
+    assert "Credited on the results page to @keysie" in report
+    body = BODY + "\n### Your name on the results\n\n- [X] Keep my username out of the stored result data and do not display it on the results page\n"
+    dest2, credits2 = tmp_path / "runs2", tmp_path / "attribution2"; dest2.mkdir()
+    report, added = S.process(body, dest2, author="keysie", credits=credits2)
+    assert all(json.loads((credits2 / f"{a}.json").read_text()) == {"withheld": True} for a in added)
+    assert "keysie" not in "".join((credits2 / f"{a}.json").read_text() for a in added) and "kept out" in report
+    assert S.attribution("bad name!", BODY) == {}                              # not a GitHub username: no credit
+
+
+def test_form_offers_the_choice_unticked():
+    form = (ROOT / ".github" / "ISSUE_TEMPLATE" / "submit-runs.yml").read_text()
+    block = form.split("id: attribution", 1)[1].split("- type:", 1)[0]
+    assert S.WITHHOLD in block and "required: true" not in block
