@@ -1,0 +1,20 @@
+-[0000:00]-+-00.0  Intel Corporation Xeon E3-1200 v6/7th Gen Core Processor Host Bridge/DRAM Registers [8086:5904]
+           +-02.0  Intel Corporation HD Graphics 620 [8086:5916]
+           +-08.0  Intel Corporation Xeon E3-1200 v5/v6 / E3-1500 v5 / 6th/7th/8th Gen Core Processor Gaussian Mixture Model [8086:1911]
+           +-13.0  Intel Corporation Sunrise Point-LP Integrated Sensor Hub [8086:9d35]
+           +-14.0  Intel Corporation Sunrise Point-LP USB 3.0 xHCI Controller [8086:9d2f]
+           +-14.2  Intel Corporation Sunrise Point-LP Thermal subsystem [8086:9d31]
+           +-16.0  Intel Corporation Sunrise Point-LP CSME HECI #1 [8086:9d3a]
+           +-16.3  Intel Corporation Sunrise Point-LP Active Management Technology - SOL [8086:9d3d]
+           +-1c.0-[02]----00.0  Realtek Semiconductor Co., Ltd. RTS525A PCI Express Card Reader [10ec:525a]
+           +-1c.2-[04]----00.0  Intel Corporation Wireless 8265 / 8275 [8086:24fd]
+           +-1c.4-[05]----00.0  Intel Corporation SSD 600P Series [8086:f1a5]
+           +-1d.0-[06-70]----00.0-[07-70]--+-00.0-[08]--
+           |                               +-01.0-[09-3b]--
+           |                               +-02.0-[3c]----00.0  Intel Corporation JHL6540 Thunderbolt 3 USB Controller (C step) [Alpine Ridge 4C 2016] [8086:15d4]
+           |                               \-04.0-[3d-70]--
+           +-1f.0  Intel Corporation Sunrise Point LPC/eSPI Controller [8086:9d4e]
+           +-1f.2  Intel Corporation Sunrise Point-LP PMC [8086:9d21]
+           +-1f.3  Intel Corporation Sunrise Point-LP HD Audio [8086:9d71]
+           +-1f.4  Intel Corporation Sunrise Point-LP SMBus [8086:9d23]
+           \-1f.6  Intel Corporation Ethernet Connection (4) I219-LM [8086:15d7]

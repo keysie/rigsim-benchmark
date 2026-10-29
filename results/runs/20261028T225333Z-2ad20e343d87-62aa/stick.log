@@ -1,0 +1,54 @@
+22:53:33  run 20261028T225333Z-2ad20e343d87-62aa
+22:53:36  cpu 13th Gen Intel(R) Core(TM) i7-13700K | board Gigabyte Technology Co., Ltd. Z790 AORUS ELITE AX | 31.1 GiB | gpus ['NVIDIA GeForce RTX 3080, 10240 MiB, 00000000:01:00.0', 'Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780] (rev 04)']
+22:53:36  stick check: pass
+22:53:43  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 6.88, 'mib_per_s': 148.9}
+22:53:46  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+22:53:47  screens: [('card2', 'DP-2', '1920x1200'), ('card2', 'DP-4', '1920x1200')]
+22:53:47  screens off while measuring: ['fb0']
+22:53:47  cpu-mem-latency: start
+23:01:11  cpu-mem-latency: rc=0 {'done': 9} (444 s)
+23:01:11  cpu-mem-ladder: start
+23:08:46  cpu-mem-ladder: rc=0 {'done': 24} (455 s)
+23:08:46  cpu-gemm: start
+23:16:56  cpu-gemm: rc=0 {'done': 24} (490 s)
+23:16:56  pcie-copy: start
+23:17:38  pcie-copy: rc=0 {'done': 12} (42 s)
+23:17:38  gpu-p2p: start
+23:17:52  gpu-p2p: rc=0 {'failed': 2} (14 s)
+23:17:52  gpu-vram: start
+23:18:10  gpu-vram: rc=0 {'done': 6} (18 s)
+23:18:10  gpu-gemm: start
+23:18:56  gpu-gemm: rc=0 {'done': 21} (46 s)
+23:18:56  gpu-launch: start
+23:19:09  gpu-launch: rc=0 {'done': 3} (12 s)
+23:19:14  mlc idle_latency: rc=0 (5 s)
+23:21:37  mlc max_bandwidth: rc=0 (144 s)
+23:23:02  mlc loaded_latency: rc=0 (85 s)
+23:23:04  mlc latency_matrix: rc=0 (1 s)
+23:23:12  mlc bandwidth_matrix: rc=0 (8 s)
+23:23:12  opencl p0d0: Intel(R) UHD Graphics 770 (Intel(R) OpenCL Graphics)
+23:24:31  opencl p0d0: rc=0 (79 s)
+23:24:31  opencl p1d0: NVIDIA GeForce RTX 3080 (NVIDIA CUDA)
+23:24:52  opencl p1d0: rc=0 (21 s)
+23:25:28  vkprobe: 31 runs on 2 device(s)
+23:25:28  rocm: skipped (no AMD GPU)
+00:13:01  test-backend-ops dev0: 9/12 ops
+00:13:01  oneapi device 0 (Intel(R) UHD Graphics 770): 92 runs
+00:13:04  llama cuda-gpu0-tinyllama-1.1b-q4_0: rc=0 (3 s)
+00:13:09  llama cuda-gpu0-llama-2-7b-q4_0: rc=0 (5 s)
+00:22:11  test-backend-ops cuda-gpu0: 12/12 ops
+00:22:14  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (2 s)
+00:22:19  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (5 s)
+00:31:47  test-backend-ops vulkan-dev0: 12/12 ops
+00:32:16  llama vulkan-dev1-tinyllama-1.1b-q4_0: rc=0 (29 s)
+00:34:43  llama vulkan-dev1-llama-2-7b-q4_0: rc=0 (148 s)
+01:09:52  test-backend-ops vulkan-dev1: 12/12 ops
+01:21:00  test-backend-ops cpu: 12/12 ops
+01:21:09  llama cpu-tinyllama-1.1b-q4_0: rc=0 (9 s)
+01:21:09  blender cpu-monster: rc=127 (0 s)
+01:21:09  blender cpu-junkshop: rc=127 (0 s)
+01:21:09  blender cpu-classroom: rc=127 (0 s)
+01:21:09  blender optix-monster: rc=127 (0 s)
+01:21:09  blender cuda-monster: rc=127 (0 s)
+01:21:09  blender oneapi-monster: rc=127 (0 s)
+01:21:09  finished: done with failures

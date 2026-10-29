@@ -1,0 +1,6 @@
+23:17:39 session rigsim-hwbench-gpu-p2p: setting up from nvidia/cuda:12.8.1-devel-ubuntu24.04
+23:17:46 FAIL gpu-p2p/gpu=@together/rep=0 rc=1
+23:17:48 FAIL gpu-p2p/gpu=@together/rep=1 rc=1
+23:17:50 FAIL gpu-p2p/gpu=@together/rep=0 rc=1
+23:17:51 FAIL gpu-p2p/gpu=@together/rep=1 rc=1
+23:17:52 restore: box as found

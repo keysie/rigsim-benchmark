@@ -1,0 +1,34 @@
+08:05:37  run 20261029T080537Z-6a1ce581151e-65e0
+08:05:38  inventory: nvidia-smi.txt rc=9
+08:05:38  inventory: nvidia-topo.txt rc=9
+08:05:40  cpu Intel(R) Core(TM) i7-7600U CPU @ 2.80GHz | board LENOVO 20JES00N00 | 15.4 GiB | gpus ['Intel Corporation HD Graphics 620 [8086:5916] (rev 02)', 'Intel Corporation Sunrise Point-LP Integrated Sensor Hub [8086:9d35] (rev 21)']
+08:05:40  stick check: pass
+08:05:48  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 7.08, 'mib_per_s': 144.6}
+08:05:51  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+08:05:52  screens: [('card1', 'eDP-1', '2560x1440')]
+08:05:52  screens off while measuring: ['fb0']
+08:05:52  cpu-mem-latency: start
+08:15:07  cpu-mem-latency: rc=0 {'done': 9} (555 s)
+08:15:07  cpu-mem-ladder: start
+08:22:30  cpu-mem-ladder: rc=0 {'done': 24} (443 s)
+08:22:30  cpu-gemm: start
+08:31:01  cpu-gemm: rc=0 {'done': 24} (510 s)
+08:31:01  pcie-copy: skipped (no NVIDIA GPU)
+08:31:01  gpu-p2p: skipped (no NVIDIA GPU)
+08:31:01  gpu-vram: skipped (no NVIDIA GPU)
+08:31:01  gpu-gemm: skipped (no NVIDIA GPU)
+08:31:01  gpu-launch: skipped (no NVIDIA GPU)
+08:31:06  mlc idle_latency: rc=0 (5 s)
+08:33:28  mlc max_bandwidth: rc=0 (142 s)
+08:34:51  mlc loaded_latency: rc=0 (83 s)
+08:34:53  mlc latency_matrix: rc=0 (1 s)
+08:35:01  mlc bandwidth_matrix: rc=0 (9 s)
+08:35:02  opencl p0d0: Intel(R) HD Graphics 620 (Intel(R) OpenCL Graphics)
+08:37:01  opencl p0d0: rc=0 (119 s)
+08:37:40  vkprobe: 16 runs on 1 device(s)
+08:37:40  rocm: skipped (no AMD GPU)
+08:38:48  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (62 s)
+08:42:40  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (232 s)
+09:13:45  test-backend-ops vulkan-dev0: 10/12 ops
+09:37:46  stopped on request
+09:37:46  finished: stopped

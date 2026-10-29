@@ -1,0 +1,26 @@
+08:22:43 session rigsim-hwbench-cpu-gemm: setting up from debian:trixie
+08:28:54 ok   cpu-gemm/prec=fp32/n=512/threads=1/rep=0 rc=0
+08:28:55 ok   cpu-gemm/prec=fp32/n=512/threads=1/rep=1 rc=0
+08:28:56 ok   cpu-gemm/prec=fp32/n=512/threads=0/rep=0 rc=0
+08:28:58 ok   cpu-gemm/prec=fp32/n=512/threads=0/rep=1 rc=0
+08:29:06 ok   cpu-gemm/prec=fp32/n=4096/threads=1/rep=0 rc=0
+08:29:16 ok   cpu-gemm/prec=fp32/n=4096/threads=1/rep=1 rc=0
+08:29:21 ok   cpu-gemm/prec=fp32/n=4096/threads=0/rep=0 rc=0
+08:29:27 ok   cpu-gemm/prec=fp32/n=4096/threads=0/rep=1 rc=0
+08:29:29 ok   cpu-gemm/prec=fp64/n=512/threads=1/rep=0 rc=0
+08:29:31 ok   cpu-gemm/prec=fp64/n=512/threads=1/rep=1 rc=0
+08:29:32 ok   cpu-gemm/prec=fp64/n=512/threads=0/rep=0 rc=0
+08:29:34 ok   cpu-gemm/prec=fp64/n=512/threads=0/rep=1 rc=0
+08:29:52 ok   cpu-gemm/prec=fp64/n=4096/threads=1/rep=0 rc=0
+08:30:10 ok   cpu-gemm/prec=fp64/n=4096/threads=1/rep=1 rc=0
+08:30:22 ok   cpu-gemm/prec=fp64/n=4096/threads=0/rep=0 rc=0
+08:30:35 ok   cpu-gemm/prec=fp64/n=4096/threads=0/rep=1 rc=0
+08:30:36 ok   cpu-gemm/prec=int8/n=512/threads=1/rep=0 rc=0
+08:30:37 ok   cpu-gemm/prec=int8/n=512/threads=1/rep=1 rc=0
+08:30:39 ok   cpu-gemm/prec=int8/n=512/threads=0/rep=0 rc=0
+08:30:40 ok   cpu-gemm/prec=int8/n=512/threads=0/rep=1 rc=0
+08:30:46 ok   cpu-gemm/prec=int8/n=4096/threads=1/rep=0 rc=0
+08:30:52 ok   cpu-gemm/prec=int8/n=4096/threads=1/rep=1 rc=0
+08:30:56 ok   cpu-gemm/prec=int8/n=4096/threads=0/rep=0 rc=0
+08:31:00 ok   cpu-gemm/prec=int8/n=4096/threads=0/rep=1 rc=0
+08:31:00 restore: box as found

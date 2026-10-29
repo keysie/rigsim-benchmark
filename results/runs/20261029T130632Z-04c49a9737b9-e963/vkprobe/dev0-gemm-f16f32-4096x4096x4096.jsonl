@@ -1,0 +1,1 @@
+{"mode":"gemm","device":"Intel(R) UHD Graphics 630 (CFL GT2)","device_type":"integrated","vendor_id":32902,"device_id":16018,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"0000:00:02.0","uuid":"8680923e000000000002000000000000","type":"f16f32","m":4096,"n":4096,"k":4096,"unsupported":true,"why":"no VK_KHR_cooperative_matrix"}

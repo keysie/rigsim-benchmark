@@ -1,0 +1,32 @@
+pch_cannonlake-virtual-0
+Adapter: Virtual device
+temp1:        +32.0°C  
+
+acpitz-acpi-0
+Adapter: ACPI interface
+temp1:        +27.8°C  
+
+coretemp-isa-0000
+Adapter: ISA adapter
+Package id 0:  +37.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 0:        +34.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 1:        +37.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 2:        +34.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 3:        +37.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 4:        +35.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 5:        +32.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 6:        +33.0°C  (high = +86.0°C, crit = +100.0°C)
+Core 7:        +31.0°C  (high = +86.0°C, crit = +100.0°C)
+
+nvme-pci-0100
+Adapter: PCI adapter
+Composite:    +26.9°C  (low  = -273.1°C, high = +59.9°C)
+                       (crit = +64.8°C)
+Sensor 1:     +37.9°C  (low  = -273.1°C, high = +65261.8°C)
+Sensor 2:     +26.9°C  (low  = -273.1°C, high = +65261.8°C)
+Sensor 3:     +26.9°C  (low  =  +0.0°C, high =  +0.0°C)
+
+
+--- stderr ---
+ERROR: Can't get value of subfeature temp4_min: I/O error
+ERROR: Can't get value of subfeature temp4_max: I/O error

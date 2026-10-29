@@ -1,0 +1,39 @@
+10:42:19  run 20261029T104219Z-c71e7a8fcdf6-30bd
+10:42:20  inventory: nvidia-smi.txt rc=9
+10:42:20  inventory: nvidia-topo.txt rc=9
+10:42:22  cpu Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz | board Dell Inc. 0YNVJG | 15.4 GiB | gpus ['Intel Corporation CoffeeLake-S GT2 [UHD Graphics 630] [8086:3e98] (rev 02)']
+10:42:22  stick check: pass
+10:42:52  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 28.89, 'mib_per_s': 35.4}
+10:42:55  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+10:42:59  screens: [('card1', 'DP-1', '1920x1200'), ('card1', 'DP-2', '1920x1200')]
+10:42:59  screens off while measuring: ['fb0']
+10:42:59  cpu-mem-latency: start
+10:53:16  cpu-mem-latency: rc=0 {'done': 9} (618 s)
+10:53:16  cpu-mem-ladder: start
+11:03:39  cpu-mem-ladder: rc=0 {'done': 24} (622 s)
+11:03:39  cpu-gemm: start
+11:14:22  cpu-gemm: rc=0 {'done': 24} (644 s)
+11:14:22  pcie-copy: skipped (no NVIDIA GPU)
+11:14:22  gpu-p2p: skipped (no NVIDIA GPU)
+11:14:22  gpu-vram: skipped (no NVIDIA GPU)
+11:14:22  gpu-gemm: skipped (no NVIDIA GPU)
+11:14:22  gpu-launch: skipped (no NVIDIA GPU)
+11:14:27  mlc idle_latency: rc=0 (5 s)
+11:16:49  mlc max_bandwidth: rc=0 (142 s)
+11:18:15  mlc loaded_latency: rc=0 (86 s)
+11:18:17  mlc latency_matrix: rc=0 (1 s)
+11:18:25  mlc bandwidth_matrix: rc=0 (8 s)
+11:18:25  opencl p0d0: Intel(R) UHD Graphics 630 (Intel(R) OpenCL Graphics)
+11:20:11  opencl p0d0: rc=0 (106 s)
+11:20:47  vkprobe: 16 runs on 1 device(s)
+11:20:47  rocm: skipped (no AMD GPU)
+11:22:09  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (70 s)
+11:27:03  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (295 s)
+11:48:41  test-backend-ops vulkan-dev0: 10/12 ops
+12:08:35  test-backend-ops cpu: 12/12 ops
+12:08:51  llama cpu-tinyllama-1.1b-q4_0: rc=0 (16 s)
+12:08:51  blender cpu-monster: rc=127 (0 s)
+12:08:51  blender cpu-junkshop: rc=127 (0 s)
+12:08:51  blender cpu-classroom: rc=127 (0 s)
+12:08:51  blender oneapi-monster: rc=127 (0 s)
+12:08:51  finished: done with failures

@@ -1,0 +1,38 @@
+{
+ "t": 1793261152.6242387,
+ "gpus": [],
+ "cpufreq": {
+  "cpu0": {
+   "governor": "powersave",
+   "min_freq": "400000",
+   "max_freq": "3900000"
+  },
+  "cpu1": {
+   "governor": "powersave",
+   "min_freq": "400000",
+   "max_freq": "3900000"
+  },
+  "cpu2": {
+   "governor": "powersave",
+   "min_freq": "400000",
+   "max_freq": "3900000"
+  },
+  "cpu3": {
+   "governor": "powersave",
+   "min_freq": "400000",
+   "max_freq": "3900000"
+  }
+ },
+ "docker": {
+  "containers": [],
+  "running": [],
+  "images": [
+   "sha256:0eeea2263fdf19512384afff67b4637f0c75b9a4248ae8060a3b1db439faae3f",
+   "sha256:260134d84d292d455a7eecfb5710b6d5561c25499cabdf194008fb47bead957f",
+   "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+   "sha256:6739e3dbfe35a599280c99f618be848b6c21b4090bc5b56af98b3370fc80d48c",
+   "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+  ],
+  "volumes": []
+ }
+}

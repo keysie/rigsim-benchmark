@@ -1,0 +1,1076 @@
+{
+ "devices": {
+  "0000:00:00.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1480",
+   "class_": "0x060000",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse Root Complex",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:00.0"
+   ]
+  },
+  "0000:00:00.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1481",
+   "class_": "0x080600",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse IOMMU",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "IOMMU",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:00.2"
+   ]
+  },
+  "0000:00:01.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:01.0"
+   ]
+  },
+  "0000:00:01.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1483",
+   "class_": "0x060400",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse GPP Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.1"
+   ]
+  },
+  "0000:00:01.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1483",
+   "class_": "0x060400",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse GPP Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:01.2"
+   ]
+  },
+  "0000:00:02.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:02.0"
+   ]
+  },
+  "0000:00:03.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:03.0"
+   ]
+  },
+  "0000:00:03.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1483",
+   "class_": "0x060400",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse GPP Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "16",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:03.1"
+   ]
+  },
+  "0000:00:04.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:04.0"
+   ]
+  },
+  "0000:00:05.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:05.0"
+   ]
+  },
+  "0000:00:07.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:07.0"
+   ]
+  },
+  "0000:00:07.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1484",
+   "class_": "0x060400",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B]",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:07.1"
+   ]
+  },
+  "0000:00:08.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1482",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Starship/Matisse PCIe Dummy Host Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:08.0"
+   ]
+  },
+  "0000:00:08.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1484",
+   "class_": "0x060400",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B]",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:08.1"
+   ]
+  },
+  "0000:00:14.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x790b",
+   "class_": "0x0c0500",
+   "subsystem": "0x1043:0x87c0",
+   "name": "FCH SMBus Controller",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "SMBus",
+   "port_type": "",
+   "driver": "piix4_smbus",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.0"
+   ]
+  },
+  "0000:00:14.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x790e",
+   "class_": "0x060100",
+   "subsystem": "0x1043:0x87c0",
+   "name": "FCH LPC Bridge",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "ISA bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.3"
+   ]
+  },
+  "0000:00:18.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1440",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 0",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.0"
+   ]
+  },
+  "0000:00:18.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1441",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 1",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.1"
+   ]
+  },
+  "0000:00:18.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1442",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 2",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.2"
+   ]
+  },
+  "0000:00:18.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1443",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 3",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "k10temp",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.3"
+   ]
+  },
+  "0000:00:18.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1444",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 4",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.4"
+   ]
+  },
+  "0000:00:18.5": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1445",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 5",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.5"
+   ]
+  },
+  "0000:00:18.6": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1446",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 6",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.6"
+   ]
+  },
+  "0000:00:18.7": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1447",
+   "class_": "0x060000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Matisse/Vermeer Data Fabric: Device 18h; Function 7",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:18.7"
+   ]
+  },
+  "0000:01:00.0": {
+   "parent": "0000:00:01.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0xc0a9",
+   "device": "0x540a",
+   "class_": "0x010802",
+   "subsystem": "0xc0a9:0x5021",
+   "name": "P2 [Nick P2] / P3 / P3 Plus NVMe PCIe SSD (DRAM-less)",
+   "vendor_name": "Micron/Crucial Technology",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.1",
+    "0000:01:00.0"
+   ]
+  },
+  "0000:02:00.0": {
+   "parent": "0000:00:01.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ee",
+   "class_": "0x0c0330",
+   "subsystem": "0x1b21:0x1142",
+   "name": "500 Series Chipset USB 3.1 XHCI Controller",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "USB controller",
+   "port_type": "legacy endpoint",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.0"
+   ]
+  },
+  "0000:02:00.1": {
+   "parent": "0000:00:01.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43eb",
+   "class_": "0x010601",
+   "subsystem": "0x1b21:0x1062",
+   "name": "500 Series Chipset SATA Controller",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "SATA controller",
+   "port_type": "legacy endpoint",
+   "driver": "ahci",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.1"
+   ]
+  },
+  "0000:02:00.2": {
+   "parent": "0000:00:01.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43e9",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x0201",
+   "name": "500 Series Chipset Switch Upstream Port",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch upstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2"
+   ]
+  },
+  "0000:03:00.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:00.0"
+   ]
+  },
+  "0000:03:01.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:01.0"
+   ]
+  },
+  "0000:03:02.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:02.0"
+   ]
+  },
+  "0000:03:03.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:03.0"
+   ]
+  },
+  "0000:03:04.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:04.0"
+   ]
+  },
+  "0000:03:08.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:08.0"
+   ]
+  },
+  "0000:03:09.0": {
+   "parent": "0000:02:00.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x43ea",
+   "class_": "0x060400",
+   "subsystem": "0x1b21:0x3308",
+   "name": "Device 43ea",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:09.0"
+   ]
+  },
+  "0000:07:00.0": {
+   "parent": "0000:03:03.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1106",
+   "device": "0x3483",
+   "class_": "0x0c0330",
+   "subsystem": "0x1106:0x3483",
+   "name": "VL805/806 xHCI USB 3.0 Controller",
+   "vendor_name": "VIA Technologies, Inc.",
+   "kind": "USB controller",
+   "port_type": "endpoint",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:03.0",
+    "0000:07:00.0"
+   ]
+  },
+  "0000:08:00.0": {
+   "parent": "0000:03:04.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x15b7",
+   "device": "0x5011",
+   "class_": "0x010802",
+   "subsystem": "0x15b7:0x5011",
+   "name": "WD PC SN810 / Black SN850 NVMe SSD",
+   "vendor_name": "Sandisk Corp",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:04.0",
+    "0000:08:00.0"
+   ]
+  },
+  "0000:0a:00.0": {
+   "parent": "0000:03:09.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15f3",
+   "class_": "0x020000",
+   "subsystem": "0x1043:0x87d2",
+   "name": "Ethernet Controller I225-V",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "igc",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:01.2",
+    "0000:02:00.2",
+    "0000:03:09.0",
+    "0000:0a:00.0"
+   ]
+  },
+  "0000:0b:00.0": {
+   "parent": "0000:00:03.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x10de",
+   "device": "0x13c2",
+   "class_": "0x030000",
+   "subsystem": "0x19da:0x2370",
+   "name": "GM204 [GeForce GTX 970]",
+   "vendor_name": "NVIDIA Corporation",
+   "kind": "VGA compatible controller",
+   "port_type": "legacy endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "16",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:03.1",
+    "0000:0b:00.0"
+   ]
+  },
+  "0000:0b:00.1": {
+   "parent": "0000:00:03.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x10de",
+   "device": "0x0fbb",
+   "class_": "0x040300",
+   "subsystem": "0x19da:0x2370",
+   "name": "GM204 High Definition Audio Controller",
+   "vendor_name": "NVIDIA Corporation",
+   "kind": "Audio device",
+   "port_type": "endpoint",
+   "driver": "snd_hda_intel",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "16",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:03.1",
+    "0000:0b:00.1"
+   ]
+  },
+  "0000:0c:00.0": {
+   "parent": "0000:00:07.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x148a",
+   "class_": "0x130000",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse PCIe Dummy Function",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Non-Essential Instrumentation [1300]",
+   "port_type": "endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:07.1",
+    "0000:0c:00.0"
+   ]
+  },
+  "0000:0d:00.0": {
+   "parent": "0000:00:08.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1485",
+   "class_": "0x130000",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse Reserved SPP",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Non-Essential Instrumentation [1300]",
+   "port_type": "endpoint",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:08.1",
+    "0000:0d:00.0"
+   ]
+  },
+  "0000:0d:00.1": {
+   "parent": "0000:00:08.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1486",
+   "class_": "0x108000",
+   "subsystem": "0x1043:0x8808",
+   "name": "Starship/Matisse Cryptographic Coprocessor PSPCPP",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Encryption controller",
+   "port_type": "endpoint",
+   "driver": "ccp",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:08.1",
+    "0000:0d:00.1"
+   ]
+  },
+  "0000:0d:00.3": {
+   "parent": "0000:00:08.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x149c",
+   "class_": "0x0c0330",
+   "subsystem": "0x1043:0x87c0",
+   "name": "Matisse USB 3.0 Host Controller",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "USB controller",
+   "port_type": "endpoint",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:08.1",
+    "0000:0d:00.3"
+   ]
+  },
+  "0000:0d:00.4": {
+   "parent": "0000:00:08.1",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1022",
+   "device": "0x1487",
+   "class_": "0x040300",
+   "subsystem": "0x1043:0x87c5",
+   "name": "Starship/Matisse HD Audio Controller",
+   "vendor_name": "Advanced Micro Devices, Inc. [AMD]",
+   "kind": "Audio device",
+   "port_type": "endpoint",
+   "driver": "snd_hda_intel",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:08.1",
+    "0000:0d:00.4"
+   ]
+  }
+ },
+ "gpus": [
+  "0000:0b:00.0"
+ ]
+}

@@ -1,0 +1,42 @@
+
+Platform: Intel(R) OpenCL Graphics
+  Device: Intel(R) UHD Graphics 770
+    Driver version  : 23.43.027642 (Linux x64)
+    Compute units   : 32
+    Clock frequency : 1600 MHz
+
+    Global memory bandwidth (GBPS)
+      float   : 76.51
+      float2  : 75.14
+      float4  : 71.64
+      float8  : 57.59
+      float16 : 37.80
+
+    Single-precision compute (GFLOPS)
+      float   : 801.04
+      float2  : 791.53
+      float4  : 797.31
+      float8  : 506.34
+      float16 : 502.71
+
+    Integer compute (GIOPS)
+      int   : 269.98
+      int2  : 182.31
+      int4  : 174.12
+      int8  : 165.52
+      int16 : 200.95
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 27.76
+      enqueueReadBuffer               : 28.02
+      enqueueWriteBuffer non-blocking : 30.01
+      enqueueReadBuffer non-blocking  : 29.86
+      enqueueMapBuffer(for read)      : 4772177.00
+        memcpy from mapped ptr        : 27.97
+      enqueueUnmap(after write)       : inf
+        memcpy to mapped ptr          : 27.76
+
+    Kernel launch latency : 38.19 us
+
+pci id for fd 12: 10de:2216, driver (null)
+pci id for fd 13: 10de:2216, driver (null)

@@ -1,0 +1,40 @@
+
+Platform: Intel(R) OpenCL Graphics
+  Device: Intel(R) HD Graphics 620
+    Driver version  : 23.43.027642 (Linux x64)
+    Compute units   : 24
+    Clock frequency : 1150 MHz
+
+    Global memory bandwidth (GBPS)
+      float   : 26.01
+      float2  : 26.40
+      float4  : 27.59
+      float8  : 27.28
+      float16 : 25.77
+
+    Single-precision compute (GFLOPS)
+      float   : 436.07
+      float2  : 430.91
+      float4  : 434.22
+      float8  : 431.60
+      float16 : 424.47
+
+    Integer compute (GIOPS)
+      int   : 145.69
+      int2  : 137.87
+      int4  : 133.83
+      int8  : 133.64
+      int16 : 130.27
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 13.91
+      enqueueReadBuffer               : 13.80
+      enqueueWriteBuffer non-blocking : 13.04
+      enqueueReadBuffer non-blocking  : 12.71
+      enqueueMapBuffer(for read)      : 456910.56
+        memcpy from mapped ptr        : 13.75
+      enqueueUnmap(after write)       : inf
+        memcpy to mapped ptr          : 13.92
+
+    Kernel launch latency : 34.13 us
+

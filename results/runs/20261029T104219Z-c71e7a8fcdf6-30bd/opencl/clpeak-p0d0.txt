@@ -1,0 +1,40 @@
+
+Platform: Intel(R) OpenCL Graphics
+  Device: Intel(R) UHD Graphics 630
+    Driver version  : 23.43.027642 (Linux x64)
+    Compute units   : 24
+    Clock frequency : 1200 MHz
+
+    Global memory bandwidth (GBPS)
+      float   : 31.86
+      float2  : 31.87
+      float4  : 32.88
+      float8  : 31.09
+      float16 : 27.95
+
+    Single-precision compute (GFLOPS)
+      float   : 455.31
+      float2  : 449.85
+      float4  : 453.26
+      float8  : 450.42
+      float16 : 442.98
+
+    Integer compute (GIOPS)
+      int   : 151.92
+      int2  : 151.49
+      int4  : 151.73
+      int8  : 151.15
+      int16 : 146.08
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 14.97
+      enqueueReadBuffer               : 15.01
+      enqueueWriteBuffer non-blocking : 12.75
+      enqueueReadBuffer non-blocking  : 13.04
+      enqueueMapBuffer(for read)      : 482579.69
+        memcpy from mapped ptr        : 14.96
+      enqueueUnmap(after write)       : inf
+        memcpy to mapped ptr          : 14.97
+
+    Kernel launch latency : 29.04 us
+

@@ -1,0 +1,1 @@
+{"mode":"fma","device":"NVIDIA GeForce RTX 3080","device_type":"discrete","vendor_id":4318,"device_id":8726,"driver_version":2435612928,"api":"1.4.312","timer":"gpu timestamps","pci":"0000:01:00.0","uuid":"7503f9e5d3e5ab8bd1977a89cd8cfdcf","prec":"fp16","ops":274877906944,"t_median_s":0.008849152,"ops_per_s":3.10626e+13}

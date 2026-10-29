@@ -1,0 +1,31 @@
+14:51:28  run 20261029T145128Z-c8f36dd9ba4c-af1c
+14:51:30  inventory: nvidia-smi.txt rc=9
+14:51:30  inventory: nvidia-topo.txt rc=9
+14:51:33  cpu AMD Ryzen 9 5900X 12-Core Processor | board ASUSTeK COMPUTER INC. ROG STRIX B550-A GAMING | 62.7 GiB | gpus ['NVIDIA Corporation GM204 [GeForce GTX 970] [10de:13c2] (rev a1)']
+14:51:33  stick check: pass
+14:51:40  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 6.75, 'mib_per_s': 151.7}
+14:51:42  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+14:51:44  screens: [('card0', 'Unknown-1', '1024x768')]
+14:51:44  screens off while measuring: ['fb0']
+14:51:44  cpu-mem-latency: start
+14:59:43  cpu-mem-latency: rc=0 {'done': 9} (479 s)
+14:59:43  cpu-mem-ladder: start
+15:08:12  cpu-mem-ladder: rc=0 {'done': 48} (509 s)
+15:08:12  cpu-gemm: start
+15:15:31  cpu-gemm: rc=0 {'done': 24} (439 s)
+15:15:31  pcie-copy: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+15:15:31  gpu-p2p: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+15:15:31  gpu-vram: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+15:15:31  gpu-gemm: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+15:15:31  gpu-launch: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+15:15:31  mlc: skipped (Intel MLC not in the seed (build without MLC_URL or download failed))
+15:15:32  opencl: no GPU devices
+15:15:32  opencl: skipped (no OpenCL GPU devices)
+15:15:32  vkprobe: skipped (no hardware Vulkan device)
+15:15:32  rocm: skipped (no AMD GPU)
+15:15:32  oneapi: skipped (no INTEL GPU)
+15:27:45  test-backend-ops cpu: 12/12 ops
+15:27:59  llama cpu-tinyllama-1.1b-q4_0: rc=0 (14 s)
+15:27:59  blender: offline route not possible (Blender executable, scenes, benchmark script missing in the seed); trying the launcher
+15:27:59  blender: skipped (Blender benchmark not in the seed)
+15:28:00  finished: done
