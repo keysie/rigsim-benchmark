@@ -5,11 +5,12 @@ on:
     paths: ["results/**"]
   push:
     branches: [main]
-    paths: ["results/runs/**"]
+    paths: ["results/runs/**", "results/attribution/**"]
 jobs:
   validate:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions: { contents: read, issues: read, pull-requests: read }
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
@@ -17,8 +18,18 @@ jobs:
         with: { python-version: "3.12" }
       - name: Only new run folders, exact stick format, complete, nothing identifying
         env:
-          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
-        run: python3 tools/validate.py --pr "origin/${{ github.base_ref }}"
+          GH_TOKEN: ${{ github.token }}
+          PR_USER: ${{ github.event.pull_request.user.login }}
+          HEAD: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # a credit may only name the contributor: the pull request's author — or, for a pull request the submission
+          # pipeline opened from an issue (branch submission/issue-<n>, author github-actions[bot]), that issue's author
+          PR_AUTHOR="$PR_USER"
+          if [[ "$PR_USER" == "github-actions[bot]" && "$HEAD" =~ ^submission/issue-([0-9]+)$ ]]; then
+            PR_AUTHOR="$(gh api "repos/${{ github.repository }}/issues/${BASH_REMATCH[1]}" -q .user.login)"
+          fi
+          export PR_AUTHOR
+          python3 tools/validate.py --pr "origin/${{ github.base_ref }}"
   table:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
