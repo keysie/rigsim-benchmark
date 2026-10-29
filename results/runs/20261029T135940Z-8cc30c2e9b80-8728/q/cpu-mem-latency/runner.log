@@ -1,0 +1,11 @@
+14:00:15 session rigsim-hwbench-cpu-mem-latency: setting up from debian:trixie
+14:03:02 ok   cpu-mem-latency/mib=64/rep=0 rc=0
+14:03:10 ok   cpu-mem-latency/mib=64/rep=1 rc=0
+14:03:19 ok   cpu-mem-latency/mib=64/rep=2 rc=0
+14:03:29 ok   cpu-mem-latency/mib=1024/rep=0 rc=0
+14:03:39 ok   cpu-mem-latency/mib=1024/rep=1 rc=0
+14:03:48 ok   cpu-mem-latency/mib=1024/rep=2 rc=0
+14:04:19 ok   cpu-mem-latency/mib=4096/rep=0 rc=0
+14:04:50 ok   cpu-mem-latency/mib=4096/rep=1 rc=0
+14:05:21 ok   cpu-mem-latency/mib=4096/rep=2 rc=0
+14:05:22 restore: box as found

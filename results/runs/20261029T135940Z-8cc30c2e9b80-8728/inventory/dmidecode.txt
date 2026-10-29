@@ -1,0 +1,518 @@
+# dmidecode 3.5
+Getting SMBIOS data from sysfs.
+SMBIOS 2.7 present.
+
+Handle 0x0001, DMI type 0, 24 bytes
+BIOS Information
+	Vendor: Intel Corporation
+	Version: SE5C610.86B.01.01.3029.022420221031
+	Release Date: 02/24/2022
+	Address: 0xF0000
+	Runtime Size: 64 kB
+	ROM Size: 16 MB
+	Characteristics:
+		PCI is supported
+		PNP is supported
+		BIOS is upgradeable
+		BIOS shadowing is allowed
+		Boot from CD is supported
+		Selectable boot is supported
+		EDD is supported
+		5.25"/1.2 MB floppy services are supported (int 13h)
+		3.5"/720 kB floppy services are supported (int 13h)
+		3.5"/2.88 MB floppy services are supported (int 13h)
+		Print screen service is supported (int 5h)
+		8042 keyboard services are supported (int 9h)
+		Printer services are supported (int 17h)
+		CGA/mono video services are supported (int 10h)
+		ACPI is supported
+		USB legacy is supported
+		LS-120 boot is supported
+		ATAPI Zip drive boot is supported
+		BIOS boot specification is supported
+		Function key-initiated network boot is supported
+		Targeted content distribution is supported
+		UEFI is supported
+	BIOS Revision: 0.0
+	Firmware Revision: 0.0
+
+Handle 0x0002, DMI type 1, 27 bytes
+System Information
+	Manufacturer: ACTION SA
+	Product Name: SOLAR 820 X6
+	Version: CERN
+	Wake-up Type: Power Switch
+	SKU Number: SKU Number
+	Family: Family
+
+Handle 0x0003, DMI type 2, 17 bytes
+Base Board Information
+	Manufacturer: Intel Corporation
+	Product Name: S2600KPR
+	Version: H13888-361
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: Part Component
+	Chassis Handle: 0x0000
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x000C, DMI type 13, 22 bytes
+BIOS Language Information
+	Language Description Format: Abbreviated
+	Installable Languages: 1
+		enUS
+	Currently Installed Language: enUS
+
+Handle 0x000F, DMI type 32, 11 bytes
+System Boot Information
+	Status: No errors detected
+
+Handle 0x0019, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: L1-Cache
+	Configuration: Enabled, Not Socketed, Level 1
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 512 kB
+	Maximum Size: 512 kB
+	Supported SRAM Types:
+		Synchronous
+	Installed SRAM Type: Synchronous
+	Speed: Unknown
+	Error Correction Type: Single-bit ECC
+	System Type: Instruction
+	Associativity: 8-way Set-associative
+
+Handle 0x001A, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: L2-Cache
+	Configuration: Enabled, Not Socketed, Level 2
+	Operational Mode: Varies With Memory Address
+	Location: Internal
+	Installed Size: 2 MB
+	Maximum Size: 2 MB
+	Supported SRAM Types:
+		Synchronous
+	Installed SRAM Type: Synchronous
+	Speed: Unknown
+	Error Correction Type: Single-bit ECC
+	System Type: Unified
+	Associativity: 8-way Set-associative
+
+Handle 0x001B, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: L3-Cache
+	Configuration: Enabled, Not Socketed, Level 3
+	Operational Mode: Varies With Memory Address
+	Location: Internal
+	Installed Size: 20 MB
+	Maximum Size: 20 MB
+	Supported SRAM Types:
+		Synchronous
+	Installed SRAM Type: Synchronous
+	Speed: Unknown
+	Error Correction Type: Single-bit ECC
+	System Type: Unified
+	Associativity: 20-way Set-associative
+
+Handle 0x001C, DMI type 4, 48 bytes
+Processor Information
+	Socket Designation: CPU1
+	Type: Central Processor
+	Family: Xeon
+	Manufacturer: Intel(R) Corporation
+	ID: F2 06 03 00 FF FB EB BF
+	Signature: Type 0, Family 6, Model 63, Stepping 2
+	Flags:
+		FPU (Floating-point unit on-chip)
+		VME (Virtual mode extension)
+		DE (Debugging extension)
+		PSE (Page size extension)
+		TSC (Time stamp counter)
+		MSR (Model specific registers)
+		PAE (Physical address extension)
+		MCE (Machine check exception)
+		CX8 (CMPXCHG8 instruction supported)
+		APIC (On-chip APIC hardware supported)
+		SEP (Fast system call)
+		MTRR (Memory type range registers)
+		PGE (Page global enable)
+		MCA (Machine check architecture)
+		CMOV (Conditional move instruction supported)
+		PAT (Page attribute table)
+		PSE-36 (36-bit page size extension)
+		CLFSH (CLFLUSH instruction supported)
+		DS (Debug store)
+		ACPI (ACPI supported)
+		MMX (MMX technology supported)
+		FXSR (FXSAVE and FXSTOR instructions supported)
+		SSE (Streaming SIMD extensions)
+		SSE2 (Streaming SIMD extensions 2)
+		SS (Self-snoop)
+		HTT (Multi-threading)
+		TM (Thermal monitor supported)
+		PBE (Pending break enabled)
+	Version: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz
+	Voltage: 1.6 V
+	External Clock: 100 MHz
+	Max Speed: 4000 MHz
+	Current Speed: 2400 MHz
+	Status: Populated, Enabled
+	Upgrade: Socket LGA2011-3
+	L1 Cache Handle: 0x0019
+	L2 Cache Handle: 0x001A
+	L3 Cache Handle: 0x001B
+	Part Number:  
+	Core Count: 8
+	Core Enabled: 8
+	Thread Count: 8
+	Characteristics:
+		64-bit capable
+		Multi-Core
+		Hardware Thread
+		Execute Protection
+		Enhanced Virtualization
+		Power/Performance Control
+
+Handle 0x001D, DMI type 4, 48 bytes
+Processor Information
+	Socket Designation: CPU2
+	Type: Central Processor
+	Family: <OUT OF SPEC>
+	Manufacturer: Not Specified
+	ID: 00 00 00 00 00 00 00 00
+	Version: Not Specified
+	Voltage: Unknown
+	External Clock: Unknown
+	Max Speed: 4000 MHz
+	Current Speed: Unknown
+	Status: Unpopulated
+	Upgrade: Socket LGA2011-3
+	L1 Cache Handle: Not Provided
+	L2 Cache Handle: Not Provided
+	L3 Cache Handle: Not Provided
+	Part Number: Not Specified
+	Characteristics: None
+
+Handle 0x001E, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: Single-bit ECC
+	Maximum Capacity: 128 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 4
+
+Handle 0x0020, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x001E
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16 GB
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_A1
+	Bank Locator: NODE 1
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: 2133 MT/s
+	Manufacturer: Samsung
+	Part Number: M393A2G40DB0-CPB    
+	Rank: 2
+	Configured Memory Speed: 1866 MT/s
+	Minimum Voltage: Unknown
+	Maximum Voltage: Unknown
+	Configured Voltage: Unknown
+
+Handle 0x0022, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x001E
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16 GB
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_B1
+	Bank Locator: NODE 1
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: 2133 MT/s
+	Manufacturer: Samsung
+	Part Number: M393A2G40DB0-CPB    
+	Rank: 2
+	Configured Memory Speed: 1866 MT/s
+	Minimum Voltage: Unknown
+	Maximum Voltage: Unknown
+	Configured Voltage: Unknown
+
+Handle 0x0024, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x001E
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16 GB
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_C1
+	Bank Locator: NODE 1
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: 2133 MT/s
+	Manufacturer: Samsung
+	Part Number: M393A2G40DB0-CPB    
+	Rank: 2
+	Configured Memory Speed: 1866 MT/s
+	Minimum Voltage: Unknown
+	Maximum Voltage: Unknown
+	Configured Voltage: Unknown
+
+Handle 0x0026, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x001E
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16 GB
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_D1
+	Bank Locator: NODE 1
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: 2133 MT/s
+	Manufacturer: Samsung
+	Part Number: M393A2G40DB0-CPB    
+	Rank: 2
+	Configured Memory Speed: 1866 MT/s
+	Minimum Voltage: Unknown
+	Maximum Voltage: Unknown
+	Configured Voltage: Unknown
+
+Handle 0x0028, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: Single-bit ECC
+	Maximum Capacity: 128 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 4
+
+Handle 0x0029, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0028
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_E1
+	Bank Locator: NODE 2
+	Type: DDR4
+	Type Detail: Synchronous
+
+Handle 0x002A, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0028
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_F1
+	Bank Locator: NODE 2
+	Type: DDR4
+	Type Detail: Synchronous
+
+Handle 0x002B, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0028
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_G1
+	Bank Locator: NODE 2
+	Type: DDR4
+	Type Detail: Synchronous
+
+Handle 0x002C, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0028
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_H1
+	Bank Locator: NODE 2
+	Type: DDR4
+	Type Detail: Synchronous
+
+Handle 0x0006, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 2 Slot 2
+	Type: x8 PCI Express 3 x8
+	Current Usage: Available
+	Length: Long
+	ID: 35
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:00:01.0
+
+Handle 0x0007, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 1 Slot 1
+	Type: x16 PCI Express 3 x16
+	Current Usage: In Use
+	Length: Long
+	ID: 17
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:00:02.0
+
+Handle 0x0008, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 1 Slot 1-2
+	Type: x8 PCI Express 3 x8
+	Current Usage: In Use
+	Length: Long
+	ID: 18
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:00:02.2
+
+Handle 0x0009, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 2 Slot 1-1
+	Type: x8 PCI Express 3 x8
+	Current Usage: Available
+	Length: Long
+	ID: 33
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:00:03.0
+
+Handle 0x003E, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 2 Slot 1-2
+	Type: x8 PCI Express 3 x8
+	Current Usage: In Use
+	Length: Long
+	ID: 34
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:00:03.2
+
+Handle 0x003F, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 3, slot 2
+	Type: x8 PCI Express 3 x8
+	Current Usage: Available
+	Length: Long
+	ID: 0
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:80:01.0
+
+Handle 0x0040, DMI type 9, 17 bytes
+System Slot Information
+	Designation: Riser 3, slot 1
+	Type: x16 PCI Express 3 x16
+	Current Usage: Available
+	Length: Long
+	ID: 0
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+	Bus Address: 0000:80:03.0
+
+Handle 0x0041, DMI type 10, 14 bytes
+On Board Device 1 Information
+	Type: Video
+	Status: Enabled
+	Description: ServerEngines Pilot III
+On Board Device 2 Information
+	Type: Ethernet
+	Status: Enabled
+	Description: Intel I350
+On Board Device 3 Information
+	Type: SATA Controller
+	Status: Enabled
+	Description: PCH Integrated SATA Controller
+On Board Device 4 Information
+	Type: SATA Controller
+	Status: Enabled
+	Description: PCH Integrated sSATA Controller
+On Board Device 5 Information
+	Type: Ethernet
+	Status: Enabled
+	Description: Intel I350
+
+Handle 0x000B, DMI type 12, 5 bytes
+System Configuration Options
+	Option 1: J6C1: Close to boot with MFG mode
+	Option 2: J6B4 2-3: Close for BIOS Image swap
+	Option 3: J5D2 2-3: ME force update
+	Option 4: J6B9 2-3: Recovery BIOS
+	Option 5: J6B8 2-3: Clear password
+	Option 6: J6B7 2-3: Clear CMOS register
+	Option 7: J6B6 2-3: Force BMC update
+	Option 8: J6A2 1-2: PLD program enable
+	Option 9: J6C2: RAID key
+
+Handle 0x0015, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: ServerEngines Pilot III
+	Type: Video
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:09:00.0
+
+Handle 0x0016, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Intel I350
+	Type: Ethernet
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:0a:00.0
+
+Handle 0x0017, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: PCH Integrated SATA Controller
+	Type: SATA Controller
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:00:1f.2
+
+Handle 0x0042, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: PCH Integrated sSATA Controller
+	Type: SATA Controller
+	Status: Enabled
+	Type Instance: 2
+	Bus Address: 0000:00:11.4
+
+Handle 0x0043, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Intel I350
+	Type: Ethernet
+	Status: Enabled
+	Type Instance: 2
+	Bus Address: 0000:0a:00.1
+

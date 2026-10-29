@@ -1,0 +1,526 @@
+{
+ "format": {
+  "name": "rigsim-stick-run",
+  "version": "1.3"
+ },
+ "run": "20261029T133344Z-1a862184b096-2c59",
+ "stick": {
+  "version": "0.12.0",
+  "build": "3cf4732",
+  "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+  "dirty": false,
+  "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a"
+ },
+ "seed": {
+  "build": ""
+ },
+ "fingerprint": "1a862184b096",
+ "fingerprint_stable": true,
+ "start_utc": "2026-10-29T13:33:44+00:00",
+ "clock_note": "machine RTC; may be wrong",
+ "questions": {
+  "cpu-mem-latency": {
+   "rc": 0,
+   "items": {
+    "done": 9
+   },
+   "seconds": 171,
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "images": {}
+   }
+  },
+  "cpu-mem-ladder": {
+   "rc": 0,
+   "items": {
+    "done": 48
+   },
+   "seconds": 239,
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "images": {}
+   }
+  },
+  "cpu-gemm": {
+   "rc": 0,
+   "items": {
+    "done": 24
+   },
+   "seconds": 140,
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "images": {}
+   }
+  },
+  "pcie-copy": {
+   "skipped": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
+  },
+  "gpu-p2p": {
+   "skipped": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
+  },
+  "gpu-vram": {
+   "skipped": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
+  },
+  "gpu-gemm": {
+   "skipped": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
+  },
+  "gpu-launch": {
+   "skipped": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
+  },
+  "mlc": {
+   "skipped": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "mlc": {},
+    "mlc_version": ""
+   }
+  },
+  "opencl": {
+   "rc": 0,
+   "devices": {
+    "p0d0": {
+     "platform": "Intel(R) OpenCL Graphics",
+     "device": "Intel(R) UHD Graphics P630",
+     "rc": 0,
+     "seconds": 112
+    }
+   },
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "packages": {
+     "clinfo": "3.0.23.01.25-1build1",
+     "clpeak": "1.1.2-1",
+     "intel-opencl-icd": "23.43.27642.40-1ubuntu3",
+     "libnvidia-compute-580": "580.178.04-0ubuntu0.24.04.1",
+     "mesa-opencl-icd": "25.2.8-0ubuntu0.24.04.4",
+     "ocl-icd-libopencl1": "2.3.2-1build1"
+    },
+    "nvidia_driver": ""
+   }
+  },
+  "vkprobe": {
+   "rc": 0,
+   "runs": {
+    "dev0-stream-read": {
+     "rc": 0,
+     "seconds": 1.4
+    },
+    "dev0-stream-write": {
+     "rc": 0,
+     "seconds": 1.4
+    },
+    "dev0-stream-copy": {
+     "rc": 0,
+     "seconds": 2.4
+    },
+    "dev0-launch": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-fma-fp32": {
+     "rc": 0,
+     "seconds": 4.6
+    },
+    "dev0-fma-fp16": {
+     "rc": 0,
+     "seconds": 2.6
+    },
+    "dev0-gemm-f16-512x4096x4096": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-gemm-f16-2048x2048x2048": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-gemm-f16-4096x4096x4096": {
+     "rc": 0,
+     "seconds": 0.2
+    },
+    "dev0-gemm-f16f32-512x4096x4096": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-gemm-f16f32-2048x2048x2048": {
+     "rc": 0,
+     "seconds": 0.2
+    },
+    "dev0-gemm-f16f32-4096x4096x4096": {
+     "rc": 0,
+     "seconds": 0.2
+    },
+    "dev0-gemm-i8-512x4096x4096": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-gemm-i8-2048x2048x2048": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-gemm-i8-4096x4096x4096": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "dev0-shared": {
+     "rc": 0,
+     "seconds": 25.1
+    }
+   },
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "vkprobe": {
+     "sha256": "affe2ce5c3186b3feee52492e3fa49f0b13928aca243015224c05f3e9dbd5fba"
+    },
+    "packages": {
+     "libnvidia-gl-580": "580.178.04-0ubuntu0.24.04.1",
+     "libvulkan1": "1.3.275.0-1build1",
+     "mesa-vulkan-drivers": "25.2.8-0ubuntu0.24.04.4"
+    },
+    "vulkan_devices": [
+     {
+      "apiVersion": "1.4.318",
+      "deviceName": "Intel(R) UHD Graphics P630 (CFL GT2)",
+      "driverName": "Intel open-source Mesa driver",
+      "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4",
+      "conformanceVersion": "1.4.0.0"
+     },
+     {
+      "apiVersion": "1.4.318",
+      "deviceName": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "driverName": "llvmpipe",
+      "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)",
+      "conformanceVersion": "1.3.1.1"
+     }
+    ]
+   }
+  },
+  "rocm": {
+   "skipped": "no AMD GPU",
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "vendor": {}
+   }
+  },
+  "oneapi": {
+   "load": {
+    "rc": 0,
+    "cached": true
+   },
+   "rc": 1,
+   "error": "the runtime sees no GPU (info.jsonl)",
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "vendor": {}
+   }
+  },
+  "llama-bench": {
+   "rc": 1,
+   "runs": {
+    "vulkan-dev0-tinyllama-1.1b-q4_0": {
+     "rc": 0,
+     "seconds": 58
+    },
+    "vulkan-dev0-llama-2-7b-q4_0": {
+     "rc": 0,
+     "seconds": 210
+    },
+    "vulkan-dev0-ops-mul_mat": {
+     "rc": 0,
+     "seconds": 465.2
+    },
+    "vulkan-dev0-ops-mul_mat_id": {
+     "rc": -6,
+     "seconds": 367.8
+    },
+    "vulkan-dev0-ops-flash_attn_ext": {
+     "rc": -6,
+     "seconds": 315.8
+    },
+    "vulkan-dev0-ops-rms_norm": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "vulkan-dev0-ops-add": {
+     "rc": 0,
+     "seconds": 3.8
+    },
+    "vulkan-dev0-ops-mul": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "vulkan-dev0-ops-rope": {
+     "rc": 0,
+     "seconds": 136.5
+    },
+    "vulkan-dev0-ops-glu": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "vulkan-dev0-ops-set_rows": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "vulkan-dev0-ops-cpy": {
+     "rc": 0,
+     "seconds": 80.1
+    },
+    "vulkan-dev0-ops-soft_max": {
+     "rc": 0,
+     "seconds": 120.6
+    },
+    "vulkan-dev0-ops-get_rows": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "cpu-ops-mul_mat": {
+     "rc": 0,
+     "seconds": 163.4
+    },
+    "cpu-ops-mul_mat_id": {
+     "rc": 0,
+     "seconds": 209.0
+    },
+    "cpu-ops-flash_attn_ext": {
+     "rc": 0,
+     "seconds": 481.6
+    },
+    "cpu-ops-rms_norm": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "cpu-ops-add": {
+     "rc": 0,
+     "seconds": 2.4
+    },
+    "cpu-ops-mul": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "cpu-ops-rope": {
+     "rc": 0,
+     "seconds": 71.8
+    },
+    "cpu-ops-glu": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "cpu-ops-set_rows": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "cpu-ops-cpy": {
+     "rc": 0,
+     "seconds": 76.3
+    },
+    "cpu-ops-soft_max": {
+     "rc": 0,
+     "seconds": 40.1
+    },
+    "cpu-ops-get_rows": {
+     "rc": 0,
+     "seconds": 0.3
+    },
+    "cpu-tinyllama-1.1b-q4_0": {
+     "rc": 0,
+     "seconds": 17
+    }
+   },
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "llama.cpp": {},
+    "models": {},
+    "images": {},
+    "nvidia_driver": "",
+    "vulkan_devices": [
+     {
+      "apiVersion": "1.4.318",
+      "deviceName": "Intel(R) UHD Graphics P630 (CFL GT2)",
+      "driverName": "Intel open-source Mesa driver",
+      "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4",
+      "conformanceVersion": "1.4.0.0"
+     },
+     {
+      "apiVersion": "1.4.318",
+      "deviceName": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "driverName": "llvmpipe",
+      "driverInfo": "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)",
+      "conformanceVersion": "1.3.1.1"
+     }
+    ],
+    "packages": {
+     "libnvidia-gl-580": "580.178.04-0ubuntu0.24.04.1",
+     "libvulkan1": "1.3.275.0-1build1",
+     "mesa-vulkan-drivers": "25.2.8-0ubuntu0.24.04.4"
+    }
+   }
+  },
+  "blender": {
+   "skipped": "Blender benchmark not in the seed",
+   "offline_route_missing": [
+    "Blender executable",
+    "scenes",
+    "benchmark script"
+   ],
+   "tools": {
+    "stick": {
+     "version": "0.12.0",
+     "build": "3cf4732",
+     "commit": "3cf47323e43f6b671b6c0c1e19002e9af083a94d",
+     "dirty": false,
+     "scripts_sha256": "8e3e02f25751f11ab3339a6770277dfa34047f06cc468e844465ddf3522df88a",
+     "format": "1.3"
+    },
+    "kernel": "7.0.0-42-generic",
+    "blender-benchmark": {},
+    "nvidia_driver": "",
+    "packages": {
+     "libnvidia-gl-580": "580.178.04-0ubuntu0.24.04.1"
+    }
+   }
+  }
+ },
+ "status": "done with failures",
+ "hardware": {
+  "cpu": "Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz",
+  "board": "LENOVO 3138",
+  "bios": "M1VKT79A",
+  "gpus": [
+   "Intel Corporation CoffeeLake-S GT2 [UHD Graphics P630] [8086:3e96]",
+   "NVIDIA Corporation GP107GL [Quadro P1000] [10de:1cb1] (rev a1)"
+  ],
+  "ram_gib": 15.5,
+  "dimms": [
+   {
+    "Locator": "ChannelA-DIMM1",
+    "Size": "8 GB",
+    "Type": "DDR4",
+    "Speed": "2667 MT/s",
+    "Configured Memory Speed": "2666 MT/s",
+    "Rank": "1",
+    "Manufacturer": "SK Hynix",
+    "Part Number": "HMA81GU7CJR8N-VK    "
+   },
+   {
+    "Locator": "ChannelB-DIMM1",
+    "Size": "8 GB",
+    "Type": "DDR4",
+    "Speed": "2667 MT/s",
+    "Configured Memory Speed": "2666 MT/s",
+    "Rank": "1",
+    "Manufacturer": "SK Hynix",
+    "Part Number": "HMA81GU7CJR8N-VK    "
+   }
+  ],
+  "cpufreq": {
+   "cpuinfo_min_freq": "800000",
+   "cpuinfo_max_freq": "4500000",
+   "scaling_driver": "intel_pstate",
+   "scaling_governor": "powersave",
+   "base_frequency": "3500000"
+  },
+  "secure_boot": true,
+  "kernel": "7.0.0-42-generic"
+ },
+ "stick_check": {
+  "result": "pass",
+  "mismatched": []
+ },
+ "stick_read": {
+  "file": "nvidia_cuda_12.8.1-devel-ubuntu24.04.tar",
+  "mib": 1024,
+  "seconds": 3.07,
+  "mib_per_s": 333.9
+ },
+ "docker": {
+  "ok": true,
+  "image": "debian:trixie",
+  "storage": "overlayfs / [[driver-type io.containerd.snapshotter.v1]]",
+  "store": "partition"
+ },
+ "displays": [
+  {
+   "connector": "Unknown-1",
+   "card": "card0",
+   "pci": "simple-framebuffer.0",
+   "mode": "800x600",
+   "enabled": "enabled",
+   "dpms": "On"
+  }
+ ],
+ "screens_blanked": [
+  "fb0"
+ ],
+ "end_utc": "2026-10-29T14:32:47+00:00"
+}

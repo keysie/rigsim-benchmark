@@ -1,0 +1,6 @@
+ls: cannot access '/dev/nvidia*': No such file or directory
+ls: cannot access '/dev/kfd': No such file or directory
+/dev/dri:
+total 0
+drwxr-xr-x 2 root root      60 Oct 29 13:58 by-path
+crw-rw---- 1 root video 226, 0 Oct 29 13:58 card0

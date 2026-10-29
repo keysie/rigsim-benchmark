@@ -1,0 +1,15 @@
+NAME    MODEL                            SIZE ROTA TRAN   TYPE
+loop0                                    1.6G    1        loop
+sda     WDC WD20EARS-00MVWB0             1.8T    1 sata   disk
+sdb     WDC WD20EFRX-68EUZN0             1.8T    1 sata   disk
+sdc     WDC WD20EARS-60MVWB0             1.8T    1 sata   disk
+├─sdc1                                  1007K    1        part
+├─sdc2                                     1G    1        part
+└─sdc3                                   1.8T    1        part
+sdd     Transcend                      115.2G    1 usb    disk
+├─sdd1                                   1.7G    1        part
+├─sdd2                                    10M    1        part
+└─sdd3                                 107.2G    1        part
+nvme2n1 WDC PC SN520 SDAPNUW-128G-1006 119.2G    0 nvme   disk
+nvme1n1 WDC PC SN520 SDAPNUW-128G-1006 119.2G    0 nvme   disk
+nvme0n1 KBG30ZMV128G TOSHIBA           119.2G    0 nvme   disk

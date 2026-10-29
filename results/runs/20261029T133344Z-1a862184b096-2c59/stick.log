@@ -1,0 +1,33 @@
+13:33:44  run 20261029T133344Z-1a862184b096-2c59
+13:33:45  inventory: nvidia-smi.txt rc=9
+13:33:46  inventory: nvidia-topo.txt rc=9
+13:33:50  cpu Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz | board LENOVO 3138 | 15.5 GiB | gpus ['Intel Corporation CoffeeLake-S GT2 [UHD Graphics P630] [8086:3e96]', 'NVIDIA Corporation GP107GL [Quadro P1000] [10de:1cb1] (rev a1)']
+13:33:50  stick check: pass
+13:33:53  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 3.07, 'mib_per_s': 333.9}
+13:33:55  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+13:33:56  screens: [('card0', 'Unknown-1', '800x600')]
+13:33:56  screens off while measuring: ['fb0']
+13:33:56  cpu-mem-latency: start
+13:36:48  cpu-mem-latency: rc=0 {'done': 9} (171 s)
+13:36:48  cpu-mem-ladder: start
+13:40:47  cpu-mem-ladder: rc=0 {'done': 48} (239 s)
+13:40:47  cpu-gemm: start
+13:43:07  cpu-gemm: rc=0 {'done': 24} (140 s)
+13:43:07  pcie-copy: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+13:43:07  gpu-p2p: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+13:43:07  gpu-vram: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+13:43:07  gpu-gemm: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+13:43:07  gpu-launch: skipped (NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer))
+13:43:07  mlc: skipped (Intel MLC not in the seed (build without MLC_URL or download failed))
+13:43:09  opencl p0d0: Intel(R) UHD Graphics P630 (Intel(R) OpenCL Graphics)
+13:45:01  opencl p0d0: rc=0 (112 s)
+13:45:42  vkprobe: 16 runs on 1 device(s)
+13:45:42  rocm: skipped (no AMD GPU)
+13:46:43  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (58 s)
+13:50:13  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (210 s)
+14:15:04  test-backend-ops vulkan-dev0: 10/12 ops
+14:32:30  test-backend-ops cpu: 12/12 ops
+14:32:47  llama cpu-tinyllama-1.1b-q4_0: rc=0 (17 s)
+14:32:47  blender: offline route not possible (Blender executable, scenes, benchmark script missing in the seed); trying the launcher
+14:32:47  blender: skipped (Blender benchmark not in the seed)
+14:32:47  finished: done with failures
