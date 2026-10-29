@@ -38,7 +38,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git switch -c "$branch"
             git add results/runs results/attribution 2>/dev/null || git add results/runs
-            git commit -q -m "runs: $(wc -l < /tmp/runs.txt) run(s) submitted by @$AUTHOR in #$ISSUE" -m "$(cat /tmp/runs.txt)"
+            git commit -q -m "chore(runs): $(wc -l < /tmp/runs.txt) run(s) submitted by @$AUTHOR in #$ISSUE" -m "$(cat /tmp/runs.txt)"
             git push -f origin "$branch"
             pr="$(gh pr list --head "$branch" --state open --json url -q '.[0].url')"
             body="$(printf 'Runs submitted by @%s in #%s (the submitter confirmed the licence, the owners'"'"' consent and that the runs are unchanged).\n\n%s\n\nCloses #%s' "$AUTHOR" "$ISSUE" "$(cat /tmp/report.md)" "$ISSUE")"

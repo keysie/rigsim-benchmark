@@ -62,3 +62,15 @@ def test_page_shows_the_credit(tmp_path):
     assert IX.contributor("a", tmp_path) == {"github": "keysie"} and IX.contributor("c", tmp_path) == {}
     html = (ROOT / "docs" / "index.html").read_text()
     assert 'href="https://github.com/${encodeURIComponent(c.github)}"' in html and "Submitted by someone" in html
+
+
+def test_conventional_commit_checker():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("cc", ROOT / ".github" / "scripts" / "check-commits.py")
+    C = importlib.util.module_from_spec(spec); spec.loader.exec_module(C)
+    assert C.problem("feat(stick): skip a step\n\nbody") is None and C.problem("chore(runs)!: x") is None
+    for bad in ("stick: no type", "Feat: caps", "feat(stick):x", "feat: x\nbody without blank line"):
+        assert C.problem(bad), bad
+    for wf, msg in (("predictions.yml", 'git commit -q -m "chore(predictions): '), ("runs.yml", '"chore(table): '),
+                    ("submission.yml", 'git commit -q -m "chore(runs): ')):
+        assert msg in (ROOT / ".github" / "workflows" / wf).read_text()

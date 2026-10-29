@@ -41,7 +41,7 @@ if [[ ${#added[@]} -eq 0 ]]; then
   echo "no new complete runs to contribute (${#rejected[@]} not included)"; exit 0
 fi
 git add results/runs; [[ -d results/attribution ]] && git add results/attribution
-git commit -q -m "runs: ${#added[@]} new run(s)" -m "$(printf '%s\n' "${added[@]}")"
+git commit -q -m "chore(runs): ${#added[@]} new run(s)" -m "$(printf '%s\n' "${added[@]}")"
 echo "${#added[@]} run(s) committed on branch $BRANCH (${#rejected[@]} not included)"
 
 BODY="$(cat .github/pull_request_template.md 2>/dev/null)"

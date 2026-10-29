@@ -74,3 +74,11 @@ Code: [Apache 2.0](LICENSE). Data in `results/` and `docs/data.json`: [CC BY 4.0
 "rigsim-benchmark" with a link to this repository. Third-party software the stick downloads at build time (Ubuntu,
 NVIDIA's driver and CUDA images, ROCm, oneAPI, llama.cpp, Blender, Intel MLC, the GGUF models) keeps its own
 licence and is not part of this repository.
+
+## Commit messages
+
+Every commit follows [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+`<type>[(<scope>)][!]: <description>`, type one of feat, fix, docs, style, refactor, perf, test, build, ci, chore,
+revert. CI checks every pushed and proposed commit (`.github/workflows/commits.yml`); locally, once per clone:
+`git config core.hooksPath .githooks` rejects a non-conforming message at commit time.
+

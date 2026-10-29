@@ -25,7 +25,7 @@ jobs:
           git diff --cached --quiet && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -q -m "predictions: $(git diff --cached --name-only predictions | wc -l) new file(s)"
+          git commit -q -m "chore(predictions): $(git diff --cached --name-only predictions | wc -l) new file(s)"
           git push
           # a push with the workflow token starts no other workflow — not even the Pages deployment: ask for it
           gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null && echo "Pages build requested"
