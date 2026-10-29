@@ -301,12 +301,18 @@ def scrub(text: str) -> str:
     return PRIVATE_IPV4.sub("x.x.x.x", MAC.sub("<mac>", text))
 
 
-def sanitize(text: str) -> str:
+# Files whose columns look like IPv6 addresses but are not: lscpu -e's cache ids (L1d:L1i:L2:L3, e.g. 0:0:0:0) —
+# masking them lost every machine's L3 topology. They carry no addresses.
+NO_IPV6_SCRUB = {"lscpu-e.txt"}
+
+
+def sanitize(text: str, ipv6: bool = True) -> str:
     """Drops lines naming serials, UUIDs or asset tags; masks MAC and IP addresses."""
     out = [l for l in text.splitlines() if not SENSITIVE.search(l)]
     t = "\n".join(out)
     t = MAC.sub("<mac>", t)
-    t = IPV6.sub("<ip6>", t)
+    if ipv6:
+        t = IPV6.sub("<ip6>", t)
     return IPV4.sub("x.x.x.x", t) + "\n"
 
 
@@ -390,7 +396,8 @@ def collect_inventory(dst: Path, log: Path) -> dict:
             (dst / name).write_text("no NVIDIA GPU in this machine\n")
             continue
         rc, out = sh(cmd, timeout=180)
-        (dst / name).write_text(sanitize(out) if not name.endswith(".json") else MAC.sub("<mac>", out))
+        (dst / name).write_text(sanitize(out, ipv6=name not in NO_IPV6_SCRUB) if not name.endswith(".json")
+                                else MAC.sub("<mac>", out))
         if rc != 0:
             say(f"inventory: {name} rc={rc}", log)
     spd_raw(dst)

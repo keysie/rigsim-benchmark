@@ -1079,3 +1079,9 @@ def test_flash_finds_the_stick_without_udev(tmp_path):
     assert r.stdout.strip() == "/dev/sdx3"
     assert "NAME,LABEL" not in f and f.count('part="$(data_part || true)"') >= 2
     assert '"$(lsblk -dno TRAN "$DEV")" == usb' in f
+
+
+def test_lscpu_cache_ids_are_not_masked_as_ipv6():
+    line = "  0    0      0    0 0:0:0:0          yes 4954.5649 567.0890 3842.5410"
+    assert "<ip6>" in stick.sanitize(line)                                  # the general scrub would mask it
+    assert "0:0:0:0" in stick.sanitize(line, ipv6=False) and "lscpu-e.txt" in stick.NO_IPV6_SCRUB
