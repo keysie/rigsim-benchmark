@@ -1062,3 +1062,20 @@ def test_laptop_run_fixes(tmp_path):
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
     assert "systemctl mask nvidia-cdi-refresh.service" in c
     assert all("loglevel=3" in l for l in (HERE / "ubuntu" / "grub.cfg").read_text().splitlines() if l.strip().startswith("linux "))
+
+
+def test_flash_finds_the_stick_without_udev(tmp_path):
+    """WSL has no udev: lsblk shows no labels. The RIGSIM partition is found with blkid on the partition itself."""
+    import subprocess
+    f = (HERE / "flash.sh").read_text()
+    fn = f.split("data_part() {", 1)[1].split("\n}\n", 1)[0]
+    bin_ = tmp_path / "bin"; bin_.mkdir()
+    (bin_ / "lsblk").write_text("#!/bin/sh\nprintf '/dev/sdx disk\\n/dev/sdx1 part\\n/dev/sdx2 part\\n/dev/sdx3 part\\n'\n")
+    (bin_ / "blkid").write_text('#!/bin/sh\n[ "$5" = /dev/sdx3 ] && echo RIGSIM; exit 0\n')
+    for b in bin_.iterdir():
+        b.chmod(0o755)
+    script = f'DEV=/dev/sdx\ndata_part() {{{fn}\n}}\ndata_part'
+    r = subprocess.run(["bash", "-c", script], capture_output=True, text=True, env={"PATH": f"{bin_}:/usr/bin:/bin"})
+    assert r.stdout.strip() == "/dev/sdx3"
+    assert "NAME,LABEL" not in f and f.count('part="$(data_part || true)"') >= 2
+    assert '"$(lsblk -dno TRAN "$DEV")" == usb' in f

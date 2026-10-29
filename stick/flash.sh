@@ -19,13 +19,15 @@
 set -euo pipefail
 S="$(cd "$(dirname "$0")" && pwd)"; OUT="$S/out"; ISO="${ISO:-$OUT/rigsim-stick.iso}"
 source "$S/tools/deps.sh"
-need sfdisk:fdisk partx:util-linux blockdev:util-linux lsblk:util-linux e2fsck:e2fsprogs python3:python3 \
+need sfdisk:fdisk partx:util-linux blkid:util-linux blockdev:util-linux lsblk:util-linux e2fsck:e2fsprogs python3:python3 \
      mkfs.ext4:e2fsprogs rsync:rsync
 RESERVE_MIB="${RESERVE_MIB:-8192}"
 reseed=0; [[ "${1:-}" == --reseed ]] && { reseed=1; shift; }
 DEV="${1:?device, e.g. /dev/sdX}"
 [[ -b "$DEV" ]] || { echo "$DEV is not a block device" >&2; exit 2; }
-[[ "$(lsblk -dno RM "$DEV")" == 1 || "${FORCE:-0}" == 1 ]] || { echo "$DEV is not removable (FORCE=1 to override)" >&2; exit 2; }
+# a removable disk, or one on USB (WSL passes USB sticks through usbipd as fixed disks, with transport usb)
+[[ "$(lsblk -dno RM "$DEV")" == 1 || "$(lsblk -dno TRAN "$DEV")" == usb || "${FORCE:-0}" == 1 ]] || {
+  echo "$DEV is neither removable nor on USB (FORCE=1 to override)" >&2; exit 2; }
 [[ $reseed == 1 || -s "$ISO" ]] || { echo "no image at $ISO (run stick/build.sh first)" >&2; exit 2; }
 for p in $(lsblk -lnpo NAME "$DEV" | tail -n +2); do
   mountpoint -q "$(lsblk -no MOUNTPOINT "$p" | head -1)" 2>/dev/null && umount "$p" || true
@@ -39,7 +41,15 @@ reread() {
   blockdev --rereadpt "$DEV" 2>/dev/null || { partx -u "$DEV" 2>/dev/null; partx -a "$DEV" 2>/dev/null; } || true
   if command -v udevadm >/dev/null; then udevadm settle; else sleep 2; fi
 }
-data_part() { lsblk -lnpo NAME,LABEL "$DEV" | awk '$2 == "RIGSIM" {print $1; exit}'; }
+# The RIGSIM partition, by its filesystem label read with blkid from the partition itself: lsblk's LABEL comes from
+# udev's database, which WSL does not have (there an existing stick looked blank and was offered for erasing).
+data_part() {
+  local p
+  for p in $(lsblk -lnpo NAME,TYPE "$DEV" | awk '$2 == "part" {print $1}'); do
+    [[ "$(blkid -o value -s LABEL "$p" 2>/dev/null)" == RIGSIM ]] && { echo "$p"; return 0; }
+  done
+  return 1
+}
 mount_data() { MNT="$(mktemp -d)"; mount "$1" "$MNT"; }
 
 # Container images are loaded here, on this machine, into the stick's Docker store kept as ONE file: STORE
@@ -196,7 +206,7 @@ update() {                                           # $1 = data partition
   dd if="$ISO" of="$DEV" bs=4M conv=fsync status=progress
   echo "start=${start}, size=${sectors}, type=83" | sfdisk --append --no-reread "$DEV"
   reread
-  part="$(lsblk -lnpo NAME,LABEL "$DEV" | awk '$2 == "RIGSIM" {print $1; exit}')"
+  part="$(data_part || true)"
   if [[ -z "$part" ]] || ! e2fsck -n "$part" >/dev/null 2>&1; then
     echo "the data partition did not come back cleanly — the backup above has every run; run with [e]rase." >&2
     return 4
