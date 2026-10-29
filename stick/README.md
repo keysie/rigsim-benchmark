@@ -186,6 +186,15 @@ models, MLC, Blender, a hash over all stick scripts). Every run copies this, add
 driver, Docker, Vulkan drivers) into `manifest.json`, and attaches to each step the versions its results came
 from. The data page shows them per run.
 
+### Decided: llama.cpp is built from source (2026-10-29)
+
+llama.cpp's releases point to a build (`nightly-tag.txt`: v0.8.0 = b11960) that ships ready Linux x64 archives for
+CPU, Vulkan, CUDA 12.8, ROCm 10.0 and SYCL. They are not used: the archives hold llama-bench but not
+`test-backend-ops`, which the per-kernel timings need on exactly the GPU backends, and building it compiles the same
+ggml backend that dominates the build time — using the archives for llama-bench alone would save only ~5-10 % of
+the llama.cpp build, which runs only when the llama.cpp version changes (cached by commit). Revisit if
+`test-backend-ops` is dropped for some backends, or the archives start including it.
+
 ## Development
 
 ```bash
