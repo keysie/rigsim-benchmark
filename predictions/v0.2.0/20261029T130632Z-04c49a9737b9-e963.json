@@ -1,0 +1,132 @@
+{
+ "rigsim": {
+  "tag": "v0.2.0",
+  "commit": "967d498167a1bd2f7eec9863790c9be62b1b4fed"
+ },
+ "run": "20261029T130632Z-04c49a9737b9-e963",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-29T18:33:58+00:00",
+ "predictions": [],
+ "unsupported": [
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp vulkan backend not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/32",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/32",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/32",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/32",
+   "reason": "not modelled yet"
+  }
+ ]
+}

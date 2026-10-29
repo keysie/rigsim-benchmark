@@ -4,8 +4,8 @@
   "commit": "967d498167a1bd2f7eec9863790c9be62b1b4fed"
  },
  "run": "20261028T184331Z-2ad20e343d87-0f60",
- "measurements_version": "1",
- "computed_utc": "2026-10-28T22:27:26+00:00",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-29T18:33:56+00:00",
  "predictions": [
   {
    "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
@@ -104,6 +104,54 @@
   },
   {
    "key": "gpu-vram/gpu0/write",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/32",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/32",
    "reason": "not modelled yet"
   },
   {

@@ -1,0 +1,84 @@
+{
+ "rigsim": {
+  "tag": "v0.2.0",
+  "commit": "967d498167a1bd2f7eec9863790c9be62b1b4fed"
+ },
+ "run": "20261029T080537Z-6a1ce581151e-65e0",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-29T18:33:58+00:00",
+ "predictions": [],
+ "unsupported": [
+  {
+   "key": "cpu-mem-ladder/load_avx/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/32",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/1",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/2",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/4",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/8",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/16",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/32",
+   "reason": "not modelled yet"
+  },
+  {
+   "key": "mlc/idle_latency",
+   "reason": "memory not identified (type 'LPDDR3', speed 2133)"
+  },
+  {
+   "key": "mlc/max_bandwidth/all_reads",
+   "reason": "memory not identified (type 'LPDDR3', speed 2133)"
+  },
+  {
+   "key": "mlc/max_bandwidth/3to1_rw",
+   "reason": "write traffic not modelled yet (reads only)"
+  },
+  {
+   "key": "mlc/max_bandwidth/2to1_rw",
+   "reason": "write traffic not modelled yet (reads only)"
+  },
+  {
+   "key": "mlc/max_bandwidth/1to1_rw",
+   "reason": "write traffic not modelled yet (reads only)"
+  },
+  {
+   "key": "mlc/max_bandwidth/stream_triad",
+   "reason": "write traffic not modelled yet (reads only)"
+  }
+ ]
+}
