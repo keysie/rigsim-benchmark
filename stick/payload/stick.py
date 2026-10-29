@@ -473,7 +473,8 @@ def pcie_topology(devices: Path = Path("/sys/bus/pci/devices"), names: dict | No
 def powercap(root: Path = Path("/sys/class/powercap")) -> dict:
     """The package power limits the machine runs under (Linux powercap / RAPL): per zone its name and each constraint's
     name ('long_term' = PL1, 'short_term' = PL2), limit in watts and time window in seconds. The board may set them
-    away from the processor's TDP; rigsim uses them as the package's power budget."""
+    away from the processor's TDP, and they influence what is measured: recorded as data. (rigsim models the package
+    budget from the manufacturer's specification; these configured limits are context, not an input.)"""
     zones = {}
     for z in sorted(root.glob("*")):
         name = _read(z / "name")
