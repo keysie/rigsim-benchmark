@@ -363,15 +363,32 @@ def parse_dimms(dmidecode: str) -> list[dict]:
     return dimms
 
 
+def has_nvidia_gpu(devices: Path = Path("/sys/bus/pci/devices")) -> bool:
+    """An NVIDIA display device (vendor 0x10de, class 0x03xxxx) on the PCI bus."""
+    for d in devices.glob("*"):
+        try:
+            if (d / "vendor").read_text().strip() == "0x10de" and (d / "class").read_text().startswith("0x03"):
+                return True
+        except OSError:
+            continue
+    return False
+
+
 def collect_inventory(dst: Path, log: Path) -> dict:
     dst.mkdir(parents=True, exist_ok=True)
-    for mod in ("i2c-i801", "i2c-piix4", "ee1004", "spd5118", "at24", "i2c-dev", "msr",
-                "nvidia_uvm", "nvidia_modeset", "nvidia_drm"):
+    nv = has_nvidia_gpu()
+    # NVIDIA's modules and tools only where there is an NVIDIA card: elsewhere they just print "NVRM: No NVIDIA
+    # GPU found" over the console
+    for mod in ("i2c-i801", "i2c-piix4", "ee1004", "spd5118", "at24", "i2c-dev", "msr") + \
+               (("nvidia_uvm", "nvidia_modeset", "nvidia_drm") if nv else ()):
         sh(["modprobe", mod], timeout=20)
-    if shutil.which("nvidia-modprobe"):                  # device nodes the Vulkan driver opens (uvm, modeset)
+    if nv and shutil.which("nvidia-modprobe"):           # device nodes the Vulkan driver opens (uvm, modeset)
         sh(["nvidia-modprobe", "-u", "-m", "-c", "0"], timeout=20)
     for k, (name, cmd) in enumerate(INVENTORY, 1):
         STATUS.set(f"{name} {k}/{len(INVENTORY)}")
+        if cmd and cmd[0] == "nvidia-smi" and not nv:
+            (dst / name).write_text("no NVIDIA GPU in this machine\n")
+            continue
         rc, out = sh(cmd, timeout=180)
         (dst / name).write_text(sanitize(out) if not name.endswith(".json") else MAC.sub("<mac>", out))
         if rc != 0:
@@ -1645,7 +1662,7 @@ def main() -> int:
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
             qplan = list(plan(OPT / "questions", nvidia, why))
-            STATUS.n = len(qplan) + 7
+            STATUS.n = 2 + len(qplan) + 7        # inventory, docker, the questions, the seven steps below
             threading.Thread(target=operator_keys, daemon=True).start()
             for q, f, skip in qplan:
                 STATUS.begin(q, skippable=not skip)

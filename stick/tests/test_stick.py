@@ -1045,3 +1045,20 @@ def test_operator_can_skip_a_step(tmp_path, monkeypatch):
     assert '"hwq.py"), "restore", "--dir", str(d)]' in src                         # a skipped question still restores
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
     assert "41apt_cdrom" in c and c.index("30accessibility") < c.index("update-initramfs -u -k all")
+
+
+def test_laptop_run_fixes(tmp_path):
+    """A laptop without NVIDIA card (i7-7600U, HD 620): '16/15' steps, NVRM messages, CDI unit failures."""
+    src = (HERE / "payload" / "stick.py").read_text()
+    assert "STATUS.n = 2 + len(qplan) + 7" in src
+    begins = src.count('STATUS.begin("inventory")') + src.count('STATUS.begin("docker")') + 1     # + the question loop
+    assert begins == 3 and src.count("STATUS.begin(name, skippable=True)") == 1
+    named = src.split('for name, step in (("mlc"', 1)[1].split("STATUS.begin(name", 1)[0]
+    assert named.count("lambda:") == 7                                       # the seven named steps counted
+    for vendor, cls, want in (("0x8086", "0x030000", False), ("0x10de", "0x030000", True), ("0x10de", "0x040300", False)):
+        d = tmp_path / vendor / cls / "0000:01:00.0"; d.mkdir(parents=True)
+        (d / "vendor").write_text(vendor + "\n"); (d / "class").write_text(cls + "\n")
+        assert stick.has_nvidia_gpu(d.parent) is want                        # an NVIDIA audio function is no GPU
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    assert "systemctl mask nvidia-cdi-refresh.service" in c
+    assert all("loglevel=3" in l for l in (HERE / "ubuntu" / "grub.cfg").read_text().splitlines() if l.strip().startswith("linux "))

@@ -68,6 +68,9 @@ nvidia-ctk runtime configure --runtime=docker
 systemctl disable docker.service docker.socket containerd.service || true
 systemctl enable rigsim-stick.service
 systemctl mask getty@tty1.service
+# the container toolkit's CDI refresh fails at every boot of a machine without an NVIDIA card; the stick uses the
+# NVIDIA runtime directly, not CDI
+systemctl mask nvidia-cdi-refresh.service nvidia-cdi-refresh.path 2>/dev/null || true
 echo rigsim-stick > /etc/hostname
 # casper's live-session steps for a desktop install image that this stick has none of (accessibility settings, the
 # CD-ROM as apt source, update notifier, apport crash reports, keyboard / locale setup on the console, desktop
