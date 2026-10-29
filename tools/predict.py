@@ -86,6 +86,18 @@ def predict_run(run: Path, rigsim: Path, tag: str, commit: str) -> dict:
     return dict(rec, predictions=out.get("predictions", []), unsupported=out.get("unsupported", []))
 
 
+def needs_prediction(f: Path) -> bool:
+    """No file yet for this tag, or one made from an older set of measured values (measurements.VERSION): the
+    newest release then predicts the run again, so values added to the measurements get predicted too. Files of
+    older releases are never touched."""
+    if not f.exists():
+        return True
+    try:
+        return json.loads(f.read_text()).get("measurements_version") != measurements.VERSION
+    except ValueError:
+        return True
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rigsim", type=Path, help="an existing rigsim checkout (at --tag) instead of cloning")
@@ -95,7 +107,7 @@ def main() -> int:
     if not tag:
         print("no rigsim engine release (vX.Y.Z) yet: nothing to predict")
         return 0
-    todo = [r for r in sorted(RUNS.glob("*/run.json")) if not (OUT / tag / f"{r.parent.name}.json").exists()]
+    todo = [r for r in sorted(RUNS.glob("*/run.json")) if needs_prediction(OUT / tag / f"{r.parent.name}.json")]
     if not todo:
         print(f"rigsim {tag}: every run already predicted")
         return 0

@@ -22,7 +22,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "1"
+VERSION = "2"                  # 2: cpu-mem-ladder values added. Any change to the set of values bumps it.
 LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 

@@ -7,6 +7,8 @@ the runs.
 - A daily job (`.github/workflows/predictions.yml`, `tools/predict.py`) takes rigsim's newest engine release
   (tag `vX.Y.Z`) and predicts every run that has no file for that tag yet. A new rigsim release therefore predicts
   all runs once; a new run gets the newest release once.
+- When the set of measured values grows (tools/measurements.py `VERSION`), the newest release predicts every run again,
+  so new values get predicted too.
 - Files of older releases are never recomputed or removed: the data page shows the newest release's prediction and,
   on hover, the earlier ones.
 - A failed prediction is kept as a file with `error` (so it is not retried every day; the next release tries again).

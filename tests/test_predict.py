@@ -81,3 +81,12 @@ def test_nothing_without_an_engine_release(monkeypatch, capsys):
     assert P.main() == 0 and "no rigsim engine release" in capsys.readouterr().out
     wf = (ROOT / ".github" / "workflows" / "predictions.yml").read_text()
     assert "cron:" in wf and "tools/predict.py" in wf and "tools/index.py" in wf
+
+
+def test_newest_release_repredicts_when_the_measured_values_change(tmp_path):
+    f = tmp_path / "x.json"
+    assert P.needs_prediction(f)
+    f.write_text(json.dumps(dict(measurements_version=P.measurements.VERSION)))
+    assert not P.needs_prediction(f)
+    f.write_text(json.dumps(dict(measurements_version="1")))
+    assert P.needs_prediction(f)
