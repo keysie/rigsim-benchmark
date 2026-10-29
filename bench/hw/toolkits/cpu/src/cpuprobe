@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """rigsim CPU / storage probe. One JSON object per result line on stdout.
-  cpuprobe ladder  --kernel load_sse|load_avx|load_avx512 --threads N --size 2GB --iterations 20   (likwid-bench)
+  cpuprobe ladder  --kernel load_sse|load_avx|load_avx512|store_avx|store_mem_avx --threads N --size 2GB --iterations 20
+                   (likwid-bench; store_avx: ordinary stores, store_mem_avx: non-temporal stores)
   cpuprobe latency --mib 1024 --passes 5                                                            (pointer chase)
   cpuprobe fio     --mode seqread_1m_qd32|randread_4k_qd1|randread_4k_qd32 --size 8G --runtime 30   (fio, /data)
 """

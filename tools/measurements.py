@@ -11,6 +11,7 @@ Keys are stable (they are how a prediction finds its measurement) and versioned 
 gets a new key, an existing key never changes meaning:
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
+  cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
   mlc/idle_latency                                  ns
   mlc/max_bandwidth/<traffic>                       GB/s            traffic: all_reads, 3to1_rw, 2to1_rw, ..."""
 from __future__ import annotations
@@ -124,6 +125,24 @@ def gpu_vram(run: Path) -> list[dict]:
             for (g, op), v in sorted(by.items())]
 
 
+def ladder(run: Path) -> list[dict]:
+    """The bench runner's RAM ladder (likwid-bench): bandwidth per kernel and thread count, median over repeats.
+    likwid counts the bytes the program moves (a store kernel: the bytes written)."""
+    f = run / "q" / "cpu-mem-ladder" / "results.jsonl"
+    if not f.exists():
+        return []
+    by: dict[tuple[str, int], list[float]] = {}
+    for row in _json_lines(f):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        for r in row.get("results") or []:
+            if r.get("mode") == "ladder" and r.get("bytes_per_s"):
+                by.setdefault((r["kernel"], int(r["threads"])), []).append(r["bytes_per_s"])
+    return [dict(key=f"cpu-mem-ladder/{k}/{t}", value=statistics.median(v) / 1e9, unit="GB/s", spread=0.0,
+                 source="q/cpu-mem-ladder/results.jsonl", conditions=dict(kernel=k, threads=t, repeats=len(v)))
+            for (k, t), v in sorted(by.items())]
+
+
 def mlc(run: Path) -> list[dict]:
     out = []
     f = run / "mlc" / "idle_latency.txt"
@@ -144,7 +163,7 @@ def mlc(run: Path) -> list[dict]:
 
 
 def extract(run: Path) -> dict:
-    return dict(version=VERSION, run=run.name, measurements=llama(run) + gpu_vram(run) + mlc(run))
+    return dict(version=VERSION, run=run.name, measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run))
 
 
 if __name__ == "__main__":

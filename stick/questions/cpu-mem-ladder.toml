@@ -1,6 +1,6 @@
 question = "cpu-mem-ladder"
-asks = "RAM read bandwidth by number of cores and instruction width (stick profile; thread counts above the machine's core count fail harmlessly)."
-feeds = "Per-core link (Little's law), DRAM efficiency from JEDEC timings, chiplet links (hw/arch.py, hw/dram.py)."
+asks = "RAM bandwidth by number of cores and instruction width: reads, and pure writes both as ordinary stores (the core reads each line before writing it) and as non-temporal stores straight to memory (stick profile; thread counts above the machine's core count fail harmlessly)."
+feeds = "Per-core link (Little's law), DRAM read and write efficiency from JEDEC timings, chiplet links (hw/arch.py, hw/dram.py)."
 image = "debian:trixie"
 toolkit = "cpu"
 gpus = "none"
@@ -10,7 +10,7 @@ timeout_s = 300
 max_attempts = 1
 
 [grid]
-kernel = ["load_sse", "load_avx"]
+kernel = ["load_sse", "load_avx", "store_avx", "store_mem_avx"]
 threads = [1, 2, 4, 8, 16, 32]
 
 [args]
