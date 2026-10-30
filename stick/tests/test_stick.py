@@ -1092,3 +1092,7 @@ def test_powercap_limits(tmp_path):
     assert list(p["zones"]) == ["intel-rapl:0"]
     assert p["zones"]["intel-rapl:0"]["constraints"][0] == dict(name="long_term", limit_w=65.0, window_s=28.0)
     assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.4"
+def test_lscpu_cache_ids_are_not_masked_as_ipv6():
+    line = "  0    0      0    0 0:0:0:0          yes 4954.5649 567.0890 3842.5410"
+    assert "<ip6>" in stick.sanitize(line)                                  # the general scrub would mask it
+    assert "0:0:0:0" in stick.sanitize(line, ipv6=False) and "lscpu-e.txt" in stick.NO_IPV6_SCRUB
