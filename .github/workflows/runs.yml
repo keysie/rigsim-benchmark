@@ -1,8 +1,10 @@
-# Contributed runs: checked on every pull request that touches results/; after merging, the table is rebuilt.
+# Contributed runs: checked on every pull request that adds run folders or credits; after merging, the table is
+# rebuilt.
 name: runs
 on:
   pull_request:
-    paths: ["results/**"]
+    # only contributions: run folders and their credits. Maintenance (code, docs, results/FORMAT.md) is not one.
+    paths: ["results/runs/**", "results/attribution/**"]
   push:
     branches: [main]
     paths: ["results/runs/**", "results/attribution/**"]

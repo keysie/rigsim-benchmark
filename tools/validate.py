@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / "stick" / "payload"))
 from stick import INVENTORY, INVENTORY_EXTRA, MAC, PRIVATE_IPV4, SENSITIVE  # noqa: E402  (the stick's own definitions: one source of truth)
 
 FORMAT_NAME = "rigsim-stick-run"
-KNOWN_VERSIONS = {"1.0", "1.1", "1.2", "1.3"}                           # results/FORMAT.md: minor versions only add
+KNOWN_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4"}                           # results/FORMAT.md: minor versions only add
 RUN_ID = re.compile(r"^(\d{8}T\d{6}Z)-([0-9a-f]{12})-([0-9a-f]{4})$")
 COMPLETE = {"done", "done with failures"}          # finished; "error: ..." is not complete
 STOPPED = "stopped"                                 # ended early: its completed steps count, the interrupted one not
@@ -80,7 +80,7 @@ LAYOUT = [re.compile(p) for p in (
     rf"(rocm|oneapi)/(info\.jsonl|image\.txt|sycl-ls\.txt|dev\d+-{N}\.(jsonl|txt))",
     rf"blender/(devices\.txt|{N}\.(json|log))",
 )]
-STRICT_JSON = re.compile(r"(run|manifest|inventory/summary|inventory/pcie|inventory/lshw|q/[^/]+/(baseline|restore|session|state|stopped|testdirs)"
+STRICT_JSON = re.compile(r"(run|manifest|inventory/summary|inventory/pcie|inventory/powercap|inventory/lshw|q/[^/]+/(baseline|restore|session|state|stopped|testdirs)"
                          r"|opencl/clpeak-[^/]+)\.json$")
 
 

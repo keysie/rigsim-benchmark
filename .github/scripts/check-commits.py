@@ -29,6 +29,9 @@ def problem(message: str) -> str | None:
 
 def main(argv: list[str]) -> int:
     if len(argv) == 2 and argv[0] == "--file":
+        gitdir = subprocess.run(["git", "rev-parse", "--git-dir"], capture_output=True, text=True).stdout.strip()
+        if gitdir and __import__("os").path.exists(f"{gitdir}/MERGE_HEAD"):
+            return 0                                  # a merge commit: not checked, as in CI
         p = problem(open(argv[1], encoding="utf-8").read())
         if p:
             print(p, file=sys.stderr)

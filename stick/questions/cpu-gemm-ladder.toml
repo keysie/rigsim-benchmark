@@ -1,0 +1,17 @@
+question = "cpu-gemm-ladder"
+asks = "CPU fp32 matrix throughput (OpenBLAS sgemm 4096) by thread count, 1 to all logical CPUs: where adding cores stops paying, the package's power budget binds (stick profile; steps above the machine's CPU count fail harmlessly)."
+feeds = "Clock and package power from the bend of the curve (hw/cpu_uarch.py, calibrate_cpu_energy.py)."
+image = "debian:trixie"
+toolkit = "cpu"
+gpus = "none"
+exclusive = true
+repeats = 1
+timeout_s = 600
+max_attempts = 1
+
+[grid]
+threads = [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64]
+
+[args]
+reps = 3
+cmd = ["cgemm", "--prec", "fp32", "--n", "4096", "--threads", "{threads}", "--reps", "{reps}"]

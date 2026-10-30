@@ -1079,3 +1079,31 @@ def test_flash_finds_the_stick_without_udev(tmp_path):
     assert r.stdout.strip() == "/dev/sdx3"
     assert "NAME,LABEL" not in f and f.count('part="$(data_part || true)"') >= 2
     assert '"$(lsblk -dno TRAN "$DEV")" == usb' in f
+
+
+def test_powercap_limits(tmp_path):
+    z = tmp_path / "intel-rapl:0"; z.mkdir()
+    (z / "name").write_text("package-0\n"); (z / "enabled").write_text("1\n")
+    for i, (n, lim, win) in enumerate((("long_term", 65000000, 28000000), ("short_term", 90000000, 2440))):
+        (z / f"constraint_{i}_name").write_text(n + "\n")
+        (z / f"constraint_{i}_power_limit_uw").write_text(f"{lim}\n"); (z / f"constraint_{i}_time_window_us").write_text(f"{win}\n")
+    (tmp_path / "intel-rapl:0:0").mkdir(); (tmp_path / "intel-rapl:0:0" / "name").write_text("core\n")
+    p = stick.powercap(tmp_path)
+    assert list(p["zones"]) == ["intel-rapl:0"]
+    assert p["zones"]["intel-rapl:0"]["constraints"][0] == dict(name="long_term", limit_w=65.0, window_s=28.0)
+    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.4"
+def test_lscpu_cache_ids_are_not_masked_as_ipv6():
+    line = "  0    0      0    0 0:0:0:0          yes 4954.5649 567.0890 3842.5410"
+    assert "<ip6>" in stick.sanitize(line)                                  # the general scrub would mask it
+    assert "0:0:0:0" in stick.sanitize(line, ipv6=False) and "lscpu-e.txt" in stick.NO_IPV6_SCRUB
+def test_cpu_power_questions():
+    """The thread ladder (where the power budget starts to bind) and steady load after idle (its time behaviour)."""
+    import tomllib
+    lad = tomllib.loads((HERE / "questions" / "cpu-gemm-ladder.toml").read_text())
+    assert lad["grid"]["threads"][0] == 1 and len(lad["grid"]["threads"]) >= 8 and "--n" in lad["args"]["cmd"]
+    pt = tomllib.loads((HERE / "questions" / "cpu-power-time.toml").read_text())
+    cmd = " ".join(pt["args"]["cmd"])
+    assert "--sustain 120" in cmd and "--idle 30" in cmd and pt["timeout_s"] >= 200
+    src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
+    assert "nanosleep" in src and "scaling_cur_freq" in src and "energy_uj" in src and "more threads than logical CPUs" in src
+    assert '"Package id 0"' in src and '"Tctl"' in src and "temp_c" in src

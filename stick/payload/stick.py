@@ -301,12 +301,18 @@ def scrub(text: str) -> str:
     return PRIVATE_IPV4.sub("x.x.x.x", MAC.sub("<mac>", text))
 
 
-def sanitize(text: str) -> str:
+# Files whose columns look like IPv6 addresses but are not: lscpu -e's cache ids (L1d:L1i:L2:L3, e.g. 0:0:0:0) —
+# masking them lost every machine's L3 topology. They carry no addresses.
+NO_IPV6_SCRUB = {"lscpu-e.txt"}
+
+
+def sanitize(text: str, ipv6: bool = True) -> str:
     """Drops lines naming serials, UUIDs or asset tags; masks MAC and IP addresses."""
     out = [l for l in text.splitlines() if not SENSITIVE.search(l)]
     t = "\n".join(out)
     t = MAC.sub("<mac>", t)
-    t = IPV6.sub("<ip6>", t)
+    if ipv6:
+        t = IPV6.sub("<ip6>", t)
     return IPV4.sub("x.x.x.x", t) + "\n"
 
 
@@ -390,11 +396,13 @@ def collect_inventory(dst: Path, log: Path) -> dict:
             (dst / name).write_text("no NVIDIA GPU in this machine\n")
             continue
         rc, out = sh(cmd, timeout=180)
-        (dst / name).write_text(sanitize(out) if not name.endswith(".json") else MAC.sub("<mac>", out))
+        (dst / name).write_text(sanitize(out, ipv6=name not in NO_IPV6_SCRUB) if not name.endswith(".json")
+                                else MAC.sub("<mac>", out))
         if rc != 0:
             say(f"inventory: {name} rc={rc}", log)
     spd_raw(dst)
     (dst / "pcie.json").write_text(json.dumps(pcie_topology(names=lspci_names()), indent=1))
+    (dst / "powercap.json").write_text(json.dumps(powercap(), indent=1))
     cpu = next(iter(re.findall(r"^model name\s*:\s*(.*)$", (dst / "cpuinfo.txt").read_text(), re.M)), "unknown")
     board = " ".join(_dmi(k) for k in ("board_vendor", "board_name")).strip() or "unknown"
     rc, gpus = sh(["nvidia-smi", "--query-gpu=name,memory.total,pci.bus_id", "--format=csv,noheader"], timeout=60)
@@ -413,7 +421,7 @@ def collect_inventory(dst: Path, log: Path) -> dict:
 
 # --- PCIe topology ----------------------------------------------------------------------------------------------
 # Files written by the inventory besides the INVENTORY commands (the validator allows exactly these).
-INVENTORY_EXTRA = ["summary.json", "pcie.json"]
+INVENTORY_EXTRA = ["summary.json", "pcie.json", "powercap.json"]
 PCI_BDF = re.compile(r"^[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-7]$")
 PORT_TYPES = {0: "endpoint", 1: "legacy endpoint", 4: "root port", 5: "switch upstream port",
               6: "switch downstream port", 7: "PCIe to PCI bridge", 8: "PCI to PCIe bridge",
@@ -467,6 +475,26 @@ def pcie_topology(devices: Path = Path("/sys/bus/pci/devices"), names: dict | No
     for bdf, d in out.items():
         d["path"] = paths[bdf]
     return dict(devices=out, gpus=[b for b, d in out.items() if d["class_"].startswith("0x03")])
+
+
+def powercap(root: Path = Path("/sys/class/powercap")) -> dict:
+    """The package power limits the machine runs under (Linux powercap / RAPL): per zone its name and each constraint's
+    name ('long_term' = PL1, 'short_term' = PL2), limit in watts and time window in seconds. The board may set them
+    away from the processor's TDP, and they influence what is measured: recorded as data. (rigsim models the package
+    budget from the manufacturer's specification; these configured limits are context, not an input.)"""
+    zones = {}
+    for z in sorted(root.glob("*")):
+        name = _read(z / "name")
+        if not name or ":" not in z.name or z.name.count(":") > 1:       # package zones (intel-rapl:0), not sub-zones
+            continue
+        cons = []
+        for c in sorted(z.glob("constraint_*_name")):
+            i = c.name.split("_")[1]
+            lim, win = _read(z / f"constraint_{i}_power_limit_uw"), _read(z / f"constraint_{i}_time_window_us")
+            cons.append(dict(name=_read(c), limit_w=int(lim) / 1e6 if lim and lim.isdigit() else None,
+                             window_s=int(win) / 1e6 if win and win.isdigit() else None))
+        zones[z.name] = dict(name=name, enabled=_read(z / "enabled"), constraints=cons)
+    return dict(zones=zones)
 
 
 def lspci_names() -> dict:
@@ -1518,7 +1546,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.3")
+FORMAT = dict(name="rigsim-stick-run", version="1.4")
 
 
 def runtime_versions() -> dict:
