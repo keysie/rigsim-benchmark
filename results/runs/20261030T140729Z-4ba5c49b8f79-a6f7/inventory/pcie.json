@@ -1,0 +1,353 @@
+{
+ "devices": {
+  "0000:00:00.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x3ec2",
+   "class_": "0x060000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "8th Gen Core Processor Host Bridge/DRAM Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "skl_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:00.0"
+   ]
+  },
+  "0000:00:02.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x3e92",
+   "class_": "0x030000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+   "vendor_name": "Intel Corporation",
+   "kind": "VGA compatible controller",
+   "port_type": "root complex integrated endpoint",
+   "driver": "i915",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:02.0"
+   ]
+  },
+  "0000:00:08.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x1911",
+   "class_": "0x088000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Xeon E3-1200 v5/v6 / E3-1500 v5 / 6th/7th/8th Gen Core Processor Gaussian Mixture Model",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:08.0"
+   ]
+  },
+  "0000:00:14.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa36d",
+   "class_": "0x0c0330",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH USB 3.1 xHCI Host Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "USB controller",
+   "port_type": "",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.0"
+   ]
+  },
+  "0000:00:14.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa36f",
+   "class_": "0x050000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH Shared SRAM",
+   "vendor_name": "Intel Corporation",
+   "kind": "RAM memory",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.2"
+   ]
+  },
+  "0000:00:16.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa360",
+   "class_": "0x078000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH HECI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "Communication controller",
+   "port_type": "",
+   "driver": "mei_me",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.0"
+   ]
+  },
+  "0000:00:16.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa363",
+   "class_": "0x070002",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH Active Management Technology - SOL",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial controller",
+   "port_type": "",
+   "driver": "serial",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.3"
+   ]
+  },
+  "0000:00:17.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa352",
+   "class_": "0x010601",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH SATA AHCI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "SATA controller",
+   "port_type": "",
+   "driver": "ahci",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:17.0"
+   ]
+  },
+  "0000:00:1b.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa32c",
+   "class_": "0x060400",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH PCI Express Root Port #21",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1b.0"
+   ]
+  },
+  "0000:00:1f.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa306",
+   "class_": "0x060100",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Q370 Chipset LPC/eSPI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "ISA bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.0"
+   ]
+  },
+  "0000:00:1f.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa348",
+   "class_": "0x040380",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH cAVS",
+   "vendor_name": "Intel Corporation",
+   "kind": "Audio device",
+   "port_type": "",
+   "driver": "snd_hda_intel",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.3"
+   ]
+  },
+  "0000:00:1f.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa323",
+   "class_": "0x0c0500",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH SMBus Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "SMBus",
+   "port_type": "",
+   "driver": "i801_smbus",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.4"
+   ]
+  },
+  "0000:00:1f.5": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa324",
+   "class_": "0x0c8000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Cannon Lake PCH SPI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-spi",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.5"
+   ]
+  },
+  "0000:00:1f.6": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15bb",
+   "class_": "0x020000",
+   "subsystem": "0x17aa:0x3132",
+   "name": "Ethernet Connection (7) I219-LM",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "",
+   "driver": "e1000e",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.6"
+   ]
+  },
+  "0000:01:00.0": {
+   "parent": "0000:00:1b.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x144d",
+   "device": "0xa808",
+   "class_": "0x010802",
+   "subsystem": "0x144d:0xa801",
+   "name": "NVMe SSD Controller SM981/PM981/PM983",
+   "vendor_name": "Samsung Electronics Co Ltd",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1b.0",
+    "0000:01:00.0"
+   ]
+  }
+ },
+ "gpus": [
+  "0000:00:02.0"
+ ]
+}

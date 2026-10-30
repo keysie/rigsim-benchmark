@@ -1,0 +1,12 @@
+NAME        MODEL                        SIZE ROTA TRAN   TYPE
+loop0                                    1.6G    1        loop
+sda         SanDisk 3.2Gen1            114.6G    1 usb    disk
+├─sda1                                   1.7G    1        part
+├─sda2                                    10M    1        part
+└─sda3                                 106.6G    1        part
+sr0         PLDS DVD-RW DA8AESH         1024M    0 sata   rom
+nvme0n1     SAMSUNG MZVLB512HAJQ-000L7 476.9G    0 nvme   disk
+├─nvme0n1p1                              260M    0 nvme   part
+├─nvme0n1p2                               16M    0 nvme   part
+├─nvme0n1p3                            475.8G    0 nvme   part
+└─nvme0n1p4                              900M    0 nvme   part

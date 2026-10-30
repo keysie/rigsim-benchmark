@@ -1,0 +1,77 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o FLASH_ATTN_EXT -p hsk=(64|128|256),.*kv=(4096|8192|16384|32768),.*type_K=(f16|q8_0),
+Testing 2 devices
+
+Backend 1/2: Vulkan0
+  Device description: Intel(R) UHD Graphics 630 (CFL GT2)
+  Device memory: 11867 MB (10681 MB free)
+
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=2048):               994 runs -  2983.89 us/run - 100.66 MFLOP/run - [1;34m 33.74 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=2048):                     994 runs -  3147.19 us/run - 100.66 MFLOP/run - [1;34m 31.99 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                994 runs -  3141.67 us/run - 100.66 MFLOP/run - [1;34m 32.04 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=16384,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=2048):                      498 runs -  3002.15 us/run - 402.65 MFLOP/run - [1;34m134.12 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=16384,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=2048):                    249 runs - 13651.29 us/run - 402.65 MFLOP/run - [1;34m 29.50 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=16384,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):               249 runs - 13611.88 us/run - 402.65 MFLOP/run - [1;34m 29.58 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=32768,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=2048):                      375 runs -  3040.13 us/run - 805.31 MFLOP/run - [1;34m264.89 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=32768,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=2048):                    375 runs -  3093.57 us/run - 805.31 MFLOP/run - [1;34m260.32 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[12,1],kv=32768,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):               125 runs - 28556.05 us/run - 805.31 MFLOP/run - [1;34m 28.20 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=2,nr23=[16,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=q8_0,type_V=q8_0,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                746 runs -  4182.29 us/run - 134.22 MFLOP/run - [1;34m 32.09 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=4,nr23=[6,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                   994 runs -  3817.85 us/run - 100.66 MFLOP/run - [1;34m 26.37 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=4,nr23=[6,1],kv=4096,nb=512,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                   2 runs - 926553.00 us/run -  51.54 GFLOP/run - [1;34m 55.63 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=4,nr23=[6,1],kv=16384,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                  249 runs - 13811.07 us/run - 402.65 MFLOP/run - [1;34m 29.15 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=256,hsv=256,nh=4,nr23=[6,1],kv=16384,nb=512,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                  1 runs - 3936127.00 us/run - 206.16 GFLOP/run - [1;34m 52.38 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=64,hsv=64,nh=8,nr23=[1,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                    8190 runs -   250.55 us/run -   8.39 MFLOP/run - [1;34m 33.48 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=64,hsv=64,nh=8,nr23=[1,1],kv=4096,nb=4096,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                    3 runs - 699780.67 us/run -  34.36 GFLOP/run - [1;34m 49.10 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=64,hsv=64,nh=8,nr23=[4,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                    2981 runs -  1003.87 us/run -  33.55 MFLOP/run - [1;34m 33.43 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=64,hsv=64,nh=8,nr23=[4,1],kv=4096,nb=4096,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                    1 runs - 2795980.00 us/run - 137.44 GFLOP/run - [1;34m 49.16 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=64,hsv=64,nh=8,nr23=[8,1],kv=4096,nb=1,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                    1491 runs -  1395.82 us/run -  67.11 MFLOP/run - [1;34m 48.08 GFLOPS[0m
+  FLASH_ATTN_EXT(hsk=64,hsv=64,nh=8,nr23=[8,1],kv=4096,nb=4096,mask=1,sinks=0,max_bias=0.000000,logit_softcap=0.000000,prec=f32,type_K=f16,type_V=f16,permute=[0,1,2,3],kv_view=1,v_is_view_of_k=0,n_kv_max=0):                    1 runs - 8485666.00 us/run - 274.88 GFLOP/run - [1;34m 32.39 GFLOPS[0m
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Intel(R) UHD Graphics 630 (CFL GT2) (Intel open-source Mesa driver) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 65536 | int dot: 0 | matrix cores: none
+Batch offset=0x4000 len=0x0 on queue 0 (aperture: 821.6Mb, 0.0Mb VRAM only)
+   BO: addr=0x0000000540040000-0x0000000542043fff size=  32784KB handle=00011 capture=0 vram_only=0 name=user
+   BO: addr=0x00000002bfe00000-0x00000002bfffffff size=   2048KB handle=00013 capture=1 vram_only=0 name=slab_parent
+   BO: addr=0x0000000300000000-0x000000030003ffff size=    256KB handle=00003 capture=1 vram_only=0 name=instruction pool
+   BO: addr=0x00000000c0000000-0x00000000c00fffff size=   1024KB handle=00006 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x0000000140000000-0x000000014000ffff size=     64KB handle=00005 capture=1 vram_only=0 name=bindless surface state pool
+   BO: addr=0x00000002c0000000-0x00000002c000ffff size=     64KB handle=00007 capture=1 vram_only=0 name=indirect push descriptor pool
+   BO: addr=0x0000000100000000-0x000000010000ffff size=     64KB handle=00004 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100010000-0x000000010001ffff size=     64KB handle=00017 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100020000-0x000000010003ffff size=    128KB handle=00021 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100040000-0x000000010007ffff size=    256KB handle=00022 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100080000-0x00000001000fffff size=    512KB handle=00025 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100100000-0x00000001001fffff size=   1024KB handle=00032 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100200000-0x00000001003fffff size=   2048KB handle=00041 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100400000-0x00000001007fffff size=   4096KB handle=00045 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x0000000100800000-0x0000000100ffffff size=   8192KB handle=00057 capture=1 vram_only=0 name=internal surface state pool
+   BO: addr=0x00000003c0000000-0x00000003c003ffff size=    256KB handle=00002 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0040000-0x00000003c007ffff size=    256KB handle=00010 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0080000-0x00000003c00fffff size=    512KB handle=00015 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0100000-0x00000003c01fffff size=   1024KB handle=00019 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0200000-0x00000003c03fffff size=   2048KB handle=00023 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0400000-0x00000003c07fffff size=   4096KB handle=00026 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c0800000-0x00000003c0ffffff size=   8192KB handle=00029 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c1000000-0x00000003c1ffffff size=  16384KB handle=00034 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c2000000-0x00000003c3ffffff size=  32768KB handle=00046 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c4000000-0x00000003c7ffffff size=  65536KB handle=00058 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x00000003c8000000-0x00000003cfffffff size= 131072KB handle=00077 capture=1 vram_only=0 name=dynamic pool
+   BO: addr=0x0000000000200000-0x000000000023ffff size=    256KB handle=00001 capture=1 vram_only=0 name=general pool
+   BO: addr=0x0000000300040000-0x000000030007ffff size=    256KB handle=00035 capture=1 vram_only=0 name=instruction pool
+   BO: addr=0x0000000300080000-0x00000003000fffff size=    512KB handle=00038 capture=1 vram_only=0 name=instruction pool
+   BO: addr=0x00000000c0100000-0x00000000c01fffff size=   1024KB handle=00016 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c0200000-0x00000000c03fffff size=   2048KB handle=00018 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c0400000-0x00000000c07fffff size=   4096KB handle=00020 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c0800000-0x00000000c0ffffff size=   8192KB handle=00024 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c1000000-0x00000000c1ffffff size=  16384KB handle=00028 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c2000000-0x00000000c3ffffff size=  32768KB handle=00031 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c4000000-0x00000000c7ffffff size=  65536KB handle=00040 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000c8000000-0x00000000cfffffff size= 131072KB handle=00048 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x00000000d0000000-0x00000000dfffffff size= 262144KB handle=00060 capture=1 vram_only=0 name=binding table pool
+   BO: addr=0x000000053ffff000-0x000000053fffffff size=      4KB handle=00012 capture=0 vram_only=0 name=user
+   BO: addr=0x0000000540000000-0x0000000540030fff size=    196KB handle=00037 capture=0 vram_only=0 name=user
+   BO: addr=0x0000000540031000-0x0000000540038fff size=     32KB handle=00014 capture=0 vram_only=0 name=user
+   BO: addr=0xffffeffeffe00000-0xffffeffeffffffff size=   2048KB handle=00008 capture=1 vram_only=0 name=slab_parent
+ggml_vulkan: device lost on Vulkan0
+terminate called after throwing an instance of 'vk::DeviceLostError'
+  what():  vk::Queue::submit: ErrorDeviceLost

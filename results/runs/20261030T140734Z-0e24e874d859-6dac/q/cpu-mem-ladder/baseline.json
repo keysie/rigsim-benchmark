@@ -1,0 +1,78 @@
+{
+ "t": 1793369799.8347187,
+ "gpus": [],
+ "cpufreq": {
+  "cpu0": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu1": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu10": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu11": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu2": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu3": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu4": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu5": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu6": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu7": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu8": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  },
+  "cpu9": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4500000"
+  }
+ },
+ "docker": {
+  "containers": [],
+  "running": [],
+  "images": [
+   "sha256:10fad97930067cbb9a500a464814ef238a0cf3b0393f39b9468c2f6679effbbd",
+   "sha256:260134d84d292d455a7eecfb5710b6d5561c25499cabdf194008fb47bead957f",
+   "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+   "sha256:6739e3dbfe35a599280c99f618be848b6c21b4090bc5b56af98b3370fc80d48c",
+   "sha256:8c4733a92aacd0bcff3779eadc35a4a5147f36cb20a5fcb56504cbc740212259"
+  ],
+  "volumes": []
+ }
+}

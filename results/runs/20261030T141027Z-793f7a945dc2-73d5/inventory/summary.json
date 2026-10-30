@@ -1,0 +1,40 @@
+{
+ "cpu": "Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz",
+ "board": "Dell Inc. 0YNVJG",
+ "bios": "1.35.0",
+ "gpus": [
+  "Intel Corporation CoffeeLake-S GT2 [UHD Graphics 630] [8086:3e98] (rev 02)"
+ ],
+ "ram_gib": 15.4,
+ "dimms": [
+  {
+   "Locator": "DIMM1",
+   "Size": "8 GB",
+   "Type": "DDR4",
+   "Speed": "2666 MT/s",
+   "Configured Memory Speed": "2666 MT/s",
+   "Rank": "1",
+   "Manufacturer": "80AD000080AD",
+   "Part Number": "HMA81GU6CJR8N-VK    "
+  },
+  {
+   "Locator": "DIMM2",
+   "Size": "8 GB",
+   "Type": "DDR4",
+   "Speed": "2666 MT/s",
+   "Configured Memory Speed": "2666 MT/s",
+   "Rank": "1",
+   "Manufacturer": "80AD000080AD",
+   "Part Number": "HMA81GU6CJR8N-VK    "
+  }
+ ],
+ "cpufreq": {
+  "cpuinfo_min_freq": "800000",
+  "cpuinfo_max_freq": "4700000",
+  "scaling_driver": "intel_pstate",
+  "scaling_governor": "powersave",
+  "base_frequency": "3000000"
+ },
+ "secure_boot": true,
+ "kernel": "7.0.0-42-generic"
+}

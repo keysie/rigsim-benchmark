@@ -1,0 +1,44 @@
+{
+ "platform": "Intel(R) OpenCL Graphics",
+ "device": "Intel(R) UHD Graphics P630",
+ "rc": 0,
+ "results": {
+  "info": {
+   "Driver version": "23.43.027642 (Linux x64)",
+   "Compute units": 24.0,
+   "Clock frequency (MHz)": 1150.0,
+   "enqueueUnmap(after write)": "inf"
+  },
+  "Global memory bandwidth (GBPS)": {
+   "float": 32.12,
+   "float2": 32.31,
+   "float4": 33.38,
+   "float8": 30.3,
+   "float16": 26.78
+  },
+  "Single-precision compute (GFLOPS)": {
+   "float": 417.19,
+   "float2": 412.29,
+   "float4": 415.35,
+   "float8": 412.64,
+   "float16": 406.1
+  },
+  "Integer compute (GIOPS)": {
+   "int": 139.37,
+   "int2": 138.91,
+   "int4": 139.26,
+   "int8": 138.68,
+   "int16": 134.21
+  },
+  "Transfer bandwidth (GBPS)": {
+   "enqueueWriteBuffer": 15.62,
+   "enqueueReadBuffer": 15.54,
+   "enqueueWriteBuffer non-blocking": 13.75,
+   "enqueueReadBuffer non-blocking": 13.29,
+   "enqueueMapBuffer(for read)": 622457.88,
+   "memcpy from mapped ptr": 15.46,
+   "memcpy to mapped ptr": 15.62,
+   "Kernel launch latency (us)": 30.68
+  }
+ }
+}

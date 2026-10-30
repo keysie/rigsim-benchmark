@@ -1,0 +1,48 @@
+14:07:29  run 20261030T140729Z-4ba5c49b8f79-a6f7
+14:07:31  cpu Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz | board LENOVO 3132 | 15.5 GiB | gpus ['Intel Corporation CoffeeLake-S GT2 [UHD Graphics 630] [8086:3e92]']
+14:07:31  stick check: pass
+14:07:35  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 4.08, 'mib_per_s': 251.1}
+14:07:36  docker: loading debian_trixie.tar (50 MiB) onto the stick
+14:07:39  docker: loaded debian_trixie.tar (50 MiB in 3 s)
+14:07:39  docker: loading nvidia_cuda_12.8.1-devel-ubuntu24.04.tar (4923 MiB) onto the stick
+14:08:09  docker: nvidia_cuda_12.8.1-devel-ubuntu24.04.tar: 2.5 of 4.8 GiB (52%), 86 MB/s, 30 s
+14:08:39  docker: nvidia_cuda_12.8.1-devel-ubuntu24.04.tar: 4.6 of 4.8 GiB (96%), 71 MB/s, 60 s
+14:09:09  docker: nvidia_cuda_12.8.1-devel-ubuntu24.04.tar: loading, 90 s
+14:09:39  docker: nvidia_cuda_12.8.1-devel-ubuntu24.04.tar: loading, 120 s
+14:10:09  docker: nvidia_cuda_12.8.1-devel-ubuntu24.04.tar: loading, 150 s
+14:10:19  docker: loaded nvidia_cuda_12.8.1-devel-ubuntu24.04.tar (4923 MiB in 160 s)
+14:10:49  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+14:10:51  screens: [('card1', 'DP-2', '1920x1080')]
+14:10:51  screens off while measuring: ['fb0']
+14:10:51  cpu-mem-latency: start
+14:14:01  cpu-mem-latency: rc=0 {'done': 9} (190 s)
+14:14:01  cpu-mem-ladder: start
+14:18:34  cpu-mem-ladder: rc=0 {'done': 48} (273 s)
+14:18:34  cpu-gemm: start
+14:21:06  cpu-gemm: rc=0 {'done': 24} (152 s)
+14:21:06  pcie-copy: skipped (no NVIDIA GPU)
+14:21:06  gpu-p2p: skipped (no NVIDIA GPU)
+14:21:06  gpu-vram: skipped (no NVIDIA GPU)
+14:21:06  gpu-gemm: skipped (no NVIDIA GPU)
+14:21:06  gpu-launch: skipped (no NVIDIA GPU)
+14:21:06  mlc: skipped (Intel MLC not in the seed (build without MLC_URL or download failed))
+14:21:07  opencl p0d0: Intel(R) UHD Graphics 630 (Intel(R) OpenCL Graphics)
+14:23:30  opencl p0d0: rc=0 (143 s)
+14:24:09  vkprobe: 16 runs on 1 device(s)
+14:24:09  rocm: skipped (no AMD GPU)
+14:24:09  docker: loading vendor-oneapi.tar (4061 MiB) onto the stick
+14:24:39  docker: vendor-oneapi.tar: 2.4 of 4.0 GiB (62%), 84 MB/s, 30 s
+14:25:09  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 47 MB/s, 60 s
+14:25:39  docker: vendor-oneapi.tar: loading, 90 s
+14:26:09  docker: vendor-oneapi.tar: loading, 120 s
+14:26:39  docker: vendor-oneapi.tar: loading, 150 s
+14:27:09  docker: vendor-oneapi.tar: loading, 180 s
+14:27:23  docker: loaded vendor-oneapi.tar (4061 MiB in 194 s)
+14:28:49  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (57 s)
+14:32:23  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (214 s)
+14:54:36  test-backend-ops vulkan-dev0: 10/12 ops
+15:12:51  test-backend-ops cpu: 12/12 ops
+15:13:16  llama cpu-tinyllama-1.1b-q4_0: rc=0 (25 s)
+15:13:16  blender: offline route not possible (Blender executable, scenes, benchmark script missing in the seed); trying the launcher
+15:13:16  blender: skipped (Blender benchmark not in the seed)
+15:13:16  finished: done with failures
