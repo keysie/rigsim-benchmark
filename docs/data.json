@@ -17001,6 +17001,2335 @@
     "n": 18,
     "median_abs_error": 0.060807454394498084
    }
+  },
+  {
+   "run": "20261030T140729Z-4ba5c49b8f79-a6f7",
+   "date": "2026-10-30",
+   "machine": "4ba5c49b8f79",
+   "cpu": "Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz",
+   "board": "LENOVO 3132",
+   "ram_gib": 15.5,
+   "gpus": [
+    "Intel Corporation CoffeeLake-S GT2 [UHD Graphics 630] [8086:3e92]"
+   ],
+   "stick": "0.13.0",
+   "stick_build": "55a559d",
+   "stick_commit": "55a559d944e15bd78307b3a758b9b96584705280",
+   "stick_dirty": false,
+   "format": "1.4",
+   "versions": {
+    "kernel": "7.0.0-42-generic",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done with failures",
+   "steps_ok": 5,
+   "steps_failed": 2,
+   "steps_skipped": 8,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "pcie-copy",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-vram",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-launch",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "mlc",
+     "result": "skipped",
+     "note": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+     "tools": []
+    },
+    {
+     "name": "opencl",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "vkprobe / sha256",
+       "affe2ce5c318"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": []
+    },
+    {
+     "name": "oneapi",
+     "result": "failed",
+     "note": "the runtime sees no GPU (info.jsonl)",
+     "tools": []
+    },
+    {
+     "name": "llama-bench",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "skipped",
+     "note": "Blender benchmark not in the seed",
+     "tools": [
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ]
+     ]
+    }
+   ],
+   "contributor": {
+    "github": "keysie"
+   },
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 202.85325,
+     "unit": "tok/s",
+     "spread": 16.830563,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 30.137869,
+     "unit": "tok/s",
+     "spread": 0.001064,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+     "value": 25.47652,
+     "unit": "tok/s",
+     "spread": 0.049733,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 47.617733331706866,
+       "error": 0.8690831138517687,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 3%, compute 97%"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+     "value": 3.242019,
+     "unit": "tok/s",
+     "spread": 0.000157,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 4.897210974463643,
+       "error": 0.510543576229394,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 0%, memory 100%"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+     "value": 61.356352,
+     "unit": "tok/s",
+     "spread": 0.103775,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 304.5029924893706,
+       "error": 3.9628601206501104,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 6%, compute 94%, launch 0%"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+     "value": 18.684043,
+     "unit": "tok/s",
+     "spread": 0.002337,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 29.99573479118505,
+       "error": 0.6054199185468077,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x1 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 2%, memory 98%"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 18.754345,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.0016828161261512875,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 18.68315,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.005499881668851625,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 19.278275,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.025540142248131392,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 19.02159,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.012390388279770237,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 18.735955,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.002666003104800696,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 18.56175,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.012076184314593563,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 17.72634,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.05977348478035549,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 18.510755,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.014864337743188072,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 19.178255,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.02045805970348158,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 18.911885,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.006661413486735768,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 18.79945,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": -0.0007204937271353407,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 18.621925,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905114201405,
+       "error": 0.00880575526973737,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/1",
+     "value": 9.42141,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/2",
+     "value": 9.12033,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/4",
+     "value": 8.60008,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/8",
+     "value": 8.4373,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/16",
+     "value": 8.350735,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/32",
+     "value": 8.22791,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/1",
+     "value": 20.037225,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.06244974646188439,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/2",
+     "value": 19.54692,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.03893271272659493,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/4",
+     "value": 19.194575,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.02129089188219757,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/8",
+     "value": 19.22212,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.022693366863266506,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/16",
+     "value": 19.0837,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.01560465848078374,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/32",
+     "value": 18.94844,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.785905378950268,
+       "error": -0.008577730992616495,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s, cores {'core': 6}, mem DDR4-2666, channels 1, cl 18, density_gbit 8, channels_from locators"
+      }
+     ]
+    }
+   ],
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 22,
+    "median_abs_error": 0.02045805970348158
+   }
+  },
+  {
+   "run": "20261030T140734Z-0e24e874d859-6dac",
+   "date": "2026-10-30",
+   "machine": "0e24e874d859",
+   "cpu": "Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz",
+   "board": "LENOVO 3138",
+   "ram_gib": 15.5,
+   "gpus": [
+    "Intel Corporation CoffeeLake-S GT2 [UHD Graphics P630] [8086:3e96]",
+    "NVIDIA Corporation GP107GL [Quadro P1000] [10de:1cb1] (rev a1)"
+   ],
+   "stick": "0.13.0",
+   "stick_build": "55a559d",
+   "stick_commit": "55a559d944e15bd78307b3a758b9b96584705280",
+   "stick_dirty": false,
+   "format": "1.4",
+   "versions": {
+    "kernel": "7.0.0-42-generic",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done with failures",
+   "steps_ok": 5,
+   "steps_failed": 2,
+   "steps_skipped": 8,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "pcie-copy",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-vram",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "gpu-launch",
+     "result": "skipped",
+     "note": "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)",
+     "tools": []
+    },
+    {
+     "name": "mlc",
+     "result": "skipped",
+     "note": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+     "tools": []
+    },
+    {
+     "name": "opencl",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "vkprobe / sha256",
+       "affe2ce5c318"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": []
+    },
+    {
+     "name": "oneapi",
+     "result": "failed",
+     "note": "the runtime sees no GPU (info.jsonl)",
+     "tools": []
+    },
+    {
+     "name": "llama-bench",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics P630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "skipped",
+     "note": "Blender benchmark not in the seed",
+     "tools": [
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ]
+     ]
+    }
+   ],
+   "contributor": {
+    "github": "keysie"
+   },
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 232.599364,
+     "unit": "tok/s",
+     "spread": 0.044406,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 51.225132,
+     "unit": "tok/s",
+     "spread": 0.019251,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+     "value": 25.275701,
+     "unit": "tok/s",
+     "spread": 0.043578,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+     "value": 3.286351,
+     "unit": "tok/s",
+     "spread": 0.000128,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+     "value": 59.758945,
+     "unit": "tok/s",
+     "spread": 0.067218,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+     "value": 18.493175,
+     "unit": "tok/s",
+     "spread": 0.004002,
+     "gpu": "Intel(R) UHD Graphics P630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics P630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) UHD Graphics P630 (CFL GT2))"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 23.538055,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 26.92118,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 32.200845,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 35.896205,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 33.61347,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 34.03913,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 21.895635,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 26.3176,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 31.38866,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 35.312155,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 33.636305,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 34.364095,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/1",
+     "value": 13.902845,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/2",
+     "value": 14.401965,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/4",
+     "value": 14.173755,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/8",
+     "value": 13.326085,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/16",
+     "value": 12.96754,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/32",
+     "value": 12.686285,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/1",
+     "value": 39.648645,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/2",
+     "value": 38.517445,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/4",
+     "value": 37.83568,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/8",
+     "value": 37.41682,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/16",
+     "value": 37.1002,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/32",
+     "value": 36.59667,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: Intel(R) Xeon(R) E-2146G CPU @ 3.50GHz"
+      }
+     ]
+    }
+   ],
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 0,
+    "median_abs_error": null
+   }
+  },
+  {
+   "run": "20261030T141027Z-793f7a945dc2-73d5",
+   "date": "2026-10-30",
+   "machine": "793f7a945dc2",
+   "cpu": "Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz",
+   "board": "Dell Inc. 0YNVJG",
+   "ram_gib": 15.4,
+   "gpus": [
+    "Intel Corporation CoffeeLake-S GT2 [UHD Graphics 630] [8086:3e98] (rev 02)"
+   ],
+   "stick": "0.13.0",
+   "stick_build": "55a559d",
+   "stick_commit": "55a559d944e15bd78307b3a758b9b96584705280",
+   "stick_dirty": false,
+   "format": "1.4",
+   "versions": {
+    "kernel": "7.0.0-42-generic",
+    "mesa": "25.2.8-0ubuntu0.24.04.4"
+   },
+   "status": "done with failures",
+   "steps_ok": 5,
+   "steps_failed": 2,
+   "steps_skipped": 8,
+   "steps": [
+    {
+     "name": "cpu-mem-latency",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-mem-ladder",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "cpu-gemm",
+     "result": "ok",
+     "note": "",
+     "tools": []
+    },
+    {
+     "name": "pcie-copy",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-p2p",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-vram",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-gemm",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "gpu-launch",
+     "result": "skipped",
+     "note": "no NVIDIA GPU",
+     "tools": []
+    },
+    {
+     "name": "mlc",
+     "result": "skipped",
+     "note": "Intel MLC not in the seed (build without MLC_URL or download failed)",
+     "tools": []
+    },
+    {
+     "name": "opencl",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "packages / clinfo",
+       "3.0.23.01.25-1build1"
+      ],
+      [
+       "packages / clpeak",
+       "1.1.2-1"
+      ],
+      [
+       "packages / intel-opencl-icd",
+       "23.43.27642.40-1ubuntu3"
+      ],
+      [
+       "packages / libnvidia-compute-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / mesa-opencl-icd",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "packages / ocl-icd-libopencl1",
+       "2.3.2-1build1"
+      ]
+     ]
+    },
+    {
+     "name": "vkprobe",
+     "result": "ok",
+     "note": "",
+     "tools": [
+      [
+       "vkprobe / sha256",
+       "affe2ce5c318"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ]
+     ]
+    },
+    {
+     "name": "rocm",
+     "result": "skipped",
+     "note": "no AMD GPU",
+     "tools": []
+    },
+    {
+     "name": "oneapi",
+     "result": "failed",
+     "note": "the runtime sees no GPU (info.jsonl)",
+     "tools": []
+    },
+    {
+     "name": "llama-bench",
+     "result": "failed",
+     "note": "",
+     "tools": [
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverName",
+       "Intel open-source Mesa driver"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4"
+      ],
+      [
+       "vulkan_devices / Intel(R) UHD Graphics 630 (CFL GT2) / conformanceVersion",
+       "1.4.0.0"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / apiVersion",
+       "1.4.318"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverName",
+       "llvmpipe"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / driverInfo",
+       "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)"
+      ],
+      [
+       "vulkan_devices / llvmpipe (LLVM 20.1.2, 256 bits) / conformanceVersion",
+       "1.3.1.1"
+      ],
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ],
+      [
+       "packages / libvulkan1",
+       "1.3.275.0-1build1"
+      ],
+      [
+       "packages / mesa-vulkan-drivers",
+       "25.2.8-0ubuntu0.24.04.4"
+      ]
+     ]
+    },
+    {
+     "name": "blender",
+     "result": "skipped",
+     "note": "Blender benchmark not in the seed",
+     "tools": [
+      [
+       "packages / libnvidia-gl-580",
+       "580.178.04-0ubuntu0.24.04.1"
+      ]
+     ]
+    }
+   ],
+   "contributor": {
+    "github": "keysie"
+   },
+   "results": [
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+     "value": 259.178507,
+     "unit": "tok/s",
+     "spread": 7.118525,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+     "value": 51.838017,
+     "unit": "tok/s",
+     "spread": 0.011308,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+     "value": 25.4059,
+     "unit": "tok/s",
+     "spread": 0.03899,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 48.43946377302609,
+       "error": 0.9066226259658621,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+     "value": 3.468801,
+     "unit": "tok/s",
+     "spread": 0.000359,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 9.727234910227104,
+       "error": 1.8042066726304284,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 1%, memory 99%"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+     "value": 65.089264,
+     "unit": "tok/s",
+     "spread": 0.036732,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 314.40121766286137,
+       "error": 3.8303083848491726,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 3%, compute 97%, launch 0%"
+      }
+     ]
+    },
+    {
+     "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+     "value": 19.649714,
+     "unit": "tok/s",
+     "spread": 0.000732,
+     "gpu": "Intel(R) UHD Graphics 630 (CFL GT2)",
+     "pci": "0000:00:02.0",
+     "pcie_path": [
+      {
+       "pci": "0000:00:02.0",
+       "name": "CoffeeLake-S GT2 [UHD Graphics 630]",
+       "port_type": "root complex integrated endpoint",
+       "link": "x0 Unknown",
+       "max_link": "x255 Unknown"
+      }
+     ],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 58.29176908788692,
+       "error": 1.9665454208588948,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-630@ddr4-2666x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 4%, memory 96%"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/1",
+     "value": 23.49574,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.5990896456028476,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/2",
+     "value": 34.13234,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.10076820252513174,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/4",
+     "value": 37.179835,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.01054226167966199,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/8",
+     "value": 36.49516,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.02950074886030518,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/16",
+     "value": 36.187315,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.03825869782758562,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_avx/32",
+     "value": 35.67088,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.05329037438315676,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/1",
+     "value": 22.057855,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.7033294737759703,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/2",
+     "value": 29.686475,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.26561993465969436,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/4",
+     "value": 35.34654,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.06295537129735074,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/8",
+     "value": 36.44116,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.03102630513893212,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/16",
+     "value": 36.186745,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.03827505208817916,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/load_sse/32",
+     "value": 35.84322,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.571794549776655,
+       "error": 0.04822598387579724,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/1",
+     "value": 14.22299,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/2",
+     "value": 14.89222,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/4",
+     "value": 14.37922,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/8",
+     "value": 13.960525,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/16",
+     "value": 13.89365,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_avx/32",
+     "value": 13.83557,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/1",
+     "value": 39.726515,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.05423882238924704,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/2",
+     "value": 38.866885,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.033321152215536776,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/4",
+     "value": 38.399225,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.02154807528612257,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/8",
+     "value": 37.9963,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.011172256015158255,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/16",
+     "value": 37.7002,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": -0.0034059339533679678,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    },
+    {
+     "key": "cpu-mem-ladder/store_mem_avx/32",
+     "value": 37.00422,
+     "unit": "GB/s",
+     "spread": 0.0,
+     "gpu": "",
+     "pci": "",
+     "pcie_path": [],
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 37.57179560877124,
+       "error": 0.015338131942012057,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads; one step for the whole stream (miss queues not identified); cpu coffeelake-s-refresh, cores {'core': 8}, mem DDR4-2666, channels 2, cl 18, density_gbit 8, channels_from DIMM count"
+      }
+     ]
+    }
+   ],
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 22,
+    "median_abs_error": 0.05329037438315676
+   }
   }
  ]
 }
