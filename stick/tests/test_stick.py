@@ -1079,3 +1079,15 @@ def test_flash_finds_the_stick_without_udev(tmp_path):
     assert r.stdout.strip() == "/dev/sdx3"
     assert "NAME,LABEL" not in f and f.count('part="$(data_part || true)"') >= 2
     assert '"$(lsblk -dno TRAN "$DEV")" == usb' in f
+
+
+def test_cpu_power_questions():
+    """The thread ladder (where the power budget starts to bind) and steady load after idle (its time behaviour)."""
+    import tomllib
+    lad = tomllib.loads((HERE / "questions" / "cpu-gemm-ladder.toml").read_text())
+    assert lad["grid"]["threads"][0] == 1 and len(lad["grid"]["threads"]) >= 8 and "--n" in lad["args"]["cmd"]
+    pt = tomllib.loads((HERE / "questions" / "cpu-power-time.toml").read_text())
+    cmd = " ".join(pt["args"]["cmd"])
+    assert "--sustain 120" in cmd and "--idle 30" in cmd and pt["timeout_s"] >= 200
+    src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
+    assert "nanosleep" in src and "scaling_cur_freq" in src and "energy_uj" in src and "more threads than logical CPUs" in src
