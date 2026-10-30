@@ -1,0 +1,25 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o ADD -b CPU --output sql
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-30T15:04:01Z', '620d2225c', 'CPU', 'ADD', 'type=f32,ne=[4096,1,1,1],nr=[1,1,1,1],nf=1,perm1=0,src_overlap=0', 'perf', '1', '1', '', '0.610604', '0.000000', '74.975047', '48', '1638000', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-10-30T15:04:02Z', '620d2225c', 'CPU', 'ADD', 'type=f32,ne=[4096,1,1,1],nr=[1,512,1,1],nf=1,perm1=0,src_overlap=0', 'perf', '1', '1', '', '359.002274', '0.000000', '65.285102', '24576', '3078', '', '');
+
+--- stderr ---
+ggml_vulkan: Found 0 Vulkan devices:

@@ -1,0 +1,56 @@
+{
+ "t": 1793369828.0686238,
+ "gpus": [],
+ "cpufreq": {
+  "cpu0": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu1": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu2": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu3": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu4": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu5": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu6": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  },
+  "cpu7": {
+   "governor": "powersave",
+   "min_freq": "800000",
+   "max_freq": "4700000"
+  }
+ },
+ "docker": {
+  "containers": [],
+  "running": [],
+  "images": [
+   "sha256:10fad97930067cbb9a500a464814ef238a0cf3b0393f39b9468c2f6679effbbd",
+   "sha256:2dc419c6d7fe3dad0a2f9fd469c34cc90b0f9ba642d8fde837fe3d7d34a0e7f1",
+   "sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66"
+  ],
+  "volumes": []
+ }
+}

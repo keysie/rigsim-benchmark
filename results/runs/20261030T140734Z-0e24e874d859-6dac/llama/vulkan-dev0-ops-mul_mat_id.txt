@@ -1,0 +1,30 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o MUL_MAT_ID -p type_a=(f16|q4_0|q8_0|q4_K|q6_K|mxfp4),
+Testing 2 devices
+
+Backend 1/2: Vulkan0
+  Device description: Intel(R) UHD Graphics P630 (CFL GT2)
+  Device memory: 11867 MB (10680 MB free)
+
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  3974 runs -  1108.39 us/run -  25.17 MFLOP/run - [1;34m 22.70 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -   610.09 us/run -  25.17 MFLOP/run - [1;34m 41.25 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -  1505.03 us/run -  25.17 MFLOP/run - [1;34m 16.72 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -   652.03 us/run -  25.17 MFLOP/run - [1;34m 38.60 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=1,k=2048,amax=1.000000,m_v=0,ids_offset=0):                 3974 runs -   968.09 us/run -  25.17 MFLOP/run - [1;34m 26.00 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                   994 runs -  4274.11 us/run - 100.66 MFLOP/run - [1;34m 23.55 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  2469.10 us/run - 100.66 MFLOP/run - [1;34m 40.77 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  6496.49 us/run - 100.66 MFLOP/run - [1;34m 15.50 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  2933.66 us/run - 100.66 MFLOP/run - [1;34m 34.31 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=4,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  994 runs -  4114.69 us/run - 100.66 MFLOP/run - [1;34m 24.46 GFLOPS[0m
+  MUL_MAT_ID(type_a=f16,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                   497 runs -  8444.02 us/run - 201.33 MFLOP/run - [1;34m 23.84 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs -  4907.21 us/run - 201.33 MFLOP/run - [1;34m 41.03 GFLOPS[0m
+  MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs - 12852.22 us/run - 201.33 MFLOP/run - [1;34m 15.66 GFLOPS[0m
+  MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs -  5760.02 us/run - 201.33 MFLOP/run - [1;34m 34.95 GFLOPS[0m
+  MUL_MAT_ID(type_a=q6_K,type_b=f32,n_mats=128,n_used=8,b=0,m=768,n=8,k=2048,amax=1.000000,m_v=0,ids_offset=0):                  497 runs -  8156.62 us/run - 201.33 MFLOP/run - [1;34m 24.68 GFLOPS[0m
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Intel(R) UHD Graphics P630 (CFL GT2) (Intel open-source Mesa driver) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 65536 | int dot: 0 | matrix cores: none
+ggml_vulkan: device lost on Vulkan0
+ggml_vulkan: ctx->device->device.waitForFences({ ctx->almost_ready_fence }, true, UINT64_MAX) at /src/ggml/src/ggml-vulkan/ggml-vulkan.cpp:343
+terminate called after throwing an instance of 'vk::DeviceLostError'
+  what():  vk::Device::waitForFences: ErrorDeviceLost

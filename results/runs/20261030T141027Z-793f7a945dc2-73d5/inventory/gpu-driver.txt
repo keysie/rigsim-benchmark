@@ -1,0 +1,8 @@
+i915                 5025792  2
+ls: cannot access '/dev/nvidia*': No such file or directory
+ls: cannot access '/dev/kfd': No such file or directory
+/dev/dri:
+total 0
+drwxr-xr-x 2 root root         80 Oct 30 14:09 by-path
+crw-rw---- 1 root video  226,   1 Oct 30 14:09 card1
+crw-rw---- 1 root render 226, 128 Oct 30 14:09 renderD128

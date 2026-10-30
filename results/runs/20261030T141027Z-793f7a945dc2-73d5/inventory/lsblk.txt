@@ -1,0 +1,11 @@
+NAME        MODEL                SIZE ROTA TRAN   TYPE
+loop0                            1.6G    1        loop
+sda         Transcend          115.2G    1 usb    disk
+├─sda1                           1.7G    1        part
+├─sda2                            10M    1        part
+└─sda3                         107.2G    1        part
+nvme0n1     KINGSTON SNV2S500G 465.8G    0 nvme   disk
+├─nvme0n1p1                      260M    0 nvme   part
+├─nvme0n1p2                       16M    0 nvme   part
+├─nvme0n1p3                    464.6G    0 nvme   part
+└─nvme0n1p4                      900M    0 nvme   part

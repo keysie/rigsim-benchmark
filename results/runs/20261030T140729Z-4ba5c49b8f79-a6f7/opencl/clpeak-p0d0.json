@@ -1,0 +1,44 @@
+{
+ "platform": "Intel(R) OpenCL Graphics",
+ "device": "Intel(R) UHD Graphics 630",
+ "rc": 0,
+ "results": {
+  "info": {
+   "Driver version": "23.43.027642 (Linux x64)",
+   "Compute units": 24.0,
+   "Clock frequency (MHz)": 1200.0,
+   "enqueueUnmap(after write)": "inf"
+  },
+  "Global memory bandwidth (GBPS)": {
+   "float": 17.34,
+   "float2": 17.84,
+   "float4": 18.21,
+   "float8": 18.39,
+   "float16": 18.74
+  },
+  "Single-precision compute (GFLOPS)": {
+   "float": 455.22,
+   "float2": 449.81,
+   "float4": 453.09,
+   "float8": 450.37,
+   "float16": 443.12
+  },
+  "Integer compute (GIOPS)": {
+   "int": 152.0,
+   "int2": 151.52,
+   "int4": 151.91,
+   "int8": 151.29,
+   "int16": 146.41
+  },
+  "Transfer bandwidth (GBPS)": {
+   "enqueueWriteBuffer": 9.11,
+   "enqueueReadBuffer": 9.48,
+   "enqueueWriteBuffer non-blocking": 8.36,
+   "enqueueReadBuffer non-blocking": 8.4,
+   "enqueueMapBuffer(for read)": 482579.69,
+   "memcpy from mapped ptr": 9.46,
+   "memcpy to mapped ptr": 9.11,
+   "Kernel launch latency (us)": 29.82
+  }
+ }
+}
