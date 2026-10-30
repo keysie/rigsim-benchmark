@@ -1091,3 +1091,4 @@ def test_cpu_power_questions():
     assert "--sustain 120" in cmd and "--idle 30" in cmd and pt["timeout_s"] >= 200
     src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
     assert "nanosleep" in src and "scaling_cur_freq" in src and "energy_uj" in src and "more threads than logical CPUs" in src
+    assert '"Package id 0"' in src and '"Tctl"' in src and "temp_c" in src

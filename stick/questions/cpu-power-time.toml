@@ -1,5 +1,5 @@
 question = "cpu-power-time"
-asks = "CPU compute over time at steady full load, coming from a period of low load: 30 s idle, then OpenBLAS sgemm 2048 on all logical CPUs back to back for 120 s, throughput, mean core clock and (where exposed) package energy every 0.5 s (stick profile)."
+asks = "CPU compute over time at steady full load, coming from a period of low load: 30 s idle, then OpenBLAS sgemm 2048 on all logical CPUs back to back for 120 s, throughput, mean core clock, package temperature and (where exposed) package energy every 0.5 s, plus clock and temperature at the start of the idle period (stick profile)."
 feeds = "The time behaviour of the package power budget (PL2 for up to tau, then PL1): the next open point of docs/overhaul/cpu-compute.md."
 image = "debian:trixie"
 toolkit = "cpu"
