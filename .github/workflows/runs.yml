@@ -1,6 +1,6 @@
 # Contributed runs: checked on every pull request that adds run folders or credits; after merging, the table is
 # rebuilt.
-name: runs
+name: Contributed runs
 on:
   pull_request:
     # only contributions: run folders and their credits. Maintenance (code, docs, results/FORMAT.md) is not one.
@@ -10,6 +10,7 @@ on:
     paths: ["results/runs/**", "results/attribution/**"]
 jobs:
   validate:
+    name: Validate contributed runs
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions: { contents: read, issues: read, pull-requests: read }
@@ -33,6 +34,7 @@ jobs:
           export PR_AUTHOR
           python3 tools/validate.py --pr "origin/${{ github.base_ref }}"
   table:
+    name: Rebuild results table
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions: { contents: write, pages: write }
