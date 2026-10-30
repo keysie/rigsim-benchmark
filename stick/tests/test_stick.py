@@ -1107,3 +1107,10 @@ def test_cpu_power_questions():
     src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
     assert "nanosleep" in src and "scaling_cur_freq" in src and "energy_uj" in src and "more threads than logical CPUs" in src
     assert '"Package id 0"' in src and '"Tctl"' in src and "temp_c" in src
+
+
+
+def test_every_question_file_is_in_the_profile():
+    """A question file the profile does not list never runs (cpu-gemm-ladder / cpu-power-time in stick 0.13.0)."""
+    files = {f.stem for f in (HERE / "questions").glob("*.toml")}
+    assert files == set(stick.PROFILE), files ^ set(stick.PROFILE)

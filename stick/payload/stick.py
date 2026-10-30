@@ -33,7 +33,8 @@ OPENCL_TIMEOUT_S = 20 * 60
 CLPEAK_TESTS = ["--global-bandwidth", "--compute-sp", "--compute-hp", "--compute-integer", "--transfer-bandwidth",
                 "--kernel-latency"]
 SOFTWARE_DEVICES = re.compile(r"(?i)llvmpipe|softpipe|pthread|\bcpu\b|pocl")
-PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "pcie-copy", "gpu-p2p", "gpu-vram", "gpu-gemm", "gpu-launch"]
+PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-ladder", "cpu-power-time", "pcie-copy", "gpu-p2p",
+           "gpu-vram", "gpu-gemm", "gpu-launch"]
 DRM = Path("/sys/class/drm")
 FBDEV = Path("/sys/class/graphics")
 SAMPLE_S = 0.2
