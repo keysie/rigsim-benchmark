@@ -74,3 +74,14 @@ def test_conventional_commit_checker():
     for wf, msg in (("predictions.yml", 'git commit -q -m "chore(predictions): '), ("runs.yml", '"chore(table): '),
                     ("submission.yml", 'git commit -q -m "chore(runs): ')):
         assert msg in (ROOT / ".github" / "workflows" / wf).read_text()
+
+
+def test_bots_push_with_their_commit_message_check():
+    """The ruleset on main requires 'Check Conventional Commits' on every commit; the bots check their own commit,
+    report the check, then push."""
+    helper = (ROOT / ".github" / "scripts" / "push-checked.sh").read_text()
+    assert 'check-commits.py "$sha^!"' in helper and "check-runs" in helper and 'name="Check Conventional Commits"' in helper
+    assert helper.index("check-commits.py") < helper.index("check-runs") < helper.index('git push -q origin "HEAD:$target"')
+    for wf in ("runs.yml", "predictions.yml"):
+        s = (ROOT / ".github" / "workflows" / wf).read_text()
+        assert ".github/scripts/push-checked.sh main" in s and "checks: write" in s and "\n          git push\n" not in s
