@@ -1,7 +1,7 @@
 # Runs submitted through the GitHub UI: a "Submit runs" issue with zip attachments becomes a pull request with the
 # valid runs (tools/submission.py does all checking). Re-runs when the issue is edited; the pull request's branch
 # is then replaced. A maintainer still reviews and merges.
-name: submission
+name: Run submission from issue
 on:
   issues:
     types: [opened, edited, reopened]
@@ -14,6 +14,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   submit:
+    name: Check archive and open pull request
     if: contains(github.event.issue.body, '### Archive with the runs') && github.event.issue.state == 'open'
     runs-on: ubuntu-latest
     env:

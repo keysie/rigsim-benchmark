@@ -1,6 +1,6 @@
 # rigsim's predictions for every run, once a day: the newest rigsim engine release (vX.Y.Z) predicts the runs it
 # has not predicted yet (tools/predict.py, contract in predictions/README.md); earlier releases' files stay.
-name: predictions
+name: Daily rigsim predictions
 on:
   schedule:
     - cron: "17 3 * * *"
@@ -12,6 +12,7 @@ concurrency:
   group: predictions
 jobs:
   predict:
+    name: Predict runs with the newest rigsim release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
