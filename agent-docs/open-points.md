@@ -22,21 +22,33 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-5. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
+5. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
+   15 runs". Proposed plan (not cleared yet): (A) a build-time self-test that starts every shipped tool (Blender with
+   `ldd`, MLC, llama.cpp backends) and fails the build when something is missing — PR #19 already adds the Blender `ldd`
+   check, as a warning only; (B) Blender's missing libraries (PR #19, written, not merged) and the ladder grid (PR #21,
+   written, not merged); (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
+   the reason, not as a failure; (E) triage the SYCL and Vulkan aborts; (F) a run-completeness audit (expected vs
+   present data per machine class) as a tool and on the data page; (G) an end-to-end test (VM) if the user wants one.
+
+6. **Fix the new CPU questions** [agent, 2026-10-31]: (a) derive the ladder grid from the CPU count so runs stop ending
+   `done with failures`; (b) make package energy readable (find out why `energy_uj` is −1 in the container: permissions,
+   Secure Boot lockdown or sysfs masking — *unknown*); (c) expose cpu-gemm, ladder and power-time as value keys
+   (`measurements.py` `VERSION` bump); (d) consider per-thread rates or pinning so hybrid/SMT ladders are interpretable;
+   (e) take the idle-start reading after a cool-down or record the starting state. Each is a stick or tools change; propose first.
+
+7. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
    check the share of `unsupported` in `predictions/v0.3.0/` per key family and report which GPUs or CPUs are missing
    from rigsim's catalogue.
-6. **Stale remote branch `blender-libs`** [agent]: exists on the remote besides `main`; purpose and status unknown. Ask
-   before deleting.
-7. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
+8. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
    flash. Whether that is acceptable is a user decision.
 
 ## Low
 
-8. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
+9. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
-9. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
+10. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
     stick/README, decided 2026-10-29].
-10. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
+11. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
     Kepler and older not at all), MLC cannot switch prefetchers off under Secure Boot, ROCm only officially on some AMD
     generations, vkprobe's matrix GEMM is a plain kernel (lower bound), RAM timings as the BIOS set them are often
     invisible from Linux.
