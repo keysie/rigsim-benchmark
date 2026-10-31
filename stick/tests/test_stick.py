@@ -1143,7 +1143,7 @@ def test_blender_finds_its_libraries():
 # --- seed self-test (stick/tools/selftest.py) ------------------------------------------------------------------------
 _st_spec = importlib.util.spec_from_file_location("selftest", HERE / "tools" / "selftest.py")
 selftest = importlib.util.module_from_spec(_st_spec); _st_spec.loader.exec_module(selftest)
-FULL_ENV = dict(MLC_URL="x", BLENDER_LAUNCHER_URL="x")
+FULL_ENV = dict(MLC_URL="x", BLENDER_LAUNCHER_URL="x", LLAMA_FORKS="qr0n=u@c:llama.cpp kmic68=u@c")
 
 
 def _exe(p: Path) -> Path:
@@ -1170,6 +1170,12 @@ def _full_seed(tmp: Path) -> tuple[Path, Path]:
     _exe(s / "tools" / "mlc" / "mlc")
     for v in ("rocm", "oneapi"):
         (s / "images" / f"vendor-{v}.tar").write_text("x")
+    for f in ("qr0n", "kmic68"):
+        _exe(s / "llama" / "forks" / f / "llama-bench"); (s / "llama" / "forks" / f / "COMMIT").write_text("abc")
+    sw = tmp / "rootfs" / selftest.SWAP; sw.mkdir(parents=True)
+    for m in ("nvidia", "nvidia-uvm", "nvidia-modeset", "nvidia-drm"):
+        (sw / f"{m}.ko").write_text("x")
+    (sw / "VERSION").write_text("580.178.04\n"); (sw / "BOOT_VERSION").write_text("580.178.04\n")
     return s, pay
 
 
@@ -1217,8 +1223,8 @@ def test_selftest_parts_left_out_on_purpose_are_not_failures(tmp_path):
     for p in (s / "models").glob("*"):
         p.unlink()
     (s / "images" / "vendor-rocm.tar").unlink()
-    r = _run(s, pay, env=dict(SKIP_MODELS="1", SKIP_ROCM="1", MLC_URL="", BLENDER_LAUNCHER_URL=""))
-    assert {k for k, v in r.items() if v["status"] == "left out"} == {"models", "rocm", "mlc", "blender"}
+    r = _run(s, pay, env=dict(SKIP_MODELS="1", SKIP_ROCM="1", MLC_URL="", BLENDER_LAUNCHER_URL="", LLAMA_FORKS=""))
+    assert {k for k, v in r.items() if v["status"] == "left out"} == {"models", "rocm", "mlc", "blender", "llama.cpp forks"}
     assert not [k for k, v in r.items() if v["status"] == "missing"]
 
 
@@ -1258,3 +1264,15 @@ def test_disk_layout_is_a_gpt_hybrid_shared_by_build_and_flash():
     assert 'source "$S/tools/layout.sh"' in b and "make_iso " in b and "make_efiboot " in b and "-append_partition" not in b
     assert b.count('--modules="linux normal iso9660 biosdisk search configfile"') == 2
     assert 'source "$S/tools/layout.sh"' in f and "add_data_part " in f and "type=83" not in f
+
+
+def test_selftest_checks_forks_and_the_module_swap_set(tmp_path):
+    """Old-GPU sprint: the P100 forks and the other NVIDIA module flavour (same driver version) must be on the stick."""
+    s, pay = _full_seed(tmp_path)
+    (s / "llama" / "forks" / "kmic68" / "llama-bench").unlink()
+    sw = tmp_path / "rootfs" / selftest.SWAP
+    (sw / "nvidia-uvm.ko").unlink(); (sw / "BOOT_VERSION").write_text("580.95.05")
+    r = _run(s, pay)
+    assert r["llama.cpp forks"]["status"] == "missing" and "llama-bench" in r["llama.cpp forks"]["problems"][0]
+    p = r["nvidia module swap"]["problems"]
+    assert r["nvidia module swap"]["status"] == "missing" and any("nvidia-uvm" in x for x in p) and any("differ" in x for x in p)

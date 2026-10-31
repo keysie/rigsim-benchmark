@@ -101,11 +101,19 @@ def seed(seed_dir: Path, out: Path) -> dict:
     m["images"] = imgs
     # llama.cpp per backend
     llama = {}
-    for b in sorted(p for p in (seed_dir / "llama").glob("*") if p.is_dir()):
+    for b in sorted(p for p in (seed_dir / "llama").glob("*") if p.is_dir() and p.name != "forks"):
         llama[b.name] = dict(tag=(b / "TAG").read_text().strip() if (b / "TAG").exists() else "",
                              commit=(b / "COMMIT").read_text().strip() if (b / "COMMIT").exists() else "",
                              files={f.name: sha256(f) for f in sorted(b.iterdir())
                                     if f.is_file() and f.name not in ("COMMIT", "TAG")})
+    # forks for Pascal cards (build.sh LLAMA_FORKS): url, pinned commit, architectures, binary
+    forks = {}
+    for b in sorted(p for p in (seed_dir / "llama" / "forks").glob("*") if p.is_dir()):
+        rd = lambda n: (b / n).read_text().strip() if (b / n).exists() else ""
+        forks[b.name] = dict(url=rd("URL"), commit=rd("COMMIT"), archs=rd("ARCHS"),
+                             files={f.name: sha256(f) for f in sorted(b.iterdir()) if f.is_file() and f.name == "llama-bench"})
+    if forks:
+        llama["forks"] = forks
     m["llama.cpp"] = llama
     # vendor images (ROCm, oneAPI): versions inside, as built
     vendor = {}

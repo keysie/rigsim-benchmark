@@ -29,13 +29,36 @@ if apt-cache show "linux-modules-extra-$KVER" >/dev/null 2>&1; then
 else
   echo "no linux-modules-extra-$KVER: the image package carries all modules for this kernel"
 fi
-# NVIDIA: precompiled, signed modules matching the installed kernel + userspace without DKMS (meta package for the
-# series if there is one, else the one for this exact kernel)
+# NVIDIA, the other module flavour first: kept for switching during a run (stick.py, "nvidia-swap": the open modules
+# drive Turing and newer, the proprietary ones Maxwell .. Ada; a machine with cards of both sides gets every card
+# measured). Installed for this exact kernel, its signed .ko files copied to /usr/lib/rigsim/nvidia-swap/, the package
+# removed again, so depmod and udev only know the boot flavour. The proprietary flavour is linked at install time from
+# Canonical's objects and signed with their detached signatures (late-link, the package's default).
+if [ "$MODSUFFIX" = "-open" ]; then SWSUFFIX=""; SWFLAVOUR=proprietary; else SWSUFFIX="-open"; SWFLAVOUR=open; fi
+SWMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${SWSUFFIX}-$KVER"
+SW=/usr/lib/rigsim/nvidia-swap
+rm -rf "$SW"; mkdir -p "$SW"
+apt-get install -y --no-install-recommends "$SWMOD"
+for m in nvidia nvidia-uvm nvidia-modeset nvidia-drm; do
+  f="$(find "/lib/modules/$KVER/kernel/nvidia-${NVIDIA_BRANCH}${SWSUFFIX}" -maxdepth 1 -name "$m.ko*" | head -1)"
+  [ -n "$f" ] || { echo "no $m module in $SWMOD" >&2; exit 1; }
+  cp "$f" "$SW/"
+done
+echo "$SWFLAVOUR" > "$SW/FLAVOUR"
+modinfo -F version "$SW"/nvidia.ko* > "$SW/VERSION"
+apt-get purge -y --autoremove "$SWMOD"
+rm -rf "/lib/modules/$KVER/kernel/nvidia-${NVIDIA_BRANCH}${SWSUFFIX}"
+# NVIDIA, the boot flavour: precompiled, signed modules matching the installed kernel + userspace without DKMS (meta
+# package for the series if there is one, else the one for this exact kernel)
 NVMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${MODSUFFIX}-$KFL"
 apt-cache show "$NVMOD" >/dev/null 2>&1 || NVMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${MODSUFFIX}-$KVER"
 apt-get install -y --no-install-recommends \
   "$NVMOD" \
   "nvidia-headless-no-dkms-${NVIDIA_BRANCH}${MODSUFFIX}" "nvidia-utils-${NVIDIA_BRANCH}" "libnvidia-compute-${NVIDIA_BRANCH}"
+# one user-space stack serves both flavours, so both modules must be exactly the same driver version
+BOOTV="$(modinfo -k "$KVER" -F version nvidia)"
+[ "$BOOTV" = "$(cat "$SW/VERSION")" ] || { echo "NVIDIA module versions differ: boot $BOOTV, swap $(cat "$SW/VERSION")" >&2; exit 1; }
+echo "$BOOTV" > "$SW/BOOT_VERSION"
 # Vulkan (llama-bench on every vendor; NVIDIA's ICD is in libnvidia-gl), OpenMP for llama.cpp's CPU path,
 # Level Zero for Blender's oneAPI device — optional: a missing package must not stop the build
 apt-get install -y --no-install-recommends libvulkan1 mesa-vulkan-drivers vulkan-tools libgomp1
