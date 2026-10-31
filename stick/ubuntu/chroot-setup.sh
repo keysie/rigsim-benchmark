@@ -39,6 +39,10 @@ apt-get install -y --no-install-recommends \
 # Vulkan (llama-bench on every vendor; NVIDIA's ICD is in libnvidia-gl), OpenMP for llama.cpp's CPU path,
 # Level Zero for Blender's oneAPI device — optional: a missing package must not stop the build
 apt-get install -y --no-install-recommends libvulkan1 mesa-vulkan-drivers vulkan-tools libgomp1
+# Blender's Linux build links the X11 / GL client libraries even in background mode (-b); without them it does not
+# start ("libXfixes.so.3: cannot open shared object file"). The build checks the full list with ldd (build.sh).
+apt-get install -y --no-install-recommends libx11-6 libxext6 libxi6 libxxf86vm1 libxfixes3 libxrender1 \
+  libxkbcommon0 libsm6 libice6 libgl1 libegl1 libglx0 libxcursor1 libxinerama1 libxrandr2
 apt-get install -y --no-install-recommends "libnvidia-gl-${NVIDIA_BRANCH}" || echo "WARN: no NVIDIA Vulkan ICD"
 # nvidia-modprobe creates the device nodes the Vulkan driver opens (nvidia-uvm, nvidia-modeset) without X;
 # first trial run: the NVIDIA ICD was installed but the loader could not create an instance through it

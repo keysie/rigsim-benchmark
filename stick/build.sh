@@ -360,6 +360,22 @@ if [[ -n "${BLENDER_LAUNCHER_URL:-}" ]]; then
   : "${BLENDER_VERSION:=4.2.0}"; mkdir -p "$OUT/seed/blender"
   : "${BLENDER_SCRIPT_URL:=https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz}"
   cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION" "$BLENDER_SCRIPT_URL" unpack-1)" "Blender Benchmark $BLENDER_VERSION" blender_seed
+  # Does Blender find every library in the stick's system image? (ldd inside the rootfs; a run is too late to learn)
+  blender_libs() {
+    local exe missing
+    exe="$(find "$OUT/seed/blender" -type f -name blender -perm -u+x | head -1)"
+    [[ -n "$exe" ]] || { echo "blender: no executable in the seed"; return 0; }
+    sudo mkdir -p "$ROOT/mnt/blender-check"
+    sudo mount --bind "$(dirname "$exe")" "$ROOT/mnt/blender-check"
+    missing="$(sudo chroot "$ROOT" ldd /mnt/blender-check/blender 2>/dev/null | awk '/not found/ {print $1}' | sort -u | tr '\n' ' ')"
+    sudo umount "$ROOT/mnt/blender-check"; sudo rmdir "$ROOT/mnt/blender-check"
+    if [[ -n "$missing" ]]; then
+      echo "WARN: Blender will not start on the stick — libraries missing in the system image: $missing" >&2
+    else
+      echo "blender: every library it links is in the system image"
+    fi
+  }
+  step "Blender libraries" blender_libs
 else
   echo "== seed: Blender Benchmark left out (BLENDER_LAUNCHER_URL is empty)"
 fi
