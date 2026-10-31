@@ -57,6 +57,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - **Blender: 0 of 15 runs have a successful result.** 8 runs: "not in the seed" (stick builds without it); 5 runs (0.11.0 ..
   0.13.1, both newest): rc 127 — the Blender binary cannot start, `libXfixes.so.3` missing in the run environment; the
   first two runs (0.9.0, 0.11.0): rc 1, cause not checked.
+  Fix written: PR #19 (libraries installed in the system image, `ldd` check at build); not yet verified on a booted stick.
 - **oneAPI:** on 9 of 15 runs "the runtime sees no GPU" (older Intel iGPUs; likely unsupported by Level Zero — *inferred*), recorded
   as rc 1 instead of skipped. On the 13700K (UHD 770) it works, but 5 of 92 steps abort (rc 134, the SYCL llama runs).
 - **Vulkan on older Intel iGPUs:** test-backend-ops `mul_mat_id` and `flash_attn_ext` abort (rc −6) in all 8 runs on

@@ -27,3 +27,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   found: Blender never delivered a result (missing library `libXfixes.so.3` in the newest runs, not in the seed in others),
   oneAPI and Vulkan failures on older Intel iGPUs recorded as failures, seed content differing between builds. Plan
   proposed in open-points; nothing changed in code. (measured)
+- **2026-10-31** — User cleared A and B of the stick plan. Found that branch `blender-libs` is the user's open PR #19
+  (Blender libraries, stick 0.13.3), not a stale branch — an earlier open point said otherwise and was removed. Wrote PR #21
+  (ladder cap, 0.13.4; `[limits]` plan section, `cap_to_cpus` in the runner; 134 tests pass, not run on hardware).
+  New standing rule: the briefing's section 0 always holds the next steps and the last solved items.
