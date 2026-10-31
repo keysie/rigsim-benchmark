@@ -40,3 +40,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   user whether to add a bypass for the repository admin instead.
 - **2026-10-31** — Renaming `fix/ladder-grid` to `fix/stick` closed PR #21 (GitHub does not carry a PR across a branch
   rename here); reopened as rigsim-benchmark PR #22. Lesson: never rename a branch with an open PR.
+- **2026-10-31** — User decision: branches are sprints, and agent-docs live on the branch being worked on (replaces the
+  "notes only on main" rule and its `agent-docs-sync` workaround). Rule 7 rewritten. PR #22 (stick fixes, stick 0.13.4)
+  merged by the user. New sprint `sprint/stick-data` opened in both repositories.
