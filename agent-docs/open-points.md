@@ -18,6 +18,15 @@ Last revised: 2026-10-31.
    build for pre-Turing when the main build moves to CUDA 13, stick picks by compute capability; (c) P100 forks as extra,
    separately keyed llama-bench runs, only on sm_60/61, pinned and built from source; (d) driver branch 580 is the last
    for Pascal — a later move of the main stick to a newer branch would need two user-space stacks.
+   **Revised 2026-10-31 (user: mixed hardware should get every card measured; fallentree ignored):** switch modules
+   *during* the run instead of choosing once at boot. Phase 1 boots with the open modules and measures every card they
+   drive (Turing and newer, Blackwell included); if pre-Turing cards are present, phase 2 stops every GPU user (Docker
+   containers, nvidia-persistenced, nvidia-drm's console binding), unloads nvidia_uvm / nvidia_drm / nvidia_modeset /
+   nvidia, loads the proprietary set from its own directory and measures only those cards. Both flavours must be the
+   exact same driver version (one user-space stack). Cross-phase multi-GPU tests (P2P, tensor split across old and new
+   cards) are impossible and recorded as such; results are keyed by PCI address, which survives the reload. If the unload
+   fails, the old cards are recorded as skipped with the reason. *Inferred, to verify on hardware:* the open module
+   ignores pre-Turing GPUs and the proprietary one ignores Blackwell while driving the rest; unload works headless.
 
 2. **Breadth of the data** [agent]: 15 runs from 12 machines, one machine has 4. rigsim's roadmap wants low-level
    measurements to calibrate and validate the hardware model (rigsim `engine.md` §11 step 2), which needs a spread of

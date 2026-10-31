@@ -107,6 +107,4 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   2× P100; cuBLAS-GEMM flash attention for long prefill and GQA-6 tile kernels.
 - **qr0n/p100-strata** (MIT): Strata v0.2.2 + 6 patches for P100 (MXFP4 expert kernels, …). Relevant to rigsim's Strata
   engine, not to the stick (Strata is not on the stick).
-- **fallentree**: no matching repository found on GitHub (user `fallentree` has 5 unrelated repos; similar names
-  checked). Link needed from the user.
 - CUDA 13 dropped Pascal (stated in qr0n/p100-strata); the stick's CUDA image is 12.8.1.
