@@ -58,3 +58,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   added as CI workflow "Boot test". 142 unit tests pass.
 - **2026-10-31** — User report: for an old-layout stick `flash.sh` refused the update but kept offering it. Fixed: the
   blocker is checked before the menu; [u]pdate is offered only when it can work.
+- **2026-10-31** — New branch `ddr-timing-improvements` off `sprint/stick-data` (user-named; rule 7 now: the user's name,
+  else `sprint/<goal>`). Side-chat proposal on DRAM timings checked against runs and code: items 2 and 3 cheap and
+  useful (p95/p99 not with the current probe), item 1 blocked by lockdown on most runs, item 4 research, item 5's
+  premise wrong (rigsim already predicts too high; the fixed term is the error). Nothing built.

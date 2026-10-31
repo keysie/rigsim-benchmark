@@ -9,7 +9,9 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 
 **User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
 
-**Current sprint:** `sprint/stick-data` (both repositories) — goal: the stick works and collects the right data.
+**Current sprint:** `ddr-timing-improvements` (branched off `sprint/stick-data` on 2026-10-31; `sprint/stick-data` and
+`sprint/old-gpus` stay open in parallel) — goal: better memory data (programmed DRAM timings, SPD status, latency
+probe). Status: proposal from a side chat checked against the repo and the runs (open-points 1); nothing built.
 
 **Next steps, in order**
 1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp

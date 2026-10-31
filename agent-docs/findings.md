@@ -96,3 +96,13 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   partition); it says why and offers [s]eed only or [e]rase with backup.
 - Test: `sudo bash stick/tests/boot/boot-test.sh` (root, QEMU, OVMF, SeaBIOS; ~1–2 min without KVM). QEMU's small
   `bios.bin` has no xHCI support; the test uses the default (256k) SeaBIOS.
+
+## Memory data in the runs (2026-10-31; measured from the 15 runs)
+
+- `hardware.dimms` already has rated and configured speed (dmidecode): the 13700K machine runs DDR5 rated 6000 MT/s at
+  6200. Its SPD read fails ("No EEPROM found"), as in 7 of 15 runs; Secure Boot was on in 10 of 15.
+- `cpu-mem-latency` (chase): one thread, unpinned, random cyclic chase over 64-byte lines with THP; 20M loads per pass,
+  5 passes, reports median / min / max of the pass averages; grid 64 / 1024 / 4096 MiB. The runner's baseline records
+  the governor per CPU (13700K: powersave), not the frequency during the measurement.
+- rigsim's idle latency = CAS (SPD tAA) + fixed 75.35 ns; predictions v0.3.0: 13700K 76.9 vs measured 64.5 ns
+  (fixed term only, no SPD), i7-9700 90.6 vs 58.1 ns (with CAS). The fixed term is too large for these desktop parts.

@@ -32,7 +32,7 @@ These apply to every agent in every session. The user may override one for a sin
 7. **Branches are sprints** (user decision 2026-10-31). Code, configuration and docs never go to `main` directly.
    A branch holds one sprint: a stretch of related work with one goal (e.g. "the stick collects the right data"), not a
    single feature or fix. All work of the sprint goes into it — fixes, features, tests **and the agent-docs**, which
-   always live on the branch being worked on. Name it `sprint/<goal>`; a sprint touching both repositories uses the same
+   always live on the branch being worked on. Name it as the user says, else `sprint/<goal>`; a sprint touching both repositories uses the same
    branch name in both. Before starting, check for an open sprint branch: work fits its goal → continue there; it does
    not → ask the user whether to close the sprint (PR, user merges) before opening the next one from `main`. Never
    rename a branch with an open PR (GitHub closes the PR). One change per commit; agent-docs commits separate from code
