@@ -22,7 +22,10 @@ bandwidth) and on again at the end.
 ## Requirements
 
 - **Stick:** 128 GB (64 GB without the AMD and Intel images, see `SKIP_ROCM` / `SKIP_ONEAPI`).
-- **Target machines:** x86_64, UEFI or legacy boot, Secure Boot may stay on.
+- **Target machines:** x86_64, UEFI or legacy boot, Secure Boot may stay on. The image is a GPT hybrid like current Ubuntu ISOs (since stick 0.13.5; before, some UEFI
+  firmwares offered no boot option without CSM). Sticks flashed with an older build cannot be updated in place to it:
+  `flash.sh` offers [s]eed only or [e]rase (results backed up first). `stick/tests/boot/boot-test.sh` boots the layout
+  in QEMU under UEFI, UEFI with Secure Boot and BIOS (CI: "Boot test").
 - **To make the stick:** a Linux host, or Windows with WSL 2 and Docker Desktop — see below. Internet for the
   build; everything else runs in a build container.
 - **Tools the build downloads itself,** directly from their makers (never part of this repository; links in

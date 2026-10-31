@@ -327,7 +327,9 @@ def test_flash_offers_update_backs_up_first_and_keeps_the_data_partition():
     assert "[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort?" in f
     upd = f.split("update() {", 1)[1].split("\n}\n", 1)[0]
     assert upd.index("backup_runs") < upd.index("dd if=")                 # backup before anything is written
-    assert "start=${start}, size=${sectors}" in upd and "mkfs" not in upd  # same sectors, no new filesystem
+    assert 'add_data_part "$DEV" "$start" "$sectors"' in upd and "mkfs" not in upd  # same sectors, no new filesystem
+    # an MBR-layout stick (data partition to the very end) is not updated in place to the GPT layout
+    assert upd.index("disk_sectors - 34") < upd.index("backup_runs")
     assert "does not fit in front of the data partition" in upd and "e2fsck -n" in upd
     e = f.split("\n    e) ", 1)[1].split(";;", 1)[0]
     assert e.index("backup_runs") < e.index("fresh")
@@ -580,9 +582,9 @@ def test_flash_rereads_without_partprobe():
 
 def test_stick_checks_itself_before_measuring(tmp_path):
     b = (HERE / "build.sh").read_text()
-    assert "md5sum > md5sum.txt" in b and b.index("md5sum.txt") < b.index('step "ISO (BIOS + UEFI)"')
+    assert "md5sum > md5sum.txt" in b and b.index("md5sum.txt") < b.index('step "ISO (BIOS + UEFI, GPT hybrid)"')
     assert "! -path ./boot/grub/bios.img" in b                       # xorriso patches it: never matches
-    assert b.index('step "ISO checksums') > b.index('step "ISO (BIOS + UEFI)"') and "md5sum --quiet -c md5sum.txt" in b
+    assert b.index('step "ISO checksums') > b.index('step "ISO (BIOS + UEFI, GPT hybrid)"') and "md5sum --quiet -c md5sum.txt" in b
     unit = (HERE / "ubuntu/rootfs/etc/systemd/system/rigsim-stick.service").read_text()
     assert "casper-md5check.service" in unit.split("After=")[1].splitlines()[0]
     f = tmp_path / "r.json"
@@ -1238,3 +1240,18 @@ def test_selftest_exit_code_and_allow_incomplete(tmp_path, monkeypatch):
 def test_missing_libs_parses_ldd():
     out = "\tlinux-vdso.so.1 (0x...)\n\tlibXfixes.so.3 => not found\n\tlibc.so.6 => /lib/libc.so.6\n"
     assert selftest.missing_libs(out) == ["libXfixes.so.3"]
+
+
+def test_disk_layout_is_a_gpt_hybrid_shared_by_build_and_flash():
+    """User report 2026-10-31: some UEFI firmwares saw the stick but offered no boot option without CSM (MBR-only hybrid,
+    partition 1 from sector 0, no boot flag). The layout is now that of current Ubuntu ISOs; build.sh and flash.sh use
+    the same functions, and the BIOS core embeds configfile (without it legacy boot stopped at a grub> prompt in QEMU).
+    The real boot test is stick/tests/boot/boot-test.sh (QEMU: UEFI, UEFI + Secure Boot, BIOS)."""
+    lay = (HERE / "tools" / "layout.sh").read_text()
+    for flag in ("-partition_offset 16", "--mbr-force-bootable", "-appended_part_as_gpt",
+                 "28732ac11ff8d211ba4b00a0c93ec93b", "mkfs.vfat -F 16", "--relocate gpt-bak-std", "type=L"):
+        assert flag in lay, flag
+    b, f = (HERE / "build.sh").read_text(), (HERE / "flash.sh").read_text()
+    assert 'source "$S/tools/layout.sh"' in b and "make_iso " in b and "make_efiboot " in b and "-append_partition" not in b
+    assert b.count('--modules="linux normal iso9660 biosdisk search configfile"') == 2
+    assert 'source "$S/tools/layout.sh"' in f and "add_data_part " in f and "type=83" not in f

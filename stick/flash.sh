@@ -22,6 +22,7 @@ source "$S/tools/deps.sh"
 need sfdisk:fdisk partx:util-linux blkid:util-linux blockdev:util-linux lsblk:util-linux e2fsck:e2fsprogs python3:python3 \
      mkfs.ext4:e2fsprogs rsync:rsync
 RESERVE_MIB="${RESERVE_MIB:-8192}"
+source "$S/tools/layout.sh"           # add_data_part: GPT (0.13.5 on) and older MBR images
 reseed=0; [[ "${1:-}" == --reseed ]] && { reseed=1; shift; }
 DEV="${1:?device, e.g. /dev/sdX}"
 [[ -b "$DEV" ]] || { echo "$DEV is not a block device" >&2; exit 2; }
@@ -35,8 +36,8 @@ done
 
 MNT=""; cleanup() { [[ -n "$MNT" ]] && { umount "$MNT" 2>/dev/null || true; rmdir "$MNT" 2>/dev/null || true; }; }
 trap cleanup EXIT
-# The kernel's view of the new partition table. Not partprobe: libparted rejects a hybrid ISO's table, whose first
-# partition starts at sector 0 and so contains the table itself ("recursive partition"); the kernel accepts it.
+# The kernel's view of the new partition table. Not partprobe: libparted rejected the hybrid ISO's table of sticks
+# before 0.13.5, whose first partition started at sector 0 ("recursive partition"); the kernel accepts both layouts.
 reread() {
   blockdev --rereadpt "$DEV" 2>/dev/null || { partx -u "$DEV" 2>/dev/null; partx -a "$DEV" 2>/dev/null; } || true
   if command -v udevadm >/dev/null; then udevadm settle; else sleep 2; fi
@@ -179,7 +180,7 @@ fresh() {
   dd if="$ISO" of="$DEV" bs=4M conv=fsync status=progress
   local iso_mib=$(( $(stat -c %s "$ISO") / 1048576 + 1 ))
   local start=$(( iso_mib + 2048 > RESERVE_MIB ? iso_mib + 2048 : RESERVE_MIB ))
-  echo "start=${start}MiB, type=83" | sfdisk --append --no-reread "$DEV"
+  add_data_part "$DEV" "${start}MiB"
   reread
   local part; part="$(lsblk -lnpo NAME,TYPE "$DEV" | awk '$2 == "part" {p = $1} END {print p}')"
   [[ "$(lsblk -lnpo TYPE "$DEV" | grep -c part)" -ge 3 && -b "$part" ]] || {
@@ -201,10 +202,19 @@ update() {                                           # $1 = data partition
          "($(( start * ss / 1048576 )) MiB): choose [s]eed only, or [e]rase (results are backed up first)." >&2
     return 3
   fi
+  # A GPT image (0.13.5 on) keeps its backup table in the stick's last 33 sectors. Sticks flashed before with the
+  # MBR layout have their data partition running to the very end: those sectors are filesystem there, so such a
+  # stick cannot be updated in place (results are backed up first by [e]rase).
+  local disk_sectors; disk_sectors="$(blockdev --getsz "$DEV")"
+  if sfdisk -d "$ISO" 2>/dev/null | grep -q '^label: gpt' && (( start + sectors > disk_sectors - 34 )); then
+    echo "this stick was flashed with the older layout; the new image needs its last sectors for the partition" \
+         "table: choose [s]eed only (old system image), or [e]rase (results are backed up first)." >&2
+    return 3
+  fi
   backup_runs "$part"
   echo "writing the new image in front of the data partition (sectors from $start stay untouched)"
   dd if="$ISO" of="$DEV" bs=4M conv=fsync status=progress
-  echo "start=${start}, size=${sectors}, type=83" | sfdisk --append --no-reread "$DEV"
+  add_data_part "$DEV" "$start" "$sectors"
   reread
   part="$(data_part || true)"
   if [[ -z "$part" ]] || ! e2fsck -n "$part" >/dev/null 2>&1; then

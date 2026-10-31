@@ -60,6 +60,7 @@ if [[ "${RIGSIM_IN_CONTAINER:-0}" != 1 && "${BUILD_IN_CONTAINER:-1}" == 1 ]]; th
   exit $rc
 fi
 source "$S/tools/deps.sh"
+source "$S/tools/layout.sh"            # the disk layout (GPT hybrid), shared with flash.sh and the boot test
 need mmdebstrap:mmdebstrap mksquashfs:squashfs-tools xorriso:xorriso mcopy:mtools mmd:mtools mkfs.vfat:dosfstools \
      curl:curl sha256sum:coreutils tar:tar python3:python3-minimal
 command -v docker >/dev/null || { echo "Docker is missing: install Docker (docker.io or Docker's own docker-ce), then run again" >&2; exit 2; }
@@ -183,18 +184,15 @@ sudo cp "$(rootfile /usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed)" "$ISO/EF
 printf 'rigsim hardware stick %s (Ubuntu %s)\n' "$VERSION" "$SUITE" > "$ISO/.disk/info"
 cp "$S/ubuntu/grub.cfg" "$ISO/boot/grub/grub.cfg"
 sudo chroot "$ROOT" grub-mkstandalone --format=i386-pc --output=/tmp/core.img \
-  --install-modules="linux normal iso9660 biosdisk search configfile" --modules="linux normal iso9660 biosdisk search" \
+  --install-modules="linux normal iso9660 biosdisk search configfile" --modules="linux normal iso9660 biosdisk search configfile" \
   --locales="" --fonts="" "boot/grub/grub.cfg=/tmp/rigsim-build/bios.cfg" 2>/dev/null || \
   { printf 'search --set=root --file /.disk/info\nset prefix=($root)/boot/grub\nconfigfile /boot/grub/grub.cfg\n' | sudo tee "$ROOT/tmp/rigsim-build/bios.cfg" >/dev/null;
     sudo chroot "$ROOT" grub-mkstandalone --format=i386-pc --output=/tmp/core.img \
-      --install-modules="linux normal iso9660 biosdisk search configfile" --modules="linux normal iso9660 biosdisk search" \
+      --install-modules="linux normal iso9660 biosdisk search configfile" --modules="linux normal iso9660 biosdisk search configfile" \
       --locales="" --fonts="" "boot/grub/grub.cfg=/tmp/rigsim-build/bios.cfg"; }
 cat "$(rootfile /usr/lib/grub/i386-pc/cdboot.img)" "$(rootfile /tmp/core.img)" > "$ISO/boot/grub/bios.img"
 cp "$(rootfile /usr/lib/grub/i386-pc/boot_hybrid.img)" "$W/boot_hybrid.img"
-dd if=/dev/zero of="$ISO/boot/grub/efiboot.img" bs=1M count=10 status=none
-mkfs.vfat "$ISO/boot/grub/efiboot.img" >/dev/null
-mmd -i "$ISO/boot/grub/efiboot.img" ::/EFI ::/EFI/boot
-mcopy -i "$ISO/boot/grub/efiboot.img" "$ISO"/EFI/boot/*.efi ::/EFI/boot/
+make_efiboot "$ISO"
 }
 step "boot files (signed shim, GRUB, kernel)" boot_files
 sudo rm -rf "$ROOT/tmp/rigsim-build" "$ROOT/tmp/core.img" "$ROOT"/var/lib/apt/lists/* "$ROOT"/var/cache/apt/archives/*.deb
@@ -208,12 +206,7 @@ sudo chown -R "$(id -u):$(id -g)" "$ISO"
 # so its bytes on the ISO differ from the file here (first stick check after the fix: "fail")
 (cd "$ISO" && find . -type f ! -name md5sum.txt ! -path ./boot/grub/bios.img ! -path ./boot/grub/boot.cat -print0 \
   | sort -z | xargs -0 md5sum > md5sum.txt)
-step "ISO (BIOS + UEFI)" xorriso -as mkisofs -iso-level 3 -full-iso9660-filenames -volid "RIGSIM-STICK" \
-  -eltorito-boot boot/grub/bios.img -no-emul-boot -boot-load-size 4 -boot-info-table --eltorito-catalog boot/grub/boot.cat \
-  --grub2-boot-info --grub2-mbr "$W/boot_hybrid.img" \
-  -eltorito-alt-boot -e boot/grub/efiboot.img -no-emul-boot -append_partition 2 0xef "$ISO/boot/grub/efiboot.img" \
-  -output "$OUT/rigsim-stick$SUFFIX.iso" -graft-points "$ISO" /boot/grub/bios.img="$ISO/boot/grub/bios.img" \
-  /boot/grub/efiboot.img="$ISO/boot/grub/efiboot.img"
+step "ISO (BIOS + UEFI, GPT hybrid)" make_iso "$ISO" "$W/boot_hybrid.img" "$OUT/rigsim-stick$SUFFIX.iso" RIGSIM-STICK
 # the same check the stick runs at boot, here: every listed file read back out of the finished ISO
 verify_iso() {
   local x="$W/iso-check"; rm -rf "$x"; mkdir -p "$x"
