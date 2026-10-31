@@ -1114,3 +1114,11 @@ def test_every_question_file_is_in_the_profile():
     """A question file the profile does not list never runs (cpu-gemm-ladder / cpu-power-time in stick 0.13.0)."""
     files = {f.stem for f in (HERE / "questions").glob("*.toml")}
     assert files == set(stick.PROFILE), files ^ set(stick.PROFILE)
+
+
+def test_runner_lists_every_item_up_front():
+    """The stick's counter 'done/total' reads the runner's state.json: all planned items must be in it from the
+    start, or the total grows with the done count ('13/13', '14/14')."""
+    src = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
+    i = src.index('state = json.loads(sf.read_text()) if sf.exists() else {}')
+    assert src.index('state.setdefault(it["id"], {"status": "pending"})', i) < src.index("def on_signal", i)
