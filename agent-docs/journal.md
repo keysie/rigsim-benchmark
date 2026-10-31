@@ -58,3 +58,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   added as CI workflow "Boot test". 142 unit tests pass.
 - **2026-10-31** — User report: for an old-layout stick `flash.sh` refused the update but kept offering it. Fixed: the
   blocker is checked before the menu; [u]pdate is offered only when it can work.
+- **2026-10-31** — Branches `sprint/old-gpus` and `ddr-timing-improvements` opened off this one. User's order: this
+  sprint first (its stick is running on hardware), then old GPUs, then DDR (parked).

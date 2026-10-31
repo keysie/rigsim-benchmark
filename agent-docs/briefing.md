@@ -11,6 +11,11 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 
 **Current sprint:** `sprint/stick-data` (both repositories) — goal: the stick works and collects the right data.
 
+**Open branches and their order (user, 2026-10-31):** 1. `sprint/stick-data` (this one; its stick is running on
+hardware now — evaluate that run first), 2. `sprint/old-gpus` (built, stick 0.14.0, waits for a build and a mixed-GPU
+machine), 3. `ddr-timing-improvements` (parked, proposal checked). Each branch carries its own agent-docs; when they
+are merged one after the other, merge their notes by hand (journal: keep all entries in date order).
+
 **Next steps, in order**
 1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp
    CUDA, a false alarm (driver library, fixed); every other part ok. Build again; it must pass (needs the user). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
