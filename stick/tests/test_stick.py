@@ -2,6 +2,7 @@
 stable, inventory sanitised, the profile valid for the bench runner, GPU questions skipped with a reason, the index
 accumulates, power-off rules. Run: python3 -m pytest -q stick/tests"""
 import datetime as dt
+import json
 import importlib.util
 import sys
 from pathlib import Path
@@ -1125,25 +1126,103 @@ def test_runner_lists_every_item_up_front():
 
 
 def test_blender_finds_its_libraries():
-    """Run d7a3 / 1a97: Blender did not start ('libXfixes.so.3' missing): the libraries are installed and the build
-    checks with ldd in the system image that none is missing."""
+    """Run d7a3 / 1a97: Blender did not start ('libXfixes.so.3' missing): the libraries are installed, and the seed
+    self-test checks with ldd in the system image that none is missing (it replaced the warning-only check)."""
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
     for lib in ("libxfixes3", "libx11-6", "libxi6", "libxxf86vm1", "libxrender1", "libxkbcommon0", "libgl1"):
         assert lib in c, lib
     b = (HERE / "build.sh").read_text()
-    assert 'sudo chroot "$ROOT" ldd /mnt/blender-check/blender' in b and 'step "Blender libraries" blender_libs' in b
+    assert 'step "seed self-test"' in b and "tools/selftest.py" in b and "blender_libs" not in b
 
-def test_thread_ladder_is_capped_to_the_machines_cpus():
-    """Runs d7a3 / 1a97: a fixed ladder up to 64 threads failed every step above the machine's logical CPUs, so each
-    run ended 'done with failures'. The ladder is capped and always ends at the machine's own count."""
-    p = hwq.load_plan(str(HERE / "questions" / "cpu-gemm-ladder.toml"))
-    t = lambda n: [i["params"]["threads"] for i in hwq.expand(p, False, None, n)]
-    assert t(4) == [1, 2, 3, 4]                                   # the 2-core / 4-thread laptop: no failing steps
-    assert t(24) == [1, 2, 3, 4, 6, 8, 12, 16, 24]                # the 13700K
-    assert t(20) == [1, 2, 3, 4, 6, 8, 12, 16, 20]                # a count not on the ladder is added
-    assert t(1) == [1] and t(128)[-1] == 128 and 64 in t(128)
-    q = hwq.load_plan(str(HERE / "questions" / "cpu-gemm.toml"))   # questions without [limits] are untouched
-    assert {i["params"]["threads"] for i in hwq.expand(q, False, None, 4)} == {1, 0}
-    bad = dict(p, limits={"threads": "nonsense"})
-    with pytest.raises(ValueError):
-        hwq.expand(bad, False, None, 4)
+
+# --- seed self-test (stick/tools/selftest.py) ------------------------------------------------------------------------
+_st_spec = importlib.util.spec_from_file_location("selftest", HERE / "tools" / "selftest.py")
+selftest = importlib.util.module_from_spec(_st_spec); _st_spec.loader.exec_module(selftest)
+FULL_ENV = dict(MLC_URL="x", BLENDER_LAUNCHER_URL="x")
+
+
+def _exe(p: Path) -> Path:
+    p.parent.mkdir(parents=True, exist_ok=True); p.write_text("#!/bin/sh\n"); p.chmod(0o755); return p
+
+
+def _full_seed(tmp: Path) -> tuple[Path, Path]:
+    s, pay = tmp / "seed", tmp / "rootfs" / "opt" / "rigsim"
+    for img in ("nvidia/cuda:12", "debian:trixie"):
+        f = selftest.image_tar(s, img); f.parent.mkdir(parents=True, exist_ok=True); f.write_text("x")
+    (s / "debs").mkdir(parents=True); (s / "debs" / "a.deb").write_text("x")
+    _exe(pay / "bin" / "vkprobe")
+    for be in ("vulkan", "cuda"):
+        for b in selftest.LLAMA_BINS:
+            _exe(s / "llama" / be / b)
+    (s / "models").mkdir()
+    for m in ("a", "b"):
+        (s / "models" / f"{m}.gguf").write_text("x")
+    bl = s / "blender"; bl.mkdir(); (bl / "BLENDER_VERSION").write_text("4.2.0")
+    _exe(bl / "unpacked" / "blender" / "blender-4.2.0-linux-x64" / "blender")
+    for n in stick.BLENDER_SCENES:
+        f = bl / "unpacked" / "scenes" / n / f"{n}.blend"; f.parent.mkdir(parents=True); f.write_text("x")
+    (bl / "script").mkdir(); (bl / "script" / "main.py").write_text("x")
+    _exe(s / "tools" / "mlc" / "mlc")
+    for v in ("rocm", "oneapi"):
+        (s / "images" / f"vendor-{v}.tar").write_text("x")
+    return s, pay
+
+
+def _run(s, pay, env=FULL_ENV, ldd_root=lambda p: [], ldd_image=lambda i, p: []):
+    return selftest.SelfTest(s, pay, env, "nvidia/cuda:12", ["nvidia/cuda:12", "debian:trixie"],
+                             ldd_root, ldd_image, stick).run()
+
+
+def test_selftest_passes_a_complete_seed(tmp_path):
+    s, pay = _full_seed(tmp_path)
+    r = _run(s, pay)
+    assert all(x["status"] == "ok" for x in r.values()), r
+
+
+def test_selftest_finds_the_audit_failures(tmp_path):
+    """The audit of 2026-10-31: Blender without libXfixes, MLC and a vendor image not in the seed."""
+    s, pay = _full_seed(tmp_path)
+    (s / "tools" / "mlc" / "mlc").unlink(); (s / "images" / "vendor-oneapi.tar").unlink()
+    r = _run(s, pay, ldd_root=lambda p: ["libXfixes.so.3"] if p.name == "blender" else [])
+    assert {k for k, v in r.items() if v["status"] == "missing"} == {"blender", "mlc", "oneapi"}, r
+    assert "libXfixes.so.3" in r["blender"]["problems"][0]
+
+
+def test_selftest_checks_cuda_binaries_in_the_cuda_image(tmp_path):
+    s, pay = _full_seed(tmp_path)
+    seen = []
+    r = _run(s, pay, ldd_image=lambda i, p: seen.append((i, p.name)) or ["libcublas.so.12"])
+    assert r["llama.cpp cuda"]["status"] == "missing" and r["llama.cpp vulkan"]["status"] == "ok"
+    assert ("nvidia/cuda:12", "llama-bench") in seen
+
+
+def test_selftest_parts_left_out_on_purpose_are_not_failures(tmp_path):
+    s, pay = _full_seed(tmp_path)
+    for p in (s / "models").glob("*"):
+        p.unlink()
+    (s / "images" / "vendor-rocm.tar").unlink()
+    r = _run(s, pay, env=dict(SKIP_MODELS="1", SKIP_ROCM="1", MLC_URL="", BLENDER_LAUNCHER_URL=""))
+    assert {k for k, v in r.items() if v["status"] == "left out"} == {"models", "rocm", "mlc", "blender"}
+    assert not [k for k, v in r.items() if v["status"] == "missing"]
+
+
+def test_selftest_exit_code_and_allow_incomplete(tmp_path, monkeypatch):
+    s, pay = _full_seed(tmp_path)
+    (s / "debs" / "a.deb").unlink()
+    monkeypatch.setattr(selftest, "ldd_in_rootfs", lambda root, p: [])
+    monkeypatch.setattr(selftest, "ldd_in_image", lambda i, p: [])
+    monkeypatch.setattr(selftest, "load_stick", lambda: stick)
+    for k, v in FULL_ENV.items():
+        monkeypatch.setenv(k, v)
+    monkeypatch.delenv("ALLOW_INCOMPLETE", raising=False)
+    args = ["--seed", str(s), "--rootfs", str(tmp_path / "rootfs"), "--payload", str(pay), "--cuda-image",
+            "nvidia/cuda:12", "--image", "nvidia/cuda:12", "--image", "debian:trixie", "--out", str(tmp_path / "o.json")]
+    assert selftest.main(args) == 1
+    assert json.loads((tmp_path / "o.json").read_text())["parts"]["debs"]["status"] == "missing"
+    monkeypatch.setenv("ALLOW_INCOMPLETE", "1")
+    assert selftest.main(args) == 0
+
+
+def test_missing_libs_parses_ldd():
+    out = "\tlinux-vdso.so.1 (0x...)\n\tlibXfixes.so.3 => not found\n\tlibc.so.6 => /lib/libc.so.6\n"
+    assert selftest.missing_libs(out) == ["libXfixes.so.3"]

@@ -11,7 +11,8 @@
 #   SUITE=resolute stick/build.sh     another Ubuntu release (default: noble, 24.04 LTS)
 #   KERNEL=ga                         Ubuntu's release kernel instead of the newer HWE kernel (default: hwe — newer
 #                                     AMD and Intel GPUs need it; NVIDIA's signed modules exist for both)
-# Seed extras (each optional; the stick records "not in the seed" when one is missing):
+# Seed extras (each can be left out on purpose with the option shown; anything the build was asked for and could not
+# deliver stops the build at the seed self-test — ALLOW_INCOMPLETE=1 builds a test stick anyway):
 #   LLAMA_REF=release|latest-release|<tag|branch|commit>   llama.cpp to build; default "release": the newest patch
 #                            of the previous release line (see below); tag and commit are recorded
 #   SKIP_MODELS=1            no GGUF models (TinyLlama 1.1B Q4_0, Llama 2 7B Q4_0 — the scoreboards' model)
@@ -45,7 +46,7 @@ if [[ "${RIGSIM_IN_CONTAINER:-0}" != 1 && "${BUILD_IN_CONTAINER:-1}" == 1 ]]; th
   docker image inspect "$BUILDER" >/dev/null 2>&1 || { echo "building the build container $BUILDER"; docker build -q -t "$BUILDER" "$S/builder"; }
   envs=()
   for v in VERBOSE REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS SUITE NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR KERNEL ROCM_IMAGE ONEAPI_IMAGE AMDGPU_TARGETS LLAMA_REF \
-           SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL; do
+           SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL ALLOW_INCOMPLETE; do
     [[ -n "${!v+x}" ]] && envs+=(-e "$v=${!v}")          # set, even if empty ("" leaves a tool out)
   done
   tty=(); [[ -t 0 && -t 1 ]] && tty=(-it)
@@ -320,9 +321,9 @@ for v in rocm oneapi; do                                  # skipped this time: n
   u="SKIP_${v^^}"; [[ "${!u:-0}" == 1 ]] && rm -f "$OUT/seed/images/vendor-$v.tar" "$OUT/seed/images/vendor-$v.tar.key"
 done
 [[ "${SKIP_ROCM:-0}" == 1 ]] || vendor rocm "$ROCM_IMAGE" "AMD ROCm image" "$REPO/bench/hw/toolkits/cuda/src" \
-  || echo "    WARN: no ROCm image; the stick records it as not in the seed"
+  || echo "    WARN: no ROCm image; the seed self-test will stop the build (SKIP_ROCM=1 leaves it out)"
 [[ "${SKIP_ONEAPI:-0}" == 1 ]] || vendor oneapi "$ONEAPI_IMAGE" "Intel oneAPI image" "$S/src/syclprobe" \
-  || echo "    WARN: no oneAPI image; the stick records it as not in the seed"
+  || echo "    WARN: no oneAPI image; the seed self-test will stop the build (SKIP_ONEAPI=1 leaves it out)"
 if [[ "${SKIP_MODELS:-0}" != 1 ]]; then
   M="$OUT/seed/models"; mkdir -p "$M"
   fetch() { [[ -s "$M/$2" ]] || curl -fL --retry 3 -# -o "$M/$2" "$1"; }
@@ -360,22 +361,7 @@ if [[ -n "${BLENDER_LAUNCHER_URL:-}" ]]; then
   : "${BLENDER_VERSION:=4.2.0}"; mkdir -p "$OUT/seed/blender"
   : "${BLENDER_SCRIPT_URL:=https://opendata.blender.org/cdn/BlenderBenchmark2.0/script/blender-benchmark-script-3.1.1.tar.gz}"
   cached_step "$OUT/seed/blender/.key" "$(key "$BLENDER_LAUNCHER_URL" "$BLENDER_VERSION" "$BLENDER_SCRIPT_URL" unpack-1)" "Blender Benchmark $BLENDER_VERSION" blender_seed
-  # Does Blender find every library in the stick's system image? (ldd inside the rootfs; a run is too late to learn)
-  blender_libs() {
-    local exe missing
-    exe="$(find "$OUT/seed/blender" -type f -name blender -perm -u+x | head -1)"
-    [[ -n "$exe" ]] || { echo "blender: no executable in the seed"; return 0; }
-    sudo mkdir -p "$ROOT/mnt/blender-check"
-    sudo mount --bind "$(dirname "$exe")" "$ROOT/mnt/blender-check"
-    missing="$(sudo chroot "$ROOT" ldd /mnt/blender-check/blender 2>/dev/null | awk '/not found/ {print $1}' | sort -u | tr '\n' ' ')"
-    sudo umount "$ROOT/mnt/blender-check"; sudo rmdir "$ROOT/mnt/blender-check"
-    if [[ -n "$missing" ]]; then
-      echo "WARN: Blender will not start on the stick — libraries missing in the system image: $missing" >&2
-    else
-      echo "blender: every library it links is in the system image"
-    fi
-  }
-  step "Blender libraries" blender_libs
+  # whether Blender finds its libraries in the system image is checked by the seed self-test below
 else
   echo "== seed: Blender Benchmark left out (BLENDER_LAUNCHER_URL is empty)"
 fi
@@ -393,5 +379,12 @@ else
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
 export LLAMA_REF LLAMA_SELECT AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
+# Seed self-test (user decision 2026-10-31): every part asked for is in the seed and every native binary finds its
+# libraries where it runs; otherwise the build stops here, before anyone boots a stick that lacks data
+step "seed self-test" sudo env MLC_URL="${MLC_URL:-}" BLENDER_LAUNCHER_URL="${BLENDER_LAUNCHER_URL:-}" \
+  SKIP_MODELS="${SKIP_MODELS:-0}" SKIP_ROCM="${SKIP_ROCM:-0}" SKIP_ONEAPI="${SKIP_ONEAPI:-0}" \
+  ALLOW_INCOMPLETE="${ALLOW_INCOMPLETE:-0}" python3 "$S/tools/selftest.py" --seed "$OUT/seed" --rootfs "$ROOT" \
+  --payload "$P" --cuda-image "$CUDA_IMAGE" --image "$CUDA_IMAGE" --image "$CPU_IMAGE" --out "$OUT/seed/SELFTEST.json"
+sed -n '/^seed self-test:/,$p' "$LOGS"/*-seed-self-test.log 2>/dev/null | head -20 || true
 step "manifest (seed)" env IMAGES="$CUDA_IMAGE $CPU_IMAGE" python3 "$S/tools/manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"
 echo "built $OUT/rigsim-stick$SUFFIX.iso ($VERSION) and $OUT/seed"
