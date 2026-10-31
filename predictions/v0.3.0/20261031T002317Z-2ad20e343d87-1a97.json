@@ -1,0 +1,318 @@
+{
+ "rigsim": {
+  "tag": "v0.3.0",
+  "commit": "34e9c363ef9bd64a4c21c5152fca12c7fb31d38c"
+ },
+ "run": "20261031T002317Z-2ad20e343d87-1a97",
+ "measurements_version": "2",
+ "computed_utc": "2026-10-31T08:48:31+00:00",
+ "predictions": [
+  {
+   "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
+   "value": 10073.748857166778,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/tg128",
+   "value": 144.00395309344378,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 12%, memory 88%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/pp512",
+   "value": 49023.23307365411,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+  },
+  {
+   "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/tg128",
+   "value": 469.3471825335656,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 54%, memory 46%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
+   "value": 3100.670351353715,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 6%, compute 94%, launch 0%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
+   "value": 156.73828409539277,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 13%, memory 87%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
+   "value": 18949.513717346763,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 11%, compute 88%, launch 1%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
+   "value": 573.8774419602706,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 40%, memory 60%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/llama-2-7b-q4_0/pp512",
+   "value": 86.53708377496534,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 1%, compute 99%, launch 0%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/llama-2-7b-q4_0/tg128",
+   "value": 23.828393746043734,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 2%, memory 98%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/tinyllama-1.1b-q4_0/pp512",
+   "value": 563.9735444750509,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+  },
+  {
+   "key": "llama-bench/vulkan/dev1/tinyllama-1.1b-q4_0/tg128",
+   "value": 134.37891687246966,
+   "unit": "tok/s",
+   "calibration": false,
+   "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 8%, memory 92%"
+  },
+  {
+   "key": "gpu-vram/gpu0/copy",
+   "value": 759.9999999999999,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+  },
+  {
+   "key": "gpu-vram/gpu0/read",
+   "value": 759.9999999999999,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared"
+  },
+  {
+   "key": "gpu-vram/gpu0/write",
+   "value": 759.9999999999999,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/1",
+   "value": 20.384870603848704,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/2",
+   "value": 40.76974120769741,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/4",
+   "value": 59.59589164326447,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/8",
+   "value": 72.91988303813704,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/16",
+   "value": 77.2368906275543,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_avx/32",
+   "value": 77.2368906275543,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/1",
+   "value": 20.384870603848704,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/2",
+   "value": 40.76974120769741,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/4",
+   "value": 59.59589164326447,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/8",
+   "value": 72.91988303813704,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/16",
+   "value": 77.2368906275543,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/load_sse/32",
+   "value": 77.2368906275543,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/1",
+   "value": 18.48554845973174,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/2",
+   "value": 36.97109691946348,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/4",
+   "value": 55.43310753290599,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/8",
+   "value": 69.71691595327535,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/16",
+   "value": 74.51725187703796,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "cpu-mem-ladder/store_mem_avx/32",
+   "value": 74.51725187703796,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "mlc/idle_latency",
+   "value": 76.91979166666667,
+   "unit": "ns",
+   "calibration": false,
+   "basis": "MLC engine: dependent reads p <- ram, path latency in the graph, fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "mlc/max_bandwidth/all_reads",
+   "value": 77.2368906275543,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, all_reads, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+  },
+  {
+   "key": "mlc/max_bandwidth/3to1_rw",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, 3to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  },
+  {
+   "key": "mlc/max_bandwidth/2to1_rw",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, 2to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  },
+  {
+   "key": "mlc/max_bandwidth/1to1_rw",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, 1to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  },
+  {
+   "key": "mlc/max_bandwidth/stream_triad",
+   "value": 71.82992324200865,
+   "unit": "GB/s",
+   "calibration": false,
+   "basis": "MLC engine: every core group at once, stream_triad, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+  }
+ ],
+ "unsupported": [
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/pp512",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
+   "reason": "llama.cpp cpu backend not modelled yet"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/1",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/2",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/4",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/8",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/16",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  },
+  {
+   "key": "cpu-mem-ladder/store_avx/32",
+   "reason": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+  }
+ ]
+}

@@ -22109,7 +22109,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -22119,7 +22124,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
@@ -22137,7 +22147,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) HD Graphics 620 (KBL GT2))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
@@ -22155,7 +22170,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) HD Graphics 620 (KBL GT2))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
@@ -22173,7 +22193,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) HD Graphics 620 (KBL GT2))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
@@ -22191,7 +22216,12 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (Intel(R) HD Graphics 620 (KBL GT2))"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/1",
@@ -22201,7 +22231,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/2",
@@ -22211,7 +22246,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/4",
@@ -22221,7 +22261,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/8",
@@ -22231,7 +22276,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/16",
@@ -22241,7 +22291,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/32",
@@ -22251,7 +22306,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/1",
@@ -22261,7 +22321,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/2",
@@ -22271,7 +22336,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/4",
@@ -22281,7 +22351,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/8",
@@ -22291,7 +22366,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/16",
@@ -22301,7 +22381,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/32",
@@ -22311,7 +22396,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/1",
@@ -22321,7 +22411,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/2",
@@ -22331,7 +22426,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/4",
@@ -22341,7 +22441,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/8",
@@ -22351,7 +22456,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/16",
@@ -22361,7 +22471,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/32",
@@ -22371,7 +22486,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/1",
@@ -22381,7 +22501,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/2",
@@ -22391,7 +22516,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/4",
@@ -22401,7 +22531,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/8",
@@ -22411,7 +22546,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/16",
@@ -22421,7 +22561,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/32",
@@ -22431,7 +22576,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "mlc/idle_latency",
@@ -22441,7 +22591,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/all_reads",
@@ -22451,7 +22606,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/3to1_rw",
@@ -22461,7 +22621,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/2to1_rw",
@@ -22471,7 +22636,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/1to1_rw",
@@ -22481,7 +22651,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/stream_triad",
@@ -22491,10 +22666,19 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "memory not identified (type 'LPDDR3', speed 2133)"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 0,
+    "median_abs_error": null
+   }
   },
   {
    "run": "20261031T002317Z-2ad20e343d87-1a97",
@@ -25564,7 +25748,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -25574,7 +25763,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/pp512",
@@ -25599,7 +25793,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 10073.748857166778,
+       "error": 0.815713852112961,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 19%, compute 81%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/llama-2-7b-q4_0/tg128",
@@ -25624,7 +25826,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 144.00395309344378,
+       "error": -0.044351719286210844,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 12%, memory 88%"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/pp512",
@@ -25649,7 +25859,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 49023.23307365411,
+       "error": 1.1084868637532397,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 34%, compute 65%, launch 2%"
+      }
+     ]
     },
     {
      "key": "llama-bench/cuda/gpu0/tinyllama-1.1b-q4_0/tg128",
@@ -25674,7 +25892,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 469.3471825335656,
+       "error": -0.21684420668363902,
+       "calibration": false,
+       "basis": "llama.cpp CUDA engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 54%, memory 46%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/pp512",
@@ -25699,7 +25925,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 3100.670351353715,
+       "error": -0.27237125390488626,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 6%, compute 94%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/llama-2-7b-q4_0/tg128",
@@ -25724,7 +25958,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 156.73828409539277,
+       "error": 0.1100800715130048,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 13%, memory 87%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
@@ -25749,7 +25991,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18949.513717346763,
+       "error": 0.10497835777507047,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; memory 11%, compute 88%, launch 1%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
@@ -25774,7 +26024,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 573.8774419602706,
+       "error": -0.012539734517452605,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on rtx-3080 (gpu0, 0000:01:00.0), kernel factors unmeasured; launch 40%, memory 60%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev1/llama-2-7b-q4_0/pp512",
@@ -25792,7 +26050,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 86.53708377496534,
+       "error": 2.3814989968467195,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 1%, compute 99%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev1/llama-2-7b-q4_0/tg128",
@@ -25810,7 +26076,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 23.828393746043734,
+       "error": 3.082404992630228,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 2%, memory 98%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev1/tinyllama-1.1b-q4_0/pp512",
@@ -25828,7 +26102,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 563.9735444750509,
+       "error": 3.39065598788579,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; memory 2%, compute 98%, launch 0%"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev1/tinyllama-1.1b-q4_0/tg128",
@@ -25846,7 +26128,15 @@
        "max_link": "x255 Unknown"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 134.37891687246966,
+       "error": 3.1660591566092684,
+       "calibration": false,
+       "basis": "llama.cpp Vulkan engine on intel-uhd-graphics-770@ddr5-6200x2 (igpu, 0000:00:02.0), kernel factors unmeasured; launch 8%, memory 92%"
+      }
+     ]
     },
     {
      "key": "gpu-vram/gpu0/copy",
@@ -25871,7 +26161,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.12650753759533595,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+      }
+     ]
     },
     {
      "key": "gpu-vram/gpu0/read",
@@ -25896,7 +26194,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.051673128921287725,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared"
+      }
+     ]
     },
     {
      "key": "gpu-vram/gpu0/write",
@@ -25921,7 +26227,15 @@
        "max_link": "x16 16.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 759.9999999999999,
+       "error": 0.10486715789641998,
+       "calibration": false,
+       "basis": "rtx-3080: spec x global VRAM efficiency (unmeasured); graph flow gpu0.vram -> gpu0.sm, bound by link:gpu0.mc0:shared; read and write treated alike (bus turnaround not modelled)"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/1",
@@ -25931,7 +26245,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 20.384870603848704,
+       "error": -0.3508056747349001,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/2",
@@ -25941,7 +26263,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 40.76974120769741,
+       "error": 0.07738729432553693,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/4",
@@ -25951,7 +26281,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 59.59589164326447,
+       "error": -0.03484917841922219,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/8",
@@ -25961,7 +26299,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 72.91988303813704,
+       "error": 0.06555525078891389,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/16",
@@ -25971,7 +26317,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.10938647325037332,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/32",
@@ -25981,7 +26335,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.049984106795306404,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/1",
@@ -25991,7 +26353,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 20.384870603848704,
+       "error": -0.2842045357228903,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/2",
@@ -26001,7 +26371,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 40.76974120769741,
+       "error": 0.09694228310727504,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/4",
@@ -26011,7 +26389,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 59.59589164326447,
+       "error": -0.03311012250553247,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/8",
@@ -26021,7 +26407,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 72.91988303813704,
+       "error": 0.019794962959119866,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/16",
@@ -26031,7 +26425,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.14001888351881486,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/32",
@@ -26041,7 +26443,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.0730899261069764,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/1",
@@ -26051,7 +26461,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/2",
@@ -26061,7 +26476,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/4",
@@ -26071,7 +26491,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/8",
@@ -26081,7 +26506,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/16",
@@ -26091,7 +26521,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/32",
@@ -26101,7 +26536,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/1",
@@ -26111,7 +26551,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 18.48554845973174,
+       "error": -0.6648049074708257,
+       "calibration": false,
+       "basis": "likwid engine: 1 threads on 1 p; steps of 3 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/2",
@@ -26121,7 +26569,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 36.97109691946348,
+       "error": -0.3614112837633665,
+       "calibration": false,
+       "basis": "likwid engine: 2 threads on 2 p; steps of 6 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/4",
@@ -26131,7 +26587,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 55.43310753290599,
+       "error": -0.30833292896341047,
+       "calibration": false,
+       "basis": "likwid engine: 4 threads on 4 p; steps of 12 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/8",
@@ -26141,7 +26605,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 69.71691595327535,
+       "error": -0.1410141920260074,
+       "calibration": false,
+       "basis": "likwid engine: 8 threads on 8 p; steps of 24 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/16",
@@ -26151,7 +26623,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 74.51725187703796,
+       "error": -0.10139813140067355,
+       "calibration": false,
+       "basis": "likwid engine: 16 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/32",
@@ -26161,7 +26641,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 74.51725187703796,
+       "error": -0.08528877404611301,
+       "calibration": false,
+       "basis": "likwid engine: 32 threads on 8 p, 8 e; steps of 32 KiB in flight; cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "mlc/idle_latency",
@@ -26171,7 +26659,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 76.91979166666667,
+       "error": 0.19440670289855055,
+       "calibration": false,
+       "basis": "MLC engine: dependent reads p <- ram, path latency in the graph, fixed term only (CAS unknown: no SPD dump); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/all_reads",
@@ -26181,7 +26677,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 77.2368906275543,
+       "error": -0.1352963036173218,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, all_reads, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/3to1_rw",
@@ -26191,7 +26695,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.10751323272386248,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 3to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/2to1_rw",
@@ -26201,7 +26713,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09256499742905377,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 2to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/1to1_rw",
@@ -26211,7 +26731,15 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.05936221413500453,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, 1to1_rw, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      }
+     ]
     },
     {
      "key": "mlc/max_bandwidth/stream_triad",
@@ -26221,10 +26749,22 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "value": 71.82992324200865,
+       "error": -0.09858226098840261,
+       "calibration": false,
+       "basis": "MLC engine: every core group at once, stream_triad, steps of 512 lines in flight (32 KiB); cpu raptorlake-s, cores {'p': 8, 'e': 8}, mem DDR5-6200, channels 2, channels_from locators; write-allocate (RFO) reads not modelled"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 39,
+    "median_abs_error": 0.10938647325037332
+   }
   }
  ]
 }
