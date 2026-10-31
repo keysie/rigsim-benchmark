@@ -412,6 +412,11 @@ def run(plan_path: str, rundir: Path, cfg: dict, smoke: bool, fresh: bool, log, 
     items = expand(plan, smoke, gpus)
     sf = rundir / "state.json"
     state = json.loads(sf.read_text()) if sf.exists() else {}
+    # every planned item is in the state from the start, so its size is the question's total (progress counters
+    # showed '13/13', '14/14' while items were still being added)
+    for it in items:
+        state.setdefault(it["id"], {"status": "pending"})
+    sf.write_text(json.dumps(state, indent=1))
 
     def on_signal(signum, frame):
         raise Stop()
