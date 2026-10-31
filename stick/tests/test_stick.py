@@ -1132,3 +1132,18 @@ def test_blender_finds_its_libraries():
         assert lib in c, lib
     b = (HERE / "build.sh").read_text()
     assert 'sudo chroot "$ROOT" ldd /mnt/blender-check/blender' in b and 'step "Blender libraries" blender_libs' in b
+
+def test_thread_ladder_is_capped_to_the_machines_cpus():
+    """Runs d7a3 / 1a97: a fixed ladder up to 64 threads failed every step above the machine's logical CPUs, so each
+    run ended 'done with failures'. The ladder is capped and always ends at the machine's own count."""
+    p = hwq.load_plan(str(HERE / "questions" / "cpu-gemm-ladder.toml"))
+    t = lambda n: [i["params"]["threads"] for i in hwq.expand(p, False, None, n)]
+    assert t(4) == [1, 2, 3, 4]                                   # the 2-core / 4-thread laptop: no failing steps
+    assert t(24) == [1, 2, 3, 4, 6, 8, 12, 16, 24]                # the 13700K
+    assert t(20) == [1, 2, 3, 4, 6, 8, 12, 16, 20]                # a count not on the ladder is added
+    assert t(1) == [1] and t(128)[-1] == 128 and 64 in t(128)
+    q = hwq.load_plan(str(HERE / "questions" / "cpu-gemm.toml"))   # questions without [limits] are untouched
+    assert {i["params"]["threads"] for i in hwq.expand(q, False, None, 4)} == {1, 0}
+    bad = dict(p, limits={"threads": "nonsense"})
+    with pytest.raises(ValueError):
+        hwq.expand(bad, False, None, 4)

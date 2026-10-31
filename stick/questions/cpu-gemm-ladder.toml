@@ -12,6 +12,10 @@ max_attempts = 1
 [grid]
 threads = [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64]
 
+# no step asks for more threads than the machine has; its own logical CPU count is always the last point
+[limits]
+threads = "logical-cpus"
+
 [args]
 reps = 3
 cmd = ["cgemm", "--prec", "fp32", "--n", "4096", "--threads", "{threads}", "--reps", "{reps}"]
