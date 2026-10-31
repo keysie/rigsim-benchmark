@@ -64,3 +64,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   open-points; nothing built.
 - **2026-10-31** — User: ignore fallentree; asked whether modules can be swapped during a run so mixed hardware gets every
   card measured. Design revised to two phases (open, then proprietary for pre-Turing cards); not built.
+- **2026-10-31** — User asked for the space needed by the old-GPU design; estimate from package sizes recorded in findings.

@@ -108,3 +108,8 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - **qr0n/p100-strata** (MIT): Strata v0.2.2 + 6 patches for P100 (MXFP4 expert kernels, …). Relevant to rigsim's Strata
   engine, not to the stick (Strata is not on the stick).
 - CUDA 13 dropped Pascal (stated in qr0n/p100-strata); the stick's CUDA image is 12.8.1.
+- Space (2026-10-31, Ubuntu noble archive, driver 580.178.04, HWE kernel 7.0.0-42): the open modules package is 8.3 MB
+  (nvidia.ko 20.7 MB uncompressed); the proprietary set comes as `linux-objects-nvidia-580-<kver>` (98 MB download, 194 MB
+  installed, nv-kernel.o alone 113 MB) plus Canonical's detached signatures, linked at install time. Estimate for the old-GPU
+  sprint: system image +30–100 MB (proprietary set, more if the objects stay), llama.cpp CUDA +~1/9 per added
+  architecture, the two forks built for sm_60/61 only, firmware and user-space unchanged. To be measured on a build.
