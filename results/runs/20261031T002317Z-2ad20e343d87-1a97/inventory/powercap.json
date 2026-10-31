@@ -1,0 +1,25 @@
+{
+ "zones": {
+  "intel-rapl:0": {
+   "name": "package-0",
+   "enabled": "1",
+   "constraints": [
+    {
+     "name": "long_term",
+     "limit_w": 253.0,
+     "window_s": 55.967744
+    },
+    {
+     "name": "short_term",
+     "limit_w": 253.0,
+     "window_s": 0.00244
+    },
+    {
+     "name": "peak_power",
+     "limit_w": 380.0,
+     "window_s": null
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "zones": {
+  "intel-rapl:0": {
+   "name": "package-0",
+   "enabled": "1",
+   "constraints": [
+    {
+     "name": "long_term",
+     "limit_w": 17.0,
+     "window_s": 27.983872
+    },
+    {
+     "name": "short_term",
+     "limit_w": 25.0,
+     "window_s": 0.00244
+    }
+   ]
+  },
+  "intel-rapl:1": {
+   "name": "psys",
+   "enabled": "1",
+   "constraints": [
+    {
+     "name": "long_term",
+     "limit_w": 90.0,
+     "window_s": 27.983872
+    },
+    {
+     "name": "short_term",
+     "limit_w": 90.0,
+     "window_s": 0.000976
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,17 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+{"build_commit": "620d2225c", "build_number": 11669, "cpu_info": "13th Gen Intel(R) Core(TM) i7-13700K", "gpu_info": "NVIDIA GeForce RTX 3080", "backends": "CUDA", "model_filename": "/models/tinyllama-1.1b-q4_0.gguf", "model_type": "llama 1B Q4_0", "model_size": 635990016, "model_n_params": 1100048384, "n_batch": 2048, "n_ubatch": 512, "n_threads": 8, "cpu_mask": "0x0", "cpu_strict": false, "poll": 50, "type_k": "f16", "type_v": "f16", "n_gpu_layers": 99, "n_cpu_moe": 0, "split_mode": "layer", "main_gpu": 0, "no_kv_offload": false, "flash_attn": -1, "devices": "auto", "tensor_split": "0.00", "tensor_buft_overrides": "none", "load_mode": "auto", "lazy_mode": "auto", "embeddings": false, "no_op_offload": 0, "no_host": false, "repack": true, "fit_target": 0, "fit_min_ctx": 0, "n_prompt": 512, "n_gen": 0, "n_depth": 0, "test_time": "2026-10-31T02:04:15Z", "avg_ns": 22078035, "stddev_ns": 1398079, "avg_ts": 23250.433245, "stddev_ts": 1420.407507, "samples_ns": [ 23692311, 21284665, 21257130 ],"samples_ts": [ 21610.4, 24054.9, 24086 ]}
+{"build_commit": "620d2225c", "build_number": 11669, "cpu_info": "13th Gen Intel(R) Core(TM) i7-13700K", "gpu_info": "NVIDIA GeForce RTX 3080", "backends": "CUDA", "model_filename": "/models/tinyllama-1.1b-q4_0.gguf", "model_type": "llama 1B Q4_0", "model_size": 635990016, "model_n_params": 1100048384, "n_batch": 2048, "n_ubatch": 512, "n_threads": 8, "cpu_mask": "0x0", "cpu_strict": false, "poll": 50, "type_k": "f16", "type_v": "f16", "n_gpu_layers": 99, "n_cpu_moe": 0, "split_mode": "layer", "main_gpu": 0, "no_kv_offload": false, "flash_attn": -1, "devices": "auto", "tensor_split": "0.00", "tensor_buft_overrides": "none", "load_mode": "auto", "lazy_mode": "auto", "embeddings": false, "no_op_offload": 0, "no_host": false, "repack": true, "fit_target": 0, "fit_min_ctx": 0, "n_prompt": 0, "n_gen": 128, "n_depth": 0, "test_time": "2026-10-31T02:04:16Z", "avg_ns": 213735181, "stddev_ns": 7082914, "avg_ts": 599.302446, "stddev_ts": 19.487205, "samples_ns": [ 221913787, 209637942, 209653816 ],"samples_ts": [ 576.801, 610.576, 610.53 ]}

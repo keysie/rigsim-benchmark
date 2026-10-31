@@ -1,0 +1,10 @@
+{
+ "gpu-p2p/gpu=@together/rep=0": {
+  "status": "failed",
+  "attempts": 2
+ },
+ "gpu-p2p/gpu=@together/rep=1": {
+  "status": "failed",
+  "attempts": 2
+ }
+}

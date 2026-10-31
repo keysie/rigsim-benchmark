@@ -1,0 +1,5 @@
+01:04:41 session rigsim-hwbench-gpu-launch: setting up from nvidia/cuda:12.8.1-devel-ubuntu24.04
+01:04:48 ok   gpu-launch/gpu=gpu0/rep=0 rc=0
+01:04:50 ok   gpu-launch/gpu=gpu0/rep=1 rc=0
+01:04:52 ok   gpu-launch/gpu=gpu0/rep=2 rc=0
+01:04:53 restore: box as found
