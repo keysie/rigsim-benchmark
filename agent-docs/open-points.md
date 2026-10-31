@@ -6,8 +6,9 @@ Last revised: 2026-10-31.
 
 ## High
 
-1. **DDR timing improvements** [user, 2026-10-31, from a side chat; sprint `ddr-timing-improvements`; checked, not
-   cleared]. Five items; assessment (measured = from the 15 runs): (1) programmed timings from controller registers —
+1. **DDR timing improvements** [user, 2026-10-31, from a side chat; sprint `ddr-timing-improvements`; checked,
+   **parked** by the user until the other branches are done; proposed order when resumed: 2 + 3 + lockdown state, 1 as
+   a spike, 4 parked, 5 as a rigsim topic]. Five items; assessment (measured = from the 15 runs): (1) programmed timings from controller registers —
    10 of 15 runs had Secure Boot on, where kernel lockdown (*inferred*: Ubuntu enables it with Secure Boot) blocks
    /dev/mem, PCI config writes and debugfs, i.e. Intel MCHBAR (MMIO) and AMD SMN (config index/data) reads; register
    maps differ per generation — high effort, only for Secure-Boot-off machines; propose as a spike, and record the

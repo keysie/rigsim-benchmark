@@ -11,7 +11,8 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 
 **Current sprint:** `ddr-timing-improvements` (branched off `sprint/stick-data` on 2026-10-31; `sprint/stick-data` and
 `sprint/old-gpus` stay open in parallel) — goal: better memory data (programmed DRAM timings, SPD status, latency
-probe). Status: proposal from a side chat checked against the repo and the runs (open-points 1); nothing built.
+probe). Status: **parked** (user, 2026-10-31) — the proposal is checked and recorded (open-points 1), nothing
+built; work resumes after `sprint/stick-data` (its stick is being tested on hardware) and `sprint/old-gpus`.
 
 **Next steps, in order**
 1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp
