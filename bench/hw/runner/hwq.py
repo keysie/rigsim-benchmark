@@ -27,6 +27,7 @@ import glob
 import hashlib
 import itertools
 import json
+import os
 import shutil
 import signal
 import statistics
@@ -76,14 +77,34 @@ def load_plan(path: str) -> dict:
     return plan
 
 
-def expand(plan: dict, smoke: bool, gpus: list[dict] | None = None) -> list[dict]:
+def logical_cpus() -> int:
+    """The logical CPUs this process may run on."""
+    try:
+        return len(os.sched_getaffinity(0))
+    except AttributeError:
+        return os.cpu_count() or 1
+
+
+def cap_to_cpus(values: list, n: int) -> list:
+    """A thread ladder on this machine: the values up to its logical CPU count, and the count itself (the all-CPU
+    point), so no step asks for threads the machine does not have and the full machine is always measured."""
+    return sorted({v for v in values if isinstance(v, int) and 0 < v <= n} | {n})
+
+
+def expand(plan: dict, smoke: bool, gpus: list[dict] | None = None, cpus: int | None = None) -> list[dict]:
     """Grid -> items (cartesian product, in key order). In a gpu list, '@all' = one item per GPU found, '@together' =
-    one item with every GPU visible at once. A smoke run uses the [smoke] grid and args overrides and one repeat
-    (smokes stay short: one point per mechanism)."""
+    one item with every GPU visible at once. A grid key named in [limits] as "logical-cpus" is capped to the machine's
+    logical CPU count (cap_to_cpus; `cpus` defaults to the real count). A smoke run uses the [smoke] grid and args
+    overrides and one repeat (smokes stay short: one point per mechanism)."""
     grid, args = dict(plan["grid"]), dict(plan["args"])
     if smoke:
         grid.update((plan.get("smoke") or {}).get("grid", {}))
         args.update((plan.get("smoke") or {}).get("args", {}))
+    for k, rule in (plan.get("limits") or {}).items():
+        if rule != "logical-cpus":
+            raise ValueError(f"{plan['question']}: unknown limit {rule!r} for {k}")
+        if k in grid:
+            grid[k] = cap_to_cpus(grid[k] if isinstance(grid[k], list) else [grid[k]], cpus or logical_cpus())
     if "gpu" in grid and gpus is not None:
         names: list[str] = []
         for g in grid["gpu"]:
