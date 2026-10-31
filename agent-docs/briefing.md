@@ -15,9 +15,11 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp
    CUDA, a false alarm (driver library, fixed); every other part ok. Build again; it must pass (needs the user). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
    machine: Blender delivers a result, the ladder has no failing step.
-2. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
-   F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 5.
-3. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run (additive format change) so the data page can
+2. **UEFI boot without CSM fails on some machines** (open-points 5): symptom and machines asked from the user; fix proposed
+   once known.
+3. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
+   F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 6.
+4. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run (additive format change) so the data page can
    show what a stick contained.
 
 **Recently solved** (merged, newest first)

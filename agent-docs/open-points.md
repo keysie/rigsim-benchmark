@@ -22,32 +22,41 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-5. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
+5. **UEFI boot fails on some machines without CSM** [user, 2026-10-31]. The stick is meant to boot both ways (signed shim +
+   Ubuntu's `gcdx64`, El Torito UEFI image, ESP appended as MBR partition 2 type 0xEF). Read from source, likely causes
+   (*inferred*): MBR without an active partition (some firmwares skip such disks in UEFI mode); MBR-only hybrid with
+   partition 1 starting at sector 0 (Ubuntu ISOs since 20.10 use a GPT layout with `-partition_offset 16` and
+   `-appended_part_as_gpt` for exactly such firmwares). `flash.sh` appends the data partition with `sfdisk` (type 83), so a
+   GPT layout changes flashing and updating too. Waiting for the symptom (not listed vs. error vs. GRUB prompt) and the
+   affected machines before choosing the fix. Test idea: boot a small image with the same layout in QEMU (OVMF with and
+   without Secure Boot, SeaBIOS) — catches regressions, not picky firmwares.
+
+6. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
    15 runs". Plan cleared by the user. (A) build-time seed self-test — **written** on `sprint/stick-data` (stick 0.13.5,
    `stick/tools/selftest.py`): stops the build when a part asked for is missing or a binary lacks libraries;
    not yet run in a real build; (B) Blender's missing libraries (PR #19, merged) and the ladder grid (PR #22, merged) — both not verified on hardware; (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
    the reason, not as a failure; (E) triage the SYCL and Vulkan aborts; (F) a run-completeness audit (expected vs
    present data per machine class) as a tool and on the data page; (G) an end-to-end test (VM) if the user wants one.
 
-6. **Fix the new CPU questions** [agent, 2026-10-31]: (a) derive the ladder grid from the CPU count so runs stop ending
+7. **Fix the new CPU questions** [agent, 2026-10-31]: (a) derive the ladder grid from the CPU count so runs stop ending
    `done with failures`; (b) make package energy readable (find out why `energy_uj` is −1 in the container: permissions,
    Secure Boot lockdown or sysfs masking — *unknown*); (c) expose cpu-gemm, ladder and power-time as value keys
    (`measurements.py` `VERSION` bump); (d) consider per-thread rates or pinning so hybrid/SMT ladders are interpretable;
    (e) take the idle-start reading after a cool-down or record the starting state. Each is a stick or tools change; propose first.
 
-7. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
+8. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
    check the share of `unsupported` in `predictions/v0.3.0/` per key family and report which GPUs or CPUs are missing
    from rigsim's catalogue.
-8. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
+9. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
    flash. Whether that is acceptable is a user decision.
 
 ## Low
 
-9. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
+10. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
-10. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
+11. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
     stick/README, decided 2026-10-29].
-11. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
+12. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
     Kepler and older not at all), MLC cannot switch prefetchers off under Secure Boot, ROCm only officially on some AMD
     generations, vkprobe's matrix GEMM is a plain kernel (lower bound), RAM timings as the BIOS set them are often
     invisible from Linux.
