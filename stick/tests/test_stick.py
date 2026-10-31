@@ -1058,7 +1058,7 @@ def test_laptop_run_fixes(tmp_path):
     src = (HERE / "payload" / "stick.py").read_text()
     assert "STATUS.n = 2 + len(qplan) + 7" in src
     begins = src.count('STATUS.begin("inventory")') + src.count('STATUS.begin("docker")') + 1     # + the question loop
-    assert begins == 3 and src.count("STATUS.begin(name, skippable=True)") == 1
+    assert begins == 3 and src.count("STATUS.begin(name, skippable=True)") == 2   # + nvidia_phase2 (counts its own)
     named = src.split('for name, step in (("mlc"', 1)[1].split("STATUS.begin(name", 1)[0]
     assert named.count("lambda:") == 7                                       # the seven named steps counted
     for vendor, cls, want in (("0x8086", "0x030000", False), ("0x10de", "0x030000", True), ("0x10de", "0x040300", False)):
@@ -1097,7 +1097,7 @@ def test_powercap_limits(tmp_path):
     p = stick.powercap(tmp_path)
     assert list(p["zones"]) == ["intel-rapl:0"]
     assert p["zones"]["intel-rapl:0"]["constraints"][0] == dict(name="long_term", limit_w=65.0, window_s=28.0)
-    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.4"
+    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] >= "1.4"
 def test_lscpu_cache_ids_are_not_masked_as_ipv6():
     line = "  0    0      0    0 0:0:0:0          yes 4954.5649 567.0890 3842.5410"
     assert "<ip6>" in stick.sanitize(line)                                  # the general scrub would mask it
@@ -1276,3 +1276,95 @@ def test_selftest_checks_forks_and_the_module_swap_set(tmp_path):
     assert r["llama.cpp forks"]["status"] == "missing" and "llama-bench" in r["llama.cpp forks"]["problems"][0]
     p = r["nvidia module swap"]["problems"]
     assert r["nvidia module swap"]["status"] == "missing" and any("nvidia-uvm" in x for x in p) and any("differ" in x for x in p)
+
+
+# --- old-GPU sprint: NVIDIA module switch, Pascal builds and forks ---------------------------------------------------
+def _pci(root: Path, addr: str, vendor: str, cls: str) -> None:
+    d = root / addr; d.mkdir(parents=True)
+    (d / "vendor").write_text(vendor + "\n"); (d / "class").write_text(cls + "\n")
+
+
+def test_nvidia_pci_devices_and_norm_pci(tmp_path):
+    _pci(tmp_path, "0000:01:00.0", "0x10de", "0x030000"); _pci(tmp_path, "0000:02:00.0", "0x10de", "0x030200")
+    _pci(tmp_path, "0000:01:00.1", "0x10de", "0x040300"); _pci(tmp_path, "0000:00:02.0", "0x8086", "0x030000")
+    assert stick.nvidia_pci_devices(tmp_path) == ["0000:01:00.0", "0000:02:00.0"]
+    assert stick.norm_pci("00000000:01:00.0") == "0000:01:00.0" == stick.norm_pci("01:00.0")
+
+
+def _swap_set(tmp: Path) -> Path:
+    sw = tmp / "swap"; sw.mkdir()
+    for m in ("nvidia", "nvidia-uvm", "nvidia-modeset", "nvidia-drm"):
+        (sw / f"{m}.ko").write_text("x")
+    (sw / "FLAVOUR").write_text("proprietary\n"); (sw / "VERSION").write_text("580.178.04\n")
+    return sw
+
+
+def test_swap_modules_unloads_keeps_measured_cards_off_and_loads_the_other_flavour(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "_kill_containers", lambda: None)
+    sysfs = tmp_path / "sys"
+    for m in ("nvidia_drm", "nvidia_modeset", "nvidia_uvm", "nvidia"):
+        (sysfs / "module" / m).mkdir(parents=True)
+    (sysfs / "bus" / "pci" / "devices" / "0000:01:00.0").mkdir(parents=True)
+    cmds = []
+    def run(cmd):
+        cmds.append(cmd)
+        return (0, "drm" if cmd[:3] == ["modinfo", "-F", "depends"] and "nvidia-modeset" in cmd[-1] else "")
+    r = stick.swap_modules(["0000:01:00.0"], None, _swap_set(tmp_path), sysfs, run)
+    assert "failed" not in r and r["flavour"] == "proprietary" and r["version"] == "580.178.04"
+    rm = [c[1] for c in cmds if c[0] == "rmmod"]
+    assert rm == ["nvidia_drm", "nvidia_modeset", "nvidia_uvm", "nvidia"]                # dependants first
+    ins = [Path(c[1]).name for c in cmds if c[0] == "insmod"]
+    assert ins == ["nvidia.ko", "nvidia-uvm.ko", "nvidia-modeset.ko"]                   # no nvidia-drm: headless
+    ins_modeset = next(i for i, c in enumerate(cmds) if c[0] == "insmod" and c[1].endswith("nvidia-modeset.ko"))
+    assert cmds.index(["modprobe", "drm"]) < ins_modeset                              # a module's dependencies first
+    assert (sysfs / "bus" / "pci" / "devices" / "0000:01:00.0" / "driver_override").read_text() == "none"
+
+
+def test_swap_modules_reports_why_it_failed(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "_kill_containers", lambda: None)
+    sysfs = tmp_path / "sys"; (sysfs / "module" / "nvidia").mkdir(parents=True)
+    vt = sysfs / "class" / "vtconsole" / "vtcon1"; vt.mkdir(parents=True)
+    (vt / "name").write_text("(M) frame buffer device\n"); (vt / "bind").write_text("1")
+    r = stick.swap_modules([], None, _swap_set(tmp_path), sysfs,
+                           lambda cmd: (1, "Module nvidia is in use") if cmd[0] == "rmmod" else (0, ""))
+    assert "could not unload nvidia" in r["failed"] and (vt / "bind").read_text() == "0"     # tried the console first
+    (tmp_path / "swap" / "FLAVOUR").unlink()
+    assert "not on this stick" in stick.swap_modules([], None, tmp_path / "swap", sysfs, lambda c: (0, ""))["failed"]
+
+
+def test_nvidia_phase2_only_when_a_card_is_left_undriven(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "nvidia_driven", lambda: {"0000:01:00.0": "RTX 3080, 10240 MiB, 00000000:01:00.0"})
+    monkeypatch.setattr(stick, "nvidia_pci_devices", lambda: ["0000:01:00.0"])
+    assert stick.nvidia_phase2(tmp_path, tmp_path, tmp_path, "img", {}, {}, None) is None
+
+
+def test_run_llama_runs_the_pascal_forks_only_on_their_architectures(tmp_path, monkeypatch):
+    data = tmp_path / "data"; seed = data / "seed" / "llama"
+    for p in (seed / "cuda" / "llama-bench", seed / "forks" / "qr0n" / "llama-bench"):
+        p.parent.mkdir(parents=True, exist_ok=True); p.write_text("x")
+    (seed / "forks" / "qr0n" / "ARCHS").write_text("60 61\n")
+    (data / "seed" / "models").mkdir(parents=True); (data / "seed" / "models" / "tiny.gguf").write_text("x")
+    monkeypatch.setattr(stick, "sh", lambda cmd, timeout=120: (0, "0, 6.0\n1, 8.6") if "--query-gpu=index,compute_cap" in cmd
+                        else (0, "0\n1"))
+    seen = []
+    class R:
+        returncode, stdout, stderr = 0, "", ""
+    monkeypatch.setattr(stick, "run_cmd", lambda cmd, **kw: seen.append(cmd) or R())
+    r = stick.run_llama(data, tmp_path / "run", "img", True, tmp_path / "log", cuda_only=True)
+    keys = set(r.get("runs", r))
+    assert {"cuda-gpu0-tiny", "cuda-gpu1-tiny", "cuda+qr0n-gpu0-tiny"} <= keys and "cuda+qr0n-gpu1-tiny" not in keys
+    assert not any(k.startswith(("vulkan", "cpu")) for k in keys)                       # second phase: CUDA only
+
+
+def test_old_gpu_builds_and_module_harvest():
+    b = (HERE / "build.sh").read_text()
+    assert '-DCMAKE_CUDA_ARCHITECTURES="52;60;61;70;75;80;86;89;90;120"' in b
+    assert "qr0n=https://github.com/qr0n/p100-llama-cpp@" in b and "kmic68=https://github.com/Kmic-68/llama.cpp@" in b
+    assert '-DCMAKE_CUDA_ARCHITECTURES="60;61"' in b and "--target llama-bench" in b
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    assert "/usr/lib/rigsim/nvidia-swap" in c and 'apt-get purge -y --autoremove "$SWMOD"' in c
+    assert c.index("$SWMOD") < c.index('NVMOD="linux-modules-nvidia-')                 # harvested before the boot flavour
+    assert "NVIDIA module versions differ" in c
+    p = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "setup.sh").read_text()
+    for a in ("60", "61", "70", "75"):
+        assert f"arch=compute_{a},code=sm_{a}" in p

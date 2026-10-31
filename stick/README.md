@@ -26,6 +26,15 @@ bandwidth) and on again at the end.
   firmwares offered no boot option without CSM). Sticks flashed with an older build cannot be updated in place to it:
   `flash.sh` offers [s]eed only or [e]rase (results backed up first). `stick/tests/boot/boot-test.sh` boots the layout
   in QEMU under UEFI, UEFI with Secure Boot and BIOS (CI: "Boot test").
+- **Older NVIDIA cards (since stick 0.14.0):** the stick boots NVIDIA's open modules (Turing and newer) and carries
+  the proprietary ones (Maxwell .. Ada) of the same driver version. When a card is left undriven, it switches modules
+  after every other step and measures the CUDA questions and llama-bench on those cards (`nvidia-swap/` in the run);
+  so a machine with a P100 next to an RTX 4090 gets both measured, each with the driver that supports it. Tests across
+  the two groups (P2P between them) are not possible and not made. CUDA builds include sm_60 / sm_61 / sm_70 / sm_75.
+  On sm_60 / sm_61 cards (P100, P40, GTX 10) two llama.cpp forks tuned for Pascal run next to upstream, as their own
+  backend: [qr0n/p100-llama-cpp](https://github.com/qr0n/p100-llama-cpp) and
+  [Kmic-68/llama.cpp](https://github.com/Kmic-68/llama.cpp) (`p100-optimizations`), pinned by commit in `build.sh`
+  (`LLAMA_FORKS=""` leaves them out).
 - **To make the stick:** a Linux host, or Windows with WSL 2 and Docker Desktop — see below. Internet for the
   build; everything else runs in a build container.
 - **Tools the build downloads itself,** directly from their makers (never part of this repository; links in
@@ -88,13 +97,14 @@ Useful variants:
 
 ```bash
 SKIP_ROCM=1 SKIP_ONEAPI=1 stick/build.sh          # quick test build without the AMD / Intel images
-NVIDIA_FLAVOUR=legacy stick/build.sh              # for Maxwell (GTX 900) .. Ada; default image: Turing .. Blackwell
+NVIDIA_FLAVOUR=legacy stick/build.sh              # boots the proprietary modules, switches to the open ones for Blackwell
 MIRROR=http://ch.archive.ubuntu.com/ubuntu stick/build.sh   # a nearby Ubuntu mirror
 ```
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `NVIDIA_FLAVOUR` | `open` | `legacy`: proprietary modules for pre-Turing cards (no Blackwell) |
+| `NVIDIA_FLAVOUR` | `open` | the module flavour the stick boots with; the other one is on the stick too, for the switch during a run (`legacy` = boot the proprietary modules) |
+| `LLAMA_FORKS` | qr0n, Kmic-68 (pinned) | llama.cpp forks for Pascal cards, `name=url@commit[:subdir] …`; `""` leaves them out |
 | `NVIDIA_BRANCH` | `580` | NVIDIA driver branch (580 is the last one for Maxwell, Pascal, Volta) |
 | `SUITE` / `KERNEL` | `noble` / `hwe` | Ubuntu release / `ga` for its release kernel instead of the newer HWE kernel |
 | `LLAMA_REF` | `release` | llama.cpp releases only: `release` = newest patch of the previous release line (time for hotfixes), `latest-release` = newest release; or any tag, branch or commit. One commit for all backends; rule, tag and commit recorded |
@@ -164,6 +174,9 @@ them somewhere else: `stick/tools/collect.sh /run/media/$USER/RIGSIM ~/stick-res
 ## Limits
 
 - Kepler and older NVIDIA cards: no CUDA; Vulkan / OpenCL only where a driver exists.
+- Older NVIDIA cards measured after the module switch get the CUDA questions and llama-bench (CUDA) only — no Vulkan,
+  OpenCL or Blender for them. Driver branch 580 is the last one for Maxwell, Pascal and Volta. If the modules cannot be
+  unloaded, those cards are recorded in `run.json` → `nvidia_swap` → `failed`, the rest of the run stands.
 - Under Secure Boot the kernel runs in lockdown: Intel MLC cannot switch prefetchers off (recorded as
   `prefetchers_left_on`).
 - ROCm officially supports only some consumer AMD generations; unsupported cards run with the closest target
