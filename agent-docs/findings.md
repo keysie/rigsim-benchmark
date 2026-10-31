@@ -67,3 +67,14 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - **cpu-gemm-ladder grid** fails above the CPU's logical count; **package energy** reads −1 (see above).
 - Consequence: nearly every run ends `done with failures`, so the status carries no information about real problems.
 - The unit tests cannot catch any of this: they check the stick's logic, not the contents of the seed or the run environment.
+
+## Seed self-test (stick 0.13.5, decision 2026-10-31; read from source, not yet run in a real build)
+
+- User decision: a missing part **stops the build** — it becomes an issue to fix instead of runs without the expected
+  data. `ALLOW_INCOMPLETE=1` builds a test stick anyway. Parts left out by an option (empty `MLC_URL` /
+  `BLENDER_LAUNCHER_URL`, `SKIP_MODELS`, `SKIP_ROCM`, `SKIP_ONEAPI`) count as "left out", not as failures.
+- Checked: both question images and the offline debs; vkprobe, llama.cpp Vulkan, Blender and MLC with `ldd` in the system
+  image (chroot, binary bind-mounted); llama.cpp CUDA with `ldd` inside the CUDA image (where it runs); 2 models; Blender's
+  version, executable, three scenes and script, found by the stick's own `blender_offline` / `benchmark_script`; vendor
+  image archives. Result in `seed/SELFTEST.json`. Replaces #19's warning-only Blender check.
+- Not checked: that a binary actually runs (no GPU in the build); the ROCm/oneAPI images' contents.

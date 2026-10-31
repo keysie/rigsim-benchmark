@@ -12,13 +12,13 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 **Current sprint:** `sprint/stick-data` (both repositories) — goal: the stick works and collects the right data.
 
 **Next steps, in order**
-1. Build a stick from main (0.13.4) and boot it on one machine; check that Blender delivers a result and the ladder has
-   no failing step (needs the user; neither fix is verified on hardware).
-2. **A — build-time self-test of every shipped tool** (extends #19's `ldd` check, which only warns, to MLC, llama.cpp
-   backends and the CPU toolkit; component summary in the build and as `seed_complete` in the run). Design given;
-   waiting for the user's answer: abort the build on a missing component (with `ALLOW_INCOMPLETE=1`), or warn and record.
-3. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
+1. **Build a stick from this branch** (0.13.5) — the new seed self-test must pass on a real build (needs the user; Docker,
+   root, hours). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
+   machine: Blender delivers a result, the ladder has no failing step.
+2. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
    F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 5.
+3. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run (additive format change) so the data page can
+   show what a stick contained.
 
 **Recently solved** (merged, newest first)
 - 2026-10-31 PR #22 (stick 0.13.4): thread ladder capped to the machine's logical CPU count (`[limits]` in plans).
