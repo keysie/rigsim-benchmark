@@ -1,0 +1,42 @@
+
+Platform: NVIDIA CUDA
+  Device: NVIDIA GeForce RTX 3080
+    Driver version  : 580.178.04 (Linux x64)
+    Compute units   : 68
+    Clock frequency : 1710 MHz
+
+    Global memory bandwidth (GBPS)
+      float   : 662.47
+      float2  : 682.95
+      float4  : 694.98
+      float8  : 606.30
+      float16 : 676.21
+
+    Single-precision compute (GFLOPS)
+      float   : 31221.43
+      float2  : 30479.20
+      float4  : 30580.05
+      float8  : 30413.39
+      float16 : 30009.84
+
+    Integer compute (GIOPS)
+      int   : 16514.50
+      int2  : 16497.08
+      int4  : 16432.73
+      int8  : 16499.57
+      int16 : 16452.85
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 17.14
+      enqueueReadBuffer               : 16.45
+      enqueueWriteBuffer non-blocking : 15.90
+      enqueueReadBuffer non-blocking  : 14.76
+      enqueueMapBuffer(for read)      : 16.64
+        memcpy from mapped ptr        : 27.80
+      enqueueUnmap(after write)       : 21.31
+        memcpy to mapped ptr          : 28.10
+
+    Kernel launch latency : 3.57 us
+
+pci id for fd 12: 10de:2216, driver (null)
+pci id for fd 13: 10de:2216, driver (null)

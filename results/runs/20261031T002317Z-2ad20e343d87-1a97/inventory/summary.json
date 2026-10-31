@@ -1,0 +1,41 @@
+{
+ "cpu": "13th Gen Intel(R) Core(TM) i7-13700K",
+ "board": "Gigabyte Technology Co., Ltd. Z790 AORUS ELITE AX",
+ "bios": "FN",
+ "gpus": [
+  "NVIDIA GeForce RTX 3080, 10240 MiB, 00000000:01:00.0",
+  "Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780] (rev 04)"
+ ],
+ "ram_gib": 31.1,
+ "dimms": [
+  {
+   "Locator": "DDR5-A2",
+   "Size": "16 GB",
+   "Type": "DDR5",
+   "Speed": "6000 MT/s",
+   "Configured Memory Speed": "6200 MT/s",
+   "Rank": "1",
+   "Manufacturer": "G Skill Intl",
+   "Part Number": "F5-6000J3040F16G    "
+  },
+  {
+   "Locator": "DDR5-B2",
+   "Size": "16 GB",
+   "Type": "DDR5",
+   "Speed": "6000 MT/s",
+   "Configured Memory Speed": "6200 MT/s",
+   "Rank": "1",
+   "Manufacturer": "G Skill Intl",
+   "Part Number": "F5-6000J3040F16G    "
+  }
+ ],
+ "cpufreq": {
+  "cpuinfo_min_freq": "800000",
+  "cpuinfo_max_freq": "5300000",
+  "scaling_driver": "intel_pstate",
+  "scaling_governor": "powersave",
+  "base_frequency": "3400000"
+ },
+ "secure_boot": false,
+ "kernel": "7.0.0-42-generic"
+}

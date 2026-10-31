@@ -1,0 +1,620 @@
+{
+ "devices": {
+  "0000:00:00.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x5904",
+   "class_": "0x060000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Xeon E3-1200 v6/7th Gen Core Processor Host Bridge/DRAM Registers",
+   "vendor_name": "Intel Corporation",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "skl_uncore",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:00.0"
+   ]
+  },
+  "0000:00:02.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x5916",
+   "class_": "0x030000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "HD Graphics 620",
+   "vendor_name": "Intel Corporation",
+   "kind": "VGA compatible controller",
+   "port_type": "root complex integrated endpoint",
+   "driver": "i915",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:02.0"
+   ]
+  },
+  "0000:00:08.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x1911",
+   "class_": "0x088000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Xeon E3-1200 v5/v6 / E3-1500 v5 / 6th/7th/8th Gen Core Processor Gaussian Mixture Model",
+   "vendor_name": "Intel Corporation",
+   "kind": "System peripheral",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:08.0"
+   ]
+  },
+  "0000:00:13.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d35",
+   "class_": "0x000000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP Integrated Sensor Hub",
+   "vendor_name": "Intel Corporation",
+   "kind": "Non-VGA unclassified device",
+   "port_type": "",
+   "driver": "intel_ish_ipc",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:13.0"
+   ]
+  },
+  "0000:00:14.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d2f",
+   "class_": "0x0c0330",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP USB 3.0 xHCI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "USB controller",
+   "port_type": "",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.0"
+   ]
+  },
+  "0000:00:14.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d31",
+   "class_": "0x118000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP Thermal subsystem",
+   "vendor_name": "Intel Corporation",
+   "kind": "Signal processing controller",
+   "port_type": "",
+   "driver": "intel_pch_thermal",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.2"
+   ]
+  },
+  "0000:00:16.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d3a",
+   "class_": "0x078000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP CSME HECI #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "Communication controller",
+   "port_type": "",
+   "driver": "mei_me",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.0"
+   ]
+  },
+  "0000:00:16.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d3d",
+   "class_": "0x070002",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP Active Management Technology - SOL",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial controller",
+   "port_type": "",
+   "driver": "serial",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.3"
+   ]
+  },
+  "0000:00:1c.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d10",
+   "class_": "0x060400",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP PCI Express Root Port #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.0"
+   ]
+  },
+  "0000:00:1c.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d12",
+   "class_": "0x060400",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP PCI Express Root Port #3",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.2"
+   ]
+  },
+  "0000:00:1c.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d14",
+   "class_": "0x060400",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP PCI Express Root Port #5",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1c.4"
+   ]
+  },
+  "0000:00:1d.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d18",
+   "class_": "0x060400",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP PCI Express Root Port #9",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0"
+   ]
+  },
+  "0000:00:1f.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d4e",
+   "class_": "0x060100",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point LPC/eSPI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "ISA bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.0"
+   ]
+  },
+  "0000:00:1f.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d21",
+   "class_": "0x058000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP PMC",
+   "vendor_name": "Intel Corporation",
+   "kind": "Memory controller",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.2"
+   ]
+  },
+  "0000:00:1f.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d71",
+   "class_": "0x040300",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP HD Audio",
+   "vendor_name": "Intel Corporation",
+   "kind": "Audio device",
+   "port_type": "",
+   "driver": "snd_hda_intel",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.3"
+   ]
+  },
+  "0000:00:1f.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x9d23",
+   "class_": "0x0c0500",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Sunrise Point-LP SMBus",
+   "vendor_name": "Intel Corporation",
+   "kind": "SMBus",
+   "port_type": "",
+   "driver": "i801_smbus",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.4"
+   ]
+  },
+  "0000:00:1f.6": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d7",
+   "class_": "0x020000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "Ethernet Connection (4) I219-LM",
+   "vendor_name": "Intel Corporation",
+   "kind": "Ethernet controller",
+   "port_type": "",
+   "driver": "e1000e",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.6"
+   ]
+  },
+  "0000:02:00.0": {
+   "parent": "0000:00:1c.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x10ec",
+   "device": "0x525a",
+   "class_": "0xff0000",
+   "subsystem": "0x17aa:0x224e",
+   "name": "RTS525A PCI Express Card Reader",
+   "vendor_name": "Realtek Semiconductor Co., Ltd.",
+   "kind": "Unassigned class [ff00]",
+   "port_type": "endpoint",
+   "driver": "rtsx_pci",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.0",
+    "0000:02:00.0"
+   ]
+  },
+  "0000:04:00.0": {
+   "parent": "0000:00:1c.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x24fd",
+   "class_": "0x028000",
+   "subsystem": "0x8086:0x0130",
+   "name": "Wireless 8265 / 8275",
+   "vendor_name": "Intel Corporation",
+   "kind": "Network controller",
+   "port_type": "endpoint",
+   "driver": "iwlwifi",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "1",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.2",
+    "0000:04:00.0"
+   ]
+  },
+  "0000:05:00.0": {
+   "parent": "0000:00:1c.4",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xf1a5",
+   "class_": "0x010802",
+   "subsystem": "0x8086:0x390a",
+   "name": "SSD 600P Series",
+   "vendor_name": "Intel Corporation",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1c.4",
+    "0000:05:00.0"
+   ]
+  },
+  "0000:06:00.0": {
+   "parent": "0000:00:1d.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d3",
+   "class_": "0x060400",
+   "subsystem": "0x2222:0x1111",
+   "name": "JHL6540 Thunderbolt 3 Bridge (C step) [Alpine Ridge 4C 2016]",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "switch upstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:06:00.0"
+   ]
+  },
+  "0000:07:00.0": {
+   "parent": "0000:06:00.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d3",
+   "class_": "0x060400",
+   "subsystem": "0x2222:0x1111",
+   "name": "JHL6540 Thunderbolt 3 Bridge (C step) [Alpine Ridge 4C 2016]",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "4",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:06:00.0",
+    "0000:07:00.0"
+   ]
+  },
+  "0000:07:01.0": {
+   "parent": "0000:06:00.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d3",
+   "class_": "0x060400",
+   "subsystem": "0x2222:0x1111",
+   "name": "JHL6540 Thunderbolt 3 Bridge (C step) [Alpine Ridge 4C 2016]",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "4",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:06:00.0",
+    "0000:07:01.0"
+   ]
+  },
+  "0000:07:02.0": {
+   "parent": "0000:06:00.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d3",
+   "class_": "0x060400",
+   "subsystem": "0x2222:0x1111",
+   "name": "JHL6540 Thunderbolt 3 Bridge (C step) [Alpine Ridge 4C 2016]",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "4",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:06:00.0",
+    "0000:07:02.0"
+   ]
+  },
+  "0000:07:04.0": {
+   "parent": "0000:06:00.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d3",
+   "class_": "0x060400",
+   "subsystem": "0x2222:0x1111",
+   "name": "JHL6540 Thunderbolt 3 Bridge (C step) [Alpine Ridge 4C 2016]",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "switch downstream port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "4",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:06:00.0",
+    "0000:07:04.0"
+   ]
+  },
+  "0000:3c:00.0": {
+   "parent": "0000:07:02.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x15d4",
+   "class_": "0x0c0330",
+   "subsystem": "0x2222:0x1111",
+   "name": "JHL6540 Thunderbolt 3 USB Controller (C step) [Alpine Ridge 4C 2016]",
+   "vendor_name": "Intel Corporation",
+   "kind": "USB controller",
+   "port_type": "endpoint",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "4",
+    "max_speed": "2.5 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:06:00.0",
+    "0000:07:02.0",
+    "0000:3c:00.0"
+   ]
+  }
+ },
+ "gpus": [
+  "0000:00:02.0"
+ ]
+}

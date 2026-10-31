@@ -1,0 +1,71 @@
+00:23:17  run 20261031T002317Z-2ad20e343d87-1a97
+00:23:20  cpu 13th Gen Intel(R) Core(TM) i7-13700K | board Gigabyte Technology Co., Ltd. Z790 AORUS ELITE AX | 31.1 GiB | gpus ['NVIDIA GeForce RTX 3080, 10240 MiB, 00000000:01:00.0', 'Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780] (rev 04)']
+00:23:20  stick check: pass
+00:23:28  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 6.91, 'mib_per_s': 148.3}
+00:23:30  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+00:23:31  screens: [('card2', 'DP-2', '1920x1200'), ('card2', 'DP-4', '1920x1200')]
+00:23:32  screens off while measuring: ['fb0']
+00:23:32  cpu-mem-latency: start
+00:30:52  cpu-mem-latency: rc=0 {'done': 9} (440 s)
+00:30:52  cpu-mem-ladder: start
+00:39:41  cpu-mem-ladder: rc=0 {'done': 48} (530 s)
+00:39:41  cpu-gemm: start
+00:46:59  cpu-gemm: rc=0 {'done': 24} (438 s)
+00:46:59  cpu-gemm-ladder: start
+00:54:01  cpu-gemm-ladder: rc=0 {'done': 9, 'failed': 3} (422 s)
+00:54:01  cpu-power-time: start
+01:02:40  cpu-power-time: rc=0 {'done': 1} (519 s)
+01:02:40  pcie-copy: start
+01:03:22  pcie-copy: rc=0 {'done': 12} (42 s)
+01:03:22  gpu-p2p: start
+01:03:36  gpu-p2p: rc=0 {'failed': 2} (14 s)
+01:03:36  gpu-vram: start
+01:03:54  gpu-vram: rc=0 {'done': 6} (18 s)
+01:03:54  gpu-gemm: start
+01:04:40  gpu-gemm: rc=0 {'done': 21} (46 s)
+01:04:40  gpu-launch: start
+01:04:53  gpu-launch: rc=0 {'done': 3} (13 s)
+01:04:58  mlc idle_latency: rc=0 (5 s)
+01:07:21  mlc max_bandwidth: rc=0 (144 s)
+01:08:46  mlc loaded_latency: rc=0 (85 s)
+01:08:48  mlc latency_matrix: rc=0 (1 s)
+01:08:56  mlc bandwidth_matrix: rc=0 (8 s)
+01:08:57  opencl p0d0: Intel(R) UHD Graphics 770 (Intel(R) OpenCL Graphics)
+01:10:15  opencl p0d0: rc=0 (79 s)
+01:10:15  opencl p1d0: NVIDIA GeForce RTX 3080 (NVIDIA CUDA)
+01:10:37  opencl p1d0: rc=0 (21 s)
+01:11:13  vkprobe: 31 runs on 2 device(s)
+01:11:13  rocm: skipped (no AMD GPU)
+01:11:13  docker: loading vendor-oneapi.tar (4060 MiB) onto the stick
+01:11:43  docker: vendor-oneapi.tar: 3.0 of 4.0 GiB (75%), 102 MB/s, 30 s
+01:12:13  docker: vendor-oneapi.tar: 3.3 of 4.0 GiB (84%), 11 MB/s, 60 s
+01:12:43  docker: vendor-oneapi.tar: 3.5 of 4.0 GiB (88%), 6 MB/s, 90 s
+01:13:13  docker: vendor-oneapi.tar: 3.7 of 4.0 GiB (94%), 9 MB/s, 120 s
+01:13:43  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 4 MB/s, 150 s
+01:14:13  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 0 MB/s, 180 s
+01:14:43  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 0 MB/s, 210 s
+01:15:13  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 0 MB/s, 240 s
+01:15:43  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 0 MB/s, 270 s
+01:16:13  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 0 MB/s, 300 s
+01:16:43  docker: vendor-oneapi.tar: 3.8 of 4.0 GiB (97%), 0 MB/s, 330 s
+01:17:13  docker: loaded vendor-oneapi.tar (4060 MiB in 360 s)
+02:04:13  test-backend-ops dev0: 9/12 ops
+02:04:14  oneapi device 0 (Intel(R) UHD Graphics 770): 92 runs
+02:04:17  llama cuda-gpu0-tinyllama-1.1b-q4_0: rc=0 (3 s)
+02:04:21  llama cuda-gpu0-llama-2-7b-q4_0: rc=0 (5 s)
+02:13:24  test-backend-ops cuda-gpu0: 12/12 ops
+02:13:27  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (2 s)
+02:13:32  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (5 s)
+02:23:05  test-backend-ops vulkan-dev0: 12/12 ops
+02:23:34  llama vulkan-dev1-tinyllama-1.1b-q4_0: rc=0 (29 s)
+02:26:02  llama vulkan-dev1-llama-2-7b-q4_0: rc=0 (147 s)
+03:01:03  test-backend-ops vulkan-dev1: 12/12 ops
+03:12:25  test-backend-ops cpu: 12/12 ops
+03:12:33  llama cpu-tinyllama-1.1b-q4_0: rc=0 (9 s)
+03:12:33  blender cpu-monster: rc=127 (0 s)
+03:12:33  blender cpu-junkshop: rc=127 (0 s)
+03:12:33  blender cpu-classroom: rc=127 (0 s)
+03:12:33  blender optix-monster: rc=127 (0 s)
+03:12:33  blender cuda-monster: rc=127 (0 s)
+03:12:33  blender oneapi-monster: rc=127 (0 s)
+03:12:33  finished: done with failures
