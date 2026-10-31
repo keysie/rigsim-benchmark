@@ -35,3 +35,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   PR #21's branch renamed from `fix/ladder-grid`, conflict on `stick/VERSION` and the tests resolved, 135 tests pass);
   agent-docs live on `main` only, no docs branches (the docs PRs #20 and rigsim #27 were merged onto main, their branches
   deleted). Rule 7 rewritten: branches per component, agent-docs committed directly to `main`.
+- **2026-10-31** — Direct pushes of agent-docs to `main` are refused by the ruleset (required status "Check Conventional
+  Commits"). Workaround recorded in rule 7 (throwaway ref `agent-docs-sync`, wait for the check, push `main`). Asked the
+  user whether to add a bypass for the repository admin instead.

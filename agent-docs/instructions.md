@@ -37,6 +37,10 @@ These apply to every agent in every session. The user may override one for a sin
    One change per commit.
    **The agent-docs never get a branch:** commit and push them directly to `main`, separately from code commits
    (`docs(agent-docs): …`), so the notes are always current on `main` and never cause merge conflicts.
+   `main` requires a passing "Check Conventional Commits" status per commit, so a direct push is refused. Procedure:
+   push the commit to the throwaway ref `agent-docs-sync`, wait until the check is `completed/success`
+   (`GET /repos/keysie/<repo>/commits/<sha>/check-runs`), push `main`, delete `agent-docs-sync`. Not a working branch:
+   it lives only for the minute of the check.
    Open a PR when the branch is ready for review. The user merges; agents do not merge their own PRs.
 8. **Run the tests before and after** a change (commands in the briefing). Never hand over a red branch without saying so.
 
