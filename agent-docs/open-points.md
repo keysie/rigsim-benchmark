@@ -23,10 +23,9 @@ Last revised: 2026-10-31.
 ## Medium
 
 5. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
-   15 runs". Proposed plan (not cleared yet): (A) a build-time self-test that starts every shipped tool (Blender with
-   `ldd`, MLC, llama.cpp backends) and fails the build when something is missing — PR #19 already adds the Blender `ldd`
-   check, as a warning only; (B) Blender's missing libraries (PR #19, merged, not verified on hardware) and the ladder grid (PR #22,
-   branch `fix/stick`, not merged); (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
+   15 runs". Plan cleared by the user. (A) build-time seed self-test — **written** on `sprint/stick-data` (stick 0.13.5,
+   `stick/tools/selftest.py`): stops the build when a part asked for is missing or a binary lacks libraries;
+   not yet run in a real build; (B) Blender's missing libraries (PR #19, merged) and the ladder grid (PR #22, merged) — both not verified on hardware; (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
    the reason, not as a failure; (E) triage the SYCL and Vulkan aborts; (F) a run-completeness audit (expected vs
    present data per machine class) as a tool and on the data page; (G) an end-to-end test (VM) if the user wants one.
 

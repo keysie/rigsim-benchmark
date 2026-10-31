@@ -98,6 +98,7 @@ MIRROR=http://ch.archive.ubuntu.com/ubuntu stick/build.sh   # a nearby Ubuntu mi
 | `ROCM_IMAGE` / `AMDGPU_TARGETS` | see `build.sh` | ROCm base image / gfx targets to compile; check against current releases |
 | `ONEAPI_IMAGE` | see `build.sh` | oneAPI base image |
 | `SKIP_ROCM`, `SKIP_ONEAPI`, `SKIP_MODELS` | — | leave that part off the stick |
+| `ALLOW_INCOMPLETE` | `0` | `1`: finish the build even when the seed self-test finds a part missing or a binary without its libraries (a test stick; normal builds stop there, results in `seed/SELFTEST.json`) |
 | `MIRROR` | archive.ubuntu.com | Ubuntu mirror |
 | `REBUILD_ROOTFS` / `ROOTFS_MAX_AGE_DAYS` | — / `7` | the finished system image is reused while younger than this and its inputs are unchanged; `REBUILD_ROOTFS=1` forces a fresh one (newer drivers, security updates) |
 | `BUILD_IN_CONTAINER` | `1` | `0`: build on a Debian/Ubuntu host directly |

@@ -40,3 +40,12 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   user whether to add a bypass for the repository admin instead.
 - **2026-10-31** — Renaming `fix/ladder-grid` to `fix/stick` closed PR #21 (GitHub does not carry a PR across a branch
   rename here); reopened as rigsim-benchmark PR #22. Lesson: never rename a branch with an open PR.
+- **2026-10-31** — User decision: branches are sprints, and agent-docs live on the branch being worked on (replaces the
+  "notes only on main" rule and its `agent-docs-sync` workaround). Rule 7 rewritten. PR #22 (stick fixes, stick 0.13.4)
+  merged by the user. New sprint `sprint/stick-data` opened in both repositories.
+- **2026-10-31** — User decision: a missing part stops the build (not a warning). Built the seed self-test on
+  `sprint/stick-data` (stick 0.13.5): `stick/tools/selftest.py`, wired into `build.sh` before the seed manifest, option
+  `ALLOW_INCOMPLETE`; 140 tests pass; not yet run in a real build.
+- **2026-10-31** — First real build with the seed self-test: everything ok except llama.cpp CUDA, `libcuda.so.1` missing in
+  the CUDA image — a false alarm (the NVIDIA container toolkit injects driver libraries from the host). Fixed: driver
+  libraries are checked in the system image instead. 141 tests pass. (measured by the user's build)
