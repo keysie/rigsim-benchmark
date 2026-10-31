@@ -43,7 +43,7 @@ has 4 runs), 13 attribution files, predictions for tags v0.1.0 (2 files), v0.2.0
    rigsim's earlier copy was removed (rigsim PR #25).
 
 **Why separate** (stated in the repos: different licences and immutable data; the data "stands on its own"; runner lives
-only here. *Inferred, confirm with user:* keeps validation data out of the model's repo so it cannot silently become
+only here. *Inferred, confirmed by the user 2026-10-31:* keeps validation data out of the model's repo so it cannot silently become
 fitting data; independent release cadence — stick versions vs rigsim tags; contributors submit machines without
 touching simulator code; heavy build machinery and bot-written files stay out of the simulator's history).
 
@@ -76,6 +76,7 @@ stick/            the measurement stick
                     cpu-power-time, gpu-gemm, gpu-launch, gpu-p2p, gpu-vram, pcie-copy
   builder/, ubuntu/  build container, GRUB and chroot setup
 bench/hw/         bench runner and toolkits (only home)
+agent-docs/       this folder (repository root, deliberately outside docs/, which Pages serves)
 results/          runs/<run>/ (CC BY 4.0), attribution/<run>.json, README.md, FORMAT.md (versioned format + changelog)
 predictions/      <rigsim tag>/<run>.json, README.md (contract)
 docs/             GitHub Pages site (legacy build from main:/docs): index.html, data.json (generated)
@@ -123,7 +124,7 @@ forces LF).
 - Conventional Commits (CI + `.githooks/commit-msg`). Bots commit as `chore(runs)`, `chore(table)`, `chore(predictions)`.
 - The repo has several automatic writers to `main`; fetch `main` before branching and before opening a PR, and never touch bot output
   (instruction 12).
-- Pages serves everything under `docs/` — including this folder (see open-points).
+- Pages serves everything under `docs/`; `agent-docs/` sits at the repository root so it is not published.
 - Third-party software (Ubuntu, NVIDIA driver/CUDA images, ROCm, oneAPI, llama.cpp, Blender, Intel MLC, GGUF models)
   is downloaded at build time under its own licence and is not part of the repo; building the stick accepts Intel's MLC licence.
 

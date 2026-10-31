@@ -22,24 +22,21 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-5. **`docs/agent-docs` is served by GitHub Pages** [agent]: Pages builds from `main:/docs` (legacy build), so this folder
-   becomes public pages. The repo is public anyway; decide whether to keep it there, add a `.nojekyll`/exclusion, or
-   accept it. Do not move it without the user's decision (the user asked for this location).
-6. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
+5. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
    check the share of `unsupported` in `predictions/v0.3.0/` per key family and report which GPUs or CPUs are missing
    from rigsim's catalogue.
-7. **Stale remote branch `blender-libs`** [agent]: exists on the remote besides `main`; purpose and status unknown. Ask
+6. **Stale remote branch `blender-libs`** [agent]: exists on the remote besides `main`; purpose and status unknown. Ask
    before deleting.
-8. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
+7. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
    flash. Whether that is acceptable is a user decision.
 
 ## Low
 
-9. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
+8. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
-10. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
+9. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
     stick/README, decided 2026-10-29].
-11. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
+10. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
     Kepler and older not at all), MLC cannot switch prefetchers off under Secure Boot, ROCm only officially on some AMD
     generations, vkprobe's matrix GEMM is a plain kernel (lower bound), RAM timings as the BIOS set them are often
     invisible from Linux.
