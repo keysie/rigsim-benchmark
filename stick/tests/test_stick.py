@@ -328,9 +328,12 @@ def test_flash_offers_update_backs_up_first_and_keeps_the_data_partition():
     upd = f.split("update() {", 1)[1].split("\n}\n", 1)[0]
     assert upd.index("backup_runs") < upd.index("dd if=")                 # backup before anything is written
     assert 'add_data_part "$DEV" "$start" "$sectors"' in upd and "mkfs" not in upd  # same sectors, no new filesystem
-    # an MBR-layout stick (data partition to the very end) is not updated in place to the GPT layout
-    assert upd.index("disk_sectors - 34") < upd.index("backup_runs")
-    assert "does not fit in front of the data partition" in upd and "e2fsck -n" in upd
+    # an MBR-layout stick (data partition to the very end) is not updated in place to the GPT layout, and [u]pdate is
+    # not offered then (before, it was offered again after every refusal — user report 2026-10-31)
+    assert "disk_sectors - 34" in f[f.index("update_blocker() {"):f.index("update() {")]
+    assert 'blocker="$(update_blocker "$part")"' in f and 'prompt="[s]eed only, [e]rase everything, [a]bort? "' in f
+    assert '[[ -z "$blocker" ]] && { update' in f
+    assert "does not fit in front of the data partition" in f.split("update_blocker() {", 1)[1] and "e2fsck -n" in upd
     e = f.split("\n    e) ", 1)[1].split(";;", 1)[0]
     assert e.index("backup_runs") < e.index("fresh")
     assert "mount -o ro" in f.split("backup_runs() {", 1)[1].split("\n}\n", 1)[0]

@@ -191,26 +191,25 @@ fresh() {
   echo "stick ready: $DEV (data partition $part from ${start} MiB)"
 }
 
-update() {                                           # $1 = data partition
-  local part="$1" nr start sectors ss
-  nr="$(cat "/sys/class/block/$(basename "$part")/partition")"
-  read -r start sectors < <(partx -g -o START,SECTORS --nr "$nr" "$DEV")
-  ss="$(blockdev --getss "$DEV")"
-  local iso_bytes; iso_bytes="$(stat -c %s "$ISO")"
-  if (( iso_bytes + 1048576 > start * ss )); then
-    echo "the new image ($(( iso_bytes / 1048576 )) MiB) does not fit in front of the data partition" \
-         "($(( start * ss / 1048576 )) MiB): choose [s]eed only, or [e]rase (results are backed up first)." >&2
-    return 3
-  fi
+# Why the data partition cannot stay where it is for the new image (empty: an in-place update is possible).
+# Sets START and SECTORS of the data partition for update().
+update_blocker() {                                   # $1 = data partition
+  local nr ss iso_bytes disk_sectors
+  nr="$(cat "/sys/class/block/$(basename "$1")/partition")"
+  read -r START SECTORS < <(partx -g -o START,SECTORS --nr "$nr" "$DEV")
+  ss="$(blockdev --getss "$DEV")"; iso_bytes="$(stat -c %s "$ISO")"; disk_sectors="$(blockdev --getsz "$DEV")"
+  if (( iso_bytes + 1048576 > START * ss )); then
+    echo "the new image ($(( iso_bytes / 1048576 )) MiB) does not fit in front of the data partition ($(( START * ss / 1048576 )) MiB)"
   # A GPT image (0.13.5 on) keeps its backup table in the stick's last 33 sectors. Sticks flashed before with the
-  # MBR layout have their data partition running to the very end: those sectors are filesystem there, so such a
-  # stick cannot be updated in place (results are backed up first by [e]rase).
-  local disk_sectors; disk_sectors="$(blockdev --getsz "$DEV")"
-  if sfdisk -d "$ISO" 2>/dev/null | grep -q '^label: gpt' && (( start + sectors > disk_sectors - 34 )); then
-    echo "this stick was flashed with the older layout; the new image needs its last sectors for the partition" \
-         "table: choose [s]eed only (old system image), or [e]rase (results are backed up first)." >&2
-    return 3
+  # MBR layout have their data partition running to the very end: those sectors are filesystem there.
+  elif sfdisk -d "$ISO" 2>/dev/null | grep -q '^label: gpt' && (( START + SECTORS > disk_sectors - 34 )); then
+    echo "this stick was flashed with the older layout, and the new image needs the stick's last sectors for its partition table"
   fi
+}
+
+update() {                                           # $1 = data partition; only offered when update_blocker is empty
+  local part="$1" start sectors
+  update_blocker "$part" >/dev/null; start="$START"; sectors="$SECTORS"
   backup_runs "$part"
   echo "writing the new image in front of the data partition (sectors from $start stay untouched)"
   dd if="$ISO" of="$DEV" bs=4M conv=fsync status=progress
@@ -240,10 +239,19 @@ machines="$(ls "$MNT/runs" 2>/dev/null | awk -F- '{print $2}' | sort -u | wc -l)
 umount "$MNT"; rmdir "$MNT"; MNT=""
 new="$(cat "$OUT/seed/VERSION" 2>/dev/null || echo unknown)"
 echo "$DEV is already a rigsim stick: version $old, $runs runs from $machines machines. New build: $new."
+# [u]pdate is offered only when it can work (before, a blocked update was offered again after every refusal)
+blocker="$(update_blocker "$part")"
+if [[ -n "$blocker" ]]; then
+  echo "an update in place is not possible: $blocker."
+  echo "[s]eed only keeps the old system image; [e]rase backs up every run first, then writes the stick anew."
+  prompt="[s]eed only, [e]rase everything, [a]bort? "
+else
+  prompt="[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort? "
+fi
 while true; do
-  read -rp "[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort? " c
+  read -rp "$prompt" c
   case "$c" in
-    u) update "$part" && exit 0 || true ;;
+    u) [[ -z "$blocker" ]] && { update "$part" && exit 0 || true; } ;;
     s) seed_stick "$part"; verify_stick "$part" 0; echo "seed refreshed on $DEV"; exit 0 ;;
     e) backup_runs "$part"; fresh; exit 0 ;;
     a) exit 1 ;;
