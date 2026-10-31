@@ -1168,9 +1168,9 @@ def _full_seed(tmp: Path) -> tuple[Path, Path]:
     return s, pay
 
 
-def _run(s, pay, env=FULL_ENV, ldd_root=lambda p: [], ldd_image=lambda i, p: []):
+def _run(s, pay, env=FULL_ENV, ldd_root=lambda p: [], ldd_image=lambda i, p: [], root_has=lambda lib: True):
     return selftest.SelfTest(s, pay, env, "nvidia/cuda:12", ["nvidia/cuda:12", "debian:trixie"],
-                             ldd_root, ldd_image, stick).run()
+                             ldd_root, ldd_image, stick, root_has).run()
 
 
 def test_selftest_passes_a_complete_seed(tmp_path):
@@ -1196,6 +1196,17 @@ def test_selftest_checks_cuda_binaries_in_the_cuda_image(tmp_path):
     assert ("nvidia/cuda:12", "llama-bench") in seen
 
 
+def test_selftest_driver_libraries_come_from_the_system_image(tmp_path):
+    """First real build (2026-10-31): libcuda.so.1 is never in the CUDA image — the container toolkit brings it in from
+    the system image. Fine when the system image has it; missing there, it is a real gap."""
+    s, pay = _full_seed(tmp_path)
+    img = lambda i, p: ["libcuda.so.1"]
+    assert _run(s, pay, ldd_image=img)["llama.cpp cuda"]["status"] == "ok"
+    r = _run(s, pay, ldd_image=img, root_has=lambda lib: False)["llama.cpp cuda"]
+    assert r["status"] == "missing" and "driver library" in r["problems"][0]
+    assert selftest.is_driver_lib("libnvidia-ml.so.1") and not selftest.is_driver_lib("libcublas.so.12")
+
+
 def test_selftest_parts_left_out_on_purpose_are_not_failures(tmp_path):
     s, pay = _full_seed(tmp_path)
     for p in (s / "models").glob("*"):
@@ -1211,6 +1222,7 @@ def test_selftest_exit_code_and_allow_incomplete(tmp_path, monkeypatch):
     (s / "debs" / "a.deb").unlink()
     monkeypatch.setattr(selftest, "ldd_in_rootfs", lambda root, p: [])
     monkeypatch.setattr(selftest, "ldd_in_image", lambda i, p: [])
+    monkeypatch.setattr(selftest, "rootfs_has_lib", lambda root, lib: True)
     monkeypatch.setattr(selftest, "load_stick", lambda: stick)
     for k, v in FULL_ENV.items():
         monkeypatch.setenv(k, v)

@@ -25,6 +25,10 @@ from typing import Callable
 
 HERE = Path(__file__).resolve().parent
 LLAMA_BINS = ("llama-bench", "test-backend-ops")
+# The NVIDIA driver's user-space libraries are never in a CUDA image: the container toolkit hands them in from the
+# system image at `docker run --gpus` (first real build, 2026-10-31: libcuda.so.1 "missing" in the image). Missing in
+# the image they are fine, provided the system image has them.
+DRIVER_LIB_PREFIXES = ("libcuda.so", "libnvidia-")
 MOUNT = "mnt/rigsim-selftest"
 
 
@@ -64,6 +68,16 @@ def ldd_in_image(image: str, binary: Path) -> list[str]:
     return missing_libs(r.stdout + r.stderr)
 
 
+def rootfs_has_lib(rootfs: Path, lib: str) -> bool:
+    """Whether the system image's dynamic linker knows a library (ldconfig cache in the chroot)."""
+    r = subprocess.run(["chroot", str(rootfs), "ldconfig", "-p"], capture_output=True, text=True)
+    return any(ln.strip().startswith(lib + " ") for ln in r.stdout.splitlines())
+
+
+def is_driver_lib(lib: str) -> bool:
+    return lib.startswith(DRIVER_LIB_PREFIXES)
+
+
 def nonempty(p: Path) -> bool:
     return p.is_file() and p.stat().st_size > 0
 
@@ -74,10 +88,11 @@ def image_tar(seed: Path, image: str) -> Path:
 
 class SelfTest:
     def __init__(self, seed: Path, payload: Path, env: dict, cuda_image: str, images: list[str],
-                 ldd_root: Callable[[Path], list[str]], ldd_image: Callable[[str, Path], list[str]], stick=None):
+                 ldd_root: Callable[[Path], list[str]], ldd_image: Callable[[str, Path], list[str]], stick=None,
+                 root_has: Callable[[str], bool] = lambda lib: True):
         self.seed, self.payload, self.env = seed, payload, env
         self.cuda_image, self.images = cuda_image, images
-        self.ldd_root, self.ldd_image = ldd_root, ldd_image
+        self.ldd_root, self.ldd_image, self.root_has = ldd_root, ldd_image, root_has
         self.stick = stick or load_stick()
         self.results: dict[str, dict] = {}
 
@@ -101,6 +116,17 @@ class SelfTest:
                 problems.append(f"{p.name}: libraries missing: {' '.join(libs)}")
         return problems
 
+    def ldd_in_cuda_image(self, p: Path) -> list[str]:
+        """Missing in the CUDA image, minus the driver libraries the container toolkit brings in from the system image
+        — those are checked there instead."""
+        out = []
+        for lib in self.ldd_image(self.cuda_image, p):
+            if not is_driver_lib(lib):
+                out.append(lib)
+            elif not self.root_has(lib):
+                out.append(f"{lib} (driver library, not in the system image either)")
+        return out
+
     def run(self) -> dict[str, dict]:
         s, e = self.seed, self.env
         # container images the questions run in, and the CPU toolkit's offline packages
@@ -111,7 +137,7 @@ class SelfTest:
         # llama.cpp: Vulkan in the system image, CUDA in the CUDA image
         self.set("llama.cpp vulkan", self.binaries("llama", [s / "llama" / "vulkan" / b for b in LLAMA_BINS], self.ldd_root))
         self.set("llama.cpp cuda", self.binaries("llama", [s / "llama" / "cuda" / b for b in LLAMA_BINS],
-                                                 lambda p: self.ldd_image(self.cuda_image, p)))
+                                                 self.ldd_in_cuda_image))
         # models
         if self.opt_off("SKIP_MODELS"):
             self.set("models", [], "SKIP_MODELS=1")
@@ -167,7 +193,7 @@ def main(argv: list[str]) -> int:
     a.add_argument("--out", type=Path, required=True)
     o = a.parse_args(argv)
     t = SelfTest(o.seed, o.payload, dict(os.environ), o.cuda_image, o.image,
-                 lambda p: ldd_in_rootfs(o.rootfs, p), ldd_in_image)
+                 lambda p: ldd_in_rootfs(o.rootfs, p), ldd_in_image, root_has=lambda lib: rootfs_has_lib(o.rootfs, lib))
     results = t.run()
     bad = [p for p, r in results.items() if r["status"] == "missing"]
     o.out.write_text(json.dumps(dict(complete=not bad, parts=results), indent=1) + "\n")
