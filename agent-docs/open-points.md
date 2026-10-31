@@ -22,15 +22,11 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-5. **UEFI boot fails on some machines without CSM** [user, 2026-10-31]. The stick is meant to boot both ways (signed shim +
-   Ubuntu's `gcdx64`, El Torito UEFI image, ESP appended as MBR partition 2 type 0xEF). Read from source, likely causes
-   (*inferred*): MBR without an active partition (some firmwares skip such disks in UEFI mode); MBR-only hybrid with
-   partition 1 starting at sector 0 (Ubuntu ISOs since 20.10 use a GPT layout with `-partition_offset 16` and
-   `-appended_part_as_gpt` for exactly such firmwares). `flash.sh` appends the data partition with `sfdisk` (type 83), so a
-   GPT layout changes flashing and updating too. Waiting for the symptom (not listed vs. error vs. GRUB prompt) and the
-   affected machines before choosing the fix. Test idea: boot a small image with the same layout in QEMU (OVMF with and
-   without Secure Boot, SeaBIOS) — catches regressions, not picky firmwares.
-
+5. **UEFI boot fails on some machines without CSM** [user, 2026-10-31; symptom: the firmware sees the stick but offers
+   no boot option]. **Fix written** on `sprint/stick-data` (stick 0.13.5): GPT hybrid layout like current Ubuntu ISOs
+   (`stick/tools/layout.sh`, shared by build and flash), FAT16 ESP, BIOS core with `configfile`. QEMU boot test passes
+   (UEFI, UEFI + Secure Boot, BIOS; CI "Boot test"). Open: confirm on one of the affected machines; old-layout sticks
+   cannot be updated in place (flash offers seed-only or erase).
 6. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
    15 runs". Plan cleared by the user. (A) build-time seed self-test — **written** on `sprint/stick-data` (stick 0.13.5,
    `stick/tools/selftest.py`): stops the build when a part asked for is missing or a binary lacks libraries;

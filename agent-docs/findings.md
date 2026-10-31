@@ -81,3 +81,17 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   from the system image at `docker run --gpus`. They are checked in the system image (ldconfig in the chroot) instead.
   Found by the first real build with the self-test (2026-10-31), which flagged `libcuda.so.1` for llama.cpp CUDA.
 - Not checked: that a binary actually runs (no GPU in the build); the ROCm/oneAPI images' contents.
+
+## Boot and disk layout (stick 0.13.5, 2026-10-31; QEMU-tested, not yet on the affected machines)
+
+- Up to 0.13.4 the image was an MBR-only hybrid: partition 1 (ISO) from sector 0, ESP as MBR type 0xEF, no boot flag.
+  Some UEFI firmwares saw such a stick but offered no boot option (user report). Since 0.13.5: GPT with ISO partition
+  from sector 64, a real GPT ESP, a gap partition, a protective MBR with the boot flag, GRUB hybrid MBR for BIOS;
+  the data partition is GPT partition 4 (type Linux filesystem) behind the image, the backup GPT at the stick's end.
+- The BIOS GRUB core lacked `configfile` (it was only in `--install-modules`): in QEMU legacy boot stopped at `grub>`
+  with "configfile.mod not found", with the old and the new layout alike. Whether real machines booted legacy at all
+  before is unknown (*inferred*: with CSM on, they may have used the UEFI route).
+- Sticks flashed before 0.13.5 have their data partition running to the disk's last sector, where the GPT backup
+  belongs: `flash.sh` refuses an in-place update for them ([s]eed only or [e]rase with backup).
+- Test: `sudo bash stick/tests/boot/boot-test.sh` (root, QEMU, OVMF, SeaBIOS; ~1–2 min without KVM). QEMU's small
+  `bios.bin` has no xHCI support; the test uses the default (256k) SeaBIOS.

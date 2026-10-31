@@ -51,3 +51,8 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   libraries are checked in the system image instead. 141 tests pass. (measured by the user's build)
 - **2026-10-31** — User report: the stick does not boot on some machines unless CSM / legacy mode is on. Causes read from
   the build (MBR-only hybrid, no active flag) recorded as inferred in open-points; asked for the symptom first.
+- **2026-10-31** — UEFI boot: symptom = stick seen, no boot option. Switched to the GPT hybrid layout of current Ubuntu
+  ISOs (`stick/tools/layout.sh`), FAT16 ESP; `flash.sh` appends the data partition as GPT entry after relocating the
+  backup header and refuses in-place updates of old-layout sticks. While building a QEMU boot test found that the BIOS
+  GRUB core lacked `configfile` (legacy boot ended at `grub>`), fixed. Test green: UEFI, UEFI + Secure Boot, BIOS;
+  added as CI workflow "Boot test". 142 unit tests pass.
