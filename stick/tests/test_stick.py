@@ -1124,6 +1124,15 @@ def test_runner_lists_every_item_up_front():
     assert src.index('state.setdefault(it["id"], {"status": "pending"})', i) < src.index("def on_signal", i)
 
 
+def test_blender_finds_its_libraries():
+    """Run d7a3 / 1a97: Blender did not start ('libXfixes.so.3' missing): the libraries are installed and the build
+    checks with ldd in the system image that none is missing."""
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    for lib in ("libxfixes3", "libx11-6", "libxi6", "libxxf86vm1", "libxrender1", "libxkbcommon0", "libgl1"):
+        assert lib in c, lib
+    b = (HERE / "build.sh").read_text()
+    assert 'sudo chroot "$ROOT" ldd /mnt/blender-check/blender' in b and 'step "Blender libraries" blender_libs' in b
+
 def test_thread_ladder_is_capped_to_the_machines_cpus():
     """Runs d7a3 / 1a97: a fixed ladder up to 64 threads failed every step above the machine's logical CPUs, so each
     run ended 'done with failures'. The ladder is capped and always ends at the machine's own count."""

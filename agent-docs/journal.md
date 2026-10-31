@@ -20,3 +20,14 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   agent-docs never need clearing with the user; the pre-journal history here is inferred from the repos (an older chat
   exists but kept no journal) — from now on the journal is kept. Because Pages serves `docs/`, the folder moved from
   `docs/agent-docs` to `agent-docs/` at the repository root.
+- **2026-10-31** — The two newest runs (stick 0.13.1, 7600U laptop and 13700K desktop) are the first with the ladder and
+  power-time questions. Findings and fixes proposed in findings and open-points (grid fails above the CPU count, package
+  power unreadable, no value keys yet). No code changed. (measured, analysis by agent)
+- **2026-10-31** — User decision: stick first, to make sure it works and collects the right data. Audit of all 15 runs
+  found: Blender never delivered a result (missing library `libXfixes.so.3` in the newest runs, not in the seed in others),
+  oneAPI and Vulkan failures on older Intel iGPUs recorded as failures, seed content differing between builds. Plan
+  proposed in open-points; nothing changed in code. (measured)
+- **2026-10-31** — User cleared A and B of the stick plan. Found that branch `blender-libs` is the user's open PR #19
+  (Blender libraries, stick 0.13.3), not a stale branch — an earlier open point said otherwise and was removed. Wrote PR #21
+  (ladder cap, 0.13.4; `[limits]` plan section, `cap_to_cpus` in the runner; 134 tests pass, not run on hardware).
+  New standing rule: the briefing's section 0 always holds the next steps and the last solved items.
