@@ -92,6 +92,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   with "configfile.mod not found", with the old and the new layout alike. Whether real machines booted legacy at all
   before is unknown (*inferred*: with CSM on, they may have used the UEFI route).
 - Sticks flashed before 0.13.5 have their data partition running to the disk's last sector, where the GPT backup
-  belongs: `flash.sh` refuses an in-place update for them ([s]eed only or [e]rase with backup).
+  belongs: `flash.sh` does not offer [u]pdate for them (nor when the new image does not fit in front of the data
+  partition); it says why and offers [s]eed only or [e]rase with backup.
 - Test: `sudo bash stick/tests/boot/boot-test.sh` (root, QEMU, OVMF, SeaBIOS; ~1–2 min without KVM). QEMU's small
   `bios.bin` has no xHCI support; the test uses the default (256k) SeaBIOS.

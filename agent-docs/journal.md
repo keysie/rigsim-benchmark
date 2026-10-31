@@ -56,3 +56,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   backup header and refuses in-place updates of old-layout sticks. While building a QEMU boot test found that the BIOS
   GRUB core lacked `configfile` (legacy boot ended at `grub>`), fixed. Test green: UEFI, UEFI + Secure Boot, BIOS;
   added as CI workflow "Boot test". 142 unit tests pass.
+- **2026-10-31** — User report: for an old-layout stick `flash.sh` refused the update but kept offering it. Fixed: the
+  blocker is checked before the menu; [u]pdate is offered only when it can work.
