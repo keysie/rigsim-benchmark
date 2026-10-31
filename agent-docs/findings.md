@@ -96,3 +96,17 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   partition); it says why and offers [s]eed only or [e]rase with backup.
 - Test: `sudo bash stick/tests/boot/boot-test.sh` (root, QEMU, OVMF, SeaBIOS; ~1–2 min without KVM). QEMU's small
   `bios.bin` has no xHCI support; the test uses the default (256k) SeaBIOS.
+
+## Older NVIDIA GPUs and P100 forks (2026-10-31; read from GitHub and the repo)
+
+- **qr0n/p100-llama-cpp** (MIT, 25 stars, created 2026-09-07): upstream llama.cpp `b10660` + 18 patches, with a
+  verify script that re-derives the tree from upstream; CUDA 12.x; claims e.g. Llama-3.1-8B Q4_K_M tg 39.3 → 79.6 on
+  one P100 (fp16 matrix-vector path), tensor-split gains on 2+ cards; patch 0010 carries Kmic-68's code. Patches are not
+  submitted upstream, by the author's decision.
+- **Kmic-68/llama.cpp** (fork of ggml-org/llama.cpp; default branch `p100-optimizations`, pushed 2026-10-25): tuned for
+  2× P100; cuBLAS-GEMM flash attention for long prefill and GQA-6 tile kernels.
+- **qr0n/p100-strata** (MIT): Strata v0.2.2 + 6 patches for P100 (MXFP4 expert kernels, …). Relevant to rigsim's Strata
+  engine, not to the stick (Strata is not on the stick).
+- **fallentree**: no matching repository found on GitHub (user `fallentree` has 5 unrelated repos; similar names
+  checked). Link needed from the user.
+- CUDA 13 dropped Pascal (stated in qr0n/p100-strata); the stick's CUDA image is 12.8.1.

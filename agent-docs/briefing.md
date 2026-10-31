@@ -9,7 +9,10 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 
 **User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
 
-**Current sprint:** `sprint/stick-data` (both repositories) — goal: the stick works and collects the right data.
+**Current sprint:** `sprint/old-gpus` (branched off `sprint/stick-data` on 2026-10-31 while that one is being tested
+on hardware) — goal: the stick measures older NVIDIA cards (Pascal P100/P40, Volta, Turing) with CUDA, incl. P100 forks of
+llama.cpp. Status: discussion, design proposed (open-points 1 of this branch's list "Old GPUs"); nothing built.
+`sprint/stick-data` stays open in parallel; its next steps below are unchanged.
 
 **Next steps, in order**
 1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp

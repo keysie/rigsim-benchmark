@@ -58,3 +58,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   added as CI workflow "Boot test". 142 unit tests pass.
 - **2026-10-31** — User report: for an old-layout stick `flash.sh` refused the update but kept offering it. Fixed: the
   blocker is checked before the menu; [u]pdate is offered only when it can work.
+- **2026-10-31** — New branch `sprint/old-gpus` off `sprint/stick-data` (user): benchmarking older NVIDIA GPUs such as the
+  P100, runtime choice of the older software, P100 forks of llama.cpp. Found: CUDA probe built only for sm_80+; runs
+  with Pascal/Maxwell cards have no CUDA data; qr0n's and Kmic-68's forks located, fallentree's not. Design proposed in
+  open-points; nothing built.
