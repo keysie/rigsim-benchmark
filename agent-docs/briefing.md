@@ -11,7 +11,8 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 
 **Current sprint:** `sprint/old-gpus` (branched off `sprint/stick-data` on 2026-10-31 while that one is being tested
 on hardware) — goal: the stick measures older NVIDIA cards (Pascal P100/P40, Volta, Turing) with CUDA, incl. P100 forks of
-llama.cpp. Status: discussion, design proposed (open-points 1 of this branch's list "Old GPUs"); nothing built.
+llama.cpp. Status: **built** (stick 0.14.0, run format 1.5), 151 tests pass; not run on hardware yet — needs a
+build (the rootfs is rebuilt: chroot-setup.sh changed) and a machine with a Pascal card next to a newer one.
 `sprint/stick-data` stays open in parallel; its next steps below are unchanged.
 
 **Next steps, in order**
