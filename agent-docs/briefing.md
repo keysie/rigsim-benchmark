@@ -10,22 +10,22 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 **User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
 
 **Next steps, in order**
-1. User merges **PR #19** (Blender's X11/GL libraries in the system image + `ldd` check at build, stick 0.13.3), then
-   **PR #21** (thread ladder capped to the logical CPU count, stick 0.13.4), then the docs PR #20. #21 is based on main:
-   only `stick/VERSION` can conflict with #19.
+1. User merges **PR #21** (branch `fix/stick`: thread ladder capped to the logical CPU count, stick 0.13.4; conflict with
+   #19 resolved). Every further stick fix goes into `fix/stick` while it is open.
 2. Build a stick from main and boot it on one machine; check that Blender delivers a result and the ladder has no failing
    step (needs the user; neither fix is verified on hardware).
-3. **A — build-time self-test of every shipped tool** (extends #19's `ldd` check, which only warns, to a failing build
-   and to MLC, llama.cpp backends and the CPU toolkit). Design proposal given to the user, awaiting clearance.
+3. **A — build-time self-test of every shipped tool** (extends #19's `ldd` check, which only warns, to MLC, llama.cpp
+   backends and the CPU toolkit; component summary in the build and as `seed_complete` in the run). Design given;
+   waiting for the user's answer: abort the build on a missing component (with `ALLOW_INCOMPLETE=1`), or warn and record.
 4. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
    F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 5.
 
 **Recently solved** (merged, newest first)
+- 2026-10-31 PR #19 (stick 0.13.3): Blender's X11/GL client libraries in the system image, `ldd` check at build (warns).
+- 2026-10-31 PR #20: audit of all runs and the CPU-run analysis recorded in agent-docs.
 - 2026-10-31 PR #18: agent-docs added to both repos, outside `docs/`.
 - 2026-10-31 PR #17 (stick 0.13.2): the progress counter's total is fixed from the start.
-- 2026-10-31 PR #16: two runs (7600U laptop, 13700K desktop) added with the new ladder and power-time questions.
 - 2026-10-30 PR #13 (stick 0.13.1): `cpu-gemm-ladder` and `cpu-power-time` were missing from the profile and now run.
-- 2026-10-31: `bench/hw` has its only home here; rigsim's copy is removed.
 
 ## 1. What this project is
 

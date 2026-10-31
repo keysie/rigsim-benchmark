@@ -11,15 +11,15 @@ These apply to every agent in every session. The user may override one for a sin
 
 1. **Propose first, build after clearance.** Never just write code. Describe the change (what, where, why, risks,
    tests) in the answer and wait for the user's go-ahead. A proposal is short, not an essay.
-   Exception: the agent-docs themselves (rule 3) are updated without asking, on the same branch as the work.
+   Exception: the agent-docs themselves (rule 3) are updated without asking, directly on `main` (rule 7).
 2. **Say what you are doing** in one line before any task that takes several tool calls.
 3. **Keep agent-docs updated with every answer.** Before finishing an answer, check each file in this folder:
    journal (new decision or finding, dated), open-points (added, reprioritised, closed), findings (new facts added,
    stale ones corrected or removed), briefing (still true? still under 16k tokens?). If nothing changed, change nothing.
    Never leave a statement standing that you know is superseded.
    The briefing's section 0 ("Now") must always hold the direct next steps and the few most recently solved items
-   (about five, newest first, merged or closed only; open PRs belong under next steps). Update it in every branch that
-   changes the state, and drop the oldest solved item when adding a new one.
+   (about five, newest first, merged or closed only; open PRs belong under next steps). Update it whenever the state
+   changes, and drop the oldest solved item when adding a new one.
 4. **Say what is verified and what is not.** Mark claims as *measured*, *read from source/docs*, *inferred* or
    *user decision*. Never present an inference as a fact.
 5. **Keep answers short.** The user prefers short answers. Details belong in these files, not in the chat.
@@ -29,10 +29,14 @@ These apply to every agent in every session. The user may override one for a sin
 6. **Conventional commit messages**: `<type>[(<scope>)][!]: <description>`, type one of feat, fix, docs, style,
    refactor, perf, test, build, ci, chore, revert. CI and `.githooks/commit-msg` reject anything else. Once per clone:
    `git config core.hooksPath .githooks`.
-7. **Branches and pull requests for all building.** Never commit to `main` directly. Before starting, decide:
-   - the work belongs to a feature or fix that already has an open branch → add commits to that branch;
-   - it is a different feature or fix → open a new branch named after it (`feat/…`, `fix/…`, `docs/…`);
-   - unrelated changes are never mixed in one branch. One topic per commit, one topic per PR.
+7. **Branches and pull requests for all building** (user decisions 2026-10-31). Code, configuration and project docs
+   never go to `main` directly. Branches are cut by **component**, not by single fix: all fixes to one component are
+   one topic and share one branch and one PR until it is merged (e.g. every stick fix goes into `fix/stick`). Before
+   starting, check the open branches: one exists for this component and kind of work → add commits to it; none → open
+   one named after the component (`fix/<component>`, `feat/<feature>`). Unrelated components never share a branch.
+   One change per commit.
+   **The agent-docs never get a branch:** commit and push them directly to `main`, separately from code commits
+   (`docs(agent-docs): …`), so the notes are always current on `main` and never cause merge conflicts.
    Open a PR when the branch is ready for review. The user merges; agents do not merge their own PRs.
 8. **Run the tests before and after** a change (commands in the briefing). Never hand over a red branch without saying so.
 

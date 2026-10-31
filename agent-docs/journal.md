@@ -31,3 +31,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   (Blender libraries, stick 0.13.3), not a stale branch — an earlier open point said otherwise and was removed. Wrote PR #21
   (ladder cap, 0.13.4; `[limits]` plan section, `cap_to_cpus` in the runner; 134 tests pass, not run on hardware).
   New standing rule: the briefing's section 0 always holds the next steps and the last solved items.
+- **2026-10-31** — User merged PR #19 (Blender libraries). User decisions: all stick fixes go into one branch (`fix/stick`;
+  PR #21's branch renamed from `fix/ladder-grid`, conflict on `stick/VERSION` and the tests resolved, 135 tests pass);
+  agent-docs live on `main` only, no docs branches (the docs PRs #20 and rigsim #27 were merged onto main, their branches
+  deleted). Rule 7 rewritten: branches per component, agent-docs committed directly to `main`.
