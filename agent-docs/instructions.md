@@ -17,6 +17,9 @@ These apply to every agent in every session. The user may override one for a sin
    journal (new decision or finding, dated), open-points (added, reprioritised, closed), findings (new facts added,
    stale ones corrected or removed), briefing (still true? still under 16k tokens?). If nothing changed, change nothing.
    Never leave a statement standing that you know is superseded.
+   The briefing's section 0 ("Now") must always hold the direct next steps and the few most recently solved items
+   (about five, newest first, merged or closed only; open PRs belong under next steps). Update it in every branch that
+   changes the state, and drop the oldest solved item when adding a new one.
 4. **Say what is verified and what is not.** Mark claims as *measured*, *read from source/docs*, *inferred* or
    *user decision*. Never present an inference as a fact.
 5. **Keep answers short.** The user prefers short answers. Details belong in these files, not in the chat.
