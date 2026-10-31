@@ -46,3 +46,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — User decision: a missing part stops the build (not a warning). Built the seed self-test on
   `sprint/stick-data` (stick 0.13.5): `stick/tools/selftest.py`, wired into `build.sh` before the seed manifest, option
   `ALLOW_INCOMPLETE`; 140 tests pass; not yet run in a real build.
+- **2026-10-31** — First real build with the seed self-test: everything ok except llama.cpp CUDA, `libcuda.so.1` missing in
+  the CUDA image — a false alarm (the NVIDIA container toolkit injects driver libraries from the host). Fixed: driver
+  libraries are checked in the system image instead. 141 tests pass. (measured by the user's build)

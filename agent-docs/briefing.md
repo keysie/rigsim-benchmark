@@ -12,8 +12,8 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 **Current sprint:** `sprint/stick-data` (both repositories) — goal: the stick works and collects the right data.
 
 **Next steps, in order**
-1. **Build a stick from this branch** (0.13.5) — the new seed self-test must pass on a real build (needs the user; Docker,
-   root, hours). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
+1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp
+   CUDA, a false alarm (driver library, fixed); every other part ok. Build again; it must pass (needs the user). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
    machine: Blender delivers a result, the ladder has no failing step.
 2. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
    F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 5.

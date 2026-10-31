@@ -77,4 +77,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   image (chroot, binary bind-mounted); llama.cpp CUDA with `ldd` inside the CUDA image (where it runs); 2 models; Blender's
   version, executable, three scenes and script, found by the stick's own `blender_offline` / `benchmark_script`; vendor
   image archives. Result in `seed/SELFTEST.json`. Replaces #19's warning-only Blender check.
+- NVIDIA driver libraries (`libcuda.so*`, `libnvidia-*`) are never in the CUDA image: the container toolkit hands them in
+  from the system image at `docker run --gpus`. They are checked in the system image (ldconfig in the chroot) instead.
+  Found by the first real build with the self-test (2026-10-31), which flagged `libcuda.so.1` for llama.cpp CUDA.
 - Not checked: that a binary actually runs (no GPU in the build); the ROCm/oneAPI images' contents.
