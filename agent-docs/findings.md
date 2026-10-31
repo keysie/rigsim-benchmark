@@ -38,3 +38,14 @@ Tag: *docs* (read from a repo document or source) / *measured* / *inferred* / *d
   Ryzen 1000–7000; no prediction is marked `calibration` (no run went into a constant).
 - Pitfall: Windows checkouts convert line endings to CRLF and break the build scripts; `.gitattributes` forces LF but a
   wrong checkout keeps its endings (repair: `git rm -rq --cached . && git reset -q --hard` from WSL).
+
+## New CPU questions: first results (stick 0.13.1, two runs, 2026-10-31; measured)
+
+- `cpu-gemm-ladder`: the fixed grid (1…64 threads) fails every step above the machine's logical CPU count (rc 1), so
+  every run ends `done with failures` (7600U: 8 steps, 13700K: 3). Harmless but noisy.
+- `cpu-power-time`: works; `package_w` is −1 in both runs (energy counter unreadable inside the container), so only
+  throughput, mean clock and temperature are recorded over time. The idle-start reading is taken at the start of the
+  idle period, when a laptop can still be warm (73 °C).
+- Hybrid/SMT parts: OpenBLAS static partition makes the ladder beyond the physical cores measure the slowest thread
+  (see rigsim findings, same date).
+- `tools/measurements.py` does not yet expose gemm, ladder or power-time values, so rigsim predicts none of them.

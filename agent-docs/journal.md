@@ -20,3 +20,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   agent-docs never need clearing with the user; the pre-journal history here is inferred from the repos (an older chat
   exists but kept no journal) — from now on the journal is kept. Because Pages serves `docs/`, the folder moved from
   `docs/agent-docs` to `agent-docs/` at the repository root.
+- **2026-10-31** — The two newest runs (stick 0.13.1, 7600U laptop and 13700K desktop) are the first with the ladder and
+  power-time questions. Findings and fixes proposed in findings and open-points (grid fails above the CPU count, package
+  power unreadable, no value keys yet). No code changed. (measured, analysis by agent)
