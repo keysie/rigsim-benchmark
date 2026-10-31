@@ -38,3 +38,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — Direct pushes of agent-docs to `main` are refused by the ruleset (required status "Check Conventional
   Commits"). Workaround recorded in rule 7 (throwaway ref `agent-docs-sync`, wait for the check, push `main`). Asked the
   user whether to add a bypass for the repository admin instead.
+- **2026-10-31** — Renaming `fix/ladder-grid` to `fix/stick` closed PR #21 (GitHub does not carry a PR across a branch
+  rename here); reopened as rigsim-benchmark PR #22. Lesson: never rename a branch with an open PR.

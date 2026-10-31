@@ -25,7 +25,7 @@ Last revised: 2026-10-31.
 5. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
    15 runs". Proposed plan (not cleared yet): (A) a build-time self-test that starts every shipped tool (Blender with
    `ldd`, MLC, llama.cpp backends) and fails the build when something is missing — PR #19 already adds the Blender `ldd`
-   check, as a warning only; (B) Blender's missing libraries (PR #19, merged, not verified on hardware) and the ladder grid (PR #21,
+   check, as a warning only; (B) Blender's missing libraries (PR #19, merged, not verified on hardware) and the ladder grid (PR #22,
    branch `fix/stick`, not merged); (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
    the reason, not as a failure; (E) triage the SYCL and Vulkan aborts; (F) a run-completeness audit (expected vs
    present data per machine class) as a tool and on the data page; (G) an end-to-end test (VM) if the user wants one.

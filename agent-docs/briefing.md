@@ -10,8 +10,8 @@ Keep this section current (instruction 3). Last updated 2026-10-31.
 **User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
 
 **Next steps, in order**
-1. User merges **PR #21** (branch `fix/stick`: thread ladder capped to the logical CPU count, stick 0.13.4; conflict with
-   #19 resolved). Every further stick fix goes into `fix/stick` while it is open.
+1. User merges **PR #22** (branch `fix/stick`, all stick fixes: thread ladder capped to the logical CPU count, stick 0.13.4;
+   conflict with #19 resolved). Every further stick fix goes into `fix/stick` while it is open.
 2. Build a stick from main and boot it on one machine; check that Blender delivers a result and the ladder has no failing
    step (needs the user; neither fix is verified on hardware).
 3. **A — build-time self-test of every shipped tool** (extends #19's `ldd` check, which only warns, to MLC, llama.cpp
