@@ -185,3 +185,24 @@ def test_stopped_run_keeps_finished_steps(tmp_path):
     r["questions"] = {}; (d / "run.json").write_text(json.dumps(r))
     assert any("stopped before any step finished" in x for x in V.check_run(d))
     assert V.step_of("q/gpu-vram/results.jsonl") == "gpu-vram" and V.step_of("inventory/lscpu.txt") is None
+
+
+def test_format_1_5_nvidia_switch_files_allowed(tmp_path):
+    """The second NVIDIA phase writes nvidia-swap/ with the same kinds of files as the run's top level; its steps are
+    nvidia-swap/<step> (a stopped run prunes them like any other step)."""
+    tools = dict(stick=dict(version="0.14.0", commit="a" * 40))
+    d = make_run(tmp_path, format=dict(name="rigsim-stick-run", version="1.5"),
+                 nvidia_swap=dict(flavour="proprietary", gpus=["Tesla P100-PCIE-16GB, 16384 MiB, 00000000:02:00.0"]))
+    r = json.loads((d / "run.json").read_text())
+    r["questions"].update({"nvidia-swap/gpu-vram": dict(rc=0, tools=tools), "nvidia-swap/llama-bench": dict(rc=0, tools=tools)})
+    (d / "run.json").write_text(json.dumps(r))
+    (d / "nvidia-swap" / "q" / "gpu-vram").mkdir(parents=True); (d / "nvidia-swap" / "llama").mkdir()
+    (d / "nvidia-swap" / "q" / "gpu-vram" / "results.jsonl").write_text("{}\n")
+    (d / "nvidia-swap" / "llama" / "cuda+qr0n-gpu0-tinyllama.jsonl").write_text("{}\n")
+    (d / "llama" / "cuda+kmic68-gpu0-tinyllama.log").write_text("ok\n")
+    (d / "nvidia-swap" / "samples-nvidia.csv").write_text("t\n")
+    assert V.check_run(d) == []
+    assert V.step_of("nvidia-swap/q/gpu-vram/results.jsonl") == "nvidia-swap/gpu-vram"
+    assert V.step_of("nvidia-swap/llama/x.jsonl") == "nvidia-swap/llama-bench"
+    (d / "nvidia-swap" / "other.txt").write_text("x")
+    assert any("not a file the stick writes" in e for e in V.check_run(d))

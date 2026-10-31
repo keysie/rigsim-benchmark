@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / "stick" / "payload"))
 from stick import INVENTORY, INVENTORY_EXTRA, MAC, PRIVATE_IPV4, SENSITIVE  # noqa: E402  (the stick's own definitions: one source of truth)
 
 FORMAT_NAME = "rigsim-stick-run"
-KNOWN_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4"}                           # results/FORMAT.md: minor versions only add
+KNOWN_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5"}                           # results/FORMAT.md: minor versions only add
 RUN_ID = re.compile(r"^(\d{8}T\d{6}Z)-([0-9a-f]{12})-([0-9a-f]{4})$")
 COMPLETE = {"done", "done with failures"}          # finished; "error: ..." is not complete
 STOPPED = "stopped"                                 # ended early: its completed steps count, the interrupted one not
@@ -34,6 +34,9 @@ def step_of(rel: str) -> str | None:
     """The step a file in a run folder belongs to: q/<question>/... is that question, mlc/ is 'mlc', llama/ is
     'llama-bench' and so on; None for the run's own files."""
     parts = rel.split("/")
+    if parts[0] == "nvidia-swap" and len(parts) > 2:      # the second NVIDIA phase (format 1.5): its own steps
+        inner = step_of("/".join(parts[1:]))
+        return f"nvidia-swap/{inner}" if inner else None
     if parts[0] == "q" and len(parts) > 2:
         return parts[1]
     return STEP_DIRS.get(parts[0]) if len(parts) > 1 else None
@@ -76,6 +79,8 @@ LAYOUT = [re.compile(p) for p in (
     r"mlc/(idle_latency|max_bandwidth|loaded_latency|latency_matrix|bandwidth_matrix)\.txt",
     rf"opencl/clinfo-list\.txt", rf"opencl/clpeak-{N}\.(txt|json)",
     rf"llama/{N}\.(jsonl|log|txt)",
+    rf"nvidia-swap/q/{N}/({RUNNER_FILES})", rf"nvidia-swap/q/{N}/samples/[0-9a-f]{{10}}\.csv",
+    rf"nvidia-swap/llama/{N}\.(jsonl|log|txt)", r"nvidia-swap/samples-nvidia\.csv",
     rf"vkprobe/(list|dev\d+-{N})\.jsonl",
     rf"(rocm|oneapi)/(info\.jsonl|image\.txt|sycl-ls\.txt|dev\d+-{N}\.(jsonl|txt))",
     rf"blender/(devices\.txt|{N}\.(json|log))",

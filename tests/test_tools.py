@@ -85,3 +85,29 @@ def test_bots_push_with_their_commit_message_check():
     for wf in ("runs.yml", "predictions.yml"):
         s = (ROOT / ".github" / "workflows" / wf).read_text()
         assert ".github/scripts/push-checked.sh main" in s and "checks: write" in s and "\n          git push\n" not in s
+
+
+def test_measurements_from_the_nvidia_switch_and_the_pascal_forks(tmp_path):
+    """Format 1.5: cards measured after the NVIDIA module switch continue the CUDA numbering (gpu1 after one card in the
+    first phase) with their own PCI address; a fork's values are their own backend on the same card."""
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"; (run / "llama").mkdir(parents=True); (run / "nvidia-swap" / "llama").mkdir(parents=True)
+    (run / "run.json").write_text(js.dumps(dict(
+        hardware=dict(gpus=["NVIDIA GeForce RTX 4090, 24564 MiB, 00000000:01:00.0"]),
+        nvidia_swap=dict(flavour="proprietary", gpus=["Tesla P100-PCIE-16GB, 16384 MiB, 00000000:02:00.0"]))))
+    line = '{"n_prompt":0,"n_gen":128,"avg_ts":%s}\n'
+    (run / "llama" / "cuda-gpu0-m.jsonl").write_text(line % 150)
+    (run / "nvidia-swap" / "llama" / "cuda-gpu0-m.jsonl").write_text(line % 40)
+    (run / "nvidia-swap" / "llama" / "cuda+qr0n-gpu0-m.jsonl").write_text(line % 79)
+    vq = run / "nvidia-swap" / "q" / "gpu-vram"; vq.mkdir(parents=True)
+    (vq / "baseline.json").write_text(js.dumps(dict(gpus=[dict(name="gpu0", bus="0000:02:00.0")])))
+    (vq / "results.jsonl").write_text(js.dumps(dict(rc=0, params=dict(gpu="gpu0", op="read"),
+                                                    results=[dict(mode="stream", op="read", bytes_per_s=5.5e11)])) + "\n")
+    got = {m["key"]: (m["value"], m["conditions"]["pci"], m["source"]) for m in M.extract(run)["measurements"]}
+    assert got["llama-bench/cuda/gpu0/m/tg128"][:2] == (150.0, "0000:01:00.0")
+    assert got["llama-bench/cuda/gpu1/m/tg128"] == (40.0, "0000:02:00.0", "nvidia-swap/llama/cuda-gpu0-m.jsonl")
+    assert got["llama-bench/cuda+qr0n/gpu1/m/tg128"][:2] == (79.0, "0000:02:00.0")
+    assert got["gpu-vram/gpu1/read"][:2] == (550.0, "0000:02:00.0")
+    assert M.VERSION == "3"

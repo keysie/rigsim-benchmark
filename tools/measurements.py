@@ -5,11 +5,14 @@ predict (predictions/README.md). Reads every run format 1.x; a value a run does 
   python3 tools/measurements.py results/runs/<run>        prints the run's values as JSON
 
 Every GPU value carries its card's PCI address (conditions.pci) where the run recorded it, so two cards of the same
-model stay apart; the device part of a key is the index within that backend (gpuN, devN), not a model name.
+model stay apart; the device part of a key is the index within that backend (gpuN, devN), not a model name. Cards
+measured after the NVIDIA module switch (nvidia-swap/, format 1.5) continue the CUDA numbering: with two cards in the
+first phase, the first card of the second is gpu2.
 
 Keys are stable (they are how a prediction finds its measurement) and versioned with VERSION; a new kind of value
 gets a new key, an existing key never changes meaning:
-  llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
+  llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu, and
+                                                                    cuda+<fork> for the Pascal forks (format 1.5)
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
   mlc/idle_latency                                  ns
@@ -22,8 +25,8 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "2"                  # 2: cpu-mem-ladder values added. Any change to the set of values bumps it.
-LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
+VERSION = "3"                  # 2: cpu-mem-ladder values; 3: nvidia-swap cards, cuda+<fork>. Any change bumps it.
+LLAMA_FILE = re.compile(r"^(cuda(?:\+[a-z0-9]+)?-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
 
@@ -82,17 +85,43 @@ def _llama_rows(rows: list[dict], backend: str, device: str, model: str, source:
     return out
 
 
-def llama(run: Path) -> list[dict]:
+def _swap(run: Path) -> tuple[int, dict[str, str]]:
+    """The second NVIDIA phase: (number of CUDA cards in the first, so its cards continue gpuN; its gpuN -> PCI)."""
+    try:
+        r = json.loads((run / "run.json").read_text())
+    except (OSError, ValueError):
+        return 0, {}
+    first = [g for g in r.get("hardware", {}).get("gpus", [])
+             if g.count(",") >= 2 and re.search(r"[0-9a-fA-F]+:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}\.\d", g)]
+    second = (r.get("nvidia_swap") or {}).get("gpus") or []
+    return len(first), {f"gpu{i}": _norm_pci(g.rsplit(",", 1)[-1]) for i, g in enumerate(second)}
+
+
+def _renumber(dev: str, offset: int) -> str:
+    m = re.fullmatch(r"gpu(\d+)", dev)
+    return f"gpu{int(m.group(1)) + offset}" if m and offset else dev
+
+
+def _llama_dir(d: Path, pci: dict, offset: int, prefix: str) -> list[dict]:
     out = []
-    pci = device_pci(run)
-    for f in sorted((run / "llama").glob("*.jsonl")):
+    for f in sorted((d / "llama").glob("*.jsonl")):
         m = LLAMA_FILE.match(f.name)
         if not m:
             continue
         backend, _, dev = m.group(1).partition("-")
-        out += _llama_rows(_json_lines(f), backend, dev or "cpu", m.group(2), f"llama/{f.name}")
-        for r in out:
-            r["conditions"].setdefault("pci", pci.get((r["conditions"]["backend"], r["conditions"]["device"]), ""))
+        rows = _llama_rows(_json_lines(f), backend, _renumber(dev or "cpu", offset), m.group(2), f"{prefix}llama/{f.name}")
+        for r in rows:                                    # a fork runs on the same cards as upstream CUDA
+            r["conditions"].setdefault("pci", pci.get((backend.split("+")[0], dev or "cpu"), ""))
+        out += rows
+    return out
+
+
+def llama(run: Path) -> list[dict]:
+    pci = device_pci(run)
+    out = _llama_dir(run, pci, 0, "")
+    offset, swap_pci = _swap(run)
+    if (run / "nvidia-swap").is_dir():
+        out += _llama_dir(run / "nvidia-swap", {("cuda", k): v for k, v in swap_pci.items()}, offset, "nvidia-swap/")
     for kind, backend in (("rocm", "hip"), ("oneapi", "sycl")):
         for f in sorted((run / kind).glob("dev*-llama-*.jsonl")):
             m = VENDOR_FILE.match(f.name)
@@ -103,13 +132,13 @@ def llama(run: Path) -> list[dict]:
     return out
 
 
-def gpu_vram(run: Path) -> list[dict]:
-    f = run / "q" / "gpu-vram" / "results.jsonl"
+def _gpu_vram_dir(d: Path, offset: int, prefix: str) -> list[dict]:
+    f = d / "q" / "gpu-vram" / "results.jsonl"
     if not f.exists():
         return []
     by: dict[tuple[str, str], list[float]] = {}
     bus = {}
-    for b in sorted((run / "q" / "gpu-vram").glob("baseline.json")):
+    for b in sorted((d / "q" / "gpu-vram").glob("baseline.json")):
         try:
             bus = {g["name"]: _norm_pci(g.get("bus", "")) for g in json.loads(b.read_text()).get("gpus", [])}
         except (ValueError, KeyError):
@@ -120,9 +149,15 @@ def gpu_vram(run: Path) -> list[dict]:
         for r in row.get("results") or []:
             if r.get("mode") == "stream" and r.get("bytes_per_s"):
                 by.setdefault((str(row.get("params", {}).get("gpu", "")), r.get("op", "")), []).append(r["bytes_per_s"])
-    return [dict(key=f"gpu-vram/{g}/{op}", value=statistics.median(v) / 1e9, unit="GB/s", spread=0.0,
-                 source="q/gpu-vram/results.jsonl", conditions=dict(gpu=g, op=op, repeats=len(v), pci=bus.get(g, "")))
+    return [dict(key=f"gpu-vram/{_renumber(g, offset)}/{op}", value=statistics.median(v) / 1e9, unit="GB/s", spread=0.0,
+                 source=f"{prefix}q/gpu-vram/results.jsonl",
+                 conditions=dict(gpu=_renumber(g, offset), op=op, repeats=len(v), pci=bus.get(g, "")))
             for (g, op), v in sorted(by.items())]
+
+
+def gpu_vram(run: Path) -> list[dict]:
+    offset, _ = _swap(run)
+    return _gpu_vram_dir(run, 0, "") + _gpu_vram_dir(run / "nvidia-swap", offset, "nvidia-swap/")
 
 
 def ladder(run: Path) -> list[dict]:
