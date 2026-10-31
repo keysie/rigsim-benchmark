@@ -24,7 +24,7 @@ Tag: *docs* (read from a repo document or source) / *measured* / *inferred* / *d
 - Build is reproducible by recorded versions (`tools/manifest.py`): packages, image digests, llama.cpp commits and
   binary hashes, models' SHA-256, MLC and Blender versions; each run adds what actually ran.
 - Screens are switched off while measuring (scanout costs integrated graphics a few percent of RAM bandwidth).
-- Blender runs by the official offline route (script default 3.1.1), one device type at a time.
+- Blender runs by the official offline route (build default script 3.1.1; the 0.13.1 runs used script 3.1.2 — check which is real), one device type at a time.
 - Format 1.1–1.4 added, in order: GPU identity per result (`pci`, `uuid`), `pcie.json`, `operator_skips`, `powercap.json`.
 
 ## Interface with rigsim (docs: predictions/README.md, tools/predict.py)
@@ -49,3 +49,20 @@ Tag: *docs* (read from a repo document or source) / *measured* / *inferred* / *d
 - Hybrid/SMT parts: OpenBLAS static partition makes the ladder beyond the physical cores measure the slowest thread
   (see rigsim findings, same date).
 - `tools/measurements.py` does not yet expose gemm, ladder or power-time values, so rigsim predicts none of them.
+
+## Audit of all 15 runs (measured; 2026-10-31, by reading `run.json` of every run; unit tests: 133 pass)
+
+Works in the runs: inventory, cpu-mem-latency, cpu-mem-ladder, cpu-gemm, NVIDIA questions, vkprobe, llama.cpp (CPU, CUDA,
+Vulkan), tool versions and `stick_check`. Does **not** deliver data:
+- **Blender: 0 of 15 runs have a successful result.** 8 runs: "not in the seed" (stick builds without it); 5 runs (0.11.0 ..
+  0.13.1, both newest): rc 127 — the Blender binary cannot start, `libXfixes.so.3` missing in the run environment; the
+  first two runs (0.9.0, 0.11.0): rc 1, cause not checked.
+- **oneAPI:** on 9 of 15 runs "the runtime sees no GPU" (older Intel iGPUs; likely unsupported by Level Zero — *inferred*), recorded
+  as rc 1 instead of skipped. On the 13700K (UHD 770) it works, but 5 of 92 steps abort (rc 134, the SYCL llama runs).
+- **Vulkan on older Intel iGPUs:** test-backend-ops `mul_mat_id` and `flash_attn_ext` abort (rc −6) in all 8 runs on
+  such machines — driver or ggml limit, not investigated.
+- **Seed content differs between builds:** MLC missing in 2 runs ("not in the seed"), Blender in 8. A stick built without
+  a component silently produces incomplete runs; the run records it, the data page does not warn.
+- **cpu-gemm-ladder grid** fails above the CPU's logical count; **package energy** reads −1 (see above).
+- Consequence: nearly every run ends `done with failures`, so the status carries no information about real problems.
+- The unit tests cannot catch any of this: they check the stick's logic, not the contents of the seed or the run environment.

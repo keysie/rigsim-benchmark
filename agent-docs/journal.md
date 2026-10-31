@@ -23,3 +23,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — The two newest runs (stick 0.13.1, 7600U laptop and 13700K desktop) are the first with the ladder and
   power-time questions. Findings and fixes proposed in findings and open-points (grid fails above the CPU count, package
   power unreadable, no value keys yet). No code changed. (measured, analysis by agent)
+- **2026-10-31** — User decision: stick first, to make sure it works and collects the right data. Audit of all 15 runs
+  found: Blender never delivered a result (missing library `libXfixes.so.3` in the newest runs, not in the seed in others),
+  oneAPI and Vulkan failures on older Intel iGPUs recorded as failures, seed content differing between builds. Plan
+  proposed in open-points; nothing changed in code. (measured)
