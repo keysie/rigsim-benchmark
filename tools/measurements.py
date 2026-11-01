@@ -22,7 +22,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "2"                  # 2: cpu-mem-ladder values added. Any change to the set of values bumps it.
+VERSION = "3"                  # 2: cpu-mem-ladder values; 3: sycl_onednn condition. Any change bumps it.
 LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
@@ -93,11 +93,19 @@ def llama(run: Path) -> list[dict]:
         out += _llama_rows(_json_lines(f), backend, dev or "cpu", m.group(2), f"llama/{f.name}")
         for r in out:
             r["conditions"].setdefault("pci", pci.get((r["conditions"]["backend"], r["conditions"]["device"]), ""))
+    try:
+        vruns = json.loads((run / "run.json").read_text()).get("questions", {}).get("oneapi", {}).get("runs") or {}
+    except (OSError, ValueError):
+        vruns = {}
     for kind, backend in (("rocm", "hip"), ("oneapi", "sycl")):
         for f in sorted((run / kind).glob("dev*-llama-*.jsonl")):
             m = VENDOR_FILE.match(f.name)
             if m:
-                out += _llama_rows(_json_lines(f), backend, f"dev{m.group(1)}", m.group(2), f"{kind}/{f.name}")
+                rows = _llama_rows(_json_lines(f), backend, f"dev{m.group(1)}", m.group(2), f"{kind}/{f.name}")
+                if kind == "oneapi" and (vruns.get(f.name[:-len(".jsonl")]) or {}).get("retry"):
+                    for r in rows:                   # measured without oneDNN after it failed (format 1.5)
+                        r["conditions"]["sycl_onednn"] = False
+                out += rows
     for r in out:
         r["conditions"].setdefault("pci", pci.get((r["conditions"]["backend"], r["conditions"]["device"]), ""))
     return out

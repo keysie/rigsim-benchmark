@@ -85,3 +85,19 @@ def test_bots_push_with_their_commit_message_check():
     for wf in ("runs.yml", "predictions.yml"):
         s = (ROOT / ".github" / "workflows" / wf).read_text()
         assert ".github/scripts/push-checked.sh main" in s and "checks: write" in s and "\n          git push\n" not in s
+
+
+def test_sycl_values_measured_without_onednn_are_flagged(tmp_path):
+    """Format 1.5: a oneAPI llama-bench that ran again without oneDNN carries conditions.sycl_onednn = false."""
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"; (run / "oneapi").mkdir(parents=True)
+    line = '{"n_prompt":0,"n_gen":128,"avg_ts":%s}\n'
+    (run / "oneapi" / "dev0-llama-tiny.jsonl").write_text(line % 38.2)
+    (run / "oneapi" / "dev1-llama-tiny.jsonl").write_text(line % 50)
+    (run / "run.json").write_text(js.dumps(dict(questions=dict(oneapi=dict(runs={
+        "dev0-llama-tiny": dict(rc=0, retry=dict(env={"GGML_SYCL_ENABLE_DNN": "0"})), "dev1-llama-tiny": dict(rc=0)})))))
+    got = {m["key"]: m["conditions"] for m in M.extract(run)["measurements"]}
+    assert got["llama-bench/sycl/dev0/tiny/tg128"]["sycl_onednn"] is False
+    assert "sycl_onednn" not in got["llama-bench/sycl/dev1/tiny/tg128"]

@@ -1097,7 +1097,7 @@ def test_powercap_limits(tmp_path):
     p = stick.powercap(tmp_path)
     assert list(p["zones"]) == ["intel-rapl:0"]
     assert p["zones"]["intel-rapl:0"]["constraints"][0] == dict(name="long_term", limit_w=65.0, window_s=28.0)
-    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.4"
+    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] >= "1.4"
 def test_lscpu_cache_ids_are_not_masked_as_ipv6():
     line = "  0    0      0    0 0:0:0:0          yes 4954.5649 567.0890 3842.5410"
     assert "<ip6>" in stick.sanitize(line)                                  # the general scrub would mask it
@@ -1300,3 +1300,46 @@ def test_blender_device_type_not_found_is_unavailable_and_python_errors_fail(tmp
     r = stick.run_blender(tmp_path / "data", tmp_path / "run", tmp_path / "log")
     assert r["types_unavailable"] == ["ONEAPI"] and not any(k.startswith("oneapi") for k in r["runs"])
     assert r["runs"]["cuda-junkshop"]["rc"] == 1 and r["runs"]["cuda-monster"]["rc"] == 0 and r["rc"] == 1
+
+
+# --- E: oneAPI steps that fail on oneDNN run once more without it (run d-9c93, manual test 2026-11-01) ----------------
+ONEDNN_OUT = "could not create a memory object\nException caught at file:/tmp/llama/ggml/src/ggml-sycl/ggml-sycl.cpp\n"
+
+
+def test_onednn_retry_only_on_the_onednn_error(tmp_path):
+    calls = []
+    again = lambda env: calls.append(env) or (0, '{"avg_ts": 220.4}')
+    rc, out, retry = stick.onednn_retry(134, ONEDNN_OUT, tmp_path / "x.onednn-failed.txt", again)
+    assert (rc, out) == (0, '{"avg_ts": 220.4}') and calls == [stick.NO_ONEDNN]
+    assert retry == dict(reason="oneDNN: could not create a memory object", env=stick.NO_ONEDNN, first_rc=134,
+                         first_output="x.onednn-failed.txt")
+    assert ONEDNN_ERROR_TEXT in (tmp_path / "x.onednn-failed.txt").read_text()
+    for rc0, out0 in ((134, "Segmentation fault"), (0, ONEDNN_OUT)):            # other aborts, or no failure: as is
+        assert stick.onednn_retry(rc0, out0, tmp_path / "y.txt", again) == (rc0, out0, None)
+    assert len(calls) == 1 and not (tmp_path / "y.txt").exists()
+
+
+ONEDNN_ERROR_TEXT = "could not create a memory object"
+
+
+def test_backend_ops_retry_without_onednn_before_the_other_fallbacks(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "backend_ops_plan", lambda binary, backend: [("ops-mul_mat", ["tbo", "perf", "-o", "MUL_MAT",
+                                                                                          "-b", "SYCL0", "--output", "x"])])
+    seen = []
+    def run(cmd, t, env=None):
+        seen.append((list(cmd), env))
+        return (0, "OK") if env == stick.NO_ONEDNN else (134, ONEDNN_OUT)
+    r = stick.run_backend_ops(run, tmp_path, "dev0", "tbo", "SYCL0", tmp_path / "log", onednn=True)
+    assert r["dev0-ops-mul_mat"]["rc"] == 0 and r["dev0-ops-mul_mat"]["retry"]["first_rc"] == 134
+    assert [e for _, e in seen] == [None, stick.NO_ONEDNN]                       # no --output / -b fallbacks needed
+    assert (tmp_path / "dev0-ops-mul_mat.onednn-failed.txt").exists() and (tmp_path / "dev0-ops-mul_mat.txt").exists()
+    seen.clear()
+    r = stick.run_backend_ops(run, tmp_path, "dev1", "tbo", "Vulkan0", tmp_path / "log")   # not SYCL: no retry
+    assert "retry" not in r["dev1-ops-mul_mat"] and all(e is None for _, e in seen)
+
+
+def test_run_vendor_passes_the_environment_to_docker_exec():
+    src = (HERE / "payload" / "stick.py").read_text()
+    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
+    assert '"docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,' in body
+    assert 'onednn=kind == "oneapi"' in body and 'if kind == "oneapi":' in body

@@ -70,6 +70,21 @@ VENDOR_GEMM_SHAPES = ["1x4096x4096", "8x2048x2048", "8x4096x4096", "32x4096x4096
 PROBE_TIMEOUT_S = 10 * 60
 AMD_DEVICES = ["--device", "/dev/kfd", "--device", "/dev/dri", "--security-opt", "seccomp=unconfined"]
 INTEL_DEVICES = ["--device", "/dev/dri"]
+# llama.cpp's SYCL backend hands batched GEMMs and flash attention to oneDNN. On an i7-13700K's UHD 770 (run d-9c93,
+# 2026-10-31) oneDNN failed with "could not create a memory object" and took llama-bench, MUL_MAT, MUL_MAT_ID and
+# FLASH_ATTN_EXT down; without oneDNN all four ran (manual test 2026-11-01). On exactly that error a oneAPI step runs
+# once more without oneDNN: the first output is kept as <step>.onednn-failed.txt, the step records `retry`.
+ONEDNN_ERROR = "could not create a memory object"
+NO_ONEDNN = {"GGML_SYCL_ENABLE_DNN": "0", "GGML_SYCL_FA_ONEDNN": "0"}
+
+
+def onednn_retry(rc: int, out: str, first: Path, again) -> tuple[int, str, dict | None]:
+    """again(env) -> (rc, out). Retries once without oneDNN if the step failed on oneDNN's allocation error."""
+    if rc == 0 or ONEDNN_ERROR not in out:
+        return rc, out, None
+    first.write_text(scrub(out))
+    rc2, out2 = again(NO_ONEDNN)
+    return rc2, out2, dict(reason=f"oneDNN: {ONEDNN_ERROR}", env=dict(NO_ONEDNN), first_rc=rc, first_output=first.name)
 # HIP has no code for a gfx target it was not built for; the usual stand-in is the family's base target
 GFX_FAMILY = [("gfx103", "10.3.0"), ("gfx110", "11.0.0"), ("gfx115", "11.5.0"), ("gfx120", "12.0.0")]
 STICK_READ_MIB = 1024
@@ -873,21 +888,26 @@ def backend_ops_plan(binary: str, backend: str) -> list[tuple[str, list[str]]]:
     return out
 
 
-def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path) -> dict:
-    """run(cmd, timeout) -> (rc, output). Older builds lack --output: then plain console output. A build that does
-    not know the backend name: once more without -b (every backend it sees, CPU included)."""
+def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path, onednn: bool = False) -> dict:
+    """run(cmd, timeout[, env]) -> (rc, output). Older builds lack --output: then plain console output. A build that
+    does not know the backend name: once more without -b (every backend it sees, CPU included). onednn (SYCL): an
+    op that fails on oneDNN's allocation error runs once more without oneDNN (onednn_retry) before anything else."""
     runs = {}
     ops = backend_ops_plan(binary, backend)
     for k, (key, cmd) in enumerate(ops, 1):
         STATUS.set(f"test-backend-ops {prefix} {key[4:]} {k}/{len(ops)}")
         t0 = time.time()
         rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
+        retry = None
+        if onednn:
+            rc, out, retry = onednn_retry(rc, out, d / f"{prefix}-{key}.onednn-failed.txt",
+                                          lambda env, cmd=cmd: run(cmd, BACKEND_OPS_TIMEOUT_S, env))
         if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
             cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
-        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **(dict(retry=retry) if retry else {}))
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
 
@@ -1106,15 +1126,25 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
             runs[f"dev{i}"] = dict(rc=rc, error="container did not start"); continue
         plan = vendor_plan(kind) if have_probe else []
         plan += [(f"llama-{m.stem}", ["/rigsim/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS]) for m in models]
+        def ex(cmd, t, env=None, c=c):
+            return sh(["docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,
+                       "/rigsim/run.sh", *cmd], timeout=t)
         for k, (key, cmd) in enumerate(plan, 1):
             STATUS.set(f"dev{i} {key} {k}/{len(plan)}")
             t0 = time.time()
-            rc, out = sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S)
+            t = LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S
+            rc, out = ex(cmd, t)
+            retry = None
+            if kind == "oneapi":
+                rc, out, retry = onednn_retry(rc, out, d / f"dev{i}-{key}.onednn-failed.txt",
+                                              lambda env, cmd=cmd, t=t: ex(cmd, t, env))
+                if retry:
+                    say(f"oneapi dev{i} {key}: oneDNN failed, without oneDNN rc={rc}", log)
             (d / f"dev{i}-{key}.jsonl").write_text(scrub(out))
-            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **(dict(retry=retry) if retry else {}))
         if "test-backend-ops" in meta.split():
-            runs.update(run_backend_ops(lambda cmd, t, c=c: sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=t),
-                                        d, f"dev{i}", "/rigsim/test-backend-ops", "ROCm0" if kind == "rocm" else "SYCL0", log))
+            runs.update(run_backend_ops(ex, d, f"dev{i}", "/rigsim/test-backend-ops",
+                                        "ROCm0" if kind == "rocm" else "SYCL0", log, onednn=kind == "oneapi"))
         sh(["docker", "rm", "-f", c], timeout=120)
         say(f"{kind} device {i} ({dev.get('name')}): {sum(1 for k in runs if k.startswith(f'dev{i}-'))} runs"
             + (f", HSA_OVERRIDE_GFX_VERSION={ov}" if ov else "") + ("" if have_probe else ", probe not in the image"), log)
@@ -1568,7 +1598,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.4")
+FORMAT = dict(name="rigsim-stick-run", version="1.5")
 
 
 def runtime_versions() -> dict:
