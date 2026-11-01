@@ -72,3 +72,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
 - **2026-10-31** — Manual SYCL test, first result: one test-backend-ops op without oneDNN ends "2/2 backends passed, OK" on the
   UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
+- **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
+  all four aborted SYCL steps.

@@ -24,9 +24,10 @@ are merged one after the other, merge their notes by hand (journal: keep all ent
 2. **E — SYCL aborts on the UHD 770**: cause read from the logs (oneDNN path in the SYCL mul_mat fails, see findings);
    user chose: retry once without oneDNN, recorded (2026-10-31). Implementation plan given, waiting for clearance
    (oneAPI only, on this error only; first attempt kept as its own file; retry flagged in run.json and in the values).
-   Before building: the user tests the hypothesis by hand on the UHD 770 machine (abort the run, tty2 shell, mount the
+   Manual test done 2026-11-01: without oneDNN llama-bench, MUL_MAT, MUL_MAT_ID and FLASH_ATTN_EXT all pass on the
+   UHD 770 — hypothesis confirmed; build waits for the user's go. (Test procedure was: on the UHD 770 machine (abort the run, tty2 shell, mount the
    data partition, start Docker through stick.py's own functions, llama-bench and test-backend-ops with and without
-   oneDNN in the seeded oneAPI image).
+   oneDNN in the seeded oneAPI image.)
 3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
    `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).
 

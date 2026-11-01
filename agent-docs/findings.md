@@ -119,4 +119,5 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   runs with `GGML_SYCL_ENABLE_DNN=0 GGML_SYCL_FA_ONEDNN=0`: pp512 220.4 tok/s, tg128 38.2 tok/s (3 repeats, spread
   < 0.2 %). Hypothesis confirmed for llama-bench; test-backend-ops MUL_MAT / FLASH_ATTN_EXT without oneDNN still open
   (the manual command lacked the stick's type filter, so MUL_MAT ran the full set and was interrupted).
-  MUL_MAT (with the stick's type filter) without oneDNN: "2/2 backends passed, OK" (2026-11-01). FLASH_ATTN_EXT: not reported.
+  MUL_MAT (with the stick's type filter) without oneDNN: "2/2 backends passed, OK" (2026-11-01). FLASH_ATTN_EXT (stick filter) and MUL_MAT_ID
+  without oneDNN: both "OK" too. **Hypothesis confirmed for all four aborted steps** (measured by the user).
