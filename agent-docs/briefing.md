@@ -21,10 +21,9 @@ are merged one after the other, merge their notes by hand (journal: keep all ent
    runtime without a GPU recorded as skipped, Blender device types it does not find ("No matching device …", rc 0)
    recorded as unavailable, a Python traceback behind rc 0 counted as a failure. Next build + run should end `done`
    except for the SYCL aborts.
-2. **E built** (stick 0.13.7, run format 1.5 on this branch): a oneAPI step failing with oneDNN's "could not create a
-   memory object" runs once more with `GGML_SYCL_ENABLE_DNN=0 GGML_SYCL_FA_ONEDNN=0` (llama-bench and every
-   test-backend-ops op); first output kept as `<step>.onednn-failed.txt`, `retry` in the run, values flagged
-   `sycl_onednn: false` (measurements VERSION 3). Next: build + run on the UHD 770 machine — expected `done`.
+2. **E works on hardware** (run `…-c72d`): llama-bench, MUL_MAT, MUL_MAT_ID rescued. Left: FLASH_ATTN_EXT timed out
+   (30 min) with oneDNN instead of aborting. Proposal to the user: once a oneAPI device has failed on oneDNN, run its
+   remaining steps without oneDNN right away (recorded as such), instead of trying each with oneDNN first. Waiting.
    **Merge note:** `sprint/old-gpus` also claims format 1.5 and measurements VERSION 3 — renumber the later one.
 3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
    `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).

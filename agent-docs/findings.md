@@ -121,3 +121,11 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   (the manual command lacked the stick's type filter, so MUL_MAT ran the full set and was interrupted).
   MUL_MAT (with the stick's type filter) without oneDNN: "2/2 backends passed, OK" (2026-11-01). FLASH_ATTN_EXT (stick filter) and MUL_MAT_ID
   without oneDNN: both "OK" too. **Hypothesis confirmed for all four aborted steps** (measured by the user).
+
+## Second hardware run (stick 0.13.7, 2026-11-01, run `…-c72d`, same 13700K machine; measured)
+
+- D and E work: gpu-p2p skipped with the reason; Blender oneAPI recorded as not available; the oneDNN retry rescued
+  both llama-bench runs (tinyllama 44 s, llama-2-7b 146 s incl. the failed first attempt), MUL_MAT and MUL_MAT_ID.
+- Remaining failure: FLASH_ATTN_EXT on the UHD 770 hit the 30-min test-backend-ops timeout (rc 127, 1800 s) with oneDNN
+  on — a hang or a crawl instead of the abort of run `…-9c93`, so the retry (which keys on the error text) did not fire.
+  Without oneDNN it passed in the manual test. Cost of the failed first attempts: ~30 min timeout + a few min each.

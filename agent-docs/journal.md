@@ -77,3 +77,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
   VERSION 3); 149 tests pass; existing runs extract unchanged. Format / VERSION numbers collide with `sprint/old-gpus`.
 - **2026-11-01** — Side fix (user): the boot header shows the stick version (from /opt/rigsim/STICK_VERSION). No version bump: display only.
+- **2026-11-01** — Second hardware run (0.13.7): D and E work; FLASH_ATTN_EXT timed out with oneDNN (no error text, no
+  retry). Proposed: after the first oneDNN failure on a device, skip oneDNN for its remaining steps.
