@@ -60,3 +60,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   blocker is checked before the menu; [u]pdate is offered only when it can work.
 - **2026-10-31** — Branches `sprint/old-gpus` and `ddr-timing-improvements` opened off this one. User's order: this
   sprint first (its stick is running on hardware), then old GPUs, then DDR (parked).
+- **2026-10-31** — First hardware run of this sprint's stick (0.13.5): self-test build, Blender and ladder cap verified;
+  remaining noise: oneAPI SYCL aborts, Blender oneAPI with no render, gpu-p2p on one GPU. UEFI on an affected machine open.

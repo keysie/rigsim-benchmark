@@ -96,3 +96,13 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   partition); it says why and offers [s]eed only or [e]rase with backup.
 - Test: `sudo bash stick/tests/boot/boot-test.sh` (root, QEMU, OVMF, SeaBIOS; ~1–2 min without KVM). QEMU's small
   `bios.bin` has no xHCI support; the test uses the default (256k) SeaBIOS.
+
+## First hardware run of stick 0.13.5 (2026-10-31; 13700K + RTX 3080 + UHD 770, Secure Boot off; measured)
+
+- Build with the seed self-test passed (after the libcuda fix); the run took 2 h 26 min.
+- Blender: CPU, OptiX and CUDA each render all three scenes (~32–41 s per scene) — the first Blender data from the stick.
+  oneAPI (UHD 770): rc 0 after 0–1 s per scene, i.e. no real render; logs not yet checked.
+- `cpu-gemm-ladder`: 9 steps (1 … 24 threads), none failing — the cap works.
+- gpu-p2p on a one-GPU machine: 2 items "failed", question rc 0.
+- oneAPI on the UHD 770: 5 of 92 steps abort with rc 134 (SYCL llama runs, mul_mat, mul_mat_id, flash_attn_ext); the
+  only cause of `done with failures` in this run. 45 min of the run go to oneAPI, ~47 min to Vulkan on the iGPU.

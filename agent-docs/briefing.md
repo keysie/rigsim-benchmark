@@ -17,17 +17,18 @@ machine), 3. `ddr-timing-improvements` (parked, proposal checked). Each branch c
 are merged one after the other, merge their notes by hand (journal: keep all entries in date order).
 
 **Next steps, in order**
-1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp
-   CUDA, a false alarm (driver library, fixed); every other part ok. Build again; it must pass (needs the user). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
-   machine: Blender delivers a result, the ladder has no failing step.
-2. **UEFI boot without CSM**: fix written (GPT hybrid layout, open-points 5), QEMU boot test green. Build again, flash
-   with [e]rase (old-layout sticks cannot be updated in place) and boot one affected machine without CSM.
-3. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
-   F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 6.
-4. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run (additive format change) so the data page can
-   show what a stick contained.
+1. **First hardware run of this sprint's stick** (0.13.5, 13700K + RTX 3080, 2026-10-31, run `…-9c93`): verified the
+   seed self-test build, Blender (first results ever: CPU, OptiX, CUDA) and the capped ladder (9 steps, none failing).
+   Still to verify: UEFI boot without CSM on one of the affected machines.
+2. Remaining noise in that run: oneAPI on the UHD 770 — 5 of 92 SYCL steps abort (rc 134: both llama runs, mul_mat,
+   mul_mat_id, flash_attn_ext) and are the only reason for `done with failures`; Blender oneAPI reports rc 0 after
+   0–1 s per scene (no real render — check the logs); gpu-p2p records 2 failed items on a one-GPU machine.
+3. Then C (package energy readable), D (unsupported → skipped with a reason; covers the three noises above),
+   E (SYCL/Vulkan aborts), F (run-completeness audit tool), G (VM test, optional) — see open-points.
+4. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run.
 
 **Recently solved** (merged, newest first)
+- 2026-10-31 (on this branch, verified on hardware): seed self-test, Blender libraries, ladder cap — first run with Blender data.
 - 2026-10-31 PR #22 (stick 0.13.4): thread ladder capped to the machine's logical CPU count (`[limits]` in plans).
 - 2026-10-31 PR #19 (stick 0.13.3): Blender's X11/GL client libraries in the system image, `ldd` check at build (warns).
 - 2026-10-31 PR #20: audit of all runs and the CPU-run analysis recorded in agent-docs.
