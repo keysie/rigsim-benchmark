@@ -21,8 +21,9 @@ are merged one after the other, merge their notes by hand (journal: keep all ent
    runtime without a GPU recorded as skipped, Blender device types it does not find ("No matching device …", rc 0)
    recorded as unavailable, a Python traceback behind rc 0 counted as a failure. Next build + run should end `done`
    except for the SYCL aborts.
-2. **E — SYCL aborts on the UHD 770** (rc 134: both llama runs, mul_mat, mul_mat_id, flash_attn_ext): needs the logs
-   `oneapi/dev0-llama-*.log` and `oneapi/dev0-ops-*.log` from run `…-9c93`.
+2. **E — SYCL aborts on the UHD 770**: cause read from the logs (oneDNN path in the SYCL mul_mat fails, see findings);
+   proposal given to the user — on this error retry once with oneDNN off and record the retry and its environment in
+   the run, or record the failure as it is. Waiting for the decision.
 3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
    `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).
 

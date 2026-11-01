@@ -65,3 +65,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — User: UEFI boot verified on an affected machine. D built (stick 0.13.6): skipped-with-reason for
   gpu-p2p on one card, vendor runtime without GPU, Blender device types not found; traceback behind rc 0 = failure.
   145 tests pass.
+- **2026-10-31** — E: SYCL logs read; the aborts come from the oneDNN path of llama.cpp's SYCL mul_mat on the UHD 770
+  (inferred from the message). Proposed: retry once without oneDNN, recorded. Waiting for the user.

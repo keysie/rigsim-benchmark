@@ -109,3 +109,9 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - Blender's benchmark script raises `ValueError: No matching device of type OneAPI found` when the device type is missing,
   and Blender still exits 0 ("Blender quit") — rc alone cannot tell a render from a non-render (run `…-9c93`).
 - gpu-p2p on one card: the probe says "d2d needs two visible cards" (rc 1 per item).
+- SYCL aborts on the UHD 770 (run `…-9c93`; read from the logs): llama-bench and test-backend-ops die in
+  `ggml_sycl_op_mul_mat` (ggml-sycl.cpp:3743) with "could not create a memory object" — the text of oneDNN's
+  `dnnl::error` (*inferred*). The single-token mul_mat cases pass (10–108 GFLOPS); it fails at the next batched case,
+  where llama.cpp's SYCL backend hands GEMMs to oneDNN (`GGML_SYCL_ENABLE_DNN=1`, `GGML_SYCL_FA_ONEDNN=1` in its
+  environment dump) — which would also explain mul_mat_id and flash_attn_ext. Hypothesis to test: the same run with
+  `GGML_SYCL_ENABLE_DNN=0` (and `GGML_SYCL_FA_ONEDNN=0`). Not "unsupported hardware": a backend path failing.
