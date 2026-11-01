@@ -97,7 +97,10 @@ def test_sycl_values_measured_without_onednn_are_flagged(tmp_path):
     (run / "oneapi" / "dev0-llama-tiny.jsonl").write_text(line % 38.2)
     (run / "oneapi" / "dev1-llama-tiny.jsonl").write_text(line % 50)
     (run / "run.json").write_text(js.dumps(dict(questions=dict(oneapi=dict(runs={
-        "dev0-llama-tiny": dict(rc=0, retry=dict(env={"GGML_SYCL_ENABLE_DNN": "0"})), "dev1-llama-tiny": dict(rc=0)})))))
+        "dev0-llama-tiny": dict(rc=0, retry=dict(env={"GGML_SYCL_ENABLE_DNN": "0"})), "dev1-llama-tiny": dict(rc=0),
+        "dev0-llama-big": dict(rc=0, onednn_off=dict(after="dev0-llama-tiny"))})))))
+    (run / "oneapi" / "dev0-llama-big.jsonl").write_text(line % 9)
     got = {m["key"]: m["conditions"] for m in M.extract(run)["measurements"]}
     assert got["llama-bench/sycl/dev0/tiny/tg128"]["sycl_onednn"] is False
     assert "sycl_onednn" not in got["llama-bench/sycl/dev1/tiny/tg128"]
+    assert got["llama-bench/sycl/dev0/big/tg128"]["sycl_onednn"] is False

@@ -85,6 +85,26 @@ def onednn_retry(rc: int, out: str, first: Path, again) -> tuple[int, str, dict 
     first.write_text(scrub(out))
     rc2, out2 = again(NO_ONEDNN)
     return rc2, out2, dict(reason=f"oneDNN: {ONEDNN_ERROR}", env=dict(NO_ONEDNN), first_rc=rc, first_output=first.name)
+
+
+class OneDnnGuard:
+    """One per oneAPI device. A llama.cpp step that fails on oneDNN runs again without it (onednn_retry); from then on
+    every further llama.cpp step on that device runs without oneDNN right away (run c72d, 2026-11-01: FLASH_ATTN_EXT
+    did not abort with oneDNN but hung for the full 30-min timeout, so the error text never came)."""
+
+    def __init__(self):
+        self.off_after = ""
+
+    def run(self, step: str, first: Path, attempt) -> tuple[int, str, dict]:
+        """attempt(env or None) -> (rc, out). Returns rc, out and what to add to the step's entry."""
+        if self.off_after:
+            rc, out = attempt(NO_ONEDNN)
+            return rc, out, dict(onednn_off=dict(after=self.off_after, env=dict(NO_ONEDNN)))
+        rc, out = attempt(None)
+        rc, out, retry = onednn_retry(rc, out, first, attempt)
+        if retry:
+            self.off_after = step
+        return rc, out, (dict(retry=retry) if retry else {})
 # HIP has no code for a gfx target it was not built for; the usual stand-in is the family's base target
 GFX_FAMILY = [("gfx103", "10.3.0"), ("gfx110", "11.0.0"), ("gfx115", "11.5.0"), ("gfx120", "12.0.0")]
 STICK_READ_MIB = 1024
@@ -888,26 +908,28 @@ def backend_ops_plan(binary: str, backend: str) -> list[tuple[str, list[str]]]:
     return out
 
 
-def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path, onednn: bool = False) -> dict:
+def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path,
+                    onednn: "OneDnnGuard | None" = None) -> dict:
     """run(cmd, timeout[, env]) -> (rc, output). Older builds lack --output: then plain console output. A build that
-    does not know the backend name: once more without -b (every backend it sees, CPU included). onednn (SYCL): an
-    op that fails on oneDNN's allocation error runs once more without oneDNN (onednn_retry) before anything else."""
+    does not know the backend name: once more without -b (every backend it sees, CPU included). onednn (SYCL): the
+    device's OneDnnGuard decides on oneDNN before anything else."""
     runs = {}
     ops = backend_ops_plan(binary, backend)
     for k, (key, cmd) in enumerate(ops, 1):
         STATUS.set(f"test-backend-ops {prefix} {key[4:]} {k}/{len(ops)}")
         t0 = time.time()
-        rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
-        retry = None
+        extra = {}
         if onednn:
-            rc, out, retry = onednn_retry(rc, out, d / f"{prefix}-{key}.onednn-failed.txt",
-                                          lambda env, cmd=cmd: run(cmd, BACKEND_OPS_TIMEOUT_S, env))
+            rc, out, extra = onednn.run(f"{prefix}-{key}", d / f"{prefix}-{key}.onednn-failed.txt",
+                                        lambda env, cmd=cmd: run(cmd, BACKEND_OPS_TIMEOUT_S, env))
+        else:
+            rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
             cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
-        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **(dict(retry=retry) if retry else {}))
+        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra)
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
 
@@ -1129,22 +1151,24 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
         def ex(cmd, t, env=None, c=c):
             return sh(["docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,
                        "/rigsim/run.sh", *cmd], timeout=t)
+        guard = OneDnnGuard() if kind == "oneapi" else None     # llama.cpp steps only; the probe has no oneDNN
         for k, (key, cmd) in enumerate(plan, 1):
             STATUS.set(f"dev{i} {key} {k}/{len(plan)}")
             t0 = time.time()
             t = LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S
-            rc, out = ex(cmd, t)
-            retry = None
-            if kind == "oneapi":
-                rc, out, retry = onednn_retry(rc, out, d / f"dev{i}-{key}.onednn-failed.txt",
-                                              lambda env, cmd=cmd, t=t: ex(cmd, t, env))
-                if retry:
-                    say(f"oneapi dev{i} {key}: oneDNN failed, without oneDNN rc={rc}", log)
+            extra = {}
+            if guard and key.startswith("llama"):
+                rc, out, extra = guard.run(f"dev{i}-{key}", d / f"dev{i}-{key}.onednn-failed.txt",
+                                           lambda env, cmd=cmd, t=t: ex(cmd, t, env))
+                if "retry" in extra:
+                    say(f"oneapi dev{i} {key}: oneDNN failed, without oneDNN rc={rc}; oneDNN off for this device", log)
+            else:
+                rc, out = ex(cmd, t)
             (d / f"dev{i}-{key}.jsonl").write_text(scrub(out))
-            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **(dict(retry=retry) if retry else {}))
+            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra)
         if "test-backend-ops" in meta.split():
             runs.update(run_backend_ops(ex, d, f"dev{i}", "/rigsim/test-backend-ops",
-                                        "ROCm0" if kind == "rocm" else "SYCL0", log, onednn=kind == "oneapi"))
+                                        "ROCm0" if kind == "rocm" else "SYCL0", log, onednn=guard))
         sh(["docker", "rm", "-f", c], timeout=120)
         say(f"{kind} device {i} ({dev.get('name')}): {sum(1 for k in runs if k.startswith(f'dev{i}-'))} runs"
             + (f", HSA_OVERRIDE_GFX_VERSION={ov}" if ov else "") + ("" if have_probe else ", probe not in the image"), log)

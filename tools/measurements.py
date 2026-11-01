@@ -102,7 +102,8 @@ def llama(run: Path) -> list[dict]:
             m = VENDOR_FILE.match(f.name)
             if m:
                 rows = _llama_rows(_json_lines(f), backend, f"dev{m.group(1)}", m.group(2), f"{kind}/{f.name}")
-                if kind == "oneapi" and (vruns.get(f.name[:-len(".jsonl")]) or {}).get("retry"):
+                e = vruns.get(f.name[:-len(".jsonl")]) or {}
+                if kind == "oneapi" and (e.get("retry") or e.get("onednn_off")):
                     for r in rows:                   # measured without oneDNN after it failed (format 1.5)
                         r["conditions"]["sycl_onednn"] = False
                 out += rows

@@ -1329,7 +1329,7 @@ def test_backend_ops_retry_without_onednn_before_the_other_fallbacks(tmp_path, m
     def run(cmd, t, env=None):
         seen.append((list(cmd), env))
         return (0, "OK") if env == stick.NO_ONEDNN else (134, ONEDNN_OUT)
-    r = stick.run_backend_ops(run, tmp_path, "dev0", "tbo", "SYCL0", tmp_path / "log", onednn=True)
+    r = stick.run_backend_ops(run, tmp_path, "dev0", "tbo", "SYCL0", tmp_path / "log", onednn=stick.OneDnnGuard())
     assert r["dev0-ops-mul_mat"]["rc"] == 0 and r["dev0-ops-mul_mat"]["retry"]["first_rc"] == 134
     assert [e for _, e in seen] == [None, stick.NO_ONEDNN]                       # no --output / -b fallbacks needed
     assert (tmp_path / "dev0-ops-mul_mat.onednn-failed.txt").exists() and (tmp_path / "dev0-ops-mul_mat.txt").exists()
@@ -1342,7 +1342,7 @@ def test_run_vendor_passes_the_environment_to_docker_exec():
     src = (HERE / "payload" / "stick.py").read_text()
     body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
     assert '"docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,' in body
-    assert 'onednn=kind == "oneapi"' in body and 'if kind == "oneapi":' in body
+    assert "onednn=guard" in body and 'guard = OneDnnGuard() if kind == "oneapi" else None' in body
 
 
 def test_notice_header_shows_the_stick_version(tmp_path, monkeypatch, capsys):
@@ -1354,3 +1354,20 @@ def test_notice_header_shows_the_stick_version(tmp_path, monkeypatch, capsys):
     assert "rigsim hardware stick 0.13.7" in capsys.readouterr().out
     (tmp_path / "STICK_VERSION").unlink()
     assert stick.stick_version() == "unknown"
+
+
+def test_onednn_stays_off_on_a_device_after_its_first_failure(tmp_path):
+    """Run c72d: FLASH_ATTN_EXT hung for 30 min with oneDNN after MUL_MAT had already failed on it. Once a device
+    failed on oneDNN, its further steps run without it straight away and say since when."""
+    g, seen = stick.OneDnnGuard(), []
+    def attempt(env):
+        seen.append(env)
+        return (0, "ok") if env else (134, ONEDNN_OUT)
+    rc, _, extra = g.run("dev0-llama-tiny", tmp_path / "a.txt", attempt)
+    assert rc == 0 and "retry" in extra and seen == [None, stick.NO_ONEDNN]
+    seen.clear()
+    rc, _, extra = g.run("dev0-ops-flash_attn_ext", tmp_path / "b.txt", attempt)
+    assert rc == 0 and seen == [stick.NO_ONEDNN] and not (tmp_path / "b.txt").exists()
+    assert extra == dict(onednn_off=dict(after="dev0-llama-tiny", env=stick.NO_ONEDNN))
+    g2 = stick.OneDnnGuard()                                                     # a device where oneDNN works
+    assert g2.run("dev1-x", tmp_path / "c.txt", lambda env: (0, "ok")) == (0, "ok", {}) and not g2.off_after
