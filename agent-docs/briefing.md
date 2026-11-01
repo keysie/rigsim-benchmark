@@ -22,8 +22,8 @@ are merged one after the other, merge their notes by hand (journal: keep all ent
    recorded as unavailable, a Python traceback behind rc 0 counted as a failure. Next build + run should end `done`
    except for the SYCL aborts.
 2. **E — SYCL aborts on the UHD 770**: cause read from the logs (oneDNN path in the SYCL mul_mat fails, see findings);
-   proposal given to the user — on this error retry once with oneDNN off and record the retry and its environment in
-   the run, or record the failure as it is. Waiting for the decision.
+   user chose: retry once without oneDNN, recorded (2026-10-31). Implementation plan given, waiting for clearance
+   (oneAPI only, on this error only; first attempt kept as its own file; retry flagged in run.json and in the values).
 3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
    `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).
 
