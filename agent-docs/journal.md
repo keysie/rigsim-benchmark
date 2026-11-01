@@ -74,3 +74,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
 - **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
   all four aborted SYCL steps.
+- **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
+  VERSION 3); 149 tests pass; existing runs extract unchanged. Format / VERSION numbers collide with `sprint/old-gpus`.
