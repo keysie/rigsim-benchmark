@@ -549,8 +549,21 @@ def question_gpus(qfile: Path) -> str:
     return m.group(1) if m else "none"
 
 
-def plan(qdir: Path, nvidia: bool, nvidia_reason: str) -> list[tuple[str, Path, str | None]]:
-    """(question, file, skip reason or None), in profile order."""
+def question_min_gpus(qfile: Path) -> int:
+    """min_gpus = N in a question file: it needs at least N NVIDIA cards (gpu-p2p: 2)."""
+    m = re.search(r'(?m)^min_gpus\s*=\s*(\d+)', qfile.read_text())
+    return int(m.group(1)) if m else 1
+
+
+def nvidia_count() -> int:
+    rc, out = sh(["nvidia-smi", "-L"], timeout=60)
+    return sum(1 for l in out.splitlines() if l.startswith("GPU ")) if rc == 0 else 0
+
+
+def plan(qdir: Path, nvidia: bool, nvidia_reason: str, n_gpus: int | None = None) -> list[tuple[str, Path, str | None]]:
+    """(question, file, skip reason or None), in profile order. n_gpus: NVIDIA cards the driver drives (None: unknown,
+    no question skipped for it). A question this machine cannot answer is skipped with the reason, not run to fail
+    (run d-9c93, 2026-10-31: gpu-p2p "failed" twice on a one-card machine)."""
     out = []
     for q in PROFILE:
         f = qdir / f"{q}.toml"
@@ -558,6 +571,8 @@ def plan(qdir: Path, nvidia: bool, nvidia_reason: str) -> list[tuple[str, Path, 
             out.append((q, f, "question file missing"))
         elif question_gpus(f) != "none" and not nvidia:
             out.append((q, f, nvidia_reason))
+        elif question_gpus(f) != "none" and n_gpus is not None and n_gpus < question_min_gpus(f):
+            out.append((q, f, f"needs {question_min_gpus(f)} NVIDIA cards, this machine has {n_gpus}"))
         else:
             out.append((q, f, None))
     return out
@@ -1071,8 +1086,8 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
     targets = meta.splitlines()[0].split(";") if kind == "rocm" and meta else []
     have_probe = (Path(probe).name in meta.split())
     devices = [r for r in parse_lines(info) if r.get("mode") == "info"]
-    if not devices:
-        return dict(res, rc=1, error="the runtime sees no GPU (info.jsonl)")
+    if not devices:                  # e.g. an iGPU the runtime does not support: not a failure of the stick
+        return dict(res, skipped=f"the {'oneAPI' if kind == 'oneapi' else 'ROCm'} runtime sees no GPU on this machine (info.jsonl)")
     res["devices"], runs = [], {}
     for dev in devices:
         i = str(dev["index"])
@@ -1191,9 +1206,15 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                 except subprocess.TimeoutExpired:
                     rc, out, err = -9, "", f"timeout after {BLENDER_TIMEOUT_S} s"
                 (d / f"{key}.log").write_text(scrub(out + ("\n--- stderr ---\n" + err if err.strip() else "")))
+                nodev = re.search(r"No matching device of type \w+ found", out + err)
+                if rc == 0 and "Traceback (most recent call last)" in out + err:
+                    rc = 1                                      # the script failed, Blender still exits 0
                 say(f"blender {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
-                if rc != 0 and i == 0 and t != "CPU":
-                    unavailable.append(t)                       # guessed type this GPU / build does not offer
+                if t != "CPU" and (nodev or (rc != 0 and i == 0)):
+                    # guessed type this GPU / build does not offer (run d-9c93: oneAPI on a UHD 770 — Blender's
+                    # script found no such device and Blender exited 0 after a second)
+                    unavailable.append(t)
+                    say(f"blender {t}: not available here" + (f" ({nodev.group(0)})" if nodev else ""), log)
                     break
                 runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
         return dict(rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, route="offline", blender=ver,
@@ -1690,7 +1711,7 @@ def main() -> int:
         say(f"screens off while measuring: {run['screens_blanked'] or 'not possible'}", log)
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
-            qplan = list(plan(OPT / "questions", nvidia, why))
+            qplan = list(plan(OPT / "questions", nvidia, why, nvidia_count() if nvidia else None))
             STATUS.n = 2 + len(qplan) + 7        # inventory, docker, the questions, the seven steps below
             threading.Thread(target=operator_keys, daemon=True).start()
             for q, f, skip in qplan:

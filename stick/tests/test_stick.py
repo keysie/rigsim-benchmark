@@ -1258,3 +1258,45 @@ def test_disk_layout_is_a_gpt_hybrid_shared_by_build_and_flash():
     assert 'source "$S/tools/layout.sh"' in b and "make_iso " in b and "make_efiboot " in b and "-append_partition" not in b
     assert b.count('--modules="linux normal iso9660 biosdisk search configfile"') == 2
     assert 'source "$S/tools/layout.sh"' in f and "add_data_part " in f and "type=83" not in f
+
+
+# --- D: what a machine cannot do is skipped with the reason, not recorded as a failure (run d-9c93, 2026-10-31) ----
+def test_plan_skips_questions_that_need_more_cards(tmp_path):
+    for q in stick.PROFILE:
+        src = HERE / "questions" / f"{q}.toml"
+        (tmp_path / f"{q}.toml").write_text(src.read_text())
+    one = {q: why for q, f, why in stick.plan(tmp_path, True, "", 1)}
+    assert one["gpu-p2p"] == "needs 2 NVIDIA cards, this machine has 1"
+    assert one["gpu-vram"] is None and one["cpu-gemm"] is None
+    assert {q: why for q, f, why in stick.plan(tmp_path, True, "", 2)}["gpu-p2p"] is None
+    assert {q: why for q, f, why in stick.plan(tmp_path, True, "")}["gpu-p2p"] is None        # count unknown: run it
+    assert stick.question_min_gpus(HERE / "questions" / "gpu-p2p.toml") == 2
+
+
+def test_vendor_runtime_without_gpu_is_skipped_not_failed():
+    src = (HERE / "payload" / "stick.py").read_text()
+    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
+    assert 'sees no GPU on this machine' in body and 'rc=1, error="the runtime sees no GPU' not in body
+
+
+def test_blender_device_type_not_found_is_unavailable_and_python_errors_fail(tmp_path, monkeypatch):
+    b = tmp_path / "data" / "seed" / "blender"; b.mkdir(parents=True); (b / "BLENDER_VERSION").write_text("4.2.0")
+    script = b / "script" / "main.py"; script.parent.mkdir(); script.write_text("")
+    scenes = {n: tmp_path / f"{n}.blend" for n in ("monster", "junkshop", "classroom")}
+    monkeypatch.setattr(stick, "blender_offline", lambda b, v: (tmp_path / "blender", scenes))
+    monkeypatch.setattr(stick, "benchmark_script", lambda b: script)
+    monkeypatch.setattr(stick, "guessed_blender_types", lambda: ["CPU", "CUDA", "ONEAPI"])
+    monkeypatch.setattr(stick, "vendor_images", lambda d: {})
+    tb = "Traceback (most recent call last):\n  File ...\n"
+    def fake(cmd, **kw):
+        t, scene = cmd[-1], Path(cmd[cmd.index("CYCLES") + 1]).stem
+        class R: returncode, stdout, stderr = 0, "Blender quit\n", ""
+        if t == "ONEAPI":
+            R.stderr = tb + "ValueError: No matching device of type OneAPI found. Options are: []\n"
+        if t == "CUDA" and scene == "junkshop":
+            R.stderr = tb + "RuntimeError: out of memory\n"
+        return R()
+    monkeypatch.setattr(stick, "run_cmd", fake)
+    r = stick.run_blender(tmp_path / "data", tmp_path / "run", tmp_path / "log")
+    assert r["types_unavailable"] == ["ONEAPI"] and not any(k.startswith("oneapi") for k in r["runs"])
+    assert r["runs"]["cuda-junkshop"]["rc"] == 1 and r["runs"]["cuda-monster"]["rc"] == 0 and r["rc"] == 1
