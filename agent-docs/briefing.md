@@ -17,17 +17,17 @@ machine), 3. `ddr-timing-improvements` (parked, proposal checked). Each branch c
 are merged one after the other, merge their notes by hand (journal: keep all entries in date order).
 
 **Next steps, in order**
-1. **First hardware run of this sprint's stick** (0.13.5, 13700K + RTX 3080, 2026-10-31, run `…-9c93`): verified the
-   seed self-test build, Blender (first results ever: CPU, OptiX, CUDA) and the capped ladder (9 steps, none failing).
-   Still to verify: UEFI boot without CSM on one of the affected machines.
-2. Remaining noise in that run: oneAPI on the UHD 770 — 5 of 92 SYCL steps abort (rc 134: both llama runs, mul_mat,
-   mul_mat_id, flash_attn_ext) and are the only reason for `done with failures`; Blender oneAPI reports rc 0 after
-   0–1 s per scene (no real render — check the logs); gpu-p2p records 2 failed items on a one-GPU machine.
-3. Then C (package energy readable), D (unsupported → skipped with a reason; covers the three noises above),
-   E (SYCL/Vulkan aborts), F (run-completeness audit tool), G (VM test, optional) — see open-points.
-4. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run.
+1. **D built** (stick 0.13.6, not yet on hardware): gpu-p2p skipped on one-card machines (`min_gpus`), a oneAPI / ROCm
+   runtime without a GPU recorded as skipped, Blender device types it does not find ("No matching device …", rc 0)
+   recorded as unavailable, a Python traceback behind rc 0 counted as a failure. Next build + run should end `done`
+   except for the SYCL aborts.
+2. **E — SYCL aborts on the UHD 770** (rc 134: both llama runs, mul_mat, mul_mat_id, flash_attn_ext): needs the logs
+   `oneapi/dev0-llama-*.log` and `oneapi/dev0-ops-*.log` from run `…-9c93`.
+3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
+   `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).
 
 **Recently solved** (merged, newest first)
+- 2026-10-31 (this branch, verified on hardware): UEFI boot without CSM on an affected machine (GPT hybrid layout).
 - 2026-10-31 (on this branch, verified on hardware): seed self-test, Blender libraries, ladder cap — first run with Blender data.
 - 2026-10-31 PR #22 (stick 0.13.4): thread ladder capped to the machine's logical CPU count (`[limits]` in plans).
 - 2026-10-31 PR #19 (stick 0.13.3): Blender's X11/GL client libraries in the system image, `ldd` check at build (warns).

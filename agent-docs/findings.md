@@ -106,3 +106,6 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - gpu-p2p on a one-GPU machine: 2 items "failed", question rc 0.
 - oneAPI on the UHD 770: 5 of 92 steps abort with rc 134 (SYCL llama runs, mul_mat, mul_mat_id, flash_attn_ext); the
   only cause of `done with failures` in this run. 45 min of the run go to oneAPI, ~47 min to Vulkan on the iGPU.
+- Blender's benchmark script raises `ValueError: No matching device of type OneAPI found` when the device type is missing,
+  and Blender still exits 0 ("Blender quit") — rc alone cannot tell a render from a non-render (run `…-9c93`).
+- gpu-p2p on one card: the probe says "d2d needs two visible cards" (rc 1 per item).

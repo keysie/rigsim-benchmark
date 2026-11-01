@@ -25,8 +25,8 @@ Last revised: 2026-10-31.
 5. **UEFI boot fails on some machines without CSM** [user, 2026-10-31; symptom: the firmware sees the stick but offers
    no boot option]. **Fix written** on `sprint/stick-data` (stick 0.13.5): GPT hybrid layout like current Ubuntu ISOs
    (`stick/tools/layout.sh`, shared by build and flash), FAT16 ESP, BIOS core with `configfile`. QEMU boot test passes
-   (UEFI, UEFI + Secure Boot, BIOS; CI "Boot test"). Open: confirm on one of the affected machines; old-layout sticks
-   cannot be updated in place (flash offers seed-only or erase).
+   (UEFI, UEFI + Secure Boot, BIOS; CI "Boot test"). **Verified by the user on an affected machine (2026-10-31).** Old-layout sticks cannot be updated in
+   place (flash offers seed-only or erase).
 6. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
    15 runs". Plan cleared by the user. (A) build-time seed self-test — **written** on `sprint/stick-data` (stick 0.13.5,
    `stick/tools/selftest.py`): stops the build when a part asked for is missing or a binary lacks libraries;
@@ -48,11 +48,15 @@ Last revised: 2026-10-31.
 
 ## Low
 
-10. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
+10. **Blender oneAPI** [agent, 2026-10-31]: Blender's own oneAPI device needs Intel's Level Zero runtime and GPU
+   compute runtime in the system image (Blender runs there, not in the oneAPI image); today Blender finds no oneAPI
+   device (run `…-9c93`). Adding them = more system image size; decide with the user.
+
+11. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
-11. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
+12. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
     stick/README, decided 2026-10-29].
-12. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
+13. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
     Kepler and older not at all), MLC cannot switch prefetchers off under Secure Boot, ROCm only officially on some AMD
     generations, vkprobe's matrix GEMM is a plain kernel (lower bound), RAM timings as the BIOS set them are often
     invisible from Linux.

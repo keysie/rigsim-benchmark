@@ -62,3 +62,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   sprint first (its stick is running on hardware), then old GPUs, then DDR (parked).
 - **2026-10-31** — First hardware run of this sprint's stick (0.13.5): self-test build, Blender and ladder cap verified;
   remaining noise: oneAPI SYCL aborts, Blender oneAPI with no render, gpu-p2p on one GPU. UEFI on an affected machine open.
+- **2026-10-31** — User: UEFI boot verified on an affected machine. D built (stick 0.13.6): skipped-with-reason for
+  gpu-p2p on one card, vendor runtime without GPU, Blender device types not found; traceback behind rc 0 = failure.
+  145 tests pass.
