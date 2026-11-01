@@ -70,3 +70,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — User chose variant 1 (retry without oneDNN, recorded) and asked for the plan before building.
 - **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
   pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
+- **2026-10-31** — Manual SYCL test, first result: one test-backend-ops op without oneDNN ends "2/2 backends passed, OK" on the
+  UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
