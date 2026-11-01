@@ -22,8 +22,9 @@ are merged one after the other, merge their notes by hand (journal: keep all ent
    recorded as unavailable, a Python traceback behind rc 0 counted as a failure. Next build + run should end `done`
    except for the SYCL aborts.
 2. **E works on hardware** (run `…-c72d`): llama-bench, MUL_MAT, MUL_MAT_ID rescued. Left: FLASH_ATTN_EXT timed out
-   (30 min) with oneDNN instead of aborting. Proposal to the user: once a oneAPI device has failed on oneDNN, run its
-   remaining steps without oneDNN right away (recorded as such), instead of trying each with oneDNN first. Waiting.
+   (30 min) with oneDNN instead of aborting. **Built** (user cleared; stick 0.13.8): after the first oneDNN failure
+   on a device its further llama.cpp steps run without oneDNN right away (`onednn_off` with `after`, values flagged).
+   Next: build + run on the UHD 770 machine — expected `done`, about half an hour shorter.
    **Merge note:** `sprint/old-gpus` also claims format 1.5 and measurements VERSION 3 — renumber the later one.
 3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
    `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).
