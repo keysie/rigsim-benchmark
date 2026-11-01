@@ -68,3 +68,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — E: SYCL logs read; the aborts come from the oneDNN path of llama.cpp's SYCL mul_mat on the UHD 770
   (inferred from the message). Proposed: retry once without oneDNN, recorded. Waiting for the user.
 - **2026-10-31** — User chose variant 1 (retry without oneDNN, recorded) and asked for the plan before building.
+- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
+  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.

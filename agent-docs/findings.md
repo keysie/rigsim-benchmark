@@ -115,3 +115,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   where llama.cpp's SYCL backend hands GEMMs to oneDNN (`GGML_SYCL_ENABLE_DNN=1`, `GGML_SYCL_FA_ONEDNN=1` in its
   environment dump) — which would also explain mul_mat_id and flash_attn_ext. Hypothesis to test: the same run with
   `GGML_SYCL_ENABLE_DNN=0` (and `GGML_SYCL_FA_ONEDNN=0`). Not "unsupported hardware": a backend path failing.
+- Manual test on the UHD 770 (2026-11-01, user, seeded oneAPI image): llama-bench TinyLlama Q4_0 aborts with oneDNN on,
+  runs with `GGML_SYCL_ENABLE_DNN=0 GGML_SYCL_FA_ONEDNN=0`: pp512 220.4 tok/s, tg128 38.2 tok/s (3 repeats, spread
+  < 0.2 %). Hypothesis confirmed for llama-bench; test-backend-ops MUL_MAT / FLASH_ATTN_EXT without oneDNN still open
+  (the manual command lacked the stick's type filter, so MUL_MAT ran the full set and was interrupted).
