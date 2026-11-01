@@ -76,3 +76,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   all four aborted SYCL steps.
 - **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
   VERSION 3); 149 tests pass; existing runs extract unchanged. Format / VERSION numbers collide with `sprint/old-gpus`.
+- **2026-11-01** — Side fix (user): the boot header shows the stick version (from /opt/rigsim/STICK_VERSION). No version bump: display only.
