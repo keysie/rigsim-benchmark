@@ -1308,10 +1308,16 @@ def append_index(data: Path, row: dict) -> None:
 
 
 # --- host actions ------------------------------------------------------------------------------------------------------
+def stick_version() -> str:
+    """The stick's release (build.sh writes stick/VERSION to /opt/rigsim/STICK_VERSION)."""
+    return _read(OPT / "STICK_VERSION") or "unknown"
+
+
 def notice(seconds: int = NOTICE_S) -> bool:
     """True = go on; False = a key was pressed (abort, nothing measured)."""
     print("\n" * 2 + "=" * 78)
-    print(" rigsim hardware stick — measures this machine's CPU, memory and GPUs, then powers it off.")
+    print(f" rigsim hardware stick {stick_version()}")
+    print(" Measures this machine's CPU, memory and GPUs, then powers it off.")
     print(" Nothing is written to this machine's disks. Results stay on the stick (no serial numbers) and may be")
     print(" published as open data (CC BY 4.0) with the owner's consent: github.com/keysie/rigsim-benchmark")
     print(f" Press any key within {seconds} s to ABORT (a shell is on Ctrl+Alt+F2).")

@@ -1343,3 +1343,14 @@ def test_run_vendor_passes_the_environment_to_docker_exec():
     body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
     assert '"docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,' in body
     assert 'onednn=kind == "oneapi"' in body and 'if kind == "oneapi":' in body
+
+
+def test_notice_header_shows_the_stick_version(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(stick, "OPT", tmp_path)
+    (tmp_path / "STICK_VERSION").write_text("0.13.7\n")
+    assert stick.stick_version() == "0.13.7"
+    monkeypatch.setattr(stick.sys, "stdin", None)             # no terminal: the notice prints and goes on
+    stick.notice(0)
+    assert "rigsim hardware stick 0.13.7" in capsys.readouterr().out
+    (tmp_path / "STICK_VERSION").unlink()
+    assert stick.stick_version() == "unknown"
