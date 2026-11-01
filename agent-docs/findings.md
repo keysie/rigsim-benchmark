@@ -129,3 +129,8 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - Remaining failure: FLASH_ATTN_EXT on the UHD 770 hit the 30-min test-backend-ops timeout (rc 127, 1800 s) with oneDNN
   on — a hang or a crawl instead of the abort of run `…-9c93`, so the retry (which keys on the error text) did not fire.
   Without oneDNN it passed in the manual test. Cost of the failed first attempts: ~30 min timeout + a few min each.
+- Testing one stick step on a normal Linux host (2026-11-01, procedure given to the user): import `stick.py` from a
+  checkout and call `run_vendor("oneapi", data, rundir, log)` with a scratch `data` dir whose `seed` links to the
+  stick's seed (data partition mounted read-only) — never the stick's own data dir, or `load_image` writes its
+  "loaded" marker there and the stick later skips loading the image into its own store. `vendor_plan` and
+  `BACKEND_OPS` can be narrowed for a short test. Caveat: the host's kernel and GPU driver differ from the stick's.
