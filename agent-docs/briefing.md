@@ -7,15 +7,10 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Sprint `sprint/stick-data` — done, ready to merge (user, 2026-11-01).** Goal "the stick works and collects the
-right data" reached: third hardware run (stick 0.13.8, run `…-03de`, 13700K + RTX 3080 + UHD 770) ended `done`, no
-failures, 2 h 03 min (before: 2 h 26 min with failures). PR #23 (draft until now).
-
-**Open branches and their order (user):** 1. `sprint/stick-data` → merge now; 2. `sprint/old-gpus` (built, stick 0.14.0,
-waits for a build and a mixed-GPU machine), 3. `ddr-timing-improvements` (parked). Both are based on this branch;
-GitHub retargets their PRs to `main` once this branch is merged and deleted. **Merge note:** both this branch and
-`sprint/old-gpus` claim run format 1.5 and measurements VERSION 3 — `sprint/old-gpus` takes 1.6 / 4 (and stick
-0.14.x stays above 0.13.8). Their agent-docs were forked from this branch: merge notes by hand, journal in date order.
+**Current sprint:** `sprint/low-memory` (from `main`, 2026-11-01; user: a fix first, before `sprint/old-gpus`) — goal:
+the stick runs cleanly on small machines. Trigger: run `…-05ea` (Ryzen 5 2500U laptop, 7.3 GiB, no swap, issue #29)
+ended `stopped`. Diagnosis in findings; plan proposed, nothing built. Other open branches: `sprint/old-gpus` (built,
+waits for hardware), `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
 1. User merges PR #23. Then submit the three hardware runs of this sprint (`…-9c93`, `…-c72d`, `…-03de`) if wanted.

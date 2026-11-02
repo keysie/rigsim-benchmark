@@ -134,3 +134,15 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   stick's seed (data partition mounted read-only) — never the stick's own data dir, or `load_image` writes its
   "loaded" marker there and the stick later skips loading the image into its own store. `vendor_plan` and
   `BACKEND_OPS` can be narrowed for a short test. Caveat: the host's kernel and GPU driver differ from the stick's.
+
+## Run `…-05ea`: 8 GB laptop (2026-11-01; Ryzen 5 2500U, Vega 8 iGPU, 7.3 GiB RAM, no swap, stick 0.13.8; measured)
+
+- MLC: all five measurements rc 22 after 1 s. On this AMD part MLC picks a 1800 MiB buffer (200 MiB on the 15 GiB
+  Intel machines, 500 MiB on the 13700K) and asks for 4000 × 2 MiB hugepages = 8 GB, which this machine cannot give
+  (*inferred*: the hugepage request fails, MLC exits). The stick passes no buffer size.
+- llama-bench Vulkan, Llama 2 7B Q4_0 (3.8 GB file) on the UMA iGPU: "radv/amdgpu: Not enough memory for command
+  submission", device lost, rc −6. Afterwards cpy and flash_attn_ext ops also died with "context is lost" (a
+  consequence of the GPU reset, not of those ops). TinyLlama ran.
+- The run was stopped on request during Blender (CPU, junkshop), ~1 h 26 min in; why is not in the run (issue #29 says
+  OOM).
+- The stick checks no memory before a step today.

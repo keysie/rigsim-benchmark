@@ -83,3 +83,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — Third hardware run (stick 0.13.8, run `…-03de`): `done`, no failures, 2 h 03 min; the oneDNN switch-off
   ran FLASH_ATTN_EXT without the 30-min hang. User: the sprint is ready to merge. Closed in open-points: UEFI boot
   (verified), the stick plan's A, B, D, E, ladder grid; C, F, G and the SELFTEST copy stay open.
+- **2026-11-01** — New branch `sprint/low-memory` from `main` (user: fix first): run `…-05ea` on an 8 GB laptop ended
+  `stopped` (issue #29). Diagnosis: MLC asks for 8 GB of hugepages, Vulkan 7B runs out of memory and resets the GPU.
