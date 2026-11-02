@@ -1,42 +1,38 @@
 # Briefing — rigsim-benchmark (entry point for every new agent)
 
 Hard limit: **16k tokens**. If this file grows beyond ~12k, move detail to `findings.md` or other docs.
-Last revised: 2026-10-31. Facts here are *read from the repository* unless marked otherwise.
+Last revised: 2026-11-01. Facts here are *read from the repository* unless marked otherwise.
 
 ## 0. Now: next steps and recently solved
 
-Keep this section current (instruction 3). Last updated 2026-10-31.
+Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
+**Sprint `sprint/stick-data` — done, ready to merge (user, 2026-11-01).** Goal "the stick works and collects the
+right data" reached: third hardware run (stick 0.13.8, run `…-03de`, 13700K + RTX 3080 + UHD 770) ended `done`, no
+failures, 2 h 03 min (before: 2 h 26 min with failures). PR #23 (draft until now).
 
-**Current sprint:** `sprint/stick-data` (both repositories) — goal: the stick works and collects the right data.
-
-**Open branches and their order (user, 2026-10-31):** 1. `sprint/stick-data` (this one; its stick is running on
-hardware now — evaluate that run first), 2. `sprint/old-gpus` (built, stick 0.14.0, waits for a build and a mixed-GPU
-machine), 3. `ddr-timing-improvements` (parked, proposal checked). Each branch carries its own agent-docs; when they
-are merged one after the other, merge their notes by hand (journal: keep all entries in date order).
+**Open branches and their order (user):** 1. `sprint/stick-data` → merge now; 2. `sprint/old-gpus` (built, stick 0.14.0,
+waits for a build and a mixed-GPU machine), 3. `ddr-timing-improvements` (parked). Both are based on this branch;
+GitHub retargets their PRs to `main` once this branch is merged and deleted. **Merge note:** both this branch and
+`sprint/old-gpus` claim run format 1.5 and measurements VERSION 3 — `sprint/old-gpus` takes 1.6 / 4 (and stick
+0.14.x stays above 0.13.8). Their agent-docs were forked from this branch: merge notes by hand, journal in date order.
 
 **Next steps, in order**
-1. **D built** (stick 0.13.6, not yet on hardware): gpu-p2p skipped on one-card machines (`min_gpus`), a oneAPI / ROCm
-   runtime without a GPU recorded as skipped, Blender device types it does not find ("No matching device …", rc 0)
-   recorded as unavailable, a Python traceback behind rc 0 counted as a failure. Next build + run should end `done`
-   except for the SYCL aborts.
-2. **E works on hardware** (run `…-c72d`): llama-bench, MUL_MAT, MUL_MAT_ID rescued. Left: FLASH_ATTN_EXT timed out
-   (30 min) with oneDNN instead of aborting. **Built** (user cleared; stick 0.13.8): after the first oneDNN failure
-   on a device its further llama.cpp steps run without oneDNN right away (`onednn_off` with `after`, values flagged).
-   Next: build + run on the UHD 770 machine — expected `done`, about half an hour shorter.
-   **Merge note:** `sprint/old-gpus` also claims format 1.5 and measurements VERSION 3 — renumber the later one.
-3. Then C (package energy readable), F (run-completeness audit tool), G (VM test, optional); later in the sprint: copy
-   `seed/SELFTEST.json` into each run; Blender oneAPI needs Intel's Level Zero runtime in the system image (open point).
+1. User merges PR #23. Then submit the three hardware runs of this sprint (`…-9c93`, `…-c72d`, `…-03de`) if wanted.
+2. Continue `sprint/old-gpus`: rebase onto `main`, renumber format / VERSION, build, test on a mixed-GPU machine.
+3. Still open from the stick plan (next stick sprint): C (package energy readable), F (run-completeness audit tool),
+   G (VM test, optional), `seed/SELFTEST.json` into each run, Blender oneAPI (Level Zero in the system image) —
+   open-points 5.
 
-**Recently solved** (merged, newest first)
-- 2026-10-31 (this branch, verified on hardware): UEFI boot without CSM on an affected machine (GPT hybrid layout).
-- 2026-10-31 (on this branch, verified on hardware): seed self-test, Blender libraries, ladder cap — first run with Blender data.
-- 2026-10-31 PR #22 (stick 0.13.4): thread ladder capped to the machine's logical CPU count (`[limits]` in plans).
-- 2026-10-31 PR #19 (stick 0.13.3): Blender's X11/GL client libraries in the system image, `ldd` check at build (warns).
-- 2026-10-31 PR #20: audit of all runs and the CPU-run analysis recorded in agent-docs.
-- 2026-10-31 PR #18: agent-docs added to both repos, outside `docs/`.
-- 2026-10-31 PR #17 (stick 0.13.2): the progress counter's total is fixed from the start.
+**Recently solved** (newest first)
+- 2026-11-01 (this sprint, verified on hardware): oneAPI steps that fail on oneDNN run without it, and a device stays
+  without oneDNN after its first failure (stick 0.13.7–0.13.8) — the UHD 770 now measures fully.
+- 2026-11-01 (this sprint, verified): what a machine cannot do is skipped with the reason (gpu-p2p on one card, vendor
+  runtime without GPU, Blender device types not offered); boot header shows the stick version.
+- 2026-10-31 (this sprint, verified): UEFI boot without CSM (GPT hybrid layout, QEMU boot test in CI); flash offers
+  [u]pdate only when it can work.
+- 2026-10-31 (this sprint, verified): build-time seed self-test (stops on missing parts), Blender libraries, ladder cap.
+- 2026-10-31 PR #22 / #19: ladder cap, Blender's libraries.
 
 ## 1. What this project is
 
@@ -46,7 +42,7 @@ Blender), stores results on the stick and powers off. Nothing is written to the 
 Data page: https://keysie.github.io/rigsim-benchmark/ . Like its sibling it is largely AI-written in chat sessions on the
 direction of one person (keysie); the data records everything that can influence a result so users can judge it.
 
-Current state (2026-10-31): stick **0.13.2**, run format **1.4**, **15 run folders from 12 distinct machines** (one machine
+State (2026-11-01): stick **0.13.8** on `sprint/stick-data` (main: 0.13.4), run format **1.5** there (main: 1.4), **15 run folders from 12 distinct machines** (one machine
 has 4 runs), 13 attribution files, predictions for tags v0.1.0 (2 files), v0.2.0 (7), v0.3.0 (15).
 
 ## 2. The two repositories and how they interact

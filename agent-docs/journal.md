@@ -80,3 +80,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — Second hardware run (0.13.7): D and E work; FLASH_ATTN_EXT timed out with oneDNN (no error text, no
   retry). Proposed: after the first oneDNN failure on a device, skip oneDNN for its remaining steps.
 - **2026-11-01** — Built the per-device oneDNN switch-off (stick 0.13.8, `OneDnnGuard`); 151 tests pass.
+- **2026-11-01** — Third hardware run (stick 0.13.8, run `…-03de`): `done`, no failures, 2 h 03 min; the oneDNN switch-off
+  ran FLASH_ATTN_EXT without the 30-min hang. User: the sprint is ready to merge. Closed in open-points: UEFI boot
+  (verified), the stick plan's A, B, D, E, ladder grid; C, F, G and the SELFTEST copy stay open.
