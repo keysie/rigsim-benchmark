@@ -143,6 +143,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - llama-bench Vulkan, Llama 2 7B Q4_0 (3.8 GB file) on the UMA iGPU: "radv/amdgpu: Not enough memory for command
   submission", device lost, rc −6. Afterwards cpy and flash_attn_ext ops also died with "context is lost" (a
   consequence of the GPU reset, not of those ops). TinyLlama ran.
-- The run was stopped on request during Blender (CPU, junkshop), ~1 h 26 min in; why is not in the run (issue #29 says
-  OOM).
+- The run hung during Blender (CPU, junkshop), ~1 h 26 min in; the user shut it down from the tty2 shell, which the run
+  records as "stopped on request". *Inferred:* memory exhaustion without swap — the machine thrashes instead of the
+  OOM killer acting quickly.
 - The stick checks no memory before a step today.
