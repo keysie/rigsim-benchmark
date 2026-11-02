@@ -1371,3 +1371,93 @@ def test_onednn_stays_off_on_a_device_after_its_first_failure(tmp_path):
     assert extra == dict(onednn_off=dict(after="dev0-llama-tiny", env=stick.NO_ONEDNN))
     g2 = stick.OneDnnGuard()                                                     # a device where oneDNN works
     assert g2.run("dev1-x", tmp_path / "c.txt", lambda env: (0, "ok")) == (0, "ok", {}) and not g2.off_after
+
+
+# --- low memory (run 05ea, 2026-11-01: an 8 GB laptop without swap hung) ---------------------------------------------
+def _mem(tmp_path, monkeypatch, avail_gib=6.0, total_gib=7.3, kills=(0,)):
+    k = iter(kills)
+    last = [0]
+    def ok():
+        try:
+            last[0] = next(k)
+        except StopIteration:
+            pass
+        return last[0]
+    monkeypatch.setattr(stick, "meminfo", lambda path=None: {"MemAvailable": int(avail_gib * stick.GIB),
+                                                              "MemTotal": int(total_gib * stick.GIB)})
+    monkeypatch.setattr(stick, "oom_kills", lambda path=None: ok())
+    cg = tmp_path / "cgroup"; cg.mkdir()
+    return cg
+
+
+def test_step_memory_sets_a_limit_for_processes_and_containers(tmp_path, monkeypatch):
+    root = _mem(tmp_path, monkeypatch, avail_gib=6.0, kills=(3, 3))
+    with stick.StepMemory("blender", None, root) as m:
+        lim = int((root / "rigsim-step" / "memory.max").read_text())
+        assert lim == int(6.0 * stick.GIB) - stick.MEM_RESERVE
+        assert stick.docker_mem() == ["--memory", str(lim), "--memory-swap", str(lim)]
+        assert stick.os.environ["RIGSIM_MEMORY_BYTES"] == str(lim)
+        m.join(4242)
+        assert (root / "rigsim-step" / "cgroup.procs").read_text() == "4242"
+    assert stick.docker_mem() == [] and "RIGSIM_MEMORY_BYTES" not in stick.os.environ
+    assert m.record() == dict(available_gib=6.0, limit_gib=round(lim / stick.GIB, 2), cgroup=True)
+
+
+def test_out_of_memory_is_recorded_and_counts_as_done(tmp_path, monkeypatch):
+    root = _mem(tmp_path, monkeypatch, kills=(5, 6))
+    with stick.StepMemory("blender", None, root) as m:
+        pass
+    entry = dict(rc=1)
+    stick.record_memory(entry, m, None)
+    assert entry["memory"]["oom_kills"] == 1 and "ended 1 process(es)" in entry["out_of_memory"]
+    assert stick.step_ok(entry) and not stick.step_ok(dict(rc=1)) and stick.step_ok(dict(skipped="x"))
+
+
+def test_no_cgroup_v2_still_runs(tmp_path, monkeypatch):
+    _mem(tmp_path, monkeypatch)
+    with stick.StepMemory("mlc", None, tmp_path / "missing" / "root") as m:
+        assert not m.cgroup and stick.docker_mem()                 # containers still limited
+    assert m.record()["cgroup"] is False
+
+
+def test_models_that_do_not_fit_in_ram_are_skipped(tmp_path, monkeypatch):
+    _mem(tmp_path, monkeypatch, avail_gib=5.0)
+    small, big = tmp_path / "tiny.gguf", tmp_path / "big.gguf"
+    with open(small, "wb") as f: f.truncate(600 << 20)
+    with open(big, "wb") as f: f.truncate(3800 << 20)
+    assert stick.model_fits(small) == "" and "needs about 6.3 GiB of RAM, 5.0 GiB available" == stick.model_fits(big)
+    summary = """GPU0:
+\tapiVersion = 1.3
+\tdeviceType = PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
+\tdeviceName = NVIDIA GeForce RTX 3080
+GPU1:
+\tdeviceType = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+\tdeviceName = AMD Radeon Vega 8 Graphics (RADV RAVEN)
+GPU2:
+\tdeviceType = PHYSICAL_DEVICE_TYPE_CPU
+\tdeviceName = llvmpipe (LLVM 19.1.1, 256 bits)
+"""
+    assert stick.vulkan_integrated(summary) == {1}
+
+
+def test_mlc_gets_a_small_buffer_on_small_machines(tmp_path, monkeypatch):
+    _mem(tmp_path, monkeypatch, total_gib=7.3)
+    data = tmp_path / "data"; mlc = data / "seed" / "tools" / "mlc" / "mlc"; mlc.parent.mkdir(parents=True); mlc.write_text("")
+    seen = []
+    monkeypatch.setattr(stick, "sh", lambda cmd, timeout=120: seen.append(cmd) or (0, ""))
+    monkeypatch.setattr(stick, "secure_boot", lambda: False)
+    r = stick.run_mlc(data, tmp_path / "run", tmp_path / "log")
+    assert r["buffer_kib"] == 200 * 1024 and all("-b204800" in c for c in seen if str(mlc) in c[0])
+    seen.clear(); _mem(tmp_path / "x", monkeypatch, total_gib=31.1) if (tmp_path / "x").mkdir() is None else None
+    r = stick.run_mlc(data, tmp_path / "run", tmp_path / "log")
+    assert "buffer_kib" not in r and not any("-b204800" in c for c in seen)
+
+
+def test_every_step_and_container_is_under_the_limit():
+    src = (HERE / "payload" / "stick.py").read_text()
+    main = src.split("def main()", 1)[1]
+    assert main.count("with StepMemory(") == 2 and main.count("record_memory(") == 2
+    assert "ok = all(step_ok(v) for v in run[\"questions\"].values())" in main
+    assert src.count("*docker_mem()") == 5 and "StepMemory.current.join(p.pid)" in src and "StepMemory.current.join(pr.pid)" in src
+    h = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
+    assert 'cmd += ["--memory", lim, "--memory-swap", lim]' in h
