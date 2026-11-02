@@ -1,0 +1,64 @@
+13:18:10  run 20261101T131810Z-154a9c293c99-c72d
+13:18:13  cpu 13th Gen Intel(R) Core(TM) i7-13700K | board Gigabyte Technology Co., Ltd. Z790 AORUS ELITE AX | 31.1 GiB | gpus ['NVIDIA GeForce RTX 3080, 10240 MiB, 00000000:01:00.0', 'Intel Corporation Raptor Lake-S GT1 [UHD Graphics 770] [8086:a780] (rev 04)']
+13:18:13  stick check: pass
+13:18:17  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 2.86, 'mib_per_s': 358.0}
+13:18:18  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+13:18:19  screens: [('card2', 'DP-2', '1920x1200'), ('card2', 'DP-4', '1920x1200')]
+13:18:19  screens off while measuring: ['fb0']
+13:18:19  cpu-mem-latency: start
+13:21:10  cpu-mem-latency: rc=0 {'done': 9} (171 s)
+13:21:10  cpu-mem-ladder: start
+13:24:39  cpu-mem-ladder: rc=0 {'done': 48} (208 s)
+13:24:39  cpu-gemm: start
+13:26:40  cpu-gemm: rc=0 {'done': 24} (121 s)
+13:26:40  cpu-gemm-ladder: start
+13:27:52  cpu-gemm-ladder: rc=0 {'done': 9} (72 s)
+13:27:52  cpu-power-time: start
+13:31:11  cpu-power-time: rc=0 {'done': 1} (199 s)
+13:31:11  pcie-copy: start
+13:31:51  pcie-copy: rc=0 {'done': 12} (40 s)
+13:31:51  gpu-p2p: skipped (needs 2 NVIDIA cards, this machine has 1)
+13:31:51  gpu-vram: start
+13:32:08  gpu-vram: rc=0 {'done': 6} (17 s)
+13:32:08  gpu-gemm: start
+13:32:53  gpu-gemm: rc=0 {'done': 21} (45 s)
+13:32:53  gpu-launch: start
+13:33:05  gpu-launch: rc=0 {'done': 3} (12 s)
+13:33:10  mlc idle_latency: rc=0 (5 s)
+13:35:34  mlc max_bandwidth: rc=0 (144 s)
+13:37:00  mlc loaded_latency: rc=0 (86 s)
+13:37:01  mlc latency_matrix: rc=0 (1 s)
+13:37:09  mlc bandwidth_matrix: rc=0 (8 s)
+13:37:10  opencl p0d0: Intel(R) UHD Graphics 770 (Intel(R) OpenCL Graphics)
+13:38:28  opencl p0d0: rc=0 (79 s)
+13:38:28  opencl p1d0: NVIDIA GeForce RTX 3080 (NVIDIA CUDA)
+13:38:49  opencl p1d0: rc=0 (21 s)
+13:39:25  vkprobe: 31 runs on 2 device(s)
+13:39:25  rocm: skipped (no AMD GPU)
+13:47:01  oneapi dev0 llama-tinyllama-1.1b-q4_0: oneDNN failed, without oneDNN rc=0
+13:49:26  oneapi dev0 llama-llama-2-7b-q4_0: oneDNN failed, without oneDNN rc=0
+14:31:01  test-backend-ops dev0: 11/12 ops
+14:31:01  oneapi device 0 (Intel(R) UHD Graphics 770): 92 runs
+14:31:04  llama cuda-gpu0-tinyllama-1.1b-q4_0: rc=0 (2 s)
+14:31:08  llama cuda-gpu0-llama-2-7b-q4_0: rc=0 (4 s)
+14:40:03  test-backend-ops cuda-gpu0: 12/12 ops
+14:40:06  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (2 s)
+14:40:11  llama vulkan-dev0-llama-2-7b-q4_0: rc=0 (5 s)
+14:49:38  test-backend-ops vulkan-dev0: 12/12 ops
+14:50:07  llama vulkan-dev1-tinyllama-1.1b-q4_0: rc=0 (29 s)
+14:52:34  llama vulkan-dev1-llama-2-7b-q4_0: rc=0 (147 s)
+15:27:37  test-backend-ops vulkan-dev1: 12/12 ops
+15:38:58  test-backend-ops cpu: 12/12 ops
+15:39:06  llama cpu-tinyllama-1.1b-q4_0: rc=0 (8 s)
+15:39:47  blender cpu-monster: rc=0 (41 s)
+15:40:20  blender cpu-junkshop: rc=0 (34 s)
+15:40:52  blender cpu-classroom: rc=0 (32 s)
+15:41:25  blender optix-monster: rc=0 (33 s)
+15:41:59  blender optix-junkshop: rc=0 (34 s)
+15:42:31  blender optix-classroom: rc=0 (32 s)
+15:43:03  blender cuda-monster: rc=0 (32 s)
+15:43:37  blender cuda-junkshop: rc=0 (34 s)
+15:44:10  blender cuda-classroom: rc=0 (33 s)
+15:44:10  blender oneapi-monster: rc=1 (1 s)
+15:44:10  blender ONEAPI: not available here (No matching device of type OneAPI found)
+15:44:11  finished: done with failures

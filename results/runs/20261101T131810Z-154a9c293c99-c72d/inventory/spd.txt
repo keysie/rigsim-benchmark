@@ -1,0 +1,3 @@
+
+--- stderr ---
+No EEPROM found, the kernel probably does not support your hardware.

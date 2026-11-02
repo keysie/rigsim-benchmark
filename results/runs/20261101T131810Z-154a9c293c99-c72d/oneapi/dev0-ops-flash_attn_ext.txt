@@ -1,0 +1,2 @@
+/rigsim/test-backend-ops perf -o FLASH_ATTN_EXT -p hsk=(64|128|256),.*kv=(4096|8192|16384|32768),.*type_K=(f16|q8_0), -b SYCL0 --output sql
+TimeoutExpired: Command '['docker', 'exec', 'rigsim-oneapi-0', '/rigsim/run.sh', '/rigsim/test-backend-ops', 'perf', '-o', 'FLASH_ATTN_EXT', '-p', 'hsk=(64|128|256),.*kv=(4096|8192|16384|32768),.*type_K=(f16|q8_0),', '-b', 'SYCL0', '--output', 'sql']' timed out after 1800 seconds
