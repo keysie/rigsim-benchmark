@@ -1,0 +1,1 @@
+{"mode":"gemm","device":"AMD Radeon Vega 8 Graphics (RADV RAVEN)","device_type":"integrated","vendor_id":4098,"device_id":5597,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"0000:03:00.0","uuid":"00000000030000000000000000000000","type":"f16","m":512,"n":4096,"k":4096,"unsupported":true,"why":"no VK_KHR_cooperative_matrix"}

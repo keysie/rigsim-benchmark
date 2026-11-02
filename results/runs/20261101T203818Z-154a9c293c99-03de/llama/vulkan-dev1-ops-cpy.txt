@@ -1,0 +1,38 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o CPY -b Vulkan0 --output sql
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:32Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=f16,ne_src=[512,3072,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '116.100064', '0.000000', '75.716339', '9216', '10923', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:33Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '2850.649123', '0.000000', '21.946200', '65536', '513', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:35Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[3072,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '1057.719619', '0.000000', '22.166629', '24576', '1366', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:37Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=q4_0,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '2877.347439', '0.000000', '12.400077', '37376', '898', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:41Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=q4_0,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '3563.760579', '0.000000', '10.003316', '37376', '898', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:45Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '100471.318182', '0.000000', '15.268944', '1572864', '22', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:49Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '52162.604651', '0.000000', '14.545304', '786432', '43', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:53Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '50785.372093', '0.000000', '14.939753', '786432', '43', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:23:57Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=bf16,type_dst=bf16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0', 'perf', '1', '1', '', '50788.488372', '0.000000', '14.938837', '786432', '43', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:24:01Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '100484.454545', '0.000000', '15.266948', '1572864', '22', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:24:04Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f32,type_dst=f32,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '50203.681818', '0.000000', '30.557339', '1572864', '22', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:24:08Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '52133.441860', '0.000000', '14.553440', '786432', '43', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:24:13Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '50785.790698', '0.000000', '14.939630', '786432', '43', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T22:24:17Z', '620d2225c', 'Vulkan0', 'CPY', 'type_src=bf16,type_dst=bf16,ne_src=[768,1024,256,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=1', 'perf', '1', '1', '', '50786.209302', '0.000000', '14.939507', '786432', '43', '', '');
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Intel(R) Graphics (RPL-S) (Intel open-source Mesa driver) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 32 | shared memory: 65536 | int dot: 0 | matrix cores: none

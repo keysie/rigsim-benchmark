@@ -1,0 +1,752 @@
+{
+ "devices": {
+  "0000:00:00.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa703",
+   "class_": "0x060000",
+   "subsystem": "0x1458:0x5000",
+   "name": "Device a703",
+   "vendor_name": "Intel Corporation",
+   "kind": "Host bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:00.0"
+   ]
+  },
+  "0000:00:01.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa70d",
+   "class_": "0x060400",
+   "subsystem": "0x1458:0x5000",
+   "name": "Device a70d",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "32.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:01.0"
+   ]
+  },
+  "0000:00:02.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa780",
+   "class_": "0x038000",
+   "subsystem": "0x1458:0xd000",
+   "name": "Raptor Lake-S GT1 [UHD Graphics 770]",
+   "vendor_name": "Intel Corporation",
+   "kind": "Display controller",
+   "port_type": "root complex integrated endpoint",
+   "driver": "i915",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:02.0"
+   ]
+  },
+  "0000:00:06.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0xa74d",
+   "class_": "0x060400",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake PCIe 4.0 Graphics Port",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:06.0"
+   ]
+  },
+  "0000:00:14.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a60",
+   "class_": "0x0c0330",
+   "subsystem": "0x1458:0x5007",
+   "name": "Raptor Lake USB 3.2 Gen 2x2 (20 Gb/s) XHCI Host Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "USB controller",
+   "port_type": "",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.0"
+   ]
+  },
+  "0000:00:14.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a27",
+   "class_": "0x050000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake-S PCH Shared SRAM",
+   "vendor_name": "Intel Corporation",
+   "kind": "RAM memory",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:14.2"
+   ]
+  },
+  "0000:00:14.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a70",
+   "class_": "0x028000",
+   "subsystem": "0x8086:0x0094",
+   "name": "Raptor Lake-S PCH CNVi WiFi",
+   "vendor_name": "Intel Corporation",
+   "kind": "Network controller",
+   "port_type": "root complex integrated endpoint",
+   "driver": "iwlwifi",
+   "numa_node": "-1",
+   "link": {
+    "speed": "Unknown",
+    "width": "0",
+    "max_speed": "Unknown",
+    "max_width": "255"
+   },
+   "path": [
+    "0000:00:14.3"
+   ]
+  },
+  "0000:00:15.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a4c",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake Serial IO I2C Host Controller #0",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-lpss",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:15.0"
+   ]
+  },
+  "0000:00:15.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a4d",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake Serial IO I2C Host Controller #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-lpss",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:15.1"
+   ]
+  },
+  "0000:00:15.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a4e",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake Serial IO I2C Host Controller #2",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-lpss",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:15.2"
+   ]
+  },
+  "0000:00:15.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a4f",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Device 7a4f",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-lpss",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:15.3"
+   ]
+  },
+  "0000:00:16.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a68",
+   "class_": "0x078000",
+   "subsystem": "0x1458:0x1c3a",
+   "name": "Raptor Lake CSME HECI #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "Communication controller",
+   "port_type": "",
+   "driver": "mei_me",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:16.0"
+   ]
+  },
+  "0000:00:17.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a62",
+   "class_": "0x010601",
+   "subsystem": "0x1458:0xb005",
+   "name": "Raptor Lake SATA AHCI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "SATA controller",
+   "port_type": "",
+   "driver": "ahci",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:17.0"
+   ]
+  },
+  "0000:00:19.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a7c",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Device 7a7c",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-lpss",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:19.0"
+   ]
+  },
+  "0000:00:19.1": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a7d",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Device 7a7d",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-lpss",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:19.1"
+   ]
+  },
+  "0000:00:1a.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a48",
+   "class_": "0x060400",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake PCI Express Root Port #25",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1a.0"
+   ]
+  },
+  "0000:00:1c.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a38",
+   "class_": "0x060400",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake PCI Express Root Port #1",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "2.5 GT/s PCIe",
+    "width": "0",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.0"
+   ]
+  },
+  "0000:00:1c.2": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a3a",
+   "class_": "0x060400",
+   "subsystem": "0x1458:0x5001",
+   "name": "Device 7a3a",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.2"
+   ]
+  },
+  "0000:00:1c.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a3c",
+   "class_": "0x060400",
+   "subsystem": "0x1458:0x5001",
+   "name": "Device 7a3c",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1c.4"
+   ]
+  },
+  "0000:00:1d.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a30",
+   "class_": "0x060400",
+   "subsystem": "0x1458:0x5001",
+   "name": "Raptor Lake PCI Express Root Port #9",
+   "vendor_name": "Intel Corporation",
+   "kind": "PCI bridge",
+   "port_type": "root port",
+   "driver": "pcieport",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1d.0"
+   ]
+  },
+  "0000:00:1f.0": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a04",
+   "class_": "0x060100",
+   "subsystem": "0x1458:0xb0a1",
+   "name": "Raptor Lake LPC/eSPI Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "ISA bridge",
+   "port_type": "",
+   "driver": "",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.0"
+   ]
+  },
+  "0000:00:1f.3": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a50",
+   "class_": "0x040300",
+   "subsystem": "0x1458:0xa194",
+   "name": "Raptor Lake High Definition Audio Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "Audio device",
+   "port_type": "",
+   "driver": "snd_hda_intel",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.3"
+   ]
+  },
+  "0000:00:1f.4": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a23",
+   "class_": "0x0c0500",
+   "subsystem": "0x1458:0x5001",
+   "name": "Raptor Lake-S PCH SMBus Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "SMBus",
+   "port_type": "",
+   "driver": "i801_smbus",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.4"
+   ]
+  },
+  "0000:00:1f.5": {
+   "parent": "",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x8086",
+   "device": "0x7a24",
+   "class_": "0x0c8000",
+   "subsystem": "0x0000:0x0000",
+   "name": "Raptor Lake SPI (flash) Controller",
+   "vendor_name": "Intel Corporation",
+   "kind": "Serial bus controller",
+   "port_type": "",
+   "driver": "intel-spi",
+   "numa_node": "-1",
+   "link": {
+    "speed": null,
+    "width": null,
+    "max_speed": null,
+    "max_width": null
+   },
+   "path": [
+    "0000:00:1f.5"
+   ]
+  },
+  "0000:01:00.0": {
+   "parent": "0000:00:01.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x10de",
+   "device": "0x2216",
+   "class_": "0x030000",
+   "subsystem": "0x174b:0xa612",
+   "name": "GA102 [GeForce RTX 3080 Lite Hash Rate]",
+   "vendor_name": "NVIDIA Corporation",
+   "kind": "VGA compatible controller",
+   "port_type": "legacy endpoint",
+   "driver": "nvidia",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:01.0",
+    "0000:01:00.0"
+   ]
+  },
+  "0000:01:00.1": {
+   "parent": "0000:00:01.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x10de",
+   "device": "0x1aef",
+   "class_": "0x040300",
+   "subsystem": "0x174b:0xa612",
+   "name": "GA102 High Definition Audio Controller",
+   "vendor_name": "NVIDIA Corporation",
+   "kind": "Audio device",
+   "port_type": "endpoint",
+   "driver": "snd_hda_intel",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "16",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "16"
+   },
+   "path": [
+    "0000:00:01.0",
+    "0000:01:00.1"
+   ]
+  },
+  "0000:02:00.0": {
+   "parent": "0000:00:06.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x144d",
+   "device": "0xa80a",
+   "class_": "0x010802",
+   "subsystem": "0x144d:0xa801",
+   "name": "NVMe SSD Controller PM9A1/PM9A3/980PRO",
+   "vendor_name": "Samsung Electronics Co Ltd",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:06.0",
+    "0000:02:00.0"
+   ]
+  },
+  "0000:03:00.0": {
+   "parent": "0000:00:1a.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x144d",
+   "device": "0xa80a",
+   "class_": "0x010802",
+   "subsystem": "0x144d:0xa801",
+   "name": "NVMe SSD Controller PM9A1/PM9A3/980PRO",
+   "vendor_name": "Samsung Electronics Co Ltd",
+   "kind": "Non-Volatile memory controller",
+   "port_type": "endpoint",
+   "driver": "nvme",
+   "numa_node": "-1",
+   "link": {
+    "speed": "16.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "16.0 GT/s PCIe",
+    "max_width": "4"
+   },
+   "path": [
+    "0000:00:1a.0",
+    "0000:03:00.0"
+   ]
+  },
+  "0000:05:00.0": {
+   "parent": "0000:00:1c.2",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x10ec",
+   "device": "0x8125",
+   "class_": "0x020000",
+   "subsystem": "0x1458:0xe000",
+   "name": "RTL8125 2.5GbE Controller",
+   "vendor_name": "Realtek Semiconductor Co., Ltd.",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "r8169",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1c.2",
+    "0000:05:00.0"
+   ]
+  },
+  "0000:06:00.0": {
+   "parent": "0000:00:1c.4",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x14e4",
+   "device": "0x16d7",
+   "class_": "0x020000",
+   "subsystem": "0x14e4:0x4141",
+   "name": "BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller",
+   "vendor_name": "Broadcom Inc. and subsidiaries",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "bnxt_en",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:1c.4",
+    "0000:06:00.0"
+   ]
+  },
+  "0000:06:00.1": {
+   "parent": "0000:00:1c.4",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x14e4",
+   "device": "0x16d7",
+   "class_": "0x020000",
+   "subsystem": "0x14e4:0x4141",
+   "name": "BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller",
+   "vendor_name": "Broadcom Inc. and subsidiaries",
+   "kind": "Ethernet controller",
+   "port_type": "endpoint",
+   "driver": "bnxt_en",
+   "numa_node": "-1",
+   "link": {
+    "speed": "8.0 GT/s PCIe",
+    "width": "4",
+    "max_speed": "8.0 GT/s PCIe",
+    "max_width": "8"
+   },
+   "path": [
+    "0000:00:1c.4",
+    "0000:06:00.1"
+   ]
+  },
+  "0000:07:00.0": {
+   "parent": "0000:00:1d.0",
+   "host_bridge": "pci0000:00",
+   "vendor": "0x1106",
+   "device": "0x3483",
+   "class_": "0x0c0330",
+   "subsystem": "0x1106:0x3483",
+   "name": "VL805/806 xHCI USB 3.0 Controller",
+   "vendor_name": "VIA Technologies, Inc.",
+   "kind": "USB controller",
+   "port_type": "endpoint",
+   "driver": "xhci_hcd",
+   "numa_node": "-1",
+   "link": {
+    "speed": "5.0 GT/s PCIe",
+    "width": "1",
+    "max_speed": "5.0 GT/s PCIe",
+    "max_width": "1"
+   },
+   "path": [
+    "0000:00:1d.0",
+    "0000:07:00.0"
+   ]
+  }
+ },
+ "gpus": [
+  "0000:00:02.0",
+  "0000:01:00.0"
+ ]
+}

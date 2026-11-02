@@ -1,0 +1,188 @@
+path: ['/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/benchmark-scripts/2881a9f160a24ccd4282e43b861bd727e33562a4a230401343b590d10e890272/blender_benchmark_script-3.1.2', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/startup', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python311.zip', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/lib-dynload', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/site-packages', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/freestyle/modules', '/mnt/rigsim/seed/blender/home/.config/blender/4.2/scripts/addons/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core']
+Time limit is set to 30.0
+Blender 4.2.0 (hash a51f293548ad built 2024-07-16 06:27:02)
+Read blend: "/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/8ff812a02f720433de1403dab447be9541eecca71cc919224a7790d017c1b2ce/monster/main.blend"
+Fra:1 Mem:226.41M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | Mesh softbox light
+Fra:1 Mem:226.41M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | Mesh softbox light.002
+Fra:1 Mem:226.41M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | floor
+Fra:1 Mem:226.42M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | plinth
+Fra:1 Mem:226.42M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | sheet
+Fra:1 Mem:226.42M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | sleeve left
+Fra:1 Mem:226.81M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | hand left
+Fra:1 Mem:226.83M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | nail.002
+Fra:1 Mem:227.01M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | nail.003
+Fra:1 Mem:227.82M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | bat
+Fra:1 Mem:228.07M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | straps.001
+Fra:1 Mem:228.53M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | straps.002
+Fra:1 Mem:228.90M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | base
+Fra:1 Mem:229.71M (Peak 230.99M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | monster
+Fra:1 Mem:231.80M (Peak 231.80M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | board feet
+Fra:1 Mem:231.79M (Peak 231.80M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.003
+Fra:1 Mem:246.15M (Peak 246.15M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.001
+Fra:1 Mem:253.41M (Peak 253.41M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.004
+Fra:1 Mem:275.58M (Peak 275.58M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.002
+Fra:1 Mem:284.62M (Peak 284.62M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | eye upper
+Fra:1 Mem:291.22M (Peak 291.22M) | Time:00:00.26 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | teeth
+Fra:1 Mem:433.24M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Initializing
+Fra:1 Mem:350.73M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Metal038_2K_Color.jpg
+Fra:1 Mem:350.73M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Viyar Ламинат Kaindl K4381 RE Дуб Фреско Лод
+Fra:1 Mem:354.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Wood063_2K_Normal.jpg
+Fra:1 Mem:354.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Wood063_2K_Roughness.jpg
+Fra:1 Mem:354.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Wood063_2K_Color.jpg
+Fra:1 Mem:354.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Old white plastic_Displacement.jpg
+Fra:1 Mem:354.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Old white plastic_BaseColor.jpg
+Fra:1 Mem:358.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Fur 01_height.jpg
+Fra:1 Mem:358.70M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Fur 01_normal.jpg
+Fra:1 Mem:358.71M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Fabric036_2K_Roughness.png
+Fra:1 Mem:358.71M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Metal038_2K_Roughness.jpg
+Fra:1 Mem:358.71M (Peak 483.44M) | Time:00:00.34 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Metal038_2K_Metalness.jpg
+Fra:1 Mem:693.75M (Peak 858.76M) | Time:00:00.60 | Mem:347.97M, Peak:347.97M | Scene, View Layer | Waiting for render to start
+Fra:1 Mem:693.75M (Peak 858.76M) | Time:00:00.60 | Mem:347.97M, Peak:347.97M | Scene, View Layer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:693.75M (Peak 858.76M) | Time:00:00.63 | Mem:347.99M, Peak:347.99M | Scene, View Layer | Updating Scene
+Fra:1 Mem:693.75M (Peak 858.76M) | Time:00:00.63 | Mem:347.99M, Peak:347.99M | Scene, View Layer | Updating Shaders
+Fra:1 Mem:693.89M (Peak 858.76M) | Time:00:00.63 | Mem:348.04M, Peak:348.04M | Scene, View Layer | Updating Procedurals
+Fra:1 Mem:693.89M (Peak 858.76M) | Time:00:00.63 | Mem:348.04M, Peak:348.04M | Scene, View Layer | Updating Background
+Fra:1 Mem:693.89M (Peak 858.76M) | Time:00:00.63 | Mem:348.04M, Peak:348.04M | Scene, View Layer | Updating Camera
+Fra:1 Mem:693.89M (Peak 858.76M) | Time:00:00.63 | Mem:348.04M, Peak:348.04M | Scene, View Layer | Updating Meshes Flags
+Fra:1 Mem:693.89M (Peak 858.76M) | Time:00:00.63 | Mem:348.04M, Peak:348.04M | Scene, View Layer | Updating Objects
+Fra:1 Mem:693.89M (Peak 858.76M) | Time:00:00.63 | Mem:348.04M, Peak:348.04M | Scene, View Layer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:693.90M (Peak 858.76M) | Time:00:00.63 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:693.90M (Peak 858.76M) | Time:00:00.64 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Particle Systems
+Fra:1 Mem:693.90M (Peak 858.76M) | Time:00:00.64 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:693.90M (Peak 858.76M) | Time:00:00.64 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Meshes
+Fra:1 Mem:719.25M (Peak 858.76M) | Time:00:00.65 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Displacement Images
+Fra:1 Mem:719.25M (Peak 858.76M) | Time:00:00.65 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Mesh | Computing normals
+Fra:1 Mem:775.72M (Peak 858.76M) | Time:00:00.66 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:775.72M (Peak 858.76M) | Time:00:00.66 | Mem:404.53M, Peak:404.53M | Scene, View Layer | Updating Mesh | Computing attributes
+Fra:1 Mem:860.25M (Peak 860.25M) | Time:00:00.68 | Mem:404.53M, Peak:404.53M | Scene, View Layer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:00.68 | Mem:489.05M, Peak:489.05M | Scene, View Layer | Updating Mesh | Computing Displacement mesh.006
+Fra:1 Mem:719.25M (Peak 860.25M) | Time:00:00.68 | Mem:348.05M, Peak:489.52M | Scene, View Layer | Updating Mesh | Computing attributes
+Fra:1 Mem:803.77M (Peak 860.25M) | Time:00:00.70 | Mem:348.06M, Peak:489.52M | Scene, View Layer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH mesh 5/5 | Building BVH
+Fra:1 Mem:808.98M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH mesh.006 1/5 | Building BVH
+Fra:1 Mem:808.98M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH mesh.019 2/5 | Building BVH
+Fra:1 Mem:809.42M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH mesh.020 3/5 | Building BVH
+Fra:1 Mem:809.86M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Building BVH
+Fra:1 Mem:812.58M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH triangles and strands
+Fra:1 Mem:812.61M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH nodes
+Fra:1 Mem:812.74M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH triangles and strands
+Fra:1 Mem:812.78M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH nodes
+Fra:1 Mem:812.56M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH triangles and strands
+Fra:1 Mem:812.59M (Peak 860.25M) | Time:00:00.70 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH nodes
+Fra:1 Mem:813.17M (Peak 860.25M) | Time:00:00.71 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH triangles and strands
+Fra:1 Mem:813.30M (Peak 860.25M) | Time:00:00.71 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH nodes
+Fra:1 Mem:812.23M (Peak 860.25M) | Time:00:00.71 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH triangles and strands
+Fra:1 Mem:812.67M (Peak 860.25M) | Time:00:00.71 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Geometry BVH eye 4/5 | Packing BVH nodes
+Fra:1 Mem:809.22M (Peak 860.25M) | Time:00:00.71 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Scene BVH | Building
+Fra:1 Mem:809.22M (Peak 860.25M) | Time:00:00.71 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Scene BVH | Building BVH
+Fra:1 Mem:893.12M (Peak 893.12M) | Time:00:00.84 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:898.72M (Peak 898.72M) | Time:00:00.84 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:909.72M (Peak 926.59M) | Time:00:00.89 | Mem:432.57M, Peak:489.52M | Scene, View Layer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:909.72M (Peak 926.59M) | Time:00:00.89 | Mem:482.82M, Peak:489.52M | Scene, View Layer | Updating Mesh | Computing normals
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:482.82M, Peak:489.52M | Scene, View Layer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.30M, Peak:539.30M | Scene, View Layer | Updating Objects Flags
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.30M, Peak:539.30M | Scene, View Layer | Updating Primitive Offsets
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.30M, Peak:539.30M | Scene, View Layer | Updating Images
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.30M, Peak:539.30M | Scene, View Layer | Updating Camera Volume
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.30M, Peak:539.30M | Scene, View Layer | Updating Lookup Tables
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.38M, Peak:539.38M | Scene, View Layer | Updating Lights
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.38M, Peak:539.38M | Scene, View Layer | Updating Lights | Computing distribution
+Fra:1 Mem:966.20M (Peak 966.20M) | Time:00:00.90 | Mem:539.38M, Peak:539.38M | Scene, View Layer | Updating Integrator
+Fra:1 Mem:998.20M (Peak 998.20M) | Time:00:00.91 | Mem:571.38M, Peak:571.38M | Scene, View Layer | Updating Film
+Fra:1 Mem:998.20M (Peak 998.20M) | Time:00:00.91 | Mem:571.30M, Peak:571.38M | Scene, View Layer | Updating Lookup Tables
+Fra:1 Mem:998.20M (Peak 998.20M) | Time:00:00.91 | Mem:571.38M, Peak:571.38M | Scene, View Layer | Updating Baking
+Fra:1 Mem:998.20M (Peak 998.20M) | Time:00:00.91 | Mem:571.38M, Peak:571.38M | Scene, View Layer | Updating Device | Writing constant memory
+Fra:1 Mem:1004.59M (Peak 1004.59M) | Time:00:00.91 | Mem:1157.89M, Peak:1157.89M | Scene, View Layer | Sample 0/16777216
+Fra:1 Mem:1024.59M (Peak 1024.59M) | Time:00:00.97 | Remaining:00:29.93 | Mem:1177.89M, Peak:1177.89M | Scene, View Layer | Sample 1/16777216
+Fra:1 Mem:1024.60M (Peak 1024.60M) | Time:00:20.48 | Remaining:00:10.42 | Mem:1177.91M, Peak:1177.91M | Scene, View Layer | Sample 513/16777216
+Fra:1 Mem:1024.61M (Peak 1024.61M) | Time:00:31.00 | Mem:1177.91M, Peak:1177.91M | Scene, View Layer | Sample 787/16777216
+Fra:1 Mem:1044.61M (Peak 1080.61M) | Time:00:31.01 | Mem:1177.91M, Peak:1177.91M | Scene, View Layer | Sample 0/16777216
+Fra:1 Mem:1044.61M (Peak 1080.61M) | Time:00:31.01 | Mem:1177.91M, Peak:1177.91M | Scene, View Layer | Finished
+Benchmark JSON Data: {"timestamp": "2026-11-01T22:40:39.208094+00:00", "blender_version": {"version": "4.2.0", "build_date": "2024-07-16", "build_time": "06:27:02", "build_commit_date": "2024-07-16", "build_commit_time": "06:20", "build_hash": "a51f293548ad"}, "system_info": {"bitness": "64bit", "machine": "x86_64", "system": "Linux", "dist_name": "Ubuntu", "dist_version": "24.04", "devices": [{"name": "13th Gen Intel Core i7-13700K", "type": "CPU"}, {"name": "NVIDIA GeForce RTX 3080", "type": "OPTIX", "is_display": false}], "num_cpu_sockets": 1, "num_cpu_cores": 16, "num_cpu_threads": 24}, "device_info": {"device_type": "CUDA", "compute_devices": [{"name": "NVIDIA GeForce RTX 3080", "type": "CUDA", "is_display": false}], "num_cpu_threads": 24}}
+
+Blender quit
+
+--- stderr ---
+I1101 22:40:08.058141 106442 device.cpp:36] CUEW initialization succeeded
+I1101 22:40:08.058176 106442 device.cpp:38] Found precompiled kernels
+I1101 22:40:08.093815 106442 device.cpp:200] Device has compute preemption or is not used for display.
+I1101 22:40:08.093824 106442 device.cpp:203] Added device "NVIDIA GeForce RTX 3080" with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00".
+I1101 22:40:08.093827 106442 device.cpp:206] Device with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00" supports OpenImageDenoise.
+I1101 22:40:08.094806 106442 device.cpp:63] HIPEW initialization failed: Error opening HIP dynamic library
+I1101 22:40:08.295400 106442 device.cpp:541] Mapped host memory limit set to 29,100,580,864 bytes. (27.10G)
+I1101 22:40:08.356585 106442 device_impl.cpp:63] Using AVX2 CPU kernels.
+I1101 22:40:08.437933 106442 sync.cpp:297] Total time spent synchronizing data: 0.081048
+I1101 22:40:08.443046 106486 colorspace.cpp:140] Colorspace Non-Color is no-op
+I1101 22:40:08.443070 106469 colorspace.cpp:140] Colorspace Non-Color is no-op
+I1101 22:40:08.443928 106474 colorspace.cpp:145] Colorspace sRGB is sRGB
+I1101 22:40:08.705278 106501 film.cpp:592] Effective scene passes:
+I1101 22:40:08.705291 106501 film.cpp:594] - type: combined, name: "Combined", mode: NOISY, is_written: True
+I1101 22:40:08.705297 106501 film.cpp:594] - type: depth, name: "Depth", mode: NOISY, is_written: True
+I1101 22:40:08.705331 106501 scene.cpp:589] Requested features:
+I1101 22:40:08.705333 106501 scene.cpp:590] Use BSDF True
+I1101 22:40:08.705335 106501 scene.cpp:591] Use Emission True
+I1101 22:40:08.705338 106501 scene.cpp:593] Use Volume False
+I1101 22:40:08.705340 106501 scene.cpp:594] Use Bump True
+I1101 22:40:08.705343 106501 scene.cpp:595] Use Voronoi False
+I1101 22:40:08.705344 106501 scene.cpp:597] Use Shader Raytrace False
+I1101 22:40:08.705348 106501 scene.cpp:599] Use MNEE False
+I1101 22:40:08.705348 106501 scene.cpp:600] Use Transparent False
+I1101 22:40:08.705351 106501 scene.cpp:602] Use Denoising False
+I1101 22:40:08.705353 106501 scene.cpp:603] Use Path Tracing True
+I1101 22:40:08.705355 106501 scene.cpp:605] Use Hair False
+I1101 22:40:08.705358 106501 scene.cpp:606] Use Pointclouds False
+I1101 22:40:08.705359 106501 scene.cpp:608] Use Object Motion False
+I1101 22:40:08.705361 106501 scene.cpp:610] Use Baking False
+I1101 22:40:08.705363 106501 scene.cpp:611] Use Subsurface True
+I1101 22:40:08.705365 106501 scene.cpp:612] Use Volume False
+I1101 22:40:08.705367 106501 scene.cpp:613] Use Patch Evaluation False
+I1101 22:40:08.705369 106501 scene.cpp:615] Use Shadow Catcher False
+I1101 22:40:08.705379 106501 device_impl.cpp:260] Testing for pre-compiled kernel /mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core/cycles/lib/kernel_sm_86.cubin.zst.
+I1101 22:40:08.705391 106501 device_impl.cpp:262] Using precompiled kernel.
+I1101 22:40:08.735289 106501 device_impl.cpp:503] Local memory reserved 671,088,640 bytes. (640.00M)
+I1101 22:40:08.735468 106501 svm.cpp:69] Total 32 shaders.
+I1101 22:40:08.735821 106501 svm.cpp:145] Shader manager updated 32 shaders in 0.000353098 seconds.
+I1101 22:40:08.735853 106501 object.cpp:781] Total 36 objects.
+I1101 22:40:08.736995 106501 particles.cpp:106] Total 0 particle systems.
+I1101 22:40:08.737018 106501 geometry.cpp:719] Total 34 meshes.
+I1101 22:40:08.814370 106501 geometry_bvh.cpp:127] Using BVH2 layout.
+I1101 22:40:09.003661 106501 tables.cpp:39] Total 9 lookup tables.
+I1101 22:40:09.003696 106501 light.cpp:1425] Total 10 lights.
+I1101 22:40:09.003700 106501 light.cpp:264] Background MIS has been disabled.
+I1101 22:40:09.003705 106501 light.cpp:1405] Number of lights sent to the device: 9
+I1101 22:40:09.003719 106501 light.cpp:339] Use light distribution with 15 emitters.
+I1101 22:40:09.010259 106501 tables.cpp:39] Total 10 lookup tables.
+I1101 22:40:09.010303 106501 scene.cpp:354] System memory statistics after full device sync:
+  Usage: 847,853,978 (808.58M)
+  Peak: 847,943,066 (808.66M)
+I1101 22:40:09.072835 106501 path_trace.cpp:412] Rendered 1 samples in 0.0601041 seconds (0.0601041 seconds per sample), occupancy: 0.0721228
+I1101 22:40:28.583596 106501 path_trace.cpp:412] Rendered 512 samples in 19.5107 seconds (0.0381069 seconds per sample), occupancy: 0.51543
+I1101 22:40:39.102381 106501 path_trace.cpp:412] Rendered 274 samples in 10.5187 seconds (0.0383896 seconds per sample), occupancy: 0.504387
+I1101 22:40:39.112332 106501 session.cpp:174] Rendering in main loop is done in 30.0998 seconds.
+I1101 22:40:39.112344 106501 session.cpp:175] 
+Full path tracing report
+
+Path tracing on: NVIDIA GeForce RTX 3080 (CUDA) [CUDA_NVIDIA GeForce RTX 3080_0000:01:00]
+
+Render Scheduler Summary
+
+Mode: Headless
+Resolution: 1024x1024
+
+Adaptive sampling:
+  Use: False
+
+Denoiser:
+  Use: False
+
+Time (in seconds):
+                                       Wall              Average
+          Path Tracing            30.089619             0.038233
+        Display Update             0.000002             0.000002
+
+  Total: 30.089621
+
+Rendered 787 samples in 30.099787 seconds
+Average time per sample: 0.038246 seconds
+I1101 22:40:39.112414 106442 session.cpp:479] Total render time: 30.817
+I1101 22:40:39.112425 106442 session.cpp:480] Render time (without synchronization): 30.0999

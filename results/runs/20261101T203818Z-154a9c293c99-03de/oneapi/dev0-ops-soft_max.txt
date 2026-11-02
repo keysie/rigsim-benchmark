@@ -1,0 +1,100 @@
+/rigsim/test-backend-ops perf -o SOFT_MAX -b SYCL0 --output sql
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:27:55Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[4096,4096,5,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '24266.384615', '0.000000', '26.003446', '655360', '52', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:27:56Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[12888,256,5,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '4127.068966', '0.000000', '29.838369', '128880', '261', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:00Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[77,4096,5,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '1670.809838', '0.000000', '7.033370', '12320', '2724', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:03Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[1024,1024,10,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '5832.948780', '0.000000', '13.410074', '81920', '410', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:07Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[77,1024,10,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '840.564978', '0.000000', '6.989552', '6160', '5448', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:10Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[256,256,20,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '690.907537', '0.000000', '14.136646', '10240', '3277', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:11Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[64,64,20,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '44.493875', '0.000000', '13.718491', '640', '24573', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:12Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[77,64,20,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '109.915578', '0.000000', '6.681255', '770', '16382', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:14Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[8192,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '11.845540', '0.000000', '5.152900', '64', '90101', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:15Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[8192,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '18.498875', '0.000000', '13.198399', '256', '57337', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:16Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[8192,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '38.511659', '0.000000', '25.359128', '1024', '32764', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:17Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[16384,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '20.269634', '0.000000', '6.022692', '128', '57337', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:18Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[16384,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '32.242797', '0.000000', '15.144811', '512', '32764', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:19Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[16384,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '67.601392', '0.000000', '28.893550', '2048', '16382', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:20Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[32768,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '37.145648', '0.000000', '6.572924', '256', '32764', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:22Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[32768,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '59.718675', '0.000000', '16.353714', '1024', '24573', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:23Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[32768,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '125.159077', '0.000000', '31.212186', '4096', '8191', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:24Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[65536,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '70.768954', '0.000000', '6.900075', '512', '16382', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:26Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[65536,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '119.713649', '0.000000', '16.315969', '2048', '16382', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:27Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[65536,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '250.520137', '0.000000', '31.188924', '8192', '4097', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:28Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[131072,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '137.880112', '0.000000', '7.083125', '1024', '8191', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:30Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[131072,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '262.307899', '0.000000', '14.892759', '4096', '8191', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:32Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[131072,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '557.738409', '0.000000', '28.021762', '16384', '2049', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:34Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[262144,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '287.502747', '0.000000', '6.793828', '2048', '8191', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:36Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[262144,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '523.386624', '0.000000', '14.928646', '8192', '4097', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:37Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[262144,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '1173.959024', '0.000000', '26.632313', '32768', '1025', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:43Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[524288,1,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '712.585765', '0.000000', '5.482131', '4096', '8191', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:45Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[524288,4,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '1062.840898', '0.000000', '14.704753', '16384', '2049', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-01T21:28:47Z', '620d2225c', 'SYCL0', 'SOFT_MAX', 'type=f32,ne=[524288,16,1,1],mask=0,sinks=0,m_prec=f32,nr23=[1,1],scale=1.000000,max_bias=0.000000,inplace=0', 'perf', '1', '1', '', '2604.709552', '0.000000', '24.018385', '65536', '513', '', '');
+
+--- stderr ---
+Build with Macros:
+  GGML_SYCL_DNNL: yes
+  GGML_SYCL_F16: yes
+  GGML_SYCL_FORCE_MMQ: no
+  GGML_SYCL_GRAPH: yes
+  GGML_SYCL_SUPPORT_LEVEL_ZERO_API: yes
+  GGML_SYCL_SUPPORT_VMM: yes
+Running with Environment Variables:
+  GGML_SYCL_DEBUG: 0
+  GGML_SYCL_DEV_DEBUG: 0
+  GGML_SYCL_DEV2DEV_MEMCPY: 0 (SYCL API)
+  GGML_SYCL_GET_MEM_API: 0 (Level Zero API)
+  GGML_SYCL_ENABLE_DNN: 0
+  GGML_SYCL_FA_ONEDNN: 0
+  GGML_SYCL_FA_ONEDNN_MAX_KV: 0
+  GGML_SYCL_ENABLE_MKL_FA: 1
+  GGML_SYCL_MEMTRACE: 0
+  GGML_SYCL_MEMTRACE_STEP: 64
+  GGML_SYCL_ENABLE_FLASH_ATTN: 1
+  GGML_SYCL_ENABLE_GRAPH: 0
+  GGML_SYCL_ENABLE_OPT: 1
+  GGML_SYCL_XMX_GATHER_TYPES: -1
+  GGML_SYCL_XMX_GATHER_SHAPES: 255
+  GGML_SYCL_DYNAMIC_PRECISION: F16
+  GGML_SYCL_DYNAMIC_REQUIRED_PRECISION: F32
+  GGML_SYCL_ENABLE_VMM: 1
+  GGML_SYCL_ENABLE_FUSION: 1
+  GGML_SYCL_UPLOAD_STAGING_SLOTS: 4
+  GGML_SYCL_ENABLE_ESIMD: 1
+  GGML_SYCL_MMVQ_WIDE: 1
+  GGML_SYCL_PRIORITIZE_DMMV: 0
+  GGML_SYCL_USE_ASYNC_MEM_OP: 1
+  GGML_SYCL_USE_LEVEL_ZERO_API: 1
+  GGML_SYCL_USM_SYSTEM: 0
+  GGML_SYCL_ENABLE_HOST_PINNED_MEM: 1
+  GGML_SYCL_HOST_PINNED_MEM_2G: 0
+  GGML_SYCL_SPARSE_FA: 0
+  GGML_SYCL_SPARSE_FA_DEBUG: 0
+  GGML_SYCL_SPARSE_FA_MARGIN: 256
+Found 1 SYCL devices:
+|  |                   |                                       |       |Max    |        |Max  |Global |                     |
+|  |                   |                                       |       |compute|Max work|sub  |mem    |                     |
+|ID|        Device Type|                                   Name|Version|units  |group   |group|size   |       Driver version|
+|--|-------------------|---------------------------------------|-------|-------|--------|-----|-------|---------------------|
+| 0| [level_zero:gpu:0]|                 Intel UHD Graphics 770|   12.2|     32|     512|   32| 30919M|         1.6.33276+22|
+SYCL Optimization Feature:
+|ID|        Device Type|Reorder|
+|--|-------------------|-------|
+| 0| [level_zero:gpu:0]|      Y|
