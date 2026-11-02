@@ -6,13 +6,13 @@ predict (predictions/README.md). Reads every run format 1.x; a value a run does 
 
 Every GPU value carries its card's PCI address (conditions.pci) where the run recorded it, so two cards of the same
 model stay apart; the device part of a key is the index within that backend (gpuN, devN), not a model name. Cards
-measured after the NVIDIA module switch (nvidia-swap/, format 1.5) continue the CUDA numbering: with two cards in the
+measured after the NVIDIA module switch (nvidia-swap/, format 1.6) continue the CUDA numbering: with two cards in the
 first phase, the first card of the second is gpu2.
 
 Keys are stable (they are how a prediction finds its measurement) and versioned with VERSION; a new kind of value
 gets a new key, an existing key never changes meaning:
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu, and
-                                                                    cuda+<fork> for the Pascal forks (format 1.5)
+                                                                    cuda+<fork> for the Pascal forks (format 1.6)
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
   mlc/idle_latency                                  ns
@@ -25,7 +25,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "3"                  # 2: cpu-mem-ladder values; 3: nvidia-swap cards, cuda+<fork>. Any change bumps it.
+VERSION = "4"                  # 2: cpu-mem-ladder; 3: sycl_onednn condition; 4: nvidia-swap cards, cuda+<fork>.
 LLAMA_FILE = re.compile(r"^(cuda(?:\+[a-z0-9]+)?-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
@@ -122,11 +122,20 @@ def llama(run: Path) -> list[dict]:
     offset, swap_pci = _swap(run)
     if (run / "nvidia-swap").is_dir():
         out += _llama_dir(run / "nvidia-swap", {("cuda", k): v for k, v in swap_pci.items()}, offset, "nvidia-swap/")
+    try:
+        vruns = json.loads((run / "run.json").read_text()).get("questions", {}).get("oneapi", {}).get("runs") or {}
+    except (OSError, ValueError):
+        vruns = {}
     for kind, backend in (("rocm", "hip"), ("oneapi", "sycl")):
         for f in sorted((run / kind).glob("dev*-llama-*.jsonl")):
             m = VENDOR_FILE.match(f.name)
             if m:
-                out += _llama_rows(_json_lines(f), backend, f"dev{m.group(1)}", m.group(2), f"{kind}/{f.name}")
+                rows = _llama_rows(_json_lines(f), backend, f"dev{m.group(1)}", m.group(2), f"{kind}/{f.name}")
+                e = vruns.get(f.name[:-len(".jsonl")]) or {}
+                if kind == "oneapi" and (e.get("retry") or e.get("onednn_off")):
+                    for r in rows:                   # measured without oneDNN after it failed (format 1.5)
+                        r["conditions"]["sycl_onednn"] = False
+                out += rows
     for r in out:
         r["conditions"].setdefault("pci", pci.get((r["conditions"]["backend"], r["conditions"]["device"]), ""))
     return out

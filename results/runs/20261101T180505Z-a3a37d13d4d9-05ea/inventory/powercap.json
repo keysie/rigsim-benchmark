@@ -1,0 +1,9 @@
+{
+ "zones": {
+  "intel-rapl:0": {
+   "name": "package-0",
+   "enabled": "0",
+   "constraints": []
+  }
+ }
+}

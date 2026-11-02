@@ -1,0 +1,86 @@
+{
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=8x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=512x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=2048x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=8x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=512x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=4096x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp32/shape=8192x8192x8192/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=8x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=512x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=2048x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=8x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=512x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=4096x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=fp16/shape=8192x8192x8192/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=8x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=512x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=2048x2048x2048/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=8x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=512x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=4096x4096x4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-gemm/gpu=gpu0/prec=int8/shape=8192x8192x8192/rep=0": {
+  "status": "done",
+  "attempts": 1
+ }
+}

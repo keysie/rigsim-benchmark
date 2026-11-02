@@ -1368,3 +1368,115 @@ def test_old_gpu_builds_and_module_harvest():
     p = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "setup.sh").read_text()
     for a in ("60", "61", "70", "75"):
         assert f"arch=compute_{a},code=sm_{a}" in p
+
+# --- D: what a machine cannot do is skipped with the reason, not recorded as a failure (run d-9c93, 2026-10-31) ----
+def test_plan_skips_questions_that_need_more_cards(tmp_path):
+    for q in stick.PROFILE:
+        src = HERE / "questions" / f"{q}.toml"
+        (tmp_path / f"{q}.toml").write_text(src.read_text())
+    one = {q: why for q, f, why in stick.plan(tmp_path, True, "", 1)}
+    assert one["gpu-p2p"] == "needs 2 NVIDIA cards, this machine has 1"
+    assert one["gpu-vram"] is None and one["cpu-gemm"] is None
+    assert {q: why for q, f, why in stick.plan(tmp_path, True, "", 2)}["gpu-p2p"] is None
+    assert {q: why for q, f, why in stick.plan(tmp_path, True, "")}["gpu-p2p"] is None        # count unknown: run it
+    assert stick.question_min_gpus(HERE / "questions" / "gpu-p2p.toml") == 2
+
+
+def test_vendor_runtime_without_gpu_is_skipped_not_failed():
+    src = (HERE / "payload" / "stick.py").read_text()
+    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
+    assert 'sees no GPU on this machine' in body and 'rc=1, error="the runtime sees no GPU' not in body
+
+
+def test_blender_device_type_not_found_is_unavailable_and_python_errors_fail(tmp_path, monkeypatch):
+    b = tmp_path / "data" / "seed" / "blender"; b.mkdir(parents=True); (b / "BLENDER_VERSION").write_text("4.2.0")
+    script = b / "script" / "main.py"; script.parent.mkdir(); script.write_text("")
+    scenes = {n: tmp_path / f"{n}.blend" for n in ("monster", "junkshop", "classroom")}
+    monkeypatch.setattr(stick, "blender_offline", lambda b, v: (tmp_path / "blender", scenes))
+    monkeypatch.setattr(stick, "benchmark_script", lambda b: script)
+    monkeypatch.setattr(stick, "guessed_blender_types", lambda: ["CPU", "CUDA", "ONEAPI"])
+    monkeypatch.setattr(stick, "vendor_images", lambda d: {})
+    tb = "Traceback (most recent call last):\n  File ...\n"
+    def fake(cmd, **kw):
+        t, scene = cmd[-1], Path(cmd[cmd.index("CYCLES") + 1]).stem
+        class R: returncode, stdout, stderr = 0, "Blender quit\n", ""
+        if t == "ONEAPI":
+            R.stderr = tb + "ValueError: No matching device of type OneAPI found. Options are: []\n"
+        if t == "CUDA" and scene == "junkshop":
+            R.stderr = tb + "RuntimeError: out of memory\n"
+        return R()
+    monkeypatch.setattr(stick, "run_cmd", fake)
+    r = stick.run_blender(tmp_path / "data", tmp_path / "run", tmp_path / "log")
+    assert r["types_unavailable"] == ["ONEAPI"] and not any(k.startswith("oneapi") for k in r["runs"])
+    assert r["runs"]["cuda-junkshop"]["rc"] == 1 and r["runs"]["cuda-monster"]["rc"] == 0 and r["rc"] == 1
+
+
+# --- E: oneAPI steps that fail on oneDNN run once more without it (run d-9c93, manual test 2026-11-01) ----------------
+ONEDNN_OUT = "could not create a memory object\nException caught at file:/tmp/llama/ggml/src/ggml-sycl/ggml-sycl.cpp\n"
+
+
+def test_onednn_retry_only_on_the_onednn_error(tmp_path):
+    calls = []
+    again = lambda env: calls.append(env) or (0, '{"avg_ts": 220.4}')
+    rc, out, retry = stick.onednn_retry(134, ONEDNN_OUT, tmp_path / "x.onednn-failed.txt", again)
+    assert (rc, out) == (0, '{"avg_ts": 220.4}') and calls == [stick.NO_ONEDNN]
+    assert retry == dict(reason="oneDNN: could not create a memory object", env=stick.NO_ONEDNN, first_rc=134,
+                         first_output="x.onednn-failed.txt")
+    assert ONEDNN_ERROR_TEXT in (tmp_path / "x.onednn-failed.txt").read_text()
+    for rc0, out0 in ((134, "Segmentation fault"), (0, ONEDNN_OUT)):            # other aborts, or no failure: as is
+        assert stick.onednn_retry(rc0, out0, tmp_path / "y.txt", again) == (rc0, out0, None)
+    assert len(calls) == 1 and not (tmp_path / "y.txt").exists()
+
+
+ONEDNN_ERROR_TEXT = "could not create a memory object"
+
+
+def test_backend_ops_retry_without_onednn_before_the_other_fallbacks(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "backend_ops_plan", lambda binary, backend: [("ops-mul_mat", ["tbo", "perf", "-o", "MUL_MAT",
+                                                                                          "-b", "SYCL0", "--output", "x"])])
+    seen = []
+    def run(cmd, t, env=None):
+        seen.append((list(cmd), env))
+        return (0, "OK") if env == stick.NO_ONEDNN else (134, ONEDNN_OUT)
+    r = stick.run_backend_ops(run, tmp_path, "dev0", "tbo", "SYCL0", tmp_path / "log", onednn=stick.OneDnnGuard())
+    assert r["dev0-ops-mul_mat"]["rc"] == 0 and r["dev0-ops-mul_mat"]["retry"]["first_rc"] == 134
+    assert [e for _, e in seen] == [None, stick.NO_ONEDNN]                       # no --output / -b fallbacks needed
+    assert (tmp_path / "dev0-ops-mul_mat.onednn-failed.txt").exists() and (tmp_path / "dev0-ops-mul_mat.txt").exists()
+    seen.clear()
+    r = stick.run_backend_ops(run, tmp_path, "dev1", "tbo", "Vulkan0", tmp_path / "log")   # not SYCL: no retry
+    assert "retry" not in r["dev1-ops-mul_mat"] and all(e is None for _, e in seen)
+
+
+def test_run_vendor_passes_the_environment_to_docker_exec():
+    src = (HERE / "payload" / "stick.py").read_text()
+    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
+    assert '"docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,' in body
+    assert "onednn=guard" in body and 'guard = OneDnnGuard() if kind == "oneapi" else None' in body
+
+
+def test_notice_header_shows_the_stick_version(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(stick, "OPT", tmp_path)
+    (tmp_path / "STICK_VERSION").write_text("0.13.7\n")
+    assert stick.stick_version() == "0.13.7"
+    monkeypatch.setattr(stick.sys, "stdin", None)             # no terminal: the notice prints and goes on
+    stick.notice(0)
+    assert "rigsim hardware stick 0.13.7" in capsys.readouterr().out
+    (tmp_path / "STICK_VERSION").unlink()
+    assert stick.stick_version() == "unknown"
+
+
+def test_onednn_stays_off_on_a_device_after_its_first_failure(tmp_path):
+    """Run c72d: FLASH_ATTN_EXT hung for 30 min with oneDNN after MUL_MAT had already failed on it. Once a device
+    failed on oneDNN, its further steps run without it straight away and say since when."""
+    g, seen = stick.OneDnnGuard(), []
+    def attempt(env):
+        seen.append(env)
+        return (0, "ok") if env else (134, ONEDNN_OUT)
+    rc, _, extra = g.run("dev0-llama-tiny", tmp_path / "a.txt", attempt)
+    assert rc == 0 and "retry" in extra and seen == [None, stick.NO_ONEDNN]
+    seen.clear()
+    rc, _, extra = g.run("dev0-ops-flash_attn_ext", tmp_path / "b.txt", attempt)
+    assert rc == 0 and seen == [stick.NO_ONEDNN] and not (tmp_path / "b.txt").exists()
+    assert extra == dict(onednn_off=dict(after="dev0-llama-tiny", env=stick.NO_ONEDNN))
+    g2 = stick.OneDnnGuard()                                                     # a device where oneDNN works
+    assert g2.run("dev1-x", tmp_path / "c.txt", lambda env: (0, "ok")) == (0, "ok", {}) and not g2.off_after

@@ -1,0 +1,23 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o CPY
+Testing 2 devices
+
+Backend 1/2: Vulkan0
+  Device description: AMD Radeon Vega 8 Graphics (RADV RAVEN)
+  Device memory: 3996 MB (3960 MB free)
+
+  CPY(type_src=f32,type_dst=f16,ne_src=[512,3072,1,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0):                    3641 runs -   335.93 us/run -     9216 kB/run - [1;34m  26.17 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0):                     513 runs -  2636.12 us/run -    65536 kB/run - [1;34m  23.73 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[3072,512,2,1],permute_src=[0,2,1,3],permute_dst=[0,0,0,0],_src_transpose=0):                    1366 runs -   984.85 us/run -    24576 kB/run - [1;34m  23.81 GB/s[0m
+  CPY(type_src=f32,type_dst=q4_0,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0):                    898 runs -  1278.70 us/run -    37376 kB/run - [1;34m  27.90 GB/s[0m
+  CPY(type_src=q4_0,type_dst=f32,ne_src=[8192,512,2,1],permute_src=[0,0,0,0],permute_dst=[0,0,0,0],_src_transpose=0):                    898 runs -  5519.96 us/run -    37376 kB/run - [1;34m   6.46 GB/s[0m
+  CPY(type_src=f32,type_dst=f32,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                    22 runs - 70425.45 us/run -  1572864 kB/run - [1;34m  21.78 GB/s[0m
+  CPY(type_src=f16,type_dst=f16,ne_src=[786432,256,1,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                    43 runs - 51717.81 us/run -   786432 kB/run - [1;34m  14.67 GB/s[0m
+  CPY(type_src=f16,type_dst=f16,ne_src=[768,1024,256,1],permute_src=[1,0,2,3],permute_dst=[0,0,0,0],_src_transpose=0):                    43 runs - 47185.40 us/run -   786432 kB/run - [1;34m  16.08 GB/s[0m
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = AMD Radeon Vega 8 Graphics (RADV RAVEN) (radv) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: none
+radv/amdgpu: The CS has been cancelled because the context is lost. This context is innocent.
+ggml_vulkan: device lost on Vulkan0
+terminate called after throwing an instance of 'vk::DeviceLostError'
+  what():  vk::Queue::submit: ErrorDeviceLost

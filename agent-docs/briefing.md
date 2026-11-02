@@ -1,37 +1,30 @@
 # Briefing — rigsim-benchmark (entry point for every new agent)
 
 Hard limit: **16k tokens**. If this file grows beyond ~12k, move detail to `findings.md` or other docs.
-Last revised: 2026-10-31. Facts here are *read from the repository* unless marked otherwise.
+Last revised: 2026-11-01. Facts here are *read from the repository* unless marked otherwise.
 
 ## 0. Now: next steps and recently solved
 
-Keep this section current (instruction 3). Last updated 2026-10-31.
+Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
-
-**Current sprint:** `sprint/old-gpus` (branched off `sprint/stick-data` on 2026-10-31 while that one is being tested
-on hardware) — goal: the stick measures older NVIDIA cards (Pascal P100/P40, Volta, Turing) with CUDA, incl. P100 forks of
-llama.cpp. Status: **built** (stick 0.14.0, run format 1.5), 151 tests pass; not run on hardware yet — needs a
-build (the rootfs is rebuilt: chroot-setup.sh changed) and a machine with a Pascal card next to a newer one.
-`sprint/stick-data` stays open in parallel; its next steps below are unchanged.
+**Current sprint:** `sprint/old-gpus` (main merged in on 2026-11-01) — goal: the stick measures older NVIDIA cards
+(Pascal P100/P40, Volta, Turing) with CUDA next to newer ones, incl. two P100 forks of llama.cpp. Status: **built**
+(stick 0.14.0, run format 1.6), 160 tests pass; not run on hardware. Then `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
-1. **Build a stick from this branch** (0.13.5) — first real build: the self-test flagged only `libcuda.so.1` for llama.cpp
-   CUDA, a false alarm (driver library, fixed); every other part ok. Build again; it must pass (needs the user). If it stops the build, each "missing" line is an issue to fix in this sprint. Then boot it on one
-   machine: Blender delivers a result, the ladder has no failing step.
-2. **UEFI boot without CSM**: fix written (GPT hybrid layout, open-points 5), QEMU boot test green. Build again, flash
-   with [e]rase (old-layout sticks cannot be updated in place) and boot one affected machine without CSM.
-3. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
-   F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 6.
-4. Later in the sprint (proposal): copy `seed/SELFTEST.json` into each run (additive format change) so the data page can
-   show what a stick contained.
+1. User reviews PR #25 and builds a stick from `sprint/old-gpus` (the rootfs is rebuilt: `chroot-setup.sh` changed; the
+   fork builds and the proprietary late-link run for the first time — the seed self-test checks both).
+2. Run on a machine with a Pascal card next to a newer one; check `nvidia_swap` in `run.json`, the `nvidia-swap/`
+   folder, the fork values (`cuda+qr0n`, `cuda+kmic68`) — open-points 1.
+3. Expected noise to handle then: cuBLAS precisions Pascal lacks (tf32, bf16) in gpu-gemm.
+4. Stick plan leftovers (C, F, G, SELFTEST copy, Blender oneAPI) and CPU-question rest — open-points.
 
-**Recently solved** (merged, newest first)
-- 2026-10-31 PR #22 (stick 0.13.4): thread ladder capped to the machine's logical CPU count (`[limits]` in plans).
-- 2026-10-31 PR #19 (stick 0.13.3): Blender's X11/GL client libraries in the system image, `ldd` check at build (warns).
-- 2026-10-31 PR #20: audit of all runs and the CPU-run analysis recorded in agent-docs.
-- 2026-10-31 PR #18: agent-docs added to both repos, outside `docs/`.
-- 2026-10-31 PR #17 (stick 0.13.2): the progress counter's total is fixed from the start.
+**Recently solved** (newest first)
+- 2026-11-01 PR #23 `sprint/stick-data` merged: complete data on the test machine (run ends `done`), oneDNN fallback,
+  skipped-with-reason, UEFI boot without CSM, build-time seed self-test (stick 0.13.8, run format 1.5).
+- 2026-10-31 PR #22 / #19: ladder cap, Blender's libraries.
+- 2026-10-31 PR #20 / #18: agent-docs and the run audit.
+- 2026-10-31 PR #17 (stick 0.13.2): progress counter total.
 
 ## 1. What this project is
 
@@ -41,7 +34,7 @@ Blender), stores results on the stick and powers off. Nothing is written to the 
 Data page: https://keysie.github.io/rigsim-benchmark/ . Like its sibling it is largely AI-written in chat sessions on the
 direction of one person (keysie); the data records everything that can influence a result so users can judge it.
 
-Current state (2026-10-31): stick **0.13.2**, run format **1.4**, **15 run folders from 12 distinct machines** (one machine
+State (2026-11-01): main has stick **0.13.8**, run format **1.5**; this branch stick 0.14.0, format 1.6; **15 run folders from 12 distinct machines** (one machine
 has 4 runs), 13 attribution files, predictions for tags v0.1.0 (2 files), v0.2.0 (7), v0.3.0 (15).
 
 ## 2. The two repositories and how they interact

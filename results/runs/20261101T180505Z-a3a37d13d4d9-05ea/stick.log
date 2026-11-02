@@ -1,0 +1,52 @@
+18:05:05  run 20261101T180505Z-a3a37d13d4d9-05ea
+18:05:09  cpu AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx | board LENOVO LNVNB161216 | 7.3 GiB | gpus ['Advanced Micro Devices, Inc. [AMD/ATI] Raven Ridge [Radeon Vega Series / Radeon Vega Mobile Series] [1002:15dd] (rev c4)', 'Advanced Micro Devices, Inc. [AMD] Raven/Raven2/Renoir Non-Sensor Fusion Hub KMDF driver [1022:15e6]']
+18:05:09  stick check: pass
+18:05:15  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 5.49, 'mib_per_s': 186.5}
+18:05:17  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+18:05:18  screens: [('card1', 'eDP-1', '1920x1080')]
+18:05:18  screens off while measuring: ['fb0']
+18:05:18  cpu-mem-latency: start
+18:10:13  cpu-mem-latency: rc=0 {'done': 9} (295 s)
+18:10:13  cpu-mem-ladder: start
+18:15:20  cpu-mem-ladder: rc=0 {'done': 48} (307 s)
+18:15:20  cpu-gemm: start
+18:19:56  cpu-gemm: rc=0 {'done': 24} (276 s)
+18:19:56  cpu-gemm-ladder: start
+18:21:43  cpu-gemm-ladder: rc=0 {'done': 6} (107 s)
+18:21:43  cpu-power-time: start
+18:25:27  cpu-power-time: rc=0 {'done': 1} (224 s)
+18:25:27  pcie-copy: skipped (no NVIDIA GPU)
+18:25:27  gpu-p2p: skipped (no NVIDIA GPU)
+18:25:27  gpu-vram: skipped (no NVIDIA GPU)
+18:25:27  gpu-gemm: skipped (no NVIDIA GPU)
+18:25:27  gpu-launch: skipped (no NVIDIA GPU)
+18:25:28  mlc idle_latency: rc=22 (1 s)
+18:25:29  mlc max_bandwidth: rc=22 (1 s)
+18:25:30  mlc loaded_latency: rc=22 (1 s)
+18:25:31  mlc latency_matrix: rc=22 (1 s)
+18:25:32  mlc bandwidth_matrix: rc=22 (1 s)
+18:25:33  opencl p0d0: AMD Radeon Vega 8 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-42-generic) (rusticl)
+18:26:40  opencl p0d0: rc=0 (67 s)
+18:27:17  vkprobe: 16 runs on 1 device(s)
+18:27:17  docker: loading vendor-rocm.tar (4618 MiB) onto the stick
+18:27:47  docker: vendor-rocm.tar: 2.1 of 4.5 GiB (46%), 70 MB/s, 30 s
+18:28:17  docker: vendor-rocm.tar: 4.2 of 4.5 GiB (93%), 73 MB/s, 60 s
+18:28:47  docker: vendor-rocm.tar: loading, 90 s
+18:29:17  docker: vendor-rocm.tar: loading, 120 s
+18:29:47  docker: vendor-rocm.tar: loading, 150 s
+18:30:17  docker: vendor-rocm.tar: loading, 180 s
+18:30:47  docker: vendor-rocm.tar: loading, 210 s
+18:31:17  docker: vendor-rocm.tar: loading, 240 s
+18:31:47  docker: vendor-rocm.tar: loading, 270 s
+18:32:17  docker: vendor-rocm.tar: loading, 300 s
+18:32:20  docker: loaded vendor-rocm.tar (4618 MiB in 303 s)
+18:32:33  rocm: skipped (the ROCm runtime sees no GPU on this machine (info.jsonl))
+18:32:33  oneapi: skipped (no INTEL GPU)
+18:32:55  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (21 s)
+18:33:23  llama vulkan-dev0-llama-2-7b-q4_0: rc=-6 (28 s)
+18:52:21  test-backend-ops vulkan-dev0: 10/12 ops
+19:27:22  test-backend-ops cpu: 12/12 ops
+19:28:26  llama cpu-tinyllama-1.1b-q4_0: rc=0 (64 s)
+19:29:07  blender cpu-monster: rc=0 (41 s)
+19:31:22  stopped on request
+19:31:22  finished: stopped

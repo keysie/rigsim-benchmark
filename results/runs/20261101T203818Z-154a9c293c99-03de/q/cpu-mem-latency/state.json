@@ -1,0 +1,38 @@
+{
+ "cpu-mem-latency/mib=64/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=64/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=64/rep=2": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=1024/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=1024/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=1024/rep=2": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=4096/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=4096/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-mem-latency/mib=4096/rep=2": {
+  "status": "done",
+  "attempts": 1
+ }
+}

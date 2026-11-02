@@ -58,6 +58,16 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   added as CI workflow "Boot test". 142 unit tests pass.
 - **2026-10-31** — User report: for an old-layout stick `flash.sh` refused the update but kept offering it. Fixed: the
   blocker is checked before the menu; [u]pdate is offered only when it can work.
+- **2026-10-31** — Branches `sprint/old-gpus` and `ddr-timing-improvements` opened off this one. User's order: this
+  sprint first (its stick is running on hardware), then old GPUs, then DDR (parked).
+- **2026-10-31** — First hardware run of this sprint's stick (0.13.5): self-test build, Blender and ladder cap verified;
+  remaining noise: oneAPI SYCL aborts, Blender oneAPI with no render, gpu-p2p on one GPU. UEFI on an affected machine open.
+- **2026-10-31** — User: UEFI boot verified on an affected machine. D built (stick 0.13.6): skipped-with-reason for
+  gpu-p2p on one card, vendor runtime without GPU, Blender device types not found; traceback behind rc 0 = failure.
+  145 tests pass.
+- **2026-10-31** — E: SYCL logs read; the aborts come from the oneDNN path of llama.cpp's SYCL mul_mat on the UHD 770
+  (inferred from the message). Proposed: retry once without oneDNN, recorded. Waiting for the user.
+- **2026-10-31** — User chose variant 1 (retry without oneDNN, recorded) and asked for the plan before building.
 - **2026-10-31** — New branch `sprint/old-gpus` off `sprint/stick-data` (user): benchmarking older NVIDIA GPUs such as the
   P100, runtime choice of the older software, P100 forks of llama.cpp. Found: CUDA probe built only for sm_80+; runs
   with Pascal/Maxwell cards have no CUDA data; qr0n's and Kmic-68's forks located, fallentree's not. Design proposed in
@@ -68,3 +78,21 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — User cleared building the old-GPU design. Built on `sprint/old-gpus` (stick 0.14.0, format 1.5): module
   switch during the run, sm_60–75 CUDA builds, the qr0n and Kmic-68 forks pinned, validator and measurements for
   `nvidia-swap/` and `cuda+<fork>`. 151 tests pass; existing runs extract unchanged. Not run on hardware.
+- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
+  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
+- **2026-10-31** — Manual SYCL test, first result: one test-backend-ops op without oneDNN ends "2/2 backends passed, OK" on the
+  UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
+- **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
+  all four aborted SYCL steps.
+- **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
+  VERSION 3); 149 tests pass; existing runs extract unchanged. Format / VERSION numbers collide with `sprint/old-gpus`.
+- **2026-11-01** — Side fix (user): the boot header shows the stick version (from /opt/rigsim/STICK_VERSION). No version bump: display only.
+- **2026-11-01** — Second hardware run (0.13.7): D and E work; FLASH_ATTN_EXT timed out with oneDNN (no error text, no
+  retry). Proposed: after the first oneDNN failure on a device, skip oneDNN for its remaining steps.
+- **2026-11-01** — Built the per-device oneDNN switch-off (stick 0.13.8, `OneDnnGuard`); 151 tests pass.
+- **2026-11-01** — Third hardware run (stick 0.13.8, run `…-03de`): `done`, no failures, 2 h 03 min; the oneDNN switch-off
+  ran FLASH_ATTN_EXT without the 30-min hang. User: the sprint is ready to merge. Closed in open-points: UEFI boot
+  (verified), the stick plan's A, B, D, E, ladder grid; C, F, G and the SELFTEST copy stay open.
+- **2026-11-01** — `sprint/stick-data` merged by the user. `main` merged into `sprint/old-gpus`: run format renumbered
+  1.5 → 1.6 (stick-data took 1.5), measurements VERSION 3 → 4; the second NVIDIA phase now plans its questions for the
+  cards it drives (gpu-p2p needs two). Agent-docs merged by hand. 160 tests pass.

@@ -88,7 +88,7 @@ def test_bots_push_with_their_commit_message_check():
 
 
 def test_measurements_from_the_nvidia_switch_and_the_pascal_forks(tmp_path):
-    """Format 1.5: cards measured after the NVIDIA module switch continue the CUDA numbering (gpu1 after one card in the
+    """Format 1.6: cards measured after the NVIDIA module switch continue the CUDA numbering (gpu1 after one card in the
     first phase) with their own PCI address; a fork's values are their own backend on the same card."""
     import importlib.util, json as js
     spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
@@ -110,4 +110,22 @@ def test_measurements_from_the_nvidia_switch_and_the_pascal_forks(tmp_path):
     assert got["llama-bench/cuda/gpu1/m/tg128"] == (40.0, "0000:02:00.0", "nvidia-swap/llama/cuda-gpu0-m.jsonl")
     assert got["llama-bench/cuda+qr0n/gpu1/m/tg128"][:2] == (79.0, "0000:02:00.0")
     assert got["gpu-vram/gpu1/read"][:2] == (550.0, "0000:02:00.0")
-    assert M.VERSION == "3"
+    assert M.VERSION == "4"
+
+def test_sycl_values_measured_without_onednn_are_flagged(tmp_path):
+    """Format 1.5: a oneAPI llama-bench that ran again without oneDNN carries conditions.sycl_onednn = false."""
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"; (run / "oneapi").mkdir(parents=True)
+    line = '{"n_prompt":0,"n_gen":128,"avg_ts":%s}\n'
+    (run / "oneapi" / "dev0-llama-tiny.jsonl").write_text(line % 38.2)
+    (run / "oneapi" / "dev1-llama-tiny.jsonl").write_text(line % 50)
+    (run / "run.json").write_text(js.dumps(dict(questions=dict(oneapi=dict(runs={
+        "dev0-llama-tiny": dict(rc=0, retry=dict(env={"GGML_SYCL_ENABLE_DNN": "0"})), "dev1-llama-tiny": dict(rc=0),
+        "dev0-llama-big": dict(rc=0, onednn_off=dict(after="dev0-llama-tiny"))})))))
+    (run / "oneapi" / "dev0-llama-big.jsonl").write_text(line % 9)
+    got = {m["key"]: m["conditions"] for m in M.extract(run)["measurements"]}
+    assert got["llama-bench/sycl/dev0/tiny/tg128"]["sycl_onednn"] is False
+    assert "sycl_onednn" not in got["llama-bench/sycl/dev1/tiny/tg128"]
+    assert got["llama-bench/sycl/dev0/big/tg128"]["sycl_onednn"] is False

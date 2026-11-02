@@ -1,0 +1,26 @@
+{
+ "gpu-vram/gpu=gpu0/op=read/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-vram/gpu=gpu0/op=read/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-vram/gpu=gpu0/op=write/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-vram/gpu=gpu0/op=write/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-vram/gpu=gpu0/op=copy/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "gpu-vram/gpu=gpu0/op=copy/rep=1": {
+  "status": "done",
+  "attempts": 1
+ }
+}

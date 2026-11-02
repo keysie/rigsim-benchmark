@@ -97,6 +97,44 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - Test: `sudo bash stick/tests/boot/boot-test.sh` (root, QEMU, OVMF, SeaBIOS; ~1–2 min without KVM). QEMU's small
   `bios.bin` has no xHCI support; the test uses the default (256k) SeaBIOS.
 
+## First hardware run of stick 0.13.5 (2026-10-31; 13700K + RTX 3080 + UHD 770, Secure Boot off; measured)
+
+- Build with the seed self-test passed (after the libcuda fix); the run took 2 h 26 min.
+- Blender: CPU, OptiX and CUDA each render all three scenes (~32–41 s per scene) — the first Blender data from the stick.
+  oneAPI (UHD 770): rc 0 after 0–1 s per scene, i.e. no real render; logs not yet checked.
+- `cpu-gemm-ladder`: 9 steps (1 … 24 threads), none failing — the cap works.
+- gpu-p2p on a one-GPU machine: 2 items "failed", question rc 0.
+- oneAPI on the UHD 770: 5 of 92 steps abort with rc 134 (SYCL llama runs, mul_mat, mul_mat_id, flash_attn_ext); the
+  only cause of `done with failures` in this run. 45 min of the run go to oneAPI, ~47 min to Vulkan on the iGPU.
+- Blender's benchmark script raises `ValueError: No matching device of type OneAPI found` when the device type is missing,
+  and Blender still exits 0 ("Blender quit") — rc alone cannot tell a render from a non-render (run `…-9c93`).
+- gpu-p2p on one card: the probe says "d2d needs two visible cards" (rc 1 per item).
+- SYCL aborts on the UHD 770 (run `…-9c93`; read from the logs): llama-bench and test-backend-ops die in
+  `ggml_sycl_op_mul_mat` (ggml-sycl.cpp:3743) with "could not create a memory object" — the text of oneDNN's
+  `dnnl::error` (*inferred*). The single-token mul_mat cases pass (10–108 GFLOPS); it fails at the next batched case,
+  where llama.cpp's SYCL backend hands GEMMs to oneDNN (`GGML_SYCL_ENABLE_DNN=1`, `GGML_SYCL_FA_ONEDNN=1` in its
+  environment dump) — which would also explain mul_mat_id and flash_attn_ext. Hypothesis to test: the same run with
+  `GGML_SYCL_ENABLE_DNN=0` (and `GGML_SYCL_FA_ONEDNN=0`). Not "unsupported hardware": a backend path failing.
+- Manual test on the UHD 770 (2026-11-01, user, seeded oneAPI image): llama-bench TinyLlama Q4_0 aborts with oneDNN on,
+  runs with `GGML_SYCL_ENABLE_DNN=0 GGML_SYCL_FA_ONEDNN=0`: pp512 220.4 tok/s, tg128 38.2 tok/s (3 repeats, spread
+  < 0.2 %). Hypothesis confirmed for llama-bench; test-backend-ops MUL_MAT / FLASH_ATTN_EXT without oneDNN still open
+  (the manual command lacked the stick's type filter, so MUL_MAT ran the full set and was interrupted).
+  MUL_MAT (with the stick's type filter) without oneDNN: "2/2 backends passed, OK" (2026-11-01). FLASH_ATTN_EXT (stick filter) and MUL_MAT_ID
+  without oneDNN: both "OK" too. **Hypothesis confirmed for all four aborted steps** (measured by the user).
+
+## Second hardware run (stick 0.13.7, 2026-11-01, run `…-c72d`, same 13700K machine; measured)
+
+- D and E work: gpu-p2p skipped with the reason; Blender oneAPI recorded as not available; the oneDNN retry rescued
+  both llama-bench runs (tinyllama 44 s, llama-2-7b 146 s incl. the failed first attempt), MUL_MAT and MUL_MAT_ID.
+- Remaining failure: FLASH_ATTN_EXT on the UHD 770 hit the 30-min test-backend-ops timeout (rc 127, 1800 s) with oneDNN
+  on — a hang or a crawl instead of the abort of run `…-9c93`, so the retry (which keys on the error text) did not fire.
+  Without oneDNN it passed in the manual test. Cost of the failed first attempts: ~30 min timeout + a few min each.
+- Testing one stick step on a normal Linux host (2026-11-01, procedure given to the user): import `stick.py` from a
+  checkout and call `run_vendor("oneapi", data, rundir, log)` with a scratch `data` dir whose `seed` links to the
+  stick's seed (data partition mounted read-only) — never the stick's own data dir, or `load_image` writes its
+  "loaded" marker there and the stick later skips loading the image into its own store. `vendor_plan` and
+  `BACKEND_OPS` can be narrowed for a short test. Caveat: the host's kernel and GPU driver differ from the stick's.
+
 ## Older NVIDIA GPUs and P100 forks (2026-10-31; read from GitHub and the repo)
 
 - **qr0n/p100-llama-cpp** (MIT, 25 stars, created 2026-09-07): upstream llama.cpp `b10660` + 18 patches, with a

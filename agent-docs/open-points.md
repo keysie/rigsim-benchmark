@@ -6,16 +6,17 @@ Last revised: 2026-10-31.
 
 ## High
 
-1. **Old GPUs: verify on hardware** [user, 2026-10-31; sprint `sprint/old-gpus`; **built**, stick 0.14.0, format 1.5].
+1. **Old GPUs: verify on hardware** [user, 2026-10-31; sprint `sprint/old-gpus`; **built**, stick 0.14.0, format 1.6].
    Built: the other module flavour harvested in `chroot-setup.sh` (`/usr/lib/rigsim/nvidia-swap`, same version checked
    at build and by the self-test); `stick.py` `nvidia_phase2` after every step (rmmod, measured cards kept off with
    `driver_override`, insmod nvidia / nvidia-uvm / nvidia-modeset, CUDA questions + llama-bench CUDA into `nvidia-swap/`);
    CUDA probe for sm_60/61/70/75, llama.cpp + sm_60; forks qr0n (`dc5c644c`) and Kmic-68 (`7461904d`) for sm_60/61 as
-   backend `cuda+<fork>`; validator and measurements (VERSION 3: second-phase cards continue gpuN). To verify: the
+   backend `cuda+<fork>`; validator and measurements (VERSION 4: second-phase cards continue gpuN). To verify: the
    build (fork builds in the CUDA 12.8 image, proprietary late-link in the chroot), the unload on a real machine,
    which cards each flavour actually drives, cuBLAS precisions a Pascal card does not have (tf32, bf16) — probably
    failures in gpu-gemm that should be recorded as unsupported. Not covered: Vulkan / OpenCL / Blender for the
    second-phase cards. rigsim's `predict.py` does not know `cuda+<fork>` (returns unsupported) — a rigsim topic.
+
 2. **Breadth of the data** [agent]: 15 runs from 12 machines, one machine has 4. rigsim's roadmap wants low-level
    measurements to calibrate and validate the hardware model (rigsim `engine.md` §11 step 2), which needs a spread of
    CPUs, GPU generations and memory configurations. Ask the user which machines are available next and which gaps matter
@@ -32,31 +33,26 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-6. **UEFI boot fails on some machines without CSM** [user, 2026-10-31; symptom: the firmware sees the stick but offers
-   no boot option]. **Fix written** on `sprint/stick-data` (stick 0.13.5): GPT hybrid layout like current Ubuntu ISOs
-   (`stick/tools/layout.sh`, shared by build and flash), FAT16 ESP, BIOS core with `configfile`. QEMU boot test passes
-   (UEFI, UEFI + Secure Boot, BIOS; CI "Boot test"). Open: confirm on one of the affected machines; old-layout sticks
-   cannot be updated in place (flash offers seed-only or erase).
-7. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
-   15 runs". Plan cleared by the user. (A) build-time seed self-test — **written** on `sprint/stick-data` (stick 0.13.5,
-   `stick/tools/selftest.py`): stops the build when a part asked for is missing or a binary lacks libraries;
-   not yet run in a real build; (B) Blender's missing libraries (PR #19, merged) and the ladder grid (PR #22, merged) — both not verified on hardware; (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
-   the reason, not as a failure; (E) triage the SYCL and Vulkan aborts; (F) a run-completeness audit (expected vs
-   present data per machine class) as a tool and on the data page; (G) an end-to-end test (VM) if the user wants one.
+6. **Stick: what is left after `sprint/stick-data`** [user plan of 2026-10-31; A, B, D, E and the UEFI boot are done and
+   verified on hardware, see journal]. (C) package energy: `energy_uj` reads −1 in the container — permissions, Secure
+   Boot lockdown or sysfs masking, *unknown*; (F) run-completeness audit (expected vs present data per machine class) as
+   a tool and on the data page; (G) an end-to-end test in a VM, if wanted; copy `seed/SELFTEST.json` into each run
+   (additive format change). Propose first.
+7. **CPU questions, rest** [agent, 2026-10-31; ladder grid done]: (a) expose cpu-gemm, ladder and power-time as value keys
+   (`measurements.py` VERSION bump); (b) per-thread rates or pinning so hybrid / SMT ladders are interpretable; (c) take
+   the idle-start reading after a cool-down or record the starting state. Propose first.
 
-8. **Fix the new CPU questions** [agent, 2026-10-31]: (a) derive the ladder grid from the CPU count so runs stop ending
-   `done with failures`; (b) make package energy readable (find out why `energy_uj` is −1 in the container: permissions,
-   Secure Boot lockdown or sysfs masking — *unknown*); (c) expose cpu-gemm, ladder and power-time as value keys
-   (`measurements.py` `VERSION` bump); (d) consider per-thread rates or pinning so hybrid/SMT ladders are interpretable;
-   (e) take the idle-start reading after a cool-down or record the starting state. Each is a stick or tools change; propose first.
-
-9. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
+8. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
    check the share of `unsupported` in `predictions/v0.3.0/` per key family and report which GPUs or CPUs are missing
    from rigsim's catalogue.
-10. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
+9. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
    flash. Whether that is acceptable is a user decision.
 
 ## Low
+
+10. **Blender oneAPI** [agent, 2026-10-31]: Blender's own oneAPI device needs Intel's Level Zero runtime and GPU
+   compute runtime in the system image (Blender runs there, not in the oneAPI image); today Blender finds no oneAPI
+   device (run `…-9c93`). Adding them = more system image size; decide with the user.
 
 11. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
