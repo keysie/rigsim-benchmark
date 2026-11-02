@@ -1,0 +1,465 @@
+path: ['/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/benchmark-scripts/2881a9f160a24ccd4282e43b861bd727e33562a4a230401343b590d10e890272/blender_benchmark_script-3.1.2', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/startup', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python311.zip', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/lib-dynload', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/site-packages', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/freestyle/modules', '/mnt/rigsim/seed/blender/home/.config/blender/4.2/scripts/addons/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core']
+Time limit is set to 30.0
+Blender 4.2.0 (hash a51f293548ad built 2024-07-16 06:27:02)
+Read blend: "/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/8ff812a02f720433de1403dab447be9541eecca71cc919224a7790d017c1b2ce/monster/main.blend"
+Fra:1 Mem:226.41M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | Mesh softbox light
+Fra:1 Mem:226.41M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | Mesh softbox light.002
+Fra:1 Mem:226.41M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | floor
+Fra:1 Mem:226.42M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | wall
+Fra:1 Mem:226.42M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | mask
+Fra:1 Mem:226.42M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | pyjamas
+Fra:1 Mem:228.25M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | sleeve right
+Fra:1 Mem:228.25M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | hand right
+Fra:1 Mem:228.64M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | hand left
+Fra:1 Mem:228.86M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | nail.002
+Fra:1 Mem:229.42M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | nail.003
+Fra:1 Mem:229.49M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | nail.005
+Fra:1 Mem:229.70M (Peak 230.99M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | bat
+Fra:1 Mem:231.59M (Peak 231.59M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | straps.001
+Fra:1 Mem:231.96M (Peak 231.96M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | monster
+Fra:1 Mem:235.37M (Peak 235.37M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | straps.002
+Fra:1 Mem:236.34M (Peak 236.34M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | mattress
+Fra:1 Mem:239.39M (Peak 239.39M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | board head
+Fra:1 Mem:242.05M (Peak 242.05M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | base
+Fra:1 Mem:242.42M (Peak 242.42M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | board feet
+Fra:1 Mem:249.52M (Peak 249.52M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.003
+Fra:1 Mem:250.80M (Peak 250.80M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.001
+Fra:1 Mem:252.51M (Peak 252.51M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.004
+Fra:1 Mem:260.80M (Peak 260.80M) | Time:00:00.35 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | leg.002
+Fra:1 Mem:280.32M (Peak 280.32M) | Time:00:00.36 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | eye upper
+Fra:1 Mem:303.26M (Peak 303.26M) | Time:00:00.36 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Synchronizing object | teeth
+Fra:1 Mem:433.24M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Initializing
+Fra:1 Mem:350.73M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Metal038_2K_Color.jpg
+Fra:1 Mem:350.73M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Viyar Ламинат Kaindl K4381 RE Дуб Фреско Лод
+Fra:1 Mem:370.70M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Wood063_2K_Normal.jpg
+Fra:1 Mem:370.70M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Wood063_2K_Roughness.jpg
+Fra:1 Mem:370.70M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Wood063_2K_Color.jpg
+Fra:1 Mem:370.70M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Old white plastic_Normal.jpg
+Fra:1 Mem:370.70M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Old white plastic_Roughness.jpg
+Fra:1 Mem:370.71M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Old white plastic_Metallic.jpg
+Fra:1 Mem:370.71M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Fur 01_height.jpg
+Fra:1 Mem:374.71M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Metal038_2K_Normal.jpg
+Fra:1 Mem:374.71M (Peak 490.55M) | Time:00:00.44 | Mem:0.00M, Peak:0.00M | Scene, View Layer | Updating Images | Loading Metal038_2K_Metalness.jpg
+Fra:1 Mem:693.75M (Peak 826.75M) | Time:00:00.70 | Mem:347.98M, Peak:347.98M | Scene, View Layer | Waiting for render to start
+Fra:1 Mem:693.75M (Peak 826.75M) | Time:00:00.70 | Mem:347.98M, Peak:347.98M | Scene, View Layer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:693.75M (Peak 826.75M) | Time:00:01.74 | Mem:347.99M, Peak:347.99M | Scene, View Layer | Updating Scene
+Fra:1 Mem:693.75M (Peak 826.75M) | Time:00:01.74 | Mem:347.99M, Peak:347.99M | Scene, View Layer | Updating Shaders
+Fra:1 Mem:693.89M (Peak 826.75M) | Time:00:01.74 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Procedurals
+Fra:1 Mem:693.89M (Peak 826.75M) | Time:00:01.74 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Background
+Fra:1 Mem:693.89M (Peak 826.75M) | Time:00:01.74 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Camera
+Fra:1 Mem:693.89M (Peak 826.75M) | Time:00:01.74 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Meshes Flags
+Fra:1 Mem:693.89M (Peak 826.75M) | Time:00:01.74 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Objects
+Fra:1 Mem:693.89M (Peak 826.75M) | Time:00:01.74 | Mem:348.05M, Peak:348.05M | Scene, View Layer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:693.90M (Peak 826.75M) | Time:00:01.74 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:693.90M (Peak 826.75M) | Time:00:01.75 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Particle Systems
+Fra:1 Mem:693.90M (Peak 826.75M) | Time:00:01.75 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:693.90M (Peak 826.75M) | Time:00:01.75 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Meshes
+Fra:1 Mem:719.25M (Peak 826.75M) | Time:00:01.76 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Displacement Images
+Fra:1 Mem:719.25M (Peak 826.75M) | Time:00:01.76 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Mesh | Computing normals
+Fra:1 Mem:775.72M (Peak 826.75M) | Time:00:01.77 | Mem:348.06M, Peak:348.06M | Scene, View Layer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:775.72M (Peak 826.75M) | Time:00:01.77 | Mem:404.53M, Peak:404.53M | Scene, View Layer | Updating Mesh | Computing attributes
+Fra:1 Mem:860.25M (Peak 860.25M) | Time:00:01.78 | Mem:404.54M, Peak:404.54M | Scene, View Layer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.79 | Mem:489.05M, Peak:489.05M | Scene, View Layer | Updating Mesh | Computing Displacement mesh.006
+Fra:1 Mem:719.25M (Peak 860.25M) | Time:00:01.79 | Mem:348.06M, Peak:489.53M | Scene, View Layer | Updating Mesh | Computing attributes
+Fra:1 Mem:803.77M (Peak 860.25M) | Time:00:01.81 | Mem:348.06M, Peak:489.53M | Scene, View Layer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh 34/34 | Building BVH
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.006 2/34 | Building BVH
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.006 2/34 | Building OptiX acceleration structure
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.008 3/34 | Building BVH
+Fra:1 Mem:805.07M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.002 4/34 | Building BVH
+Fra:1 Mem:805.07M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.004 5/34 | Building OptiX acceleration structure
+Fra:1 Mem:805.07M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.006 7/34 | Building BVH
+Fra:1 Mem:805.07M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.006 7/34 | Building OptiX acceleration structure
+Fra:1 Mem:805.07M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane 9/34 | Building BVH
+Fra:1 Mem:805.07M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.007 8/34 | Building OptiX acceleration structure
+Fra:1 Mem:805.48M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Vert.008 15/34 | Building BVH
+Fra:1 Mem:805.48M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Vert.005 18/34 | Building OptiX acceleration structure
+Fra:1 Mem:805.51M (Peak 860.25M) | Time:00:01.81 | Mem:432.57M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Vert.007 20/34 | Building BVH
+Fra:1 Mem:806.37M (Peak 860.25M) | Time:00:01.81 | Mem:432.58M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.010 12/34 | Building OptiX acceleration structure
+Fra:1 Mem:806.67M (Peak 860.25M) | Time:00:01.81 | Mem:432.59M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Cylinder 22/34 | Building BVH
+Fra:1 Mem:806.67M (Peak 860.25M) | Time:00:01.81 | Mem:432.61M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Cylinder.001 23/34 | Building OptiX acceleration structure
+Fra:1 Mem:814.71M (Peak 860.25M) | Time:00:01.82 | Mem:443.08M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.011 24/34 | Building BVH
+Fra:1 Mem:814.71M (Peak 860.25M) | Time:00:01.82 | Mem:443.08M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.011 24/34 | Building OptiX acceleration structure
+Fra:1 Mem:818.84M (Peak 860.25M) | Time:00:01.82 | Mem:452.30M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.012 25/34 | Building BVH
+Fra:1 Mem:818.84M (Peak 860.25M) | Time:00:01.82 | Mem:452.30M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.012 25/34 | Building OptiX acceleration structure
+Fra:1 Mem:822.80M (Peak 860.25M) | Time:00:01.82 | Mem:452.94M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.014 26/34 | Building BVH
+Fra:1 Mem:822.80M (Peak 860.25M) | Time:00:01.82 | Mem:452.94M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.014 26/34 | Building OptiX acceleration structure
+Fra:1 Mem:826.01M (Peak 860.25M) | Time:00:01.82 | Mem:456.19M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.013 27/34 | Building BVH
+Fra:1 Mem:826.01M (Peak 860.25M) | Time:00:01.82 | Mem:456.19M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.013 27/34 | Building OptiX acceleration structure
+Fra:1 Mem:828.33M (Peak 860.25M) | Time:00:01.82 | Mem:455.97M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.015 28/34 | Building BVH
+Fra:1 Mem:828.33M (Peak 860.25M) | Time:00:01.82 | Mem:455.97M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.015 28/34 | Building OptiX acceleration structure
+Fra:1 Mem:830.77M (Peak 860.25M) | Time:00:01.82 | Mem:456.82M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.016 29/34 | Building BVH
+Fra:1 Mem:830.77M (Peak 860.25M) | Time:00:01.82 | Mem:456.82M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.016 29/34 | Building OptiX acceleration structure
+Fra:1 Mem:831.41M (Peak 860.25M) | Time:00:01.82 | Mem:461.65M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.017 30/34 | Building BVH
+Fra:1 Mem:831.41M (Peak 860.25M) | Time:00:01.82 | Mem:461.65M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.017 30/34 | Building OptiX acceleration structure
+Fra:1 Mem:832.31M (Peak 860.25M) | Time:00:01.82 | Mem:462.58M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.018 31/34 | Building BVH
+Fra:1 Mem:832.31M (Peak 860.25M) | Time:00:01.82 | Mem:462.58M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH mesh.018 31/34 | Building OptiX acceleration structure
+Fra:1 Mem:832.03M (Peak 860.25M) | Time:00:01.82 | Mem:463.55M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH eye 32/34 | Building BVH
+Fra:1 Mem:832.03M (Peak 860.25M) | Time:00:01.82 | Mem:463.55M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH eye 32/34 | Building OptiX acceleration structure
+Fra:1 Mem:832.18M (Peak 860.25M) | Time:00:01.82 | Mem:463.85M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.001 33/34 | Building BVH
+Fra:1 Mem:832.18M (Peak 860.25M) | Time:00:01.82 | Mem:463.85M, Peak:489.53M | Scene, View Layer | Updating Geometry BVH Plane.001 33/34 | Building OptiX acceleration structure
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.84 | Mem:467.39M, Peak:490.61M | Scene, View Layer | Updating Scene BVH | Building
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.84 | Mem:467.39M, Peak:490.61M | Scene, View Layer | Updating Scene BVH | Building OptiX acceleration structure
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.84 | Mem:467.39M, Peak:490.61M | Scene, View Layer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:803.76M (Peak 860.25M) | Time:00:01.84 | Mem:467.39M, Peak:490.61M | Scene, View Layer | Updating Mesh | Computing normals
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:467.39M, Peak:490.61M | Scene, View Layer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.87M, Peak:523.87M | Scene, View Layer | Updating Objects Flags
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.87M, Peak:523.87M | Scene, View Layer | Updating Primitive Offsets
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.87M, Peak:523.87M | Scene, View Layer | Updating Images
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.87M, Peak:523.87M | Scene, View Layer | Updating Camera Volume
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.87M, Peak:523.87M | Scene, View Layer | Updating Lookup Tables
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.95M, Peak:523.95M | Scene, View Layer | Updating Lights
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.95M, Peak:523.95M | Scene, View Layer | Updating Lights | Computing distribution
+Fra:1 Mem:860.24M (Peak 860.25M) | Time:00:01.85 | Mem:523.95M, Peak:523.95M | Scene, View Layer | Updating Integrator
+Fra:1 Mem:892.24M (Peak 892.24M) | Time:00:01.86 | Mem:555.95M, Peak:555.95M | Scene, View Layer | Updating Film
+Fra:1 Mem:892.25M (Peak 892.25M) | Time:00:01.86 | Mem:555.87M, Peak:555.95M | Scene, View Layer | Updating Lookup Tables
+Fra:1 Mem:892.25M (Peak 892.25M) | Time:00:01.86 | Mem:555.96M, Peak:555.96M | Scene, View Layer | Updating Baking
+Fra:1 Mem:892.25M (Peak 892.25M) | Time:00:01.86 | Mem:555.96M, Peak:555.96M | Scene, View Layer | Updating Device | Writing constant memory
+Fra:1 Mem:898.63M (Peak 898.63M) | Time:00:01.86 | Mem:1142.46M, Peak:1142.46M | Scene, View Layer | Sample 0/16777216
+Fra:1 Mem:918.63M (Peak 918.63M) | Time:00:01.91 | Remaining:00:29.95 | Mem:1162.46M, Peak:1162.46M | Scene, View Layer | Sample 1/16777216
+Fra:1 Mem:918.65M (Peak 918.65M) | Time:00:16.16 | Remaining:00:15.70 | Mem:1162.48M, Peak:1162.48M | Scene, View Layer | Sample 513/16777216
+Fra:1 Mem:918.65M (Peak 918.65M) | Time:00:30.45 | Remaining:00:01.41 | Mem:1162.48M, Peak:1162.48M | Scene, View Layer | Sample 1025/16777216
+Fra:1 Mem:918.65M (Peak 918.65M) | Time:00:32.27 | Mem:1162.48M, Peak:1162.48M | Scene, View Layer | Sample 1089/16777216
+Fra:1 Mem:938.65M (Peak 974.65M) | Time:00:32.28 | Mem:1162.48M, Peak:1162.48M | Scene, View Layer | Sample 0/16777216
+Fra:1 Mem:938.65M (Peak 974.65M) | Time:00:32.28 | Mem:1162.48M, Peak:1162.48M | Scene, View Layer | Finished
+Benchmark JSON Data: {"timestamp": "2026-11-01T15:41:25.388956+00:00", "blender_version": {"version": "4.2.0", "build_date": "2024-07-16", "build_time": "06:27:02", "build_commit_date": "2024-07-16", "build_commit_time": "06:20", "build_hash": "a51f293548ad"}, "system_info": {"bitness": "64bit", "machine": "x86_64", "system": "Linux", "dist_name": "Ubuntu", "dist_version": "24.04", "devices": [{"name": "13th Gen Intel Core i7-13700K", "type": "CPU"}, {"name": "NVIDIA GeForce RTX 3080", "type": "OPTIX", "is_display": false}], "num_cpu_sockets": 1, "num_cpu_cores": 16, "num_cpu_threads": 24}, "device_info": {"device_type": "OPTIX", "compute_devices": [{"name": "NVIDIA GeForce RTX 3080", "type": "OPTIX", "is_display": false}], "num_cpu_threads": 24}}
+
+Blender quit
+
+--- stderr ---
+I1101 15:40:52.897680 102992 device.cpp:36] CUEW initialization succeeded
+I1101 15:40:52.897717 102992 device.cpp:38] Found precompiled kernels
+I1101 15:40:52.999856 102992 device.cpp:200] Device has compute preemption or is not used for display.
+I1101 15:40:52.999866 102992 device.cpp:203] Added device "NVIDIA GeForce RTX 3080" with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00".
+I1101 15:40:52.999869 102992 device.cpp:206] Device with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00" supports OpenImageDenoise.
+I1101 15:40:53.000885 102992 device.cpp:63] HIPEW initialization failed: Error opening HIP dynamic library
+I1101 15:40:53.193302 102992 device.cpp:541] Mapped host memory limit set to 29,100,589,056 bytes. (27.10G)
+I1101 15:40:53.269761 102992 device_impl.cpp:81] All knobs on default.
+I1101 15:40:53.358321 102992 device_impl.cpp:81] Opened database: "/var/tmp/OptixCache_root/optix7cache.db"
+I1101 15:40:53.358337 102992 device_impl.cpp:81]     Cache data size: "0 Bytes"
+I1101 15:40:53.358590 102992 device_impl.cpp:63] Using AVX2 CPU kernels.
+I1101 15:40:53.446010 102992 sync.cpp:297] Total time spent synchronizing data: 0.0871329
+I1101 15:40:53.451411 103022 colorspace.cpp:145] Colorspace sRGB is sRGB
+I1101 15:40:53.453234 103024 colorspace.cpp:140] Colorspace Non-Color is no-op
+I1101 15:40:53.710291 103051 film.cpp:592] Effective scene passes:
+I1101 15:40:53.710304 103051 film.cpp:594] - type: combined, name: "Combined", mode: NOISY, is_written: True
+I1101 15:40:53.710311 103051 film.cpp:594] - type: depth, name: "Depth", mode: NOISY, is_written: True
+I1101 15:40:53.710346 103051 scene.cpp:589] Requested features:
+I1101 15:40:53.710348 103051 scene.cpp:590] Use BSDF True
+I1101 15:40:53.710350 103051 scene.cpp:591] Use Emission True
+I1101 15:40:53.710352 103051 scene.cpp:593] Use Volume False
+I1101 15:40:53.710354 103051 scene.cpp:594] Use Bump True
+I1101 15:40:53.710356 103051 scene.cpp:595] Use Voronoi False
+I1101 15:40:53.710358 103051 scene.cpp:597] Use Shader Raytrace False
+I1101 15:40:53.710361 103051 scene.cpp:599] Use MNEE False
+I1101 15:40:53.710362 103051 scene.cpp:600] Use Transparent False
+I1101 15:40:53.710364 103051 scene.cpp:602] Use Denoising False
+I1101 15:40:53.710367 103051 scene.cpp:603] Use Path Tracing True
+I1101 15:40:53.710369 103051 scene.cpp:605] Use Hair False
+I1101 15:40:53.710371 103051 scene.cpp:606] Use Pointclouds False
+I1101 15:40:53.710373 103051 scene.cpp:608] Use Object Motion False
+I1101 15:40:53.710376 103051 scene.cpp:610] Use Baking False
+I1101 15:40:53.710377 103051 scene.cpp:611] Use Subsurface True
+I1101 15:40:53.710379 103051 scene.cpp:612] Use Volume False
+I1101 15:40:53.710381 103051 scene.cpp:613] Use Patch Evaluation False
+I1101 15:40:53.710383 103051 scene.cpp:615] Use Shadow Catcher False
+I1101 15:40:53.710404 103051 device_impl.cpp:260] Testing for pre-compiled kernel /mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core/cycles/lib/kernel_sm_86.cubin.zst.
+I1101 15:40:53.710407 103051 device_impl.cpp:262] Using precompiled kernel.
+I1101 15:40:53.755194 103051 device_impl.cpp:503] Local memory reserved 668,991,488 bytes. (638.00M)
+I1101 15:40:53.756769 103051 device_impl.cpp:81] Cache miss for key: ptx-491457-key5f9ebe4c8578a6066cc014f71d5ef5bf-sm_86-rtc1-drv580.178.04
+I1101 15:40:53.850870 103051 device_impl.cpp:81] Info: Pipeline parameter "kernel_params" size is 4896 bytes
+I1101 15:40:53.932910 103051 device_impl.cpp:81] Function properties for __anyhit__kernel_optix_local_hit_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932925 103051 device_impl.cpp:81] Function properties for __anyhit__kernel_optix_shadow_all_hit_ptID_0x9ddde238cd699b59
+	register count                  :    79
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932929 103051 device_impl.cpp:81] Function properties for __anyhit__kernel_optix_visibility_test_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932932 103051 device_impl.cpp:81] Function properties for __anyhit__kernel_optix_volume_test_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932935 103051 device_impl.cpp:81] Function properties for __closesthit__kernel_optix_hit_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932940 103051 device_impl.cpp:81] Function properties for __intersection__curve_ribbon_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932942 103051 device_impl.cpp:81] Function properties for __intersection__point_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932945 103051 device_impl.cpp:81] Function properties for __miss__kernel_optix_miss_ptID_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :     0
+	continuation spills (bytes)     :     0
+I1101 15:40:53.932956 103051 device_impl.cpp:81] Info: Module Statistics
+	payload values        :          8
+	attribute values      :          2
+Info: Properties for entry function "__miss__kernel_optix_miss"
+	semantic type                :                   MISS
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                      1
+	instruction(s)               :                      5
+Info: Properties for entry function "__anyhit__kernel_optix_local_hit"
+	semantic type                :                 ANYHIT
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                     23
+	instruction(s)               :                    227
+Info: Properties for entry function "__anyhit__kernel_optix_shadow_all_hit"
+	semantic type                :                 ANYHIT
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                     51
+	instruction(s)               :                    402
+Info: Properties for entry function "__anyhit__kernel_optix_volume_test"
+	semantic type                :                 ANYHIT
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                     11
+	instruction(s)               :                     55
+Info: Properties for entry function "__anyhit__kernel_optix_visibility_test"
+	semantic type                :                 ANYHIT
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                     28
+	instruction(s)               :                    147
+Info: Properties for entry function "__closesthit__kernel_optix_hit"
+	semantic type                :             CLOSESTHIT
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                      7
+	instruction(s)               :                     73
+Info: Properties for entry function "__intersection__curve_ribbon"
+	semantic type                :           INTERSECTION
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                     32
+	instruction(s)               :                    913
+Info: Properties for entry function "__intersection__point"
+	semantic type                :           INTERSECTION
+	trace call(s)                :                      0
+	continuation callable call(s):                      0
+	basic block(s)               :                     21
+	instruction(s)               :                    225
+Info: Compiled Module Summary
+	non-entry function(s):     1
+	basic block(s)       :    37
+	instruction(s)       :   667
+I1101 15:40:54.395821 103051 device_impl.cpp:81] Function properties for __raygen__kernel_optix_integrator_intersect_subsurface_0x9ddde238cd699b59
+	register count                  :    91
+	direct stack size (bytes)       :     8
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :   768
+	continuation spills (bytes)     :   358
+I1101 15:40:54.395855 103051 device_impl.cpp:81] Info: Module Statistics
+	payload values        :          8
+	attribute values      :          0
+Info: Properties for entry function "__raygen__kernel_optix_integrator_intersect_subsurface"
+	semantic type                :                 RAYGEN
+	trace call(s)                :                      3
+	continuation callable call(s):                      0
+	basic block(s)               :                    400
+	instruction(s)               :                   7616
+Info: Compiled Module Summary
+	non-entry function(s):     0
+	basic block(s)       :     0
+	instruction(s)       :     0
+I1101 15:40:54.536230 103051 device_impl.cpp:81] Function properties for __raygen__kernel_optix_integrator_intersect_closest_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :    96
+	continuation spills (bytes)     :    12
+I1101 15:40:54.536257 103051 device_impl.cpp:81] Info: Module Statistics
+	payload values        :          8
+	attribute values      :          0
+Info: Properties for entry function "__raygen__kernel_optix_integrator_intersect_closest"
+	semantic type                :                 RAYGEN
+	trace call(s)                :                      1
+	continuation callable call(s):                      0
+	basic block(s)               :                    329
+	instruction(s)               :                   2940
+Info: Compiled Module Summary
+	non-entry function(s):     0
+	basic block(s)       :     0
+	instruction(s)       :     0
+I1101 15:40:54.663735 103051 device_impl.cpp:81] Function properties for __raygen__kernel_optix_integrator_intersect_volume_stack_0x9ddde238cd699b59
+	register count                  :    83
+	direct stack size (bytes)       :     8
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :   544
+	continuation spills (bytes)     :    33
+I1101 15:40:54.663756 103051 device_impl.cpp:81] Info: Module Statistics
+	payload values        :          8
+	attribute values      :          0
+Info: Properties for entry function "__raygen__kernel_optix_integrator_intersect_volume_stack"
+	semantic type                :                 RAYGEN
+	trace call(s)                :                      1
+	continuation callable call(s):                      0
+	basic block(s)               :                    155
+	instruction(s)               :                   3287
+Info: Compiled Module Summary
+	non-entry function(s):     0
+	basic block(s)       :     0
+	instruction(s)       :     0
+I1101 15:40:54.720826 103051 device_impl.cpp:81] Function properties for __raygen__kernel_optix_integrator_intersect_dedicated_light_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :   160
+	continuation spills (bytes)     :   120
+I1101 15:40:54.720844 103051 device_impl.cpp:81] Info: Module Statistics
+	payload values        :          8
+	attribute values      :          0
+Info: Properties for entry function "__raygen__kernel_optix_integrator_intersect_dedicated_light"
+	semantic type                :                 RAYGEN
+	trace call(s)                :                      1
+	continuation callable call(s):                      0
+	basic block(s)               :                    105
+	instruction(s)               :                   1148
+Info: Compiled Module Summary
+	non-entry function(s):     0
+	basic block(s)       :     0
+	instruction(s)       :     0
+I1101 15:40:54.743646 103051 device_impl.cpp:81] Function properties for __raygen__kernel_optix_integrator_intersect_shadow_0x9ddde238cd699b59
+	register count                  :    68
+	direct stack size (bytes)       :     0
+	direct spills (bytes)           :     0
+	continuation stack size (bytes) :    96
+	continuation spills (bytes)     :    10
+I1101 15:40:54.743659 103051 device_impl.cpp:81] Info: Module Statistics
+	payload values        :          8
+	attribute values      :          0
+Info: Properties for entry function "__raygen__kernel_optix_integrator_intersect_shadow"
+	semantic type                :                 RAYGEN
+	trace call(s)                :                      2
+	continuation callable call(s):                      0
+	basic block(s)               :                     31
+	instruction(s)               :                    520
+Info: Compiled Module Summary
+	non-entry function(s):     0
+	basic block(s)       :     0
+	instruction(s)       :     0
+I1101 15:40:54.744264 103051 device_impl.cpp:81] Inserted module in cache with key: ptx-491457-key5f9ebe4c8578a6066cc014f71d5ef5bf-sm_86-rtc1-drv580.178.04
+I1101 15:40:54.750824 103051 device_impl.cpp:81] Info: Pipeline statistics
+	module(s)                            :     1
+	entry function(s)                    :    11
+	trace call(s)                        :     8
+	continuation callable call(s)        :     0
+	direct callable call(s)              :     0
+	basic block(s) in entry functions    :  1141
+	instruction(s) in entry functions    : 16420
+	non-entry function(s)                :     1
+	basic block(s) in non-entry functions:    37
+	instruction(s) in non-entry functions:   667
+	debug information                    :    no
+I1101 15:40:54.750852 103051 svm.cpp:69] Total 32 shaders.
+I1101 15:40:54.751313 103051 svm.cpp:145] Shader manager updated 32 shaders in 0.000461102 seconds.
+I1101 15:40:54.751343 103051 object.cpp:781] Total 36 objects.
+I1101 15:40:54.752470 103051 particles.cpp:106] Total 0 particle systems.
+I1101 15:40:54.752502 103051 geometry.cpp:719] Total 34 meshes.
+I1101 15:40:54.819084 103033 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.822045 103031 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.822993 103041 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.824278 103032 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.825016 103028 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.825438 103037 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.825767 103034 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.826752 103026 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.827251 103029 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.828313 103040 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.828547 103042 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.828948 103051 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.830039 103044 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.830268 103020 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.831177 103024 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.831717 103030 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.832196 103022 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.833068 103036 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.833281 103039 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.834023 103025 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.834985 103035 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.835469 103019 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.836061 103038 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.836653 103043 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.837203 103033 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.838582 103031 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.840523 103041 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.842442 103028 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.843398 103037 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.844060 103032 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.845482 103034 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.846619 103026 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.847324 103029 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.847771 103040 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.848353 103051 geometry_bvh.cpp:127] Using OPTIX layout.
+I1101 15:40:54.848381 103051 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 15:40:54.861364 103051 tables.cpp:39] Total 9 lookup tables.
+I1101 15:40:54.861408 103051 light.cpp:1425] Total 10 lights.
+I1101 15:40:54.861411 103051 light.cpp:264] Background MIS has been disabled.
+I1101 15:40:54.861415 103051 light.cpp:1405] Number of lights sent to the device: 9
+I1101 15:40:54.861447 103051 light.cpp:339] Use light distribution with 15 emitters.
+I1101 15:40:54.869268 103051 tables.cpp:39] Total 10 lookup tables.
+I1101 15:40:54.869325 103051 scene.cpp:354] System memory statistics after full device sync:
+  Usage: 736,749,370 (702.62M)
+  Peak: 736,838,458 (702.70M)
+I1101 15:40:54.912786 103051 path_trace.cpp:412] Rendered 1 samples in 0.0412419 seconds (0.0412419 seconds per sample), occupancy: 0.0712168
+I1101 15:41:09.164762 103051 path_trace.cpp:412] Rendered 512 samples in 14.2519 seconds (0.0278358 seconds per sample), occupancy: 0.518735
+I1101 15:41:23.457324 103051 path_trace.cpp:412] Rendered 512 samples in 14.2925 seconds (0.027915 seconds per sample), occupancy: 0.516752
+I1101 15:41:25.278853 103051 path_trace.cpp:412] Rendered 64 samples in 1.82148 seconds (0.0284607 seconds per sample), occupancy: 0.471572
+I1101 15:41:25.289211 103051 session.cpp:174] Rendering in main loop is done in 30.4177 seconds.
+I1101 15:41:25.289227 103051 session.cpp:175] 
+Full path tracing report
+
+Path tracing on: NVIDIA GeForce RTX 3080 (OptiX) [CUDA_NVIDIA GeForce RTX 3080_0000:01:00_OptiX]
+
+Render Scheduler Summary
+
+Mode: Headless
+Resolution: 1024x1024
+
+Adaptive sampling:
+  Use: False
+
+Denoiser:
+  Use: False
+
+Time (in seconds):
+                                       Wall              Average
+          Path Tracing            30.407239             0.027922
+        Display Update             0.000002             0.000002
+
+  Total: 30.407241
+
+Rendered 1089 samples in 30.417715 seconds
+Average time per sample: 0.027932 seconds
+I1101 15:41:25.289261 102992 session.cpp:479] Total render time: 32.096
+I1101 15:41:25.289268 102992 session.cpp:480] Render time (without synchronization): 30.4178
+I1101 15:41:25.325660 102992 device_impl.cpp:81] Closed database: "/var/tmp/OptixCache_root/optix7cache.db"
+I1101 15:41:25.325704 102992 device_impl.cpp:81]     Cache data size: "558.0 KiB"

@@ -1,0 +1,98 @@
+{
+ "cpu-gemm/prec=fp32/n=512/threads=1/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=512/threads=1/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=512/threads=0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=512/threads=0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=4096/threads=1/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=4096/threads=1/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=4096/threads=0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp32/n=4096/threads=0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=512/threads=1/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=512/threads=1/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=512/threads=0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=512/threads=0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=4096/threads=1/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=4096/threads=1/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=4096/threads=0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=fp64/n=4096/threads=0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=512/threads=1/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=512/threads=1/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=512/threads=0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=512/threads=0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=4096/threads=1/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=4096/threads=1/rep=1": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=4096/threads=0/rep=0": {
+  "status": "done",
+  "attempts": 1
+ },
+ "cpu-gemm/prec=int8/n=4096/threads=0/rep=1": {
+  "status": "done",
+  "attempts": 1
+ }
+}

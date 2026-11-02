@@ -1,0 +1,11 @@
+13:26:41 session rigsim-hwbench-cpu-gemm-ladder: setting up from debian:trixie
+13:27:32 ok   cpu-gemm-ladder/threads=1/rep=0 rc=0
+13:27:35 ok   cpu-gemm-ladder/threads=2/rep=0 rc=0
+13:27:38 ok   cpu-gemm-ladder/threads=3/rep=0 rc=0
+13:27:41 ok   cpu-gemm-ladder/threads=4/rep=0 rc=0
+13:27:43 ok   cpu-gemm-ladder/threads=6/rep=0 rc=0
+13:27:45 ok   cpu-gemm-ladder/threads=8/rep=0 rc=0
+13:27:47 ok   cpu-gemm-ladder/threads=12/rep=0 rc=0
+13:27:50 ok   cpu-gemm-ladder/threads=16/rep=0 rc=0
+13:27:52 ok   cpu-gemm-ladder/threads=24/rep=0 rc=0
+13:27:52 restore: box as found

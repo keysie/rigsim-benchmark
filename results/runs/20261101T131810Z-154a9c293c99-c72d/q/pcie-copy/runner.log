@@ -1,0 +1,14 @@
+13:31:16 session rigsim-hwbench-pcie-copy: setting up from nvidia/cuda:12.8.1-devel-ubuntu24.04
+13:31:25 ok   pcie-copy/gpu=gpu0/dir=h2d/rep=0 rc=0
+13:31:27 ok   pcie-copy/gpu=gpu0/dir=h2d/rep=1 rc=0
+13:31:30 ok   pcie-copy/gpu=gpu0/dir=d2h/rep=0 rc=0
+13:31:32 ok   pcie-copy/gpu=gpu0/dir=d2h/rep=1 rc=0
+13:31:34 ok   pcie-copy/gpu=gpu0/dir=bidir/rep=0 rc=0
+13:31:36 ok   pcie-copy/gpu=gpu0/dir=bidir/rep=1 rc=0
+13:31:39 ok   pcie-copy/gpu=@together/dir=h2d/rep=0 rc=0
+13:31:41 ok   pcie-copy/gpu=@together/dir=h2d/rep=1 rc=0
+13:31:43 ok   pcie-copy/gpu=@together/dir=d2h/rep=0 rc=0
+13:31:46 ok   pcie-copy/gpu=@together/dir=d2h/rep=1 rc=0
+13:31:48 ok   pcie-copy/gpu=@together/dir=bidir/rep=0 rc=0
+13:31:50 ok   pcie-copy/gpu=@together/dir=bidir/rep=1 rc=0
+13:31:51 restore: box as found

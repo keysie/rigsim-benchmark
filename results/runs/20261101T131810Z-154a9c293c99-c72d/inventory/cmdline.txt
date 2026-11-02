@@ -1,0 +1,1 @@
+BOOT_IMAGE=/casper/vmlinuz boot=casper noprompt noeject loglevel=3 quiet splash=off modprobe.blacklist=nouveau nouveau.modeset=0 ---
