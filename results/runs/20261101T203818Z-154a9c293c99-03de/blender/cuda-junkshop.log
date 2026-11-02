@@ -1,0 +1,303 @@
+path: ['/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/benchmark-scripts/2881a9f160a24ccd4282e43b861bd727e33562a4a230401343b590d10e890272/blender_benchmark_script-3.1.2', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/startup', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python311.zip', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/lib-dynload', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/site-packages', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/freestyle/modules', '/mnt/rigsim/seed/blender/home/.config/blender/4.2/scripts/addons/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core']
+Time limit is set to 30.0
+Blender 4.2.0 (hash a51f293548ad built 2024-07-16 06:27:02)
+Read blend: "/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/f5515a21a1337b908212d8d76733530df83014464a24c585ab7b96000da0cdce/junkshop/main.blend"
+Fra:1 Mem:1361.92M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Background Pipes
+Fra:1 Mem:1362.09M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Background Wall
+Fra:1 Mem:1362.25M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Face
+Fra:1 Mem:1363.77M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Background Cylinders
+Fra:1 Mem:1364.14M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Floor Background
+Fra:1 Mem:1364.20M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Table cloth
+Fra:1 Mem:1364.31M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Floor Front
+Fra:1 Mem:1364.45M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Stoplight
+Fra:1 Mem:1365.00M (Peak 1367.70M) | Time:00:00.27 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Tickets
+Fra:1 Mem:1667.50M (Peak 1672.05M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Face
+Fra:1 Mem:1668.88M (Peak 1672.05M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Hat
+Fra:1 Mem:1668.88M (Peak 1672.05M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Vest
+Fra:1 Mem:1694.35M (Peak 1694.35M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Gloves
+Fra:1 Mem:1695.31M (Peak 1695.31M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Old Robots
+Fra:1 Mem:1695.31M (Peak 1695.31M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Cat Helmet
+Fra:1 Mem:1696.54M (Peak 1696.54M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | RadioNes
+Fra:1 Mem:1696.54M (Peak 1696.54M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Cristal
+Fra:1 Mem:1697.01M (Peak 1697.01M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Weigth
+Fra:1 Mem:1705.34M (Peak 1705.34M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Old Robots.001
+Fra:1 Mem:1733.12M (Peak 1733.12M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | MrCatPC
+Fra:1 Mem:1735.46M (Peak 1735.46M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Cloth Pipes
+Fra:1 Mem:1751.67M (Peak 1751.67M) | Time:00:00.31 | Mem:0.00M, Peak:0.00M | Extended, Completo | Synchronizing object | Wheel Robot
+Fra:1 Mem:2495.48M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Initializing
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_CatHead_BaseColor.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_Tubos01Fondo_Metallic.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_Tubos01Fondo_Roughness.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_Tubos01Fondo_Normal.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_FondoTubos02_Roughness.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_FondoTubos02_Normal.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_FondoTubos02_BaseColor.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_CuboFondo_Metallic.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_CuboFondo_Roughness.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_CuboFondo_BaseColor.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_Gears_Metallic.png
+Fra:1 Mem:1643.60M (Peak 2571.88M) | Time:00:00.65 | Mem:0.00M, Peak:0.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_Gears_Normal.png
+Fra:1 Mem:2091.66M (Peak 2571.88M) | Time:00:00.69 | Mem:16.00M, Peak:16.00M | Extended, Completo | Updating Images | Loading BaseLowPoly3_Gears_BaseColor.png
+Fra:1 Mem:2059.67M (Peak 2571.88M) | Time:00:00.70 | Mem:32.00M, Peak:32.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoLejos_Metalness.png
+Fra:1 Mem:2123.71M (Peak 2571.88M) | Time:00:00.70 | Mem:48.00M, Peak:48.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoLejos_Roughness.png
+Fra:1 Mem:2107.73M (Peak 2571.88M) | Time:00:00.71 | Mem:64.00M, Peak:64.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoLejos_Normal.png
+Fra:1 Mem:2283.73M (Peak 2571.88M) | Time:00:00.74 | Mem:80.00M, Peak:80.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoLejos_BaseColor.png
+Fra:1 Mem:2299.74M (Peak 2571.88M) | Time:00:00.74 | Mem:96.00M, Peak:96.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_PO Box_Metalness.png
+Fra:1 Mem:2251.72M (Peak 2571.88M) | Time:00:00.75 | Mem:112.00M, Peak:112.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_PO Box_Normal.png
+Fra:1 Mem:2203.71M (Peak 2571.88M) | Time:00:00.75 | Mem:128.00M, Peak:128.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_PO Box_Roughness.png
+Fra:1 Mem:2219.71M (Peak 2571.88M) | Time:00:00.75 | Mem:144.00M, Peak:144.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_PO Box_BaseColor.png
+Fra:1 Mem:2203.70M (Peak 2571.88M) | Time:00:00.75 | Mem:160.00M, Peak:160.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MuroTienda_Roughness.png
+Fra:1 Mem:2283.70M (Peak 2571.88M) | Time:00:00.75 | Mem:176.00M, Peak:176.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MuroTienda_Normal.png
+Fra:1 Mem:2395.70M (Peak 2571.88M) | Time:00:00.76 | Mem:192.00M, Peak:192.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MuroTienda_Metalness.png
+Fra:1 Mem:2347.69M (Peak 2571.88M) | Time:00:00.76 | Mem:208.00M, Peak:208.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MuroTienda_BaseColor.png
+Fra:1 Mem:2395.69M (Peak 2571.88M) | Time:00:00.77 | Mem:224.00M, Peak:224.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Techo_Metalness.png
+Fra:1 Mem:2331.68M (Peak 2571.88M) | Time:00:00.77 | Mem:240.00M, Peak:240.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Techo_Roughness.png
+Fra:1 Mem:2331.68M (Peak 2571.88M) | Time:00:00.78 | Mem:256.00M, Peak:256.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Techo_Normal.png
+Fra:1 Mem:2347.69M (Peak 2571.88M) | Time:00:00.78 | Mem:272.00M, Peak:272.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Techo_BaseColor.png
+Fra:1 Mem:2299.70M (Peak 2571.88M) | Time:00:00.78 | Mem:288.00M, Peak:288.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_CatHead_Normal.png
+Fra:1 Mem:2315.70M (Peak 2571.88M) | Time:00:00.78 | Mem:304.00M, Peak:304.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_ConversationArticles_Metalness.png
+Fra:1 Mem:2331.71M (Peak 2571.88M) | Time:00:00.79 | Mem:320.00M, Peak:320.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_ConversationArticles_Normal.png
+Fra:1 Mem:2379.72M (Peak 2571.88M) | Time:00:00.79 | Mem:336.00M, Peak:336.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_ConversationArticles_Roughness.png
+Fra:1 Mem:2459.72M (Peak 2571.88M) | Time:00:00.79 | Mem:352.00M, Peak:352.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_ConversationArticles_Opacity.png
+Fra:1 Mem:2475.72M (Peak 2571.88M) | Time:00:00.79 | Mem:368.00M, Peak:368.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_ConversationArticles_SSS.png
+Fra:1 Mem:2491.71M (Peak 2571.88M) | Time:00:00.80 | Mem:384.00M, Peak:384.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_ConversationArticles_BaseColor.png
+Fra:1 Mem:2491.70M (Peak 2571.88M) | Time:00:00.80 | Mem:400.00M, Peak:400.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_JarronesMantel_Metalness.png
+Fra:1 Mem:2539.73M (Peak 2571.88M) | Time:00:00.81 | Mem:432.00M, Peak:432.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_JarronesMantel_Normal.png
+Fra:1 Mem:2523.74M (Peak 2571.88M) | Time:00:00.82 | Mem:432.00M, Peak:432.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_JarronesMantel_Opacity.png
+Fra:1 Mem:2619.74M (Peak 2635.75M) | Time:00:00.82 | Mem:448.00M, Peak:448.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_JarronesMantel_BaseColor.png
+Fra:1 Mem:2635.75M (Peak 2651.75M) | Time:00:00.83 | Mem:464.00M, Peak:464.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_JarronesMantel_Roughness.png
+Fra:1 Mem:2763.74M (Peak 2795.75M) | Time:00:00.84 | Mem:480.00M, Peak:480.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Accesorios_BaseColor.png
+Fra:1 Mem:2683.70M (Peak 2811.74M) | Time:00:00.84 | Mem:496.00M, Peak:496.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Accesorios_Metalness.png
+Fra:1 Mem:2731.70M (Peak 2811.74M) | Time:00:00.84 | Mem:512.00M, Peak:512.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Accesorios_Normal.png
+Fra:1 Mem:2715.69M (Peak 2811.74M) | Time:00:00.85 | Mem:528.00M, Peak:528.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Accesorios_Roughness.png
+Fra:1 Mem:2667.68M (Peak 2811.74M) | Time:00:00.85 | Mem:544.00M, Peak:544.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_AnunciosColgantes_Opacity.png
+Fra:1 Mem:2651.68M (Peak 2811.74M) | Time:00:00.85 | Mem:560.00M, Peak:560.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_AnunciosColgantes_Normal.png
+Fra:1 Mem:2635.68M (Peak 2811.74M) | Time:00:00.86 | Mem:576.00M, Peak:576.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_AnunciosColgantes_Roughness.png
+Fra:1 Mem:2651.71M (Peak 2811.74M) | Time:00:00.86 | Mem:592.00M, Peak:592.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_AnunciosColgantes_BaseColor.png
+Fra:1 Mem:2667.73M (Peak 2811.74M) | Time:00:00.87 | Mem:608.00M, Peak:608.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoCerca_Metalness.png
+Fra:1 Mem:2715.73M (Peak 2811.74M) | Time:00:00.87 | Mem:624.00M, Peak:624.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoCerca_Roughness.png
+Fra:1 Mem:2731.73M (Peak 2811.74M) | Time:00:00.87 | Mem:640.00M, Peak:640.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoCerca_Normal.png
+Fra:1 Mem:2715.73M (Peak 2811.74M) | Time:00:00.87 | Mem:656.00M, Peak:656.00M | Extended, Completo | Updating Images | Loading PISOGENERAL_PisoCerca_BaseColor.png
+Fra:1 Mem:2795.74M (Peak 2811.74M) | Time:00:00.88 | Mem:672.00M, Peak:672.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tubos_Metalness.png
+Fra:1 Mem:2827.74M (Peak 2827.74M) | Time:00:00.88 | Mem:688.00M, Peak:688.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tubos_Roughness.png
+Fra:1 Mem:3019.74M (Peak 3019.74M) | Time:00:00.89 | Mem:704.00M, Peak:704.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_CatHead_Roughness.png
+Fra:1 Mem:3003.73M (Peak 3099.74M) | Time:00:00.90 | Mem:720.00M, Peak:720.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tubos_Normal.png
+Fra:1 Mem:2955.73M (Peak 3099.74M) | Time:00:00.90 | Mem:736.00M, Peak:736.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tubos_BaseColor.png
+Fra:1 Mem:2923.70M (Peak 3099.74M) | Time:00:00.90 | Mem:752.00M, Peak:752.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_HornoResorte_Normal.png
+Fra:1 Mem:2923.69M (Peak 3099.74M) | Time:00:00.91 | Mem:768.00M, Peak:768.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_HornoResorte_Metalness.png
+Fra:1 Mem:2955.69M (Peak 3099.74M) | Time:00:00.91 | Mem:784.00M, Peak:784.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_HornoResorte_Roughness.png
+Fra:1 Mem:2955.70M (Peak 3099.74M) | Time:00:00.92 | Mem:800.00M, Peak:800.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_HornoResorte_BaseColor.png
+Fra:1 Mem:2939.70M (Peak 3099.74M) | Time:00:00.92 | Mem:816.00M, Peak:816.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Semaforo_Metalness.png
+Fra:1 Mem:2923.69M (Peak 3099.74M) | Time:00:00.92 | Mem:832.00M, Peak:832.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Semaforo_Roughness.png
+Fra:1 Mem:2923.70M (Peak 3099.74M) | Time:00:00.92 | Mem:848.00M, Peak:848.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Semaforo_Emissive.png
+Fra:1 Mem:2955.69M (Peak 3099.74M) | Time:00:00.93 | Mem:864.00M, Peak:864.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Semaforo_Normal.png
+Fra:1 Mem:2987.71M (Peak 3099.74M) | Time:00:00.93 | Mem:880.00M, Peak:880.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Semaforo_BaseColor.png
+Fra:1 Mem:3115.71M (Peak 3115.71M) | Time:00:00.93 | Mem:896.00M, Peak:896.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MesaPrincipal_Metalness.png
+Fra:1 Mem:3131.72M (Peak 3131.72M) | Time:00:00.94 | Mem:912.00M, Peak:912.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MesaPrincipal_Roughness.png
+Fra:1 Mem:3115.71M (Peak 3179.72M) | Time:00:00.94 | Mem:928.00M, Peak:928.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MesaPrincipal_Normal.png
+Fra:1 Mem:3259.72M (Peak 3291.71M) | Time:00:00.95 | Mem:944.00M, Peak:944.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_MesaPrincipal_BaseColor.png
+Fra:1 Mem:3275.75M (Peak 3291.71M) | Time:00:00.96 | Mem:960.00M, Peak:960.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tickets_Roughness.png
+Fra:1 Mem:3195.75M (Peak 3291.75M) | Time:00:00.96 | Mem:976.00M, Peak:976.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_CatHead_Metalness.png
+Fra:1 Mem:3371.75M (Peak 3371.75M) | Time:00:00.97 | Mem:992.00M, Peak:992.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tickets_Normal.png
+Fra:1 Mem:3355.74M (Peak 3419.76M) | Time:00:00.97 | Mem:1008.00M, Peak:1008.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tickets_Metalness.png
+Fra:1 Mem:3403.75M (Peak 3419.76M) | Time:00:00.98 | Mem:1024.00M, Peak:1024.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Tickets_BaseColor.png
+Fra:1 Mem:3419.75M (Peak 3419.76M) | Time:00:00.98 | Mem:1040.00M, Peak:1040.00M | Extended, Completo | Updating Images | Loading Mona_Cara_Metalness.png
+Fra:1 Mem:3403.72M (Peak 3467.75M) | Time:00:00.99 | Mem:1056.00M, Peak:1056.00M | Extended, Completo | Updating Images | Loading Mona_Cara_Roughness.png
+Fra:1 Mem:3387.71M (Peak 3467.75M) | Time:00:00.99 | Mem:1072.00M, Peak:1072.00M | Extended, Completo | Updating Images | Loading Mona_Cara_Normal.png
+Fra:1 Mem:3483.74M (Peak 3483.74M) | Time:00:01.00 | Mem:1088.00M, Peak:1088.00M | Extended, Completo | Updating Images | Loading Mona_Cara_SSS.png
+Fra:1 Mem:3435.71M (Peak 3563.74M) | Time:00:01.00 | Mem:1104.00M, Peak:1104.00M | Extended, Completo | Updating Images | Loading Mona_Cara_BaseColor.png
+Fra:1 Mem:3483.72M (Peak 3563.74M) | Time:00:01.00 | Mem:1120.00M, Peak:1120.00M | Extended, Completo | Updating Images | Loading Mona_OjosDientes_Roughness.jpg
+Fra:1 Mem:3531.73M (Peak 3563.74M) | Time:00:01.01 | Mem:1136.00M, Peak:1136.00M | Extended, Completo | Updating Images | Loading Mona_OjosDientes_Normal.jpg
+Fra:1 Mem:3563.73M (Peak 3643.73M) | Time:00:01.02 | Mem:1152.00M, Peak:1152.00M | Extended, Completo | Updating Images | Loading Mona_OjosDientes_Metalness.jpg
+Fra:1 Mem:3579.72M (Peak 3643.73M) | Time:00:01.03 | Mem:1168.00M, Peak:1168.00M | Extended, Completo | Updating Images | Loading Mona_OjosDientes_BaseColor.jpg
+Fra:1 Mem:3515.73M (Peak 3643.73M) | Time:00:01.03 | Mem:1184.00M, Peak:1184.00M | Extended, Completo | Updating Images | Loading Mona_Sombrero_Metalness.jpg
+Fra:1 Mem:3611.73M (Peak 3643.73M) | Time:00:01.03 | Mem:1200.00M, Peak:1200.00M | Extended, Completo | Updating Images | Loading Mona_Sombrero_Roughness.jpg
+Fra:1 Mem:3675.73M (Peak 3675.73M) | Time:00:01.04 | Mem:1216.00M, Peak:1216.00M | Extended, Completo | Updating Images | Loading Mona_Sombrero_Normal.jpg
+Fra:1 Mem:3803.73M (Peak 3835.74M) | Time:00:01.04 | Mem:1232.00M, Peak:1232.00M | Extended, Completo | Updating Images | Loading Mona_Sombrero_BaseColor.jpg
+Fra:1 Mem:3803.71M (Peak 3899.74M) | Time:00:01.05 | Mem:1248.00M, Peak:1248.00M | Extended, Completo | Updating Images | Loading Mona_Camisa_Metallic.png
+Fra:1 Mem:3819.71M (Peak 3899.74M) | Time:00:01.05 | Mem:1264.00M, Peak:1264.00M | Extended, Completo | Updating Images | Loading Mona_Camisa_Roughness.png
+Fra:1 Mem:3851.72M (Peak 3899.74M) | Time:00:01.06 | Mem:1280.00M, Peak:1280.00M | Extended, Completo | Updating Images | Loading Mona_Camisa_Normal.png
+Fra:1 Mem:3947.72M (Peak 3979.72M) | Time:00:01.06 | Mem:1296.00M, Peak:1296.00M | Extended, Completo | Updating Images | Loading Mona_Camisa_SSS.jpg
+Fra:1 Mem:4091.72M (Peak 4123.72M) | Time:00:01.07 | Mem:1312.00M, Peak:1312.00M | Extended, Completo | Updating Images | Loading Mona_Camisa_BaseColor.png
+Fra:1 Mem:4059.71M (Peak 4123.72M) | Time:00:01.07 | Mem:1328.00M, Peak:1328.00M | Extended, Completo | Updating Images | Loading Mona_Chaleco_Normal.png
+Fra:1 Mem:4043.70M (Peak 4123.72M) | Time:00:01.08 | Mem:1344.00M, Peak:1344.00M | Extended, Completo | Updating Images | Loading Mona_Chaleco_Metalness.png
+Fra:1 Mem:4155.73M (Peak 4187.70M) | Time:00:01.09 | Mem:1408.00M, Peak:1408.00M | Extended, Completo | Updating Images | Loading Mona_Chaleco_Roughness.png
+Fra:1 Mem:4203.73M (Peak 4203.73M) | Time:00:01.09 | Mem:1424.00M, Peak:1424.00M | Extended, Completo | Updating Images | Loading BaseLowPoly2_RobotAsk_BaseColor.png
+Fra:1 Mem:4187.73M (Peak 4219.74M) | Time:00:01.10 | Mem:1440.00M, Peak:1440.00M | Extended, Completo | Updating Images | Loading Mona_Chaleco_BaseColor.png
+Fra:1 Mem:4331.74M (Peak 4331.74M) | Time:00:01.10 | Mem:1456.00M, Peak:1456.00M | Extended, Completo | Updating Images | Loading Mona_Guantes_Normal.jpg
+Fra:1 Mem:4267.73M (Peak 4395.74M) | Time:00:01.11 | Mem:1472.00M, Peak:1472.00M | Extended, Completo | Updating Images | Loading Mona_Guantes_Metalness.jpg
+Fra:1 Mem:4363.75M (Peak 4395.74M) | Time:00:01.11 | Mem:1488.00M, Peak:1488.00M | Extended, Completo | Updating Images | Loading Mona_Guantes_Roughness.jpg
+Fra:1 Mem:4427.75M (Peak 4427.75M) | Time:00:01.11 | Mem:1504.00M, Peak:1504.00M | Extended, Completo | Updating Images | Loading Mona_Guantes_BaseColor.jpg
+Fra:1 Mem:5067.77M (Peak 5067.77M) | Time:00:01.12 | Mem:1520.00M, Peak:1520.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Robot50s_Metalness.png
+Fra:1 Mem:4891.75M (Peak 5083.77M) | Time:00:01.14 | Mem:1584.00M, Peak:1584.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Robot50s_Roughness.png
+Fra:1 Mem:5131.77M (Peak 5227.76M) | Time:00:01.16 | Mem:1648.00M, Peak:1648.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Robot50s_Normal.png
+Fra:1 Mem:4795.74M (Peak 5227.76M) | Time:00:01.16 | Mem:1664.00M, Peak:1664.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Robot50s_Emissive.png
+Fra:1 Mem:4811.76M (Peak 5227.76M) | Time:00:01.17 | Mem:1680.00M, Peak:1680.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Robot50s_BaseColor.png
+Fra:1 Mem:4955.76M (Peak 5227.76M) | Time:00:01.18 | Mem:1696.00M, Peak:1696.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_RadioNes_Metalness.png
+Fra:1 Mem:4811.73M (Peak 5227.76M) | Time:00:01.20 | Mem:1760.00M, Peak:1760.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_RadioNes_Roughness.png
+Fra:1 Mem:4571.74M (Peak 5227.76M) | Time:00:01.21 | Mem:1824.00M, Peak:1824.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_RadioNes_Normal.png
+Fra:1 Mem:4619.74M (Peak 5227.76M) | Time:00:01.21 | Mem:1840.00M, Peak:1840.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_RadioNes_Emissive.png
+Fra:1 Mem:4635.72M (Peak 5227.76M) | Time:00:01.22 | Mem:1904.00M, Peak:1904.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_RadioNes_BaseColor.png
+Fra:1 Mem:4683.74M (Peak 5227.76M) | Time:00:01.23 | Mem:1968.00M, Peak:1968.00M | Extended, Completo | Updating Images | Loading CristalesLP_Cristales_Normal.png
+Fra:1 Mem:4699.73M (Peak 5227.76M) | Time:00:01.23 | Mem:1984.00M, Peak:1984.00M | Extended, Completo | Updating Images | Loading CristalesLP_Cristales_Roughness.png
+Fra:1 Mem:4459.72M (Peak 5227.76M) | Time:00:01.24 | Mem:2000.00M, Peak:2000.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Pesa_Metalness.png
+Fra:1 Mem:4475.72M (Peak 5227.76M) | Time:00:01.24 | Mem:2064.00M, Peak:2064.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Pesa_Roughness.png
+Fra:1 Mem:4427.70M (Peak 5227.76M) | Time:00:01.24 | Mem:2080.00M, Peak:2080.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Pesa_Normal.png
+Fra:1 Mem:4571.71M (Peak 5227.76M) | Time:00:01.25 | Mem:2144.00M, Peak:2144.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_Pesa_BaseColor.png
+Fra:1 Mem:4747.73M (Peak 5227.76M) | Time:00:01.26 | Mem:2208.00M, Peak:2208.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_GatoPC_Normal.png
+Fra:1 Mem:4603.73M (Peak 5227.76M) | Time:00:01.27 | Mem:2272.00M, Peak:2272.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_GatoPC_Metalness.png
+Fra:1 Mem:4619.73M (Peak 5227.76M) | Time:00:01.28 | Mem:2288.00M, Peak:2288.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_GatoPC_Roughness.png
+Fra:1 Mem:4635.73M (Peak 5227.76M) | Time:00:01.28 | Mem:2304.00M, Peak:2304.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_GatoPC_Emissive.png
+Fra:1 Mem:4715.73M (Peak 5227.76M) | Time:00:01.28 | Mem:2320.00M, Peak:2320.00M | Extended, Completo | Updating Images | Loading BaseLowPoly2_RobotAsk_Emissive.png
+Fra:1 Mem:4731.74M (Peak 5227.76M) | Time:00:01.29 | Mem:2384.00M, Peak:2384.00M | Extended, Completo | Updating Images | Loading TodoLowPoly_GatoPC_BaseColor.png
+Fra:1 Mem:4715.75M (Peak 5227.76M) | Time:00:01.30 | Mem:2448.00M, Peak:2448.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_CablesyTela_Metalness.png
+Fra:1 Mem:4731.77M (Peak 5227.76M) | Time:00:01.30 | Mem:2464.00M, Peak:2464.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_CablesyTela_Roughness.png
+Fra:1 Mem:4731.76M (Peak 5227.76M) | Time:00:01.31 | Mem:2480.00M, Peak:2480.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_CablesyTela_Normal.png
+Fra:1 Mem:4635.74M (Peak 5227.76M) | Time:00:01.32 | Mem:2544.00M, Peak:2544.00M | Extended, Completo | Updating Images | Loading BaseLowPoly_CablesyTela_BaseColor.png
+Fra:1 Mem:4651.74M (Peak 5227.76M) | Time:00:01.32 | Mem:2560.00M, Peak:2560.00M | Extended, Completo | Updating Images | Loading BaseLowPoly2_RobotAsk_Metallic.png
+Fra:1 Mem:4731.74M (Peak 5227.76M) | Time:00:01.32 | Mem:2576.00M, Peak:2576.00M | Extended, Completo | Updating Images | Loading BaseLowPoly2_RobotAsk_Roughness.png
+Fra:1 Mem:4763.74M (Peak 5227.76M) | Time:00:01.32 | Mem:2592.00M, Peak:2592.00M | Extended, Completo | Updating Images | Loading BaseLowPoly2_RobotAsk_Normal.png
+Fra:1 Mem:4661.46M (Peak 5227.76M) | Time:00:01.39 | Mem:3024.00M, Peak:3024.00M | Extended, Completo | Waiting for render to start
+Fra:1 Mem:4661.46M (Peak 5227.76M) | Time:00:01.39 | Mem:3024.00M, Peak:3024.00M | Extended, Completo | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:4661.46M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.02M, Peak:3024.02M | Extended, Completo | Updating Scene
+Fra:1 Mem:4661.46M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.02M, Peak:3024.02M | Extended, Completo | Updating Shaders
+Fra:1 Mem:4661.59M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Procedurals
+Fra:1 Mem:4661.59M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Background
+Fra:1 Mem:4661.59M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Camera
+Fra:1 Mem:4661.59M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Meshes Flags
+Fra:1 Mem:4661.59M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Objects
+Fra:1 Mem:4661.59M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Objects | Copying Transformations to device
+Fra:1 Mem:4661.60M (Peak 5227.76M) | Time:00:01.42 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Objects | Applying Static Transformations
+Fra:1 Mem:4661.60M (Peak 5227.76M) | Time:00:01.43 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Particle Systems
+Fra:1 Mem:4661.60M (Peak 5227.76M) | Time:00:01.43 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:4661.60M (Peak 5227.76M) | Time:00:01.43 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Meshes
+Fra:1 Mem:4765.20M (Peak 5227.76M) | Time:00:01.49 | Mem:3024.08M, Peak:3024.08M | Extended, Completo | Updating Mesh | Computing attributes
+Fra:1 Mem:5270.49M (Peak 5270.49M) | Time:00:01.56 | Mem:3024.09M, Peak:3024.09M | Extended, Completo | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:5270.47M (Peak 5270.49M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Furniture 1/4 | Building BVH
+Fra:1 Mem:5270.55M (Peak 5270.55M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Body 4/4 | Building BVH
+Fra:1 Mem:5274.39M (Peak 5274.39M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 2/4 | Building BVH
+Fra:1 Mem:5278.95M (Peak 5278.95M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 2/4 | Packing BVH triangles and strands
+Fra:1 Mem:5278.95M (Peak 5278.95M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 2/4 | Packing BVH nodes
+Fra:1 Mem:5281.01M (Peak 5281.01M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Building BVH
+Fra:1 Mem:5431.01M (Peak 5431.01M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Packing BVH triangles and strands
+Fra:1 Mem:5431.33M (Peak 5431.33M) | Time:00:01.59 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Packing BVH nodes
+Fra:1 Mem:5428.77M (Peak 5432.36M) | Time:00:01.60 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Packing BVH triangles and strands
+Fra:1 Mem:5429.15M (Peak 5432.36M) | Time:00:01.60 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Packing BVH nodes
+Fra:1 Mem:5463.66M (Peak 5463.66M) | Time:00:02.00 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Packing BVH triangles and strands
+Fra:1 Mem:5476.16M (Peak 5476.16M) | Time:00:02.00 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Geometry BVH Cube.006 3/4 | Packing BVH nodes
+Fra:1 Mem:5576.16M (Peak 5726.16M) | Time:00:02.38 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Scene BVH | Building
+Fra:1 Mem:5576.16M (Peak 5726.16M) | Time:00:02.38 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Scene BVH | Building BVH
+Fra:1 Mem:5954.08M (Peak 5954.08M) | Time:00:02.82 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Scene BVH | Building BVH 13%, duplicates 0%
+Fra:1 Mem:5954.08M (Peak 5954.08M) | Time:00:03.02 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:5979.28M (Peak 5979.28M) | Time:00:03.03 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:6586.96M (Peak 6586.96M) | Time:00:03.30 | Mem:3529.36M, Peak:3529.36M | Extended, Completo | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:6586.96M (Peak 6586.96M) | Time:00:03.33 | Mem:4034.75M, Peak:4034.75M | Extended, Completo | Updating Mesh | Computing normals
+Fra:1 Mem:6820.49M (Peak 6820.49M) | Time:00:03.36 | Mem:4034.75M, Peak:4034.75M | Extended, Completo | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:6820.49M (Peak 6820.49M) | Time:00:03.38 | Mem:4268.29M, Peak:4268.29M | Extended, Completo | Updating Mesh | Copying Curves to device
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.38M, Peak:4343.38M | Extended, Completo | Updating Objects Flags
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.38M, Peak:4343.38M | Extended, Completo | Updating Primitive Offsets
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.38M, Peak:4343.38M | Extended, Completo | Updating Images
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.38M, Peak:4343.38M | Extended, Completo | Updating Camera Volume
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.38M, Peak:4343.38M | Extended, Completo | Updating Lookup Tables
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.47M, Peak:4343.47M | Extended, Completo | Updating Lights
+Fra:1 Mem:6895.59M (Peak 6895.59M) | Time:00:03.39 | Mem:4343.47M, Peak:4343.47M | Extended, Completo | Updating Lights | Computing distribution
+Fra:1 Mem:6899.08M (Peak 6899.08M) | Time:00:03.40 | Mem:4346.96M, Peak:4346.96M | Extended, Completo | Updating Integrator
+Fra:1 Mem:6931.08M (Peak 6931.08M) | Time:00:03.40 | Mem:4378.96M, Peak:4378.96M | Extended, Completo | Updating Film
+Fra:1 Mem:6931.09M (Peak 6931.09M) | Time:00:03.40 | Mem:4378.88M, Peak:4378.96M | Extended, Completo | Updating Lookup Tables
+Fra:1 Mem:6931.09M (Peak 6931.09M) | Time:00:03.40 | Mem:4378.97M, Peak:4378.97M | Extended, Completo | Updating Baking
+Fra:1 Mem:6931.09M (Peak 6931.09M) | Time:00:03.40 | Mem:4378.97M, Peak:4378.97M | Extended, Completo | Updating Device | Writing constant memory
+Fra:1 Mem:6937.48M (Peak 6937.48M) | Time:00:03.41 | Mem:4965.48M, Peak:4965.48M | Extended, Completo | Sample 0/16777216
+Fra:1 Mem:7021.40M (Peak 7021.40M) | Time:00:03.50 | Remaining:00:29.90 | Mem:5049.40M, Peak:5049.40M | Extended, Completo | Sample 1/16777216
+Fra:1 Mem:7021.43M (Peak 7021.43M) | Time:00:20.87 | Remaining:00:12.53 | Mem:5049.43M, Peak:5049.43M | Extended, Completo | Sample 257/16777216
+Fra:1 Mem:7021.43M (Peak 7021.43M) | Time:00:33.63 | Mem:5049.43M, Peak:5049.43M | Extended, Completo | Sample 442/16777216
+Fra:1 Mem:7105.36M (Peak 7219.81M) | Time:00:33.67 | Mem:5049.43M, Peak:5049.43M | Extended, Completo | Sample 0/16777216
+Fra:1 Mem:7105.36M (Peak 7219.81M) | Time:00:33.67 | Mem:5049.43M, Peak:5049.43M | Extended, Completo | Finished
+Benchmark JSON Data: {"timestamp": "2026-11-01T22:41:13.575208+00:00", "blender_version": {"version": "4.2.0", "build_date": "2024-07-16", "build_time": "06:27:02", "build_commit_date": "2024-07-16", "build_commit_time": "06:20", "build_hash": "a51f293548ad"}, "system_info": {"bitness": "64bit", "machine": "x86_64", "system": "Linux", "dist_name": "Ubuntu", "dist_version": "24.04", "devices": [{"name": "13th Gen Intel Core i7-13700K", "type": "CPU"}, {"name": "NVIDIA GeForce RTX 3080", "type": "OPTIX", "is_display": false}], "num_cpu_sockets": 1, "num_cpu_cores": 16, "num_cpu_threads": 24}, "device_info": {"device_type": "CUDA", "compute_devices": [{"name": "NVIDIA GeForce RTX 3080", "type": "CUDA", "is_display": false}], "num_cpu_threads": 24}}
+
+Blender quit
+
+--- stderr ---
+I1101 22:40:39.676712 106528 device.cpp:36] CUEW initialization succeeded
+I1101 22:40:39.676749 106528 device.cpp:38] Found precompiled kernels
+I1101 22:40:39.712796 106528 device.cpp:200] Device has compute preemption or is not used for display.
+I1101 22:40:39.712808 106528 device.cpp:203] Added device "NVIDIA GeForce RTX 3080" with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00".
+I1101 22:40:39.712812 106528 device.cpp:206] Device with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00" supports OpenImageDenoise.
+I1101 22:40:39.713915 106528 device.cpp:63] HIPEW initialization failed: Error opening HIP dynamic library
+I1101 22:40:39.928558 106528 device.cpp:541] Mapped host memory limit set to 29,100,580,864 bytes. (27.10G)
+I1101 22:40:39.989910 106528 device_impl.cpp:63] Using AVX2 CPU kernels.
+I1101 22:40:40.369570 106528 sync.cpp:297] Total time spent synchronizing data: 0.379347
+I1101 22:40:40.392638 106555 colorspace.cpp:140] Colorspace Non-Color is no-op
+I1101 22:40:40.423027 106567 colorspace.cpp:145] Colorspace sRGB is sRGB
+I1101 22:40:41.110142 106587 film.cpp:592] Effective scene passes:
+I1101 22:40:41.110153 106587 film.cpp:594] - type: combined, name: "Combined", mode: NOISY, is_written: True
+I1101 22:40:41.110160 106587 film.cpp:594] - type: emission, name: "Emit", mode: NOISY, is_written: True
+I1101 22:40:41.110163 106587 film.cpp:594] - type: ao, name: "AO", mode: NOISY, is_written: True
+I1101 22:40:41.110165 106587 film.cpp:594] - type: depth, name: "Depth", mode: NOISY, is_written: True
+I1101 22:40:41.110204 106587 scene.cpp:589] Requested features:
+I1101 22:40:41.110206 106587 scene.cpp:590] Use BSDF True
+I1101 22:40:41.110208 106587 scene.cpp:591] Use Emission True
+I1101 22:40:41.110210 106587 scene.cpp:593] Use Volume False
+I1101 22:40:41.110212 106587 scene.cpp:594] Use Bump False
+I1101 22:40:41.110214 106587 scene.cpp:595] Use Voronoi False
+I1101 22:40:41.110216 106587 scene.cpp:597] Use Shader Raytrace False
+I1101 22:40:41.110219 106587 scene.cpp:599] Use MNEE False
+I1101 22:40:41.110219 106587 scene.cpp:600] Use Transparent True
+I1101 22:40:41.110221 106587 scene.cpp:602] Use Denoising False
+I1101 22:40:41.110224 106587 scene.cpp:603] Use Path Tracing True
+I1101 22:40:41.110225 106587 scene.cpp:605] Use Hair True
+I1101 22:40:41.110227 106587 scene.cpp:606] Use Pointclouds False
+I1101 22:40:41.110229 106587 scene.cpp:608] Use Object Motion False
+I1101 22:40:41.110231 106587 scene.cpp:610] Use Baking False
+I1101 22:40:41.110234 106587 scene.cpp:611] Use Subsurface True
+I1101 22:40:41.110234 106587 scene.cpp:612] Use Volume False
+I1101 22:40:41.110236 106587 scene.cpp:613] Use Patch Evaluation False
+I1101 22:40:41.110239 106587 scene.cpp:615] Use Shadow Catcher False
+I1101 22:40:41.110246 106587 device_impl.cpp:260] Testing for pre-compiled kernel /mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core/cycles/lib/kernel_sm_86.cubin.zst.
+I1101 22:40:41.110260 106587 device_impl.cpp:262] Using precompiled kernel.
+I1101 22:40:41.141047 106587 device_impl.cpp:503] Local memory reserved 671,088,640 bytes. (640.00M)
+I1101 22:40:41.141165 106587 svm.cpp:69] Total 59 shaders.
+I1101 22:40:41.141525 106587 svm.cpp:145] Shader manager updated 59 shaders in 0.000360012 seconds.
+I1101 22:40:41.141556 106587 object.cpp:781] Total 37 objects.
+I1101 22:40:41.146378 106587 particles.cpp:106] Total 0 particle systems.
+I1101 22:40:41.146410 106587 geometry.cpp:719] Total 37 meshes.
+I1101 22:40:42.100710 106587 geometry_bvh.cpp:127] Using BVH2 layout.
+I1101 22:40:43.113133 106587 tables.cpp:39] Total 9 lookup tables.
+I1101 22:40:43.113168 106587 light.cpp:1425] Total 21 lights.
+I1101 22:40:43.113170 106587 light.cpp:264] Background MIS has been disabled.
+I1101 22:40:43.113175 106587 light.cpp:1405] Number of lights sent to the device: 17
+I1101 22:40:43.113502 106587 light.cpp:339] Use light distribution with 229025 emitters.
+I1101 22:40:43.124069 106587 tables.cpp:39] Total 10 lookup tables.
+I1101 22:40:43.124116 106587 scene.cpp:354] System memory statistics after full device sync:
+  Usage: 6,465,939,512 (6.02G)
+  Peak: 6,466,028,600 (6.02G)
+I1101 22:40:43.222621 106587 path_trace.cpp:412] Rendered 1 samples in 0.0960441 seconds (0.0960441 seconds per sample), occupancy: 0.143381
+I1101 22:41:00.594946 106587 path_trace.cpp:412] Rendered 256 samples in 17.3723 seconds (0.0678605 seconds per sample), occupancy: 0.603708
+I1101 22:41:13.349988 106587 path_trace.cpp:412] Rendered 185 samples in 12.755 seconds (0.0689459 seconds per sample), occupancy: 0.60446
+I1101 22:41:13.386374 106587 session.cpp:174] Rendering in main loop is done in 30.26 seconds.
+I1101 22:41:13.386385 106587 session.cpp:175] 
+Full path tracing report
+
+Path tracing on: NVIDIA GeForce RTX 3080 (CUDA) [CUDA_NVIDIA GeForce RTX 3080_0000:01:00]
+
+Render Scheduler Summary
+
+Mode: Headless
+Resolution: 2000x1000
+
+Adaptive sampling:
+  Use: False
+
+Denoiser:
+  Use: False
+
+Time (in seconds):
+                                       Wall              Average
+          Path Tracing            30.223382             0.068379
+        Display Update             0.000002             0.000002
+
+  Total: 30.223384
+
+Rendered 442 samples in 30.259968 seconds
+Average time per sample: 0.068461 seconds
+I1101 22:41:13.386464 106528 session.cpp:479] Total render time: 33.4579
+I1101 22:41:13.386474 106528 session.cpp:480] Render time (without synchronization): 30.2601

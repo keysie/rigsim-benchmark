@@ -1,0 +1,40 @@
+{
+ "cpu": "AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx",
+ "board": "LENOVO LNVNB161216",
+ "bios": "8PCN58WW",
+ "gpus": [
+  "Advanced Micro Devices, Inc. [AMD/ATI] Raven Ridge [Radeon Vega Series / Radeon Vega Mobile Series] [1002:15dd] (rev c4)",
+  "Advanced Micro Devices, Inc. [AMD] Raven/Raven2/Renoir Non-Sensor Fusion Hub KMDF driver [1022:15e6]"
+ ],
+ "ram_gib": 7.3,
+ "dimms": [
+  {
+   "Locator": "DIMM 0",
+   "Size": "4 GB",
+   "Type": "DDR4",
+   "Speed": "2400 MT/s",
+   "Configured Memory Speed": "2400 MT/s",
+   "Rank": "1",
+   "Manufacturer": "Samsung",
+   "Part Number": "M471A5244CB0-CTD    "
+  },
+  {
+   "Locator": "DIMM 0",
+   "Size": "4 GB",
+   "Type": "DDR4",
+   "Speed": "2400 MT/s",
+   "Configured Memory Speed": "2400 MT/s",
+   "Rank": "1",
+   "Manufacturer": "Samsung",
+   "Part Number": "M471A5244CB0-CTD    "
+  }
+ ],
+ "cpufreq": {
+  "cpuinfo_min_freq": "1600000",
+  "cpuinfo_max_freq": "2000000",
+  "scaling_driver": "acpi-cpufreq",
+  "scaling_governor": "schedutil"
+ },
+ "secure_boot": true,
+ "kernel": "7.0.0-42-generic"
+}

@@ -1,0 +1,40 @@
+
+Platform: rusticl
+  Device: AMD Radeon Vega 8 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-42-generic)
+    Driver version  : 25.2.8-0ubuntu0.24.04.4 (Linux x64)
+    Compute units   : 8
+    Clock frequency : 1100 MHz
+
+    Global memory bandwidth (GBPS)
+      float   : 27.23
+      float2  : 28.41
+      float4  : 29.73
+      float8  : 29.17
+      float16 : 31.20
+
+    Single-precision compute (GFLOPS)
+      float   : 928.61
+      float2  : 963.94
+      float4  : 965.55
+      float8  : 955.51
+      float16 : 932.77
+
+    Integer compute (GIOPS)
+      int   : 202.78
+      int2  : 201.50
+      int4  : 199.56
+      int8  : 201.11
+      int16 : 201.21
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 10.07
+      enqueueReadBuffer               : 9.63
+      enqueueWriteBuffer non-blocking : 10.16
+      enqueueReadBuffer non-blocking  : 9.71
+      enqueueMapBuffer(for read)      : 1.65
+        memcpy from mapped ptr        : 8.48
+      enqueueUnmap(after write)       : 4.72
+        memcpy to mapped ptr          : 8.26
+
+    Kernel launch latency : 286.42 us
+

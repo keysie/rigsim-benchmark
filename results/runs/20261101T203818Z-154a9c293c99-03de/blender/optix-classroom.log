@@ -1,0 +1,1182 @@
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.001'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.002'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.003'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.004'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.005'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.006'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.007'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.008'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.009'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.010'
+Blender 4.2.0 (hash a51f293548ad built 2024-07-16 06:27:02)
+Read blend: "/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/main.blend"
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/lamps/lamps.blend', '//assets/lamps/lamps.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/chairs/chairs.blend', '//assets/chairs/chairs.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/coatStand/coatStand.blend', '//assets/coatStand/coatStand.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/desks/desks.blend', '//assets/desks/desks.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/dustBin/dustBin.blend', '//assets/dustBin/dustBin.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/radiator/radiator.blend', '//assets/radiator/radiator.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/suitcase/suitcase.blend', '//assets/suitcase/suitcase.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/wallClock/wallClock.blend', '//assets/wallClock/wallClock.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/wastes/wastes.blend', '//assets/wastes/wastes.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/books/books.blend', '//assets/books/books.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/officeSupplies/officeSupplies.blend', '//assets/officeSupplies/officeSupplies.blend', parent '<direct>'
+path: ['/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/benchmark-scripts/2881a9f160a24ccd4282e43b861bd727e33562a4a230401343b590d10e890272/blender_benchmark_script-3.1.2', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/startup', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python311.zip', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/lib-dynload', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/site-packages', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/freestyle/modules', '/mnt/rigsim/seed/blender/home/.config/blender/4.2/scripts/addons/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core']
+Time limit is set to 30.0
+Warning: region type 4 missing in space type "Info" (id: 7) - removing region
+Fra:1 Mem:111.24M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | zapBook
+Fra:1 Mem:111.49M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | pages
+Fra:1 Mem:111.57M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box013
+Fra:1 Mem:111.60M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane007.003
+Fra:1 Mem:111.68M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box013.001
+Fra:1 Mem:111.72M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane007.004
+Fra:1 Mem:111.79M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | door_window
+Fra:1 Mem:111.80M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.011
+Fra:1 Mem:111.80M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | porte.001
+Fra:1 Mem:111.83M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.027
+Fra:1 Mem:111.84M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line291.005
+Fra:1 Mem:111.93M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box25.002
+Fra:1 Mem:111.95M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | boiteLarge
+Fra:1 Mem:113.59M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wallSwitch
+Fra:1 Mem:113.60M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.003
+Fra:1 Mem:113.69M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.002
+Fra:1 Mem:113.78M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.000
+Fra:1 Mem:113.77M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.001
+Fra:1 Mem:113.76M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.002
+Fra:1 Mem:113.80M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.003
+Fra:1 Mem:113.83M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.004
+Fra:1 Mem:113.86M (Peak 117.95M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.005
+Fra:1 Mem:114.00M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Sphere03.001
+Fra:1 Mem:114.72M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | crayonPapier
+Fra:1 Mem:115.10M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | whiteChalk
+Fra:1 Mem:115.11M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | corkboard.001
+Fra:1 Mem:115.11M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | thumbtack.000
+Fra:1 Mem:115.14M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.006
+Fra:1 Mem:115.16M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.003
+Fra:1 Mem:115.18M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.004
+Fra:1 Mem:115.20M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.005
+Fra:1 Mem:115.23M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.008
+Fra:1 Mem:115.25M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | post-it
+Fra:1 Mem:115.33M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | verticalPipe
+Fra:1 Mem:115.36M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.004
+Fra:1 Mem:116.15M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.025
+Fra:1 Mem:116.43M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.026
+Fra:1 Mem:116.60M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.027
+Fra:1 Mem:117.04M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.028
+Fra:1 Mem:117.34M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | coat 1
+Fra:1 Mem:117.34M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBo1
+Fra:1 Mem:117.36M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox
+Fra:1 Mem:117.38M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCy1
+Fra:1 Mem:117.40M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.029
+Fra:1 Mem:117.43M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.030
+Fra:1 Mem:117.45M (Peak 117.95M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.031
+Fra:1 Mem:122.76M (Peak 122.76M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kofr03_kof.001
+Fra:1 Mem:122.89M (Peak 122.89M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | KOFR_TEXT
+Fra:1 Mem:123.29M (Peak 123.29M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k
+Fra:1 Mem:123.29M (Peak 123.29M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.001
+Fra:1 Mem:124.50M (Peak 124.50M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.002
+Fra:1 Mem:124.50M (Peak 124.50M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.004
+Fra:1 Mem:124.50M (Peak 124.50M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.006
+Fra:1 Mem:124.50M (Peak 124.50M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line13
+Fra:1 Mem:124.51M (Peak 124.51M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line14
+Fra:1 Mem:124.52M (Peak 124.52M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line15
+Fra:1 Mem:124.53M (Peak 124.53M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line16.001
+Fra:1 Mem:125.39M (Peak 125.39M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line18
+Fra:1 Mem:125.44M (Peak 125.44M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Loft01
+Fra:1 Mem:125.86M (Peak 125.86M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Loft02
+Fra:1 Mem:125.98M (Peak 125.98M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.011
+Fra:1 Mem:128.46M (Peak 128.54M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.012
+Fra:1 Mem:129.67M (Peak 129.67M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.013
+Fra:1 Mem:129.67M (Peak 129.67M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.014
+Fra:1 Mem:130.86M (Peak 130.86M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.017
+Fra:1 Mem:130.92M (Peak 130.92M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder
+Fra:1 Mem:130.99M (Peak 130.99M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.056
+Fra:1 Mem:131.31M (Peak 131.31M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.057
+Fra:1 Mem:131.66M (Peak 131.66M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Paper
+Fra:1 Mem:137.09M (Peak 137.09M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | clock_wood
+Fra:1 Mem:138.14M (Peak 138.14M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | background
+Fra:1 Mem:138.16M (Peak 138.16M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Axe
+Fra:1 Mem:138.19M (Peak 138.19M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | glass
+Fra:1 Mem:138.41M (Peak 138.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | bigHand
+Fra:1 Mem:138.45M (Peak 138.45M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | smallHand
+Fra:1 Mem:138.49M (Peak 138.49M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | number
+Fra:1 Mem:142.33M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodBaseboard
+Fra:1 Mem:142.33M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | lettersPlank
+Fra:1 Mem:142.35M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | lettersPlank.002
+Fra:1 Mem:142.36M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodBase
+Fra:1 Mem:142.37M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | plank
+Fra:1 Mem:142.38M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Text
+Fra:1 Mem:142.41M (Peak 142.41M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | blackBoard
+Fra:1 Mem:142.44M (Peak 142.44M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox01
+Fra:1 Mem:143.31M (Peak 143.31M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox01.001
+Fra:1 Mem:143.22M (Peak 143.31M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line03
+Fra:1 Mem:143.72M (Peak 143.72M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line04
+Fra:1 Mem:143.87M (Peak 143.87M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox065.001
+Fra:1 Mem:143.88M (Peak 143.88M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.001
+Fra:1 Mem:143.71M (Peak 143.88M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | focus
+Fra:1 Mem:145.98M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box25.001
+Fra:1 Mem:145.98M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.025
+Fra:1 Mem:145.99M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | pipe
+Fra:1 Mem:146.22M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | hallWindow
+Fra:1 Mem:146.30M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.002
+Fra:1 Mem:146.51M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.004
+Fra:1 Mem:146.59M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.005
+Fra:1 Mem:146.78M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.007
+Fra:1 Mem:146.89M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | pipe.001
+Fra:1 Mem:146.98M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.005
+Fra:1 Mem:147.18M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.006
+Fra:1 Mem:147.28M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.007
+Fra:1 Mem:147.52M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.008
+Fra:1 Mem:148.46M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceiling_pipeHang
+Fra:1 Mem:148.46M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceilingAirVent.005
+Fra:1 Mem:148.47M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall
+Fra:1 Mem:148.47M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.009
+Fra:1 Mem:148.48M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wallPlug.001
+Fra:1 Mem:148.50M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.009
+Fra:1 Mem:148.73M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.011
+Fra:1 Mem:148.91M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.017
+Fra:1 Mem:148.51M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.012
+Fra:1 Mem:149.70M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.014
+Fra:1 Mem:149.74M (Peak 149.99M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.015
+Fra:1 Mem:150.30M (Peak 150.30M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | whitePages
+Fra:1 Mem:150.40M (Peak 150.40M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | paperClip.001
+Fra:1 Mem:151.07M (Peak 151.07M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | paperClip
+Fra:1 Mem:151.16M (Peak 151.16M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.008
+Fra:1 Mem:151.28M (Peak 151.28M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | paperClip.002
+Fra:1 Mem:151.36M (Peak 151.36M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.009
+Fra:1 Mem:151.35M (Peak 151.36M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | thumbtack.001
+Fra:1 Mem:151.73M (Peak 151.73M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | thumbtack.002
+Fra:1 Mem:151.85M (Peak 151.85M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | thumbtack.003
+Fra:1 Mem:151.92M (Peak 151.92M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.010
+Fra:1 Mem:151.94M (Peak 151.94M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | blackBoardLamp
+Fra:1 Mem:151.91M (Peak 151.94M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceiling
+Fra:1 Mem:151.95M (Peak 151.97M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | beams
+Fra:1 Mem:152.50M (Peak 152.50M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.011
+Fra:1 Mem:153.03M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line263.002
+Fra:1 Mem:150.15M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line264.002
+Fra:1 Mem:150.09M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line265.002
+Fra:1 Mem:149.90M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.016
+Fra:1 Mem:150.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.018
+Fra:1 Mem:151.05M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Rectangl16.002
+Fra:1 Mem:151.08M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box280.002
+Fra:1 Mem:151.23M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box295.002
+Fra:1 Mem:151.23M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box296.002
+Fra:1 Mem:151.23M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box297.002
+Fra:1 Mem:151.46M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box298.002
+Fra:1 Mem:151.46M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box299.002
+Fra:1 Mem:151.46M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.024
+Fra:1 Mem:151.48M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.033
+Fra:1 Mem:151.50M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder813.000
+Fra:1 Mem:151.61M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder813.001
+Fra:1 Mem:151.89M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder813.003
+Fra:1 Mem:152.21M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line121.002
+Fra:1 Mem:152.23M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line122.002
+Fra:1 Mem:152.25M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line136.002
+Fra:1 Mem:152.27M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line137.002
+Fra:1 Mem:152.30M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.003
+Fra:1 Mem:152.52M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.004
+Fra:1 Mem:152.78M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Sphere123.003
+Fra:1 Mem:152.80M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.055
+Fra:1 Mem:152.80M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | venitianBlind.001
+Fra:1 Mem:152.80M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.019
+Fra:1 Mem:152.81M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.018
+Fra:1 Mem:152.81M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.054
+Fra:1 Mem:152.81M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.053
+Fra:1 Mem:152.81M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.052
+Fra:1 Mem:152.81M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.051
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.050
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.049
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.048
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.047
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.046
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.045
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.044
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.043
+Fra:1 Mem:152.82M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.042
+Fra:1 Mem:152.83M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.041
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.040
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.039
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.038
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.037
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.036
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.035
+Fra:1 Mem:152.84M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.034
+Fra:1 Mem:152.85M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.033
+Fra:1 Mem:152.85M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.032
+Fra:1 Mem:152.85M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.031
+Fra:1 Mem:152.85M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.030
+Fra:1 Mem:152.85M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.029
+Fra:1 Mem:152.85M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.028
+Fra:1 Mem:152.86M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.027
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.026
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.025
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.024
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.023
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.022
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.021
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.020
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.019
+Fra:1 Mem:152.87M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.018
+Fra:1 Mem:152.88M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.017
+Fra:1 Mem:152.88M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.016
+Fra:1 Mem:152.88M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.015
+Fra:1 Mem:152.88M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.014
+Fra:1 Mem:152.89M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.007
+Fra:1 Mem:152.89M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.013
+Fra:1 Mem:152.89M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.012
+Fra:1 Mem:152.89M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.011
+Fra:1 Mem:152.90M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.010
+Fra:1 Mem:152.90M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.009
+Fra:1 Mem:152.90M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.008
+Fra:1 Mem:152.90M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.020
+Fra:1 Mem:152.90M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.008
+Fra:1 Mem:152.94M (Peak 153.03M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.005
+Fra:1 Mem:153.11M (Peak 153.11M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.002
+Fra:1 Mem:153.21M (Peak 153.21M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.006
+Fra:1 Mem:153.78M (Peak 153.78M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.002
+Fra:1 Mem:153.82M (Peak 153.82M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.000
+Fra:1 Mem:153.85M (Peak 153.85M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.001
+Fra:1 Mem:153.87M (Peak 153.87M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.003
+Fra:1 Mem:153.87M (Peak 153.87M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.004
+Fra:1 Mem:153.87M (Peak 153.87M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.005
+Fra:1 Mem:153.87M (Peak 153.87M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.021
+Fra:1 Mem:153.87M (Peak 153.87M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | windows
+Fra:1 Mem:153.97M (Peak 153.97M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.003
+Fra:1 Mem:154.04M (Peak 154.04M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.002
+Fra:1 Mem:154.08M (Peak 154.08M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | BezierCurve.001
+Fra:1 Mem:154.07M (Peak 154.08M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.006
+Fra:1 Mem:154.98M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder932.000
+Fra:1 Mem:154.99M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder935.000
+Fra:1 Mem:154.99M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder938.000
+Fra:1 Mem:155.03M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder939.000
+Fra:1 Mem:155.03M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder941.000
+Fra:1 Mem:155.08M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Initializing
+Fra:1 Mem:132.51M (Peak 155.09M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Updating Images | Loading checker
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.17 | Mem:16.00M, Peak:16.00M | _mainScene, interior | Waiting for render to start
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.17 | Mem:16.00M, Peak:16.00M | _mainScene, interior | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.21 | Mem:16.02M, Peak:16.02M | _mainScene, interior | Updating Scene
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.21 | Mem:16.02M, Peak:16.02M | _mainScene, interior | Updating Shaders
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.22 | Mem:16.30M, Peak:16.30M | _mainScene, interior | Updating Procedurals
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.22 | Mem:16.30M, Peak:16.30M | _mainScene, interior | Updating Background
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.22 | Mem:16.30M, Peak:16.30M | _mainScene, interior | Updating Camera
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.22 | Mem:16.30M, Peak:16.30M | _mainScene, interior | Updating Meshes Flags
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.22 | Mem:16.30M, Peak:16.30M | _mainScene, interior | Updating Objects
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.22 | Mem:16.30M, Peak:16.30M | _mainScene, interior | Updating Objects | Copying Transformations to device
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.22 | Mem:16.49M, Peak:16.49M | _mainScene, interior | Updating Objects | Applying Static Transformations
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.22 | Mem:16.49M, Peak:16.49M | _mainScene, interior | Updating Particle Systems
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.22 | Mem:16.49M, Peak:16.49M | _mainScene, interior | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.22 | Mem:16.49M, Peak:16.49M | _mainScene, interior | Updating Meshes
+Fra:1 Mem:131.68M (Peak 180.51M) | Time:00:00.23 | Mem:16.49M, Peak:16.49M | _mainScene, interior | Updating Mesh | Computing attributes
+Fra:1 Mem:142.10M (Peak 180.51M) | Time:00:00.23 | Mem:16.51M, Peak:16.51M | _mainScene, interior | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.23 | Mem:26.84M, Peak:26.84M | _mainScene, interior | Updating Geometry BVH Cylinder941.000 260/260 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.23 | Mem:26.84M, Peak:26.84M | _mainScene, interior | Updating Geometry BVH Cylinder941.000 260/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.23 | Mem:26.85M, Peak:26.85M | _mainScene, interior | Updating Geometry BVH Plane007.004 1/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.23 | Mem:26.85M, Peak:26.85M | _mainScene, interior | Updating Geometry BVH Plane007.001 2/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.10M (Peak 180.51M) | Time:00:00.23 | Mem:26.92M, Peak:26.92M | _mainScene, interior | Updating Geometry BVH Box013 3/260 | Building BVH
+Fra:1 Mem:142.10M (Peak 180.51M) | Time:00:00.23 | Mem:26.92M, Peak:26.92M | _mainScene, interior | Updating Geometry BVH Plane007.003 6/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.13M (Peak 180.51M) | Time:00:00.23 | Mem:26.95M, Peak:26.95M | _mainScene, interior | Updating Geometry BVH Cube.003 7/260 | Building BVH
+Fra:1 Mem:142.13M (Peak 180.51M) | Time:00:00.23 | Mem:26.95M, Peak:26.95M | _mainScene, interior | Updating Geometry BVH Cube.003 7/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.95M, Peak:26.95M | _mainScene, interior | Updating Geometry BVH Box309.002 8/260 | Building BVH
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.95M, Peak:26.95M | _mainScene, interior | Updating Geometry BVH Box309.002 8/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.96M, Peak:26.96M | _mainScene, interior | Updating Geometry BVH Box21.002 9/260 | Building BVH
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.96M, Peak:26.96M | _mainScene, interior | Updating Geometry BVH Box21.002 9/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Plane.009 11/260 | Building BVH
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Box25 18/260 | Building BVH
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Cylinder025.003 21/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.23M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Cylinder025.002 22/260 | Building BVH
+Fra:1 Mem:142.29M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Line042.001 19/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Cylinder025.000 23/260 | Building BVH
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.23 | Mem:26.99M, Peak:26.99M | _mainScene, interior | Updating Geometry BVH Cylinder025.000 23/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.53M (Peak 180.51M) | Time:00:00.23 | Mem:27.13M, Peak:27.13M | _mainScene, interior | Updating Geometry BVH Cylinder025.001 24/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.70M (Peak 180.51M) | Time:00:00.23 | Mem:27.49M, Peak:27.54M | _mainScene, interior | Updating Geometry BVH Cylinder939.000 259/260 | Building BVH
+Fra:1 Mem:142.70M (Peak 180.51M) | Time:00:00.23 | Mem:27.49M, Peak:27.54M | _mainScene, interior | Updating Geometry BVH Cylinder939.000 259/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.69M (Peak 180.51M) | Time:00:00.23 | Mem:27.52M, Peak:27.54M | _mainScene, interior | Updating Geometry BVH Cylinder04.002 25/260 | Building BVH
+Fra:1 Mem:142.69M (Peak 180.51M) | Time:00:00.23 | Mem:27.53M, Peak:27.54M | _mainScene, interior | Updating Geometry BVH Cylinder04.002 25/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.55M, Peak:27.56M | _mainScene, interior | Updating Geometry BVH Cylinder938.000 258/260 | Building BVH
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.55M, Peak:27.56M | _mainScene, interior | Updating Geometry BVH Cylinder938.000 258/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.56M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Cylinder936.000 257/260 | Building BVH
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.56M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Cylinder936.000 257/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.57M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Cylinder933.000 256/260 | Building BVH
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.57M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Cylinder933.000 256/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.57M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Circle.010 255/260 | Building BVH
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.23 | Mem:27.57M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Circle.010 255/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.23 | Mem:27.83M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Cylinder04.003 26/260 | Building BVH
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.23 | Mem:27.83M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Cylinder04.003 26/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.23 | Mem:27.84M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Cylinder04.004 27/260 | Building BVH
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.23 | Mem:27.84M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Cylinder04.004 27/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.23 | Mem:27.85M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Cylinder04.006 28/260 | Building BVH
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.23 | Mem:27.85M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Cylinder04.006 28/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.86M (Peak 180.51M) | Time:00:00.23 | Mem:27.89M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Sphere03.001 29/260 | Building BVH
+Fra:1 Mem:142.86M (Peak 180.51M) | Time:00:00.23 | Mem:27.89M, Peak:28.57M | _mainScene, interior | Updating Geometry BVH Sphere03.001 29/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.94M (Peak 180.51M) | Time:00:00.23 | Mem:28.09M, Peak:28.65M | _mainScene, interior | Updating Geometry BVH NGfon08.004 30/260 | Building BVH
+Fra:1 Mem:142.94M (Peak 180.51M) | Time:00:00.23 | Mem:28.42M, Peak:28.65M | _mainScene, interior | Updating Geometry BVH NGfon08.004 30/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.23 | Mem:28.21M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.002 31/260 | Building BVH
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.23 | Mem:28.21M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.002 31/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.23 | Mem:28.21M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.003 32/260 | Building BVH
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.23 | Mem:28.21M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.003 32/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.23 | Mem:28.22M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Box01.001 33/260 | Building BVH
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.23 | Mem:28.22M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Box01.001 33/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.24 | Mem:28.22M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH feuille3.003 34/260 | Building BVH
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.24 | Mem:28.33M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH feuille3.003 34/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.24M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Cylinder.005 35/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.24M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Cylinder.005 35/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.25M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane003 36/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.25M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane003 36/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.86M (Peak 180.51M) | Time:00:00.24 | Mem:28.26M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane006 37/260 | Building BVH
+Fra:1 Mem:142.86M (Peak 180.51M) | Time:00:00.24 | Mem:28.28M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane006 37/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.27M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane004 38/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.27M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane004 38/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.24 | Mem:28.29M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane005 39/260 | Building BVH
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.24 | Mem:28.29M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane005 39/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.30M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane002 40/260 | Building BVH
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.30M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane002 40/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.32M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane007 41/260 | Building BVH
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.32M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane007 41/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.33M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH feuille1.001 42/260 | Building BVH
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.33M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH feuille1.001 42/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.34M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH feuille3.002 43/260 | Building BVH
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.34M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH feuille3.002 43/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.36M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane030.001 44/260 | Building BVH
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.24 | Mem:28.36M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane030.001 44/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.37M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane.036 45/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.37M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Plane.036 45/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.39M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.004 46/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.39M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.004 46/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.42M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.002 47/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.24 | Mem:28.46M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Circle.002 47/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.24 | Mem:28.45M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH Cube.020 48/260 | Building BVH
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.24 | Mem:29.02M, Peak:29.02M | _mainScene, interior | Updating Geometry BVH Cube.020 48/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.24 | Mem:28.60M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Mesh.001 254/260 | Building BVH
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.24 | Mem:28.60M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Mesh.001 254/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.24 | Mem:28.61M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Cube.017 49/260 | Building BVH
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.24 | Mem:28.61M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Cube.017 49/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.74M (Peak 180.51M) | Time:00:00.24 | Mem:28.64M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Cube.021 50/260 | Building BVH
+Fra:1 Mem:142.74M (Peak 180.51M) | Time:00:00.24 | Mem:28.64M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Cube.021 50/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.80M (Peak 180.51M) | Time:00:00.24 | Mem:29.10M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Cube.022 51/260 | Building BVH
+Fra:1 Mem:142.80M (Peak 180.51M) | Time:00:00.24 | Mem:29.10M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Cube.022 51/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.66M (Peak 180.51M) | Time:00:00.24 | Mem:29.19M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Plane.029 52/260 | Building BVH
+Fra:1 Mem:142.66M (Peak 180.51M) | Time:00:00.24 | Mem:29.19M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH Plane.029 52/260 | Building OptiX acceleration structure
+Fra:1 Mem:144.24M (Peak 180.51M) | Time:00:00.24 | Mem:28.74M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH ChamferBo1 53/260 | Building BVH
+Fra:1 Mem:144.24M (Peak 180.51M) | Time:00:00.24 | Mem:28.74M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH ChamferBo1 53/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.37M (Peak 180.51M) | Time:00:00.24 | Mem:28.75M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH ChamferBox 54/260 | Building BVH
+Fra:1 Mem:145.37M (Peak 180.51M) | Time:00:00.24 | Mem:28.75M, Peak:29.84M | _mainScene, interior | Updating Geometry BVH ChamferBox 54/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.31M (Peak 180.51M) | Time:00:00.24 | Mem:31.58M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH ChamferCy1 55/260 | Building BVH
+Fra:1 Mem:145.31M (Peak 180.51M) | Time:00:00.24 | Mem:31.60M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH ChamferCy1 55/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.31M (Peak 180.51M) | Time:00:00.24 | Mem:31.65M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Cube.018 56/260 | Building BVH
+Fra:1 Mem:145.31M (Peak 180.51M) | Time:00:00.24 | Mem:31.65M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Cube.018 56/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.30M (Peak 180.51M) | Time:00:00.24 | Mem:31.59M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Cube.019 57/260 | Building BVH
+Fra:1 Mem:145.30M (Peak 180.51M) | Time:00:00.24 | Mem:31.59M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Cube.019 57/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.30M (Peak 180.51M) | Time:00:00.24 | Mem:31.59M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Cube.023 58/260 | Building BVH
+Fra:1 Mem:145.30M (Peak 180.51M) | Time:00:00.24 | Mem:31.59M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Cube.023 58/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.31M (Peak 180.51M) | Time:00:00.24 | Mem:31.61M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kofr03_kof.001 59/260 | Building BVH
+Fra:1 Mem:145.31M (Peak 180.51M) | Time:00:00.24 | Mem:31.61M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kofr03_kof.001 59/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.32M (Peak 180.51M) | Time:00:00.24 | Mem:31.64M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH KOFR_TEXT 60/260 | Building BVH
+Fra:1 Mem:145.32M (Peak 180.51M) | Time:00:00.24 | Mem:31.67M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH KOFR_TEXT 60/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.38M (Peak 180.51M) | Time:00:00.24 | Mem:31.79M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k 61/260 | Building BVH
+Fra:1 Mem:145.38M (Peak 180.51M) | Time:00:00.24 | Mem:31.79M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k 61/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.38M (Peak 180.51M) | Time:00:00.24 | Mem:31.79M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.001 62/260 | Building BVH
+Fra:1 Mem:145.38M (Peak 180.51M) | Time:00:00.24 | Mem:31.79M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.001 62/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.002 63/260 | Building BVH
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.002 63/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.004 64/260 | Building BVH
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.004 64/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.006 65/260 | Building BVH
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH kolesa01_k.006 65/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Line13 66/260 | Building BVH
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Line13 66/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.74M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Line14 67/260 | Building BVH
+Fra:1 Mem:145.39M (Peak 180.51M) | Time:00:00.24 | Mem:31.81M, Peak:31.81M | _mainScene, interior | Updating Geometry BVH Line14 67/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.38M (Peak 180.51M) | Time:00:00.24 | Mem:31.77M, Peak:31.82M | _mainScene, interior | Updating Geometry BVH Line15 68/260 | Building BVH
+Fra:1 Mem:145.38M (Peak 180.51M) | Time:00:00.24 | Mem:31.77M, Peak:31.82M | _mainScene, interior | Updating Geometry BVH Line15 68/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.37M (Peak 180.51M) | Time:00:00.24 | Mem:31.78M, Peak:31.82M | _mainScene, interior | Updating Geometry BVH Line16.001 69/260 | Building BVH
+Fra:1 Mem:145.37M (Peak 180.51M) | Time:00:00.24 | Mem:31.82M, Peak:31.82M | _mainScene, interior | Updating Geometry BVH Line16.001 69/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.24 | Mem:31.78M, Peak:31.82M | _mainScene, interior | Updating Geometry BVH Line18_Lin 70/260 | Building BVH
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.24 | Mem:31.78M, Peak:31.82M | _mainScene, interior | Updating Geometry BVH Line18_Lin 70/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.25 | Mem:31.76M, Peak:31.83M | _mainScene, interior | Updating Geometry BVH Loft01 71/260 | Building BVH
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.25 | Mem:31.76M, Peak:31.83M | _mainScene, interior | Updating Geometry BVH Loft01 71/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.25 | Mem:31.80M, Peak:31.95M | _mainScene, interior | Updating Geometry BVH Loft02 72/260 | Building BVH
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.25 | Mem:31.80M, Peak:31.95M | _mainScene, interior | Updating Geometry BVH Loft02 72/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.25 | Mem:31.89M, Peak:31.95M | _mainScene, interior | Updating Geometry BVH Plane.030 73/260 | Building BVH
+Fra:1 Mem:145.36M (Peak 180.51M) | Time:00:00.25 | Mem:31.89M, Peak:31.95M | _mainScene, interior | Updating Geometry BVH Plane.030 73/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.53M (Peak 180.51M) | Time:00:00.25 | Mem:32.24M, Peak:32.24M | _mainScene, interior | Updating Geometry BVH Plane.031 74/260 | Building BVH
+Fra:1 Mem:145.53M (Peak 180.51M) | Time:00:00.25 | Mem:32.49M, Peak:32.49M | _mainScene, interior | Updating Geometry BVH Plane.031 74/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.56M (Peak 180.51M) | Time:00:00.25 | Mem:32.17M, Peak:32.57M | _mainScene, interior | Updating Geometry BVH Plane.032 75/260 | Building BVH
+Fra:1 Mem:145.56M (Peak 180.51M) | Time:00:00.25 | Mem:32.17M, Peak:32.57M | _mainScene, interior | Updating Geometry BVH Plane.032 75/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.56M (Peak 180.51M) | Time:00:00.25 | Mem:32.17M, Peak:32.57M | _mainScene, interior | Updating Geometry BVH Plane.033 76/260 | Building BVH
+Fra:1 Mem:145.56M (Peak 180.51M) | Time:00:00.25 | Mem:32.17M, Peak:32.57M | _mainScene, interior | Updating Geometry BVH Plane.033 76/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.57M (Peak 180.51M) | Time:00:00.25 | Mem:32.17M, Peak:32.57M | _mainScene, interior | Updating Geometry BVH Circle 253/260 | Building BVH
+Fra:1 Mem:145.57M (Peak 180.51M) | Time:00:00.25 | Mem:32.17M, Peak:32.57M | _mainScene, interior | Updating Geometry BVH Circle 253/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.53M (Peak 180.51M) | Time:00:00.25 | Mem:32.64M, Peak:32.64M | _mainScene, interior | Updating Geometry BVH Plane.037 77/260 | Building BVH
+Fra:1 Mem:145.53M (Peak 180.51M) | Time:00:00.25 | Mem:32.64M, Peak:32.64M | _mainScene, interior | Updating Geometry BVH Plane.037 77/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.46M (Peak 180.51M) | Time:00:00.25 | Mem:32.33M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Mesh 78/260 | Building BVH
+Fra:1 Mem:145.46M (Peak 180.51M) | Time:00:00.25 | Mem:32.51M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Mesh 78/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.41M (Peak 180.51M) | Time:00:00.25 | Mem:32.24M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Cylinder.001 79/260 | Building BVH
+Fra:1 Mem:145.41M (Peak 180.51M) | Time:00:00.25 | Mem:32.24M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Cylinder.001 79/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.47M (Peak 180.51M) | Time:00:00.25 | Mem:32.28M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Cylinder.002 80/260 | Building BVH
+Fra:1 Mem:145.47M (Peak 180.51M) | Time:00:00.25 | Mem:32.29M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Cylinder.002 80/260 | Building OptiX acceleration structure
+Fra:1 Mem:145.54M (Peak 180.51M) | Time:00:00.25 | Mem:32.35M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Mesh.715 81/260 | Building BVH
+Fra:1 Mem:145.54M (Peak 180.51M) | Time:00:00.25 | Mem:32.35M, Peak:32.65M | _mainScene, interior | Updating Geometry BVH Mesh.715 81/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.03M (Peak 180.51M) | Time:00:00.25 | Mem:33.08M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle.006 82/260 | Building BVH
+Fra:1 Mem:143.03M (Peak 180.51M) | Time:00:00.25 | Mem:33.08M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle.006 82/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.25 | Mem:33.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle.003 83/260 | Building BVH
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.25 | Mem:33.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle.003 83/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.25 | Mem:33.28M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle.005 84/260 | Building BVH
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.25 | Mem:33.28M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle.005 84/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.25 | Mem:33.27M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.005 85/260 | Building BVH
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.25 | Mem:33.31M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.005 85/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.27M (Peak 180.51M) | Time:00:00.25 | Mem:33.33M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.034 86/260 | Building BVH
+Fra:1 Mem:143.27M (Peak 180.51M) | Time:00:00.25 | Mem:33.33M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.034 86/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.27M (Peak 180.51M) | Time:00:00.25 | Mem:33.69M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.035 87/260 | Building BVH
+Fra:1 Mem:143.27M (Peak 180.51M) | Time:00:00.25 | Mem:33.69M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.035 87/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.21M (Peak 180.51M) | Time:00:00.25 | Mem:33.39M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.002 88/260 | Building BVH
+Fra:1 Mem:143.21M (Peak 180.51M) | Time:00:00.25 | Mem:33.44M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.002 88/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.33M (Peak 180.51M) | Time:00:00.25 | Mem:33.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box19.004 89/260 | Building BVH
+Fra:1 Mem:143.33M (Peak 180.51M) | Time:00:00.25 | Mem:33.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box19.004 89/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.34M (Peak 180.51M) | Time:00:00.25 | Mem:33.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle003.005 90/260 | Building BVH
+Fra:1 Mem:143.34M (Peak 180.51M) | Time:00:00.25 | Mem:33.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle003.005 90/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.34M (Peak 180.51M) | Time:00:00.25 | Mem:33.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle003.004 91/260 | Building BVH
+Fra:1 Mem:143.34M (Peak 180.51M) | Time:00:00.25 | Mem:33.52M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle003.004 91/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.34M (Peak 180.51M) | Time:00:00.25 | Mem:33.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.004 92/260 | Building BVH
+Fra:1 Mem:143.34M (Peak 180.51M) | Time:00:00.25 | Mem:33.52M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.004 92/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.25 | Mem:33.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox21.001 93/260 | Building BVH
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.25 | Mem:33.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox21.001 93/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.38M (Peak 180.51M) | Time:00:00.25 | Mem:33.57M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box26.002 94/260 | Building BVH
+Fra:1 Mem:143.38M (Peak 180.51M) | Time:00:00.25 | Mem:33.57M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box26.002 94/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.38M (Peak 180.51M) | Time:00:00.25 | Mem:33.57M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box08.002 95/260 | Building BVH
+Fra:1 Mem:143.38M (Peak 180.51M) | Time:00:00.25 | Mem:33.57M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box08.002 95/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.38M (Peak 180.51M) | Time:00:00.25 | Mem:34.03M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box20.001 96/260 | Building BVH
+Fra:1 Mem:143.38M (Peak 180.51M) | Time:00:00.25 | Mem:34.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box20.001 96/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.22M (Peak 180.51M) | Time:00:00.25 | Mem:33.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle003.002 97/260 | Building BVH
+Fra:1 Mem:143.22M (Peak 180.51M) | Time:00:00.25 | Mem:33.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle003.002 97/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.10M (Peak 180.51M) | Time:00:00.25 | Mem:33.68M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.005 98/260 | Building BVH
+Fra:1 Mem:143.10M (Peak 180.51M) | Time:00:00.25 | Mem:33.72M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.005 98/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.16M (Peak 180.51M) | Time:00:00.25 | Mem:33.74M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.002 99/260 | Building BVH
+Fra:1 Mem:143.16M (Peak 180.51M) | Time:00:00.25 | Mem:33.74M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.002 99/260 | Building OptiX acceleration structure
+Fra:1 Mem:144.04M (Peak 180.51M) | Time:00:00.25 | Mem:34.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh 252/260 | Building BVH
+Fra:1 Mem:144.04M (Peak 180.51M) | Time:00:00.25 | Mem:34.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh 252/260 | Building OptiX acceleration structure
+Fra:1 Mem:144.03M (Peak 180.51M) | Time:00:00.25 | Mem:34.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box26.001 100/260 | Building BVH
+Fra:1 Mem:144.03M (Peak 180.51M) | Time:00:00.25 | Mem:34.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box26.001 100/260 | Building OptiX acceleration structure
+Fra:1 Mem:144.02M (Peak 180.51M) | Time:00:00.25 | Mem:34.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox01 101/260 | Building BVH
+Fra:1 Mem:144.02M (Peak 180.51M) | Time:00:00.25 | Mem:34.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox01 101/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.96M (Peak 180.51M) | Time:00:00.26 | Mem:34.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox01.002 102/260 | Building BVH
+Fra:1 Mem:143.96M (Peak 180.51M) | Time:00:00.26 | Mem:34.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox01.002 102/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.89M (Peak 180.51M) | Time:00:00.26 | Mem:34.65M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line03 103/260 | Building BVH
+Fra:1 Mem:143.89M (Peak 180.51M) | Time:00:00.26 | Mem:34.65M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line03 103/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.59M (Peak 180.51M) | Time:00:00.26 | Mem:35.20M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line04 104/260 | Building BVH
+Fra:1 Mem:143.59M (Peak 180.51M) | Time:00:00.26 | Mem:35.75M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line04 104/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.26 | Mem:34.77M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box18.002 105/260 | Building BVH
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.26 | Mem:34.77M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box18.002 105/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.26 | Mem:34.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle 106/260 | Building BVH
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.26 | Mem:34.82M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Circle 106/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.26 | Mem:34.82M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox065.001 107/260 | Building BVH
+Fra:1 Mem:143.39M (Peak 180.51M) | Time:00:00.26 | Mem:34.82M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox065.001 107/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.71M (Peak 180.51M) | Time:00:00.26 | Mem:35.10M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box25 108/260 | Building BVH
+Fra:1 Mem:143.71M (Peak 180.51M) | Time:00:00.26 | Mem:35.25M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box25 108/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.68M (Peak 180.51M) | Time:00:00.26 | Mem:35.14M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.002 109/260 | Building BVH
+Fra:1 Mem:143.68M (Peak 180.51M) | Time:00:00.26 | Mem:35.14M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.002 109/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.80M (Peak 180.51M) | Time:00:00.26 | Mem:35.32M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.002 110/260 | Building BVH
+Fra:1 Mem:143.80M (Peak 180.51M) | Time:00:00.26 | Mem:35.35M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.002 110/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line208 111/260 | Building BVH
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line208 111/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.93M (Peak 180.51M) | Time:00:00.26 | Mem:35.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box321.002 112/260 | Building BVH
+Fra:1 Mem:143.93M (Peak 180.51M) | Time:00:00.26 | Mem:35.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box321.002 112/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.93M (Peak 180.51M) | Time:00:00.26 | Mem:35.56M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 113/260 | Building BVH
+Fra:1 Mem:143.93M (Peak 180.51M) | Time:00:00.26 | Mem:35.57M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 113/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 114/260 | Building BVH
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 114/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.96M (Peak 180.51M) | Time:00:00.26 | Mem:35.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 115/260 | Building BVH
+Fra:1 Mem:143.96M (Peak 180.51M) | Time:00:00.26 | Mem:35.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 115/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.92M (Peak 180.51M) | Time:00:00.26 | Mem:35.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 116/260 | Building BVH
+Fra:1 Mem:143.92M (Peak 180.51M) | Time:00:00.26 | Mem:35.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 116/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 117/260 | Building BVH
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 117/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 118/260 | Building BVH
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 118/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.65M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 119/260 | Building BVH
+Fra:1 Mem:143.94M (Peak 180.51M) | Time:00:00.26 | Mem:35.65M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 119/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.91M (Peak 180.51M) | Time:00:00.26 | Mem:35.67M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 120/260 | Building BVH
+Fra:1 Mem:143.91M (Peak 180.51M) | Time:00:00.26 | Mem:35.67M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangle7.001 120/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.93M (Peak 180.51M) | Time:00:00.26 | Mem:35.69M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line208.001 121/260 | Building BVH
+Fra:1 Mem:143.93M (Peak 180.51M) | Time:00:00.26 | Mem:35.81M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line208.001 121/260 | Building OptiX acceleration structure
+Fra:1 Mem:144.00M (Peak 180.51M) | Time:00:00.26 | Mem:35.82M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box343 122/260 | Building BVH
+Fra:1 Mem:144.00M (Peak 180.51M) | Time:00:00.26 | Mem:35.82M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box343 122/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.12M (Peak 180.51M) | Time:00:00.26 | Mem:35.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box342 123/260 | Building BVH
+Fra:1 Mem:143.12M (Peak 180.51M) | Time:00:00.26 | Mem:35.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box342 123/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.11M (Peak 180.51M) | Time:00:00.26 | Mem:35.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane 251/260 | Building BVH
+Fra:1 Mem:143.12M (Peak 180.51M) | Time:00:00.26 | Mem:35.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane 251/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.12M (Peak 180.51M) | Time:00:00.26 | Mem:35.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box12 124/260 | Building BVH
+Fra:1 Mem:143.12M (Peak 180.51M) | Time:00:00.26 | Mem:35.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box12 124/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.10M (Peak 180.51M) | Time:00:00.26 | Mem:35.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box13 125/260 | Building BVH
+Fra:1 Mem:143.10M (Peak 180.51M) | Time:00:00.26 | Mem:35.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box13 125/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.10M (Peak 180.51M) | Time:00:00.26 | Mem:35.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line223 126/260 | Building BVH
+Fra:1 Mem:143.10M (Peak 180.51M) | Time:00:00.26 | Mem:35.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line223 126/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.13M (Peak 180.51M) | Time:00:00.26 | Mem:35.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line06 127/260 | Building BVH
+Fra:1 Mem:143.13M (Peak 180.51M) | Time:00:00.26 | Mem:35.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line06 127/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.20M (Peak 180.51M) | Time:00:00.26 | Mem:35.71M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane032 128/260 | Building BVH
+Fra:1 Mem:143.20M (Peak 180.51M) | Time:00:00.26 | Mem:35.72M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane032 128/260 | Building OptiX acceleration structure
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.26 | Mem:35.74M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane01 129/260 | Building BVH
+Fra:1 Mem:143.23M (Peak 180.51M) | Time:00:00.26 | Mem:35.74M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane01 129/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.26 | Mem:35.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box23 130/260 | Building BVH
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.26 | Mem:35.86M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box23 130/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.26 | Mem:35.80M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box21 131/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.26 | Mem:35.80M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box21 131/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.27 | Mem:35.81M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box321 132/260 | Building BVH
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.27 | Mem:36.14M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box321 132/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.57M (Peak 180.51M) | Time:00:00.27 | Mem:36.13M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH prise 133/260 | Building BVH
+Fra:1 Mem:142.57M (Peak 180.51M) | Time:00:00.27 | Mem:36.13M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH prise 133/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.47M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox20 134/260 | Building BVH
+Fra:1 Mem:142.47M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox20 134/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.48M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box07 135/260 | Building BVH
+Fra:1 Mem:142.48M (Peak 180.51M) | Time:00:00.27 | Mem:35.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box07 135/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.46M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box01 136/260 | Building BVH
+Fra:1 Mem:142.46M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box01 136/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane009 137/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.88M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane009 137/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.89M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane007.001 138/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.89M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane007.001 138/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.90M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane023 139/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.90M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane023 139/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH feuille3 140/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH feuille3 140/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.93M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane002.001 141/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.27 | Mem:35.93M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane002.001 141/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.43M (Peak 180.51M) | Time:00:00.27 | Mem:35.94M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane005.001 142/260 | Building BVH
+Fra:1 Mem:142.43M (Peak 180.51M) | Time:00:00.27 | Mem:35.94M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane005.001 142/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.43M (Peak 180.51M) | Time:00:00.27 | Mem:35.94M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane004.001 143/260 | Building BVH
+Fra:1 Mem:142.43M (Peak 180.51M) | Time:00:00.27 | Mem:35.94M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane004.001 143/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.30M (Peak 180.51M) | Time:00:00.27 | Mem:35.99M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane006.002 144/260 | Building BVH
+Fra:1 Mem:142.30M (Peak 180.51M) | Time:00:00.27 | Mem:35.99M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane006.002 144/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.27 | Mem:35.99M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane003.001 145/260 | Building BVH
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.27 | Mem:36.00M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane003.001 145/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.27 | Mem:36.01M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane006.001 146/260 | Building BVH
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.27 | Mem:36.01M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane006.001 146/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.35M (Peak 180.51M) | Time:00:00.27 | Mem:36.03M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 250/260 | Building BVH
+Fra:1 Mem:142.35M (Peak 180.51M) | Time:00:00.27 | Mem:36.03M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 250/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.39M (Peak 180.51M) | Time:00:00.27 | Mem:36.07M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.009 147/260 | Building BVH
+Fra:1 Mem:142.39M (Peak 180.51M) | Time:00:00.27 | Mem:36.07M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.009 147/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.40M (Peak 180.51M) | Time:00:00.27 | Mem:36.09M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.008 148/260 | Building BVH
+Fra:1 Mem:142.40M (Peak 180.51M) | Time:00:00.27 | Mem:36.09M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.008 148/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.39M (Peak 180.51M) | Time:00:00.27 | Mem:36.12M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.010 149/260 | Building BVH
+Fra:1 Mem:142.39M (Peak 180.51M) | Time:00:00.27 | Mem:36.12M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.010 149/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.27 | Mem:36.21M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.005 150/260 | Building BVH
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.27 | Mem:36.21M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.005 150/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.67M (Peak 180.51M) | Time:00:00.27 | Mem:36.53M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.005 151/260 | Building BVH
+Fra:1 Mem:142.67M (Peak 180.51M) | Time:00:00.27 | Mem:36.53M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.005 151/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.70M (Peak 180.51M) | Time:00:00.27 | Mem:36.56M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.005 152/260 | Building BVH
+Fra:1 Mem:142.70M (Peak 180.51M) | Time:00:00.27 | Mem:36.56M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.005 152/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.27 | Mem:36.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox21.003 153/260 | Building BVH
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.27 | Mem:36.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferBox21.003 153/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box22.007 154/260 | Building BVH
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.58M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box22.007 154/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box22.006 155/260 | Building BVH
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box22.006 155/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.008 156/260 | Building BVH
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.61M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.008 156/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.009 157/260 | Building BVH
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.009 157/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.010 158/260 | Building BVH
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.62M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.010 158/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.011 159/260 | Building BVH
+Fra:1 Mem:142.73M (Peak 180.51M) | Time:00:00.27 | Mem:36.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.011 159/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.27 | Mem:36.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line263.002 160/260 | Building BVH
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.27 | Mem:36.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line263.002 160/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.28 | Mem:36.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line264.002 161/260 | Building BVH
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.28 | Mem:36.64M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line264.002 161/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.28 | Mem:36.66M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line265.002 162/260 | Building BVH
+Fra:1 Mem:142.71M (Peak 180.51M) | Time:00:00.28 | Mem:36.66M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line265.002 162/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.28 | Mem:36.70M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.016 163/260 | Building BVH
+Fra:1 Mem:142.72M (Peak 180.51M) | Time:00:00.28 | Mem:36.74M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.016 163/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.85M (Peak 180.51M) | Time:00:00.28 | Mem:36.81M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.018 164/260 | Building BVH
+Fra:1 Mem:142.85M (Peak 180.51M) | Time:00:00.28 | Mem:36.81M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.018 164/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.28 | Mem:36.86M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangl16.002 165/260 | Building BVH
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.28 | Mem:36.86M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Rectangl16.002 165/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.28 | Mem:36.87M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box280.002 166/260 | Building BVH
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.28 | Mem:36.87M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box280.002 166/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.28 | Mem:36.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box295.002 167/260 | Building BVH
+Fra:1 Mem:142.90M (Peak 180.51M) | Time:00:00.28 | Mem:36.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box295.002 167/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.28 | Mem:36.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box296.002 168/260 | Building BVH
+Fra:1 Mem:142.89M (Peak 180.51M) | Time:00:00.28 | Mem:36.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box296.002 168/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.28 | Mem:36.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box297.002 169/260 | Building BVH
+Fra:1 Mem:142.87M (Peak 180.51M) | Time:00:00.28 | Mem:36.91M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box297.002 169/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 249/260 | Building BVH
+Fra:1 Mem:142.88M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 249/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.86M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box298.002 170/260 | Building BVH
+Fra:1 Mem:142.86M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box298.002 170/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.84M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box299.002 171/260 | Building BVH
+Fra:1 Mem:142.84M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Box299.002 171/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.003 172/260 | Building BVH
+Fra:1 Mem:142.82M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.003 172/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.46M (Peak 180.51M) | Time:00:00.28 | Mem:36.97M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.024 173/260 | Building BVH
+Fra:1 Mem:142.46M (Peak 180.51M) | Time:00:00.28 | Mem:36.97M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.024 173/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.001 174/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.28 | Mem:36.98M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.001 174/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.28 | Mem:37.00M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.003 175/260 | Building BVH
+Fra:1 Mem:142.44M (Peak 180.51M) | Time:00:00.28 | Mem:37.00M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh.003 175/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.49M (Peak 180.51M) | Time:00:00.28 | Mem:37.06M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh 176/260 | Building BVH
+Fra:1 Mem:142.49M (Peak 180.51M) | Time:00:00.28 | Mem:37.07M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Mesh 176/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.55M (Peak 180.51M) | Time:00:00.28 | Mem:37.13M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line121.002 177/260 | Building BVH
+Fra:1 Mem:142.55M (Peak 180.51M) | Time:00:00.28 | Mem:37.13M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line121.002 177/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.52M (Peak 180.51M) | Time:00:00.28 | Mem:37.14M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line122.002 178/260 | Building BVH
+Fra:1 Mem:142.52M (Peak 180.51M) | Time:00:00.28 | Mem:37.14M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line122.002 178/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.53M (Peak 180.51M) | Time:00:00.28 | Mem:37.15M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line136.002 179/260 | Building BVH
+Fra:1 Mem:142.53M (Peak 180.51M) | Time:00:00.28 | Mem:37.15M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line136.002 179/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.53M (Peak 180.51M) | Time:00:00.28 | Mem:37.16M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line137.002 180/260 | Building BVH
+Fra:1 Mem:142.53M (Peak 180.51M) | Time:00:00.28 | Mem:37.16M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Line137.002 180/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.54M (Peak 180.51M) | Time:00:00.28 | Mem:37.17M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.004 181/260 | Building BVH
+Fra:1 Mem:142.54M (Peak 180.51M) | Time:00:00.28 | Mem:37.17M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.004 181/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.58M (Peak 180.51M) | Time:00:00.29 | Mem:37.25M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.005 182/260 | Building BVH
+Fra:1 Mem:142.58M (Peak 180.51M) | Time:00:00.29 | Mem:37.27M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.005 182/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.62M (Peak 180.51M) | Time:00:00.29 | Mem:37.28M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH chaise.boulon.002 183/260 | Building BVH
+Fra:1 Mem:142.62M (Peak 180.51M) | Time:00:00.29 | Mem:37.28M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH chaise.boulon.002 183/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.62M (Peak 180.51M) | Time:00:00.29 | Mem:37.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.002 184/260 | Building BVH
+Fra:1 Mem:142.62M (Peak 180.51M) | Time:00:00.29 | Mem:37.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Plane.002 184/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.62M (Peak 180.51M) | Time:00:00.29 | Mem:37.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 185/260 | Building BVH
+Fra:1 Mem:142.62M (Peak 180.51M) | Time:00:00.29 | Mem:37.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 185/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.61M (Peak 180.51M) | Time:00:00.29 | Mem:37.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.000 186/260 | Building BVH
+Fra:1 Mem:142.61M (Peak 180.51M) | Time:00:00.29 | Mem:37.29M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.000 186/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.47M (Peak 180.51M) | Time:00:00.29 | Mem:37.42M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.001 187/260 | Building BVH
+Fra:1 Mem:142.47M (Peak 180.51M) | Time:00:00.29 | Mem:37.55M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.001 187/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.43M (Peak 180.51M) | Time:00:00.29 | Mem:37.34M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 188/260 | Building BVH
+Fra:1 Mem:142.43M (Peak 180.51M) | Time:00:00.29 | Mem:37.34M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 188/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.41M (Peak 180.51M) | Time:00:00.29 | Mem:37.35M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 189/260 | Building BVH
+Fra:1 Mem:142.41M (Peak 180.51M) | Time:00:00.29 | Mem:37.35M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 189/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.38M (Peak 180.51M) | Time:00:00.29 | Mem:37.36M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 190/260 | Building BVH
+Fra:1 Mem:142.38M (Peak 180.51M) | Time:00:00.29 | Mem:37.36M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 190/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.38M (Peak 180.51M) | Time:00:00.29 | Mem:37.36M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 191/260 | Building BVH
+Fra:1 Mem:142.38M (Peak 180.51M) | Time:00:00.29 | Mem:37.36M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 191/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.38M (Peak 180.51M) | Time:00:00.29 | Mem:37.36M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 192/260 | Building BVH
+Fra:1 Mem:142.38M (Peak 180.51M) | Time:00:00.29 | Mem:37.36M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 192/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.37M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 193/260 | Building BVH
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.37M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 193/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.37M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 248/260 | Building BVH
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.37M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 248/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.37M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 194/260 | Building BVH
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.37M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 194/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.38M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 195/260 | Building BVH
+Fra:1 Mem:142.33M (Peak 180.51M) | Time:00:00.29 | Mem:37.38M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 195/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.29 | Mem:37.38M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 196/260 | Building BVH
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.29 | Mem:37.38M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 196/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.29 | Mem:37.38M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 197/260 | Building BVH
+Fra:1 Mem:142.32M (Peak 180.51M) | Time:00:00.29 | Mem:37.38M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 197/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.29M (Peak 180.51M) | Time:00:00.29 | Mem:37.39M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 198/260 | Building BVH
+Fra:1 Mem:142.29M (Peak 180.51M) | Time:00:00.29 | Mem:37.39M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 198/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.24M (Peak 180.51M) | Time:00:00.29 | Mem:37.40M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 199/260 | Building BVH
+Fra:1 Mem:142.24M (Peak 180.51M) | Time:00:00.29 | Mem:37.40M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 199/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.17M (Peak 180.51M) | Time:00:00.29 | Mem:37.41M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 200/260 | Building BVH
+Fra:1 Mem:142.17M (Peak 180.51M) | Time:00:00.29 | Mem:37.41M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 200/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.16M (Peak 180.51M) | Time:00:00.29 | Mem:37.42M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 201/260 | Building BVH
+Fra:1 Mem:142.16M (Peak 180.51M) | Time:00:00.29 | Mem:37.42M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 201/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.16M (Peak 180.51M) | Time:00:00.29 | Mem:37.42M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 202/260 | Building BVH
+Fra:1 Mem:142.16M (Peak 180.51M) | Time:00:00.29 | Mem:37.44M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 202/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.15M (Peak 180.51M) | Time:00:00.30 | Mem:37.43M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 203/260 | Building BVH
+Fra:1 Mem:142.15M (Peak 180.51M) | Time:00:00.30 | Mem:37.43M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 203/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.30 | Mem:37.43M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 204/260 | Building BVH
+Fra:1 Mem:142.14M (Peak 180.51M) | Time:00:00.30 | Mem:37.43M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 204/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.09M (Peak 180.51M) | Time:00:00.30 | Mem:37.56M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 205/260 | Building BVH
+Fra:1 Mem:142.09M (Peak 180.51M) | Time:00:00.30 | Mem:37.70M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 205/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.46M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 206/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.46M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 206/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 207/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 207/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 208/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 208/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 209/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 209/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 210/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 210/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 211/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 211/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 212/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 212/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 213/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 213/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 214/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.47M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 214/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 215/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 215/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 216/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 216/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 247/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 247/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 217/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 217/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 218/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.48M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 218/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 219/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 219/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 220/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 220/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 221/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 221/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 222/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 222/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 223/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 223/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 224/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 224/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 225/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.30 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 225/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 226/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.49M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 226/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 227/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 227/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 228/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 228/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 229/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 229/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 230/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 230/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 231/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 231/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 232/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.50M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 232/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 233/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 233/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 234/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 234/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 235/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.51M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 235/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.52M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 236/260 | Building BVH
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.31 | Mem:37.52M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 236/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.08M (Peak 180.51M) | Time:00:00.31 | Mem:37.55M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 237/260 | Building BVH
+Fra:1 Mem:142.08M (Peak 180.51M) | Time:00:00.31 | Mem:37.55M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 237/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.12M (Peak 180.51M) | Time:00:00.31 | Mem:37.59M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 238/260 | Building BVH
+Fra:1 Mem:142.12M (Peak 180.51M) | Time:00:00.31 | Mem:37.60M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 238/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.15M (Peak 180.51M) | Time:00:00.31 | Mem:37.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 239/260 | Building BVH
+Fra:1 Mem:142.15M (Peak 180.51M) | Time:00:00.31 | Mem:37.63M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 239/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.19M (Peak 180.51M) | Time:00:00.31 | Mem:37.67M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 246/260 | Building BVH
+Fra:1 Mem:142.19M (Peak 180.51M) | Time:00:00.31 | Mem:37.67M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 246/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.19M (Peak 180.51M) | Time:00:00.31 | Mem:37.67M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 240/260 | Building BVH
+Fra:1 Mem:142.19M (Peak 180.51M) | Time:00:00.31 | Mem:37.67M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 240/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.23M (Peak 180.51M) | Time:00:00.31 | Mem:37.71M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 241/260 | Building BVH
+Fra:1 Mem:142.23M (Peak 180.51M) | Time:00:00.31 | Mem:37.71M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 241/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.27M (Peak 180.51M) | Time:00:00.31 | Mem:37.75M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 242/260 | Building BVH
+Fra:1 Mem:142.27M (Peak 180.51M) | Time:00:00.31 | Mem:37.75M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cube.004 242/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.31 | Mem:37.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 243/260 | Building BVH
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.31 | Mem:37.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.006 243/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.31 | Mem:37.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 244/260 | Building BVH
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.31 | Mem:37.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 244/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.31 | Mem:37.79M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 245/260 | Building BVH
+Fra:1 Mem:142.31M (Peak 180.51M) | Time:00:00.31 | Mem:37.80M, Peak:46.85M | _mainScene, interior | Updating Geometry BVH Cylinder.000 245/260 | Building OptiX acceleration structure
+Fra:1 Mem:142.03M (Peak 180.51M) | Time:00:00.32 | Mem:37.90M, Peak:46.85M | _mainScene, interior | Updating Scene BVH | Building
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.32 | Mem:37.90M, Peak:46.85M | _mainScene, interior | Updating Scene BVH | Building OptiX acceleration structure
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.32 | Mem:38.04M, Peak:46.85M | _mainScene, interior | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:142.04M (Peak 180.51M) | Time:00:00.32 | Mem:38.04M, Peak:46.85M | _mainScene, interior | Updating Mesh | Computing normals
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:38.04M, Peak:46.85M | _mainScene, interior | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.41M, Peak:56.41M | _mainScene, interior | Updating Objects Flags
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Primitive Offsets
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images | Loading pencil_colorMask.png
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images | Loading base_bluredMetal.png
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images | Loading base_scratch.jpg
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images | Loading childDrawing_03.jpg
+Fra:1 Mem:160.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images | Loading childDrawing_07.png
+Fra:1 Mem:162.41M (Peak 180.51M) | Time:00:00.33 | Mem:56.42M, Peak:56.42M | _mainScene, interior | Updating Images | Loading blackBoard.png
+Fra:1 Mem:307.49M (Peak 307.49M) | Time:00:00.35 | Mem:57.79M, Peak:57.79M | _mainScene, interior | Updating Images | Loading woodPlanks.jpg
+Fra:1 Mem:309.36M (Peak 309.36M) | Time:00:00.35 | Mem:58.79M, Peak:58.79M | _mainScene, interior | Updating Images | Loading pencil_color.png
+Fra:1 Mem:311.36M (Peak 311.36M) | Time:00:00.35 | Mem:62.79M, Peak:62.79M | _mainScene, interior | Updating Images | Loading base_wallPaint.jpg
+Fra:1 Mem:311.36M (Peak 311.36M) | Time:00:00.35 | Mem:66.79M, Peak:66.79M | _mainScene, interior | Updating Images | Loading radiator_AO.png
+Fra:1 Mem:311.36M (Peak 311.36M) | Time:00:00.35 | Mem:69.57M, Peak:69.57M | _mainScene, interior | Updating Images | Loading europeMap.png
+Fra:1 Mem:335.36M (Peak 335.36M) | Time:00:00.35 | Mem:73.57M, Peak:73.57M | _mainScene, interior | Updating Images | Loading base_woodFloor.jpg
+Fra:1 Mem:339.36M (Peak 339.36M) | Time:00:00.36 | Mem:74.57M, Peak:74.57M | _mainScene, interior | Updating Images | Loading ceilingAirVent_AO.png
+Fra:1 Mem:343.36M (Peak 343.36M) | Time:00:00.36 | Mem:76.45M, Peak:76.45M | _mainScene, interior | Updating Images | Loading crinkledPaper_03.png
+Fra:1 Mem:347.36M (Peak 347.36M) | Time:00:00.36 | Mem:80.45M, Peak:80.45M | _mainScene, interior | Updating Images | Loading base_brightWood.png
+Fra:1 Mem:348.36M (Peak 348.36M) | Time:00:00.36 | Mem:84.45M, Peak:84.45M | _mainScene, interior | Updating Images | Loading ceiling_AO.png
+Fra:1 Mem:348.36M (Peak 348.36M) | Time:00:00.36 | Mem:85.45M, Peak:85.45M | _mainScene, interior | Updating Images | Loading crinkledPaper.png
+Fra:1 Mem:348.36M (Peak 348.36M) | Time:00:00.36 | Mem:87.33M, Peak:87.33M | _mainScene, interior | Updating Images | Loading pencil_glossyMask.png
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.40 | Mem:266.52M, Peak:266.52M | _mainScene, interior | Updating Camera Volume
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.40 | Mem:266.52M, Peak:266.52M | _mainScene, interior | Updating Lookup Tables
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.40 | Mem:266.60M, Peak:266.60M | _mainScene, interior | Updating Lights
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.40 | Mem:266.60M, Peak:266.60M | _mainScene, interior | Updating Lights | Computing distribution
+Fra:1 Mem:371.60M (Peak 371.60M) | Time:00:00.40 | Mem:267.83M, Peak:267.83M | _mainScene, interior | Updating Integrator
+Fra:1 Mem:403.60M (Peak 403.60M) | Time:00:00.41 | Mem:299.83M, Peak:299.83M | _mainScene, interior | Updating Film
+Fra:1 Mem:403.60M (Peak 403.60M) | Time:00:00.41 | Mem:299.75M, Peak:299.83M | _mainScene, interior | Updating Lookup Tables
+Fra:1 Mem:403.60M (Peak 403.60M) | Time:00:00.41 | Mem:299.84M, Peak:299.84M | _mainScene, interior | Updating Baking
+Fra:1 Mem:403.60M (Peak 403.60M) | Time:00:00.41 | Mem:299.84M, Peak:299.84M | _mainScene, interior | Updating Device | Writing constant memory
+Fra:1 Mem:410.01M (Peak 410.01M) | Time:00:00.41 | Mem:899.10M, Peak:899.10M | _mainScene, interior | Sample 0/16777216
+Fra:1 Mem:742.24M (Peak 742.24M) | Time:00:00.47 | Remaining:00:29.94 | Mem:1231.33M, Peak:1231.33M | _mainScene, interior | Sample 1/16777216
+Fra:1 Mem:742.27M (Peak 742.27M) | Time:00:25.53 | Remaining:00:04.88 | Mem:1231.36M, Peak:1231.36M | _mainScene, interior | Sample 513/16777216
+Fra:1 Mem:742.27M (Peak 742.27M) | Time:00:31.80 | Mem:1231.36M, Peak:1231.36M | _mainScene, interior | Sample 641/16777216
+Fra:1 Mem:1074.52M (Peak 1438.41M) | Time:00:31.96 | Mem:1231.36M, Peak:1231.36M | _mainScene, interior | Sample 0/16777216
+Fra:1 Mem:1074.52M (Peak 1438.41M) | Time:00:31.96 | Mem:1231.36M, Peak:1231.36M | _mainScene, interior | Finished
+Benchmark JSON Data: {"timestamp": "2026-11-01T22:40:07.482286+00:00", "blender_version": {"version": "4.2.0", "build_date": "2024-07-16", "build_time": "06:27:02", "build_commit_date": "2024-07-16", "build_commit_time": "06:20", "build_hash": "a51f293548ad"}, "system_info": {"bitness": "64bit", "machine": "x86_64", "system": "Linux", "dist_name": "Ubuntu", "dist_version": "24.04", "devices": [{"name": "13th Gen Intel Core i7-13700K", "type": "CPU"}, {"name": "NVIDIA GeForce RTX 3080", "type": "OPTIX", "is_display": false}], "num_cpu_sockets": 1, "num_cpu_cores": 16, "num_cpu_threads": 24}, "device_info": {"device_type": "OPTIX", "compute_devices": [{"name": "NVIDIA GeForce RTX 3080", "type": "OPTIX", "is_display": false}], "num_cpu_threads": 24}}
+
+Blender quit
+
+--- stderr ---
+I1101 22:39:35.372836 106354 device.cpp:36] CUEW initialization succeeded
+I1101 22:39:35.372872 106354 device.cpp:38] Found precompiled kernels
+I1101 22:39:35.408954 106354 device.cpp:200] Device has compute preemption or is not used for display.
+I1101 22:39:35.408963 106354 device.cpp:203] Added device "NVIDIA GeForce RTX 3080" with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00".
+I1101 22:39:35.408967 106354 device.cpp:206] Device with id "CUDA_NVIDIA GeForce RTX 3080_0000:01:00" supports OpenImageDenoise.
+I1101 22:39:35.410063 106354 device.cpp:63] HIPEW initialization failed: Error opening HIP dynamic library
+I1101 22:39:35.447517 106354 device.cpp:541] Mapped host memory limit set to 29,100,580,864 bytes. (27.10G)
+I1101 22:39:35.509052 106354 device_impl.cpp:81] All knobs on default.
+I1101 22:39:35.545929 106354 device_impl.cpp:81] Opened database: "/var/tmp/OptixCache_root/optix7cache.db"
+I1101 22:39:35.545944 106354 device_impl.cpp:81]     Cache data size: "1.1 MiB"
+I1101 22:39:35.546208 106354 device_impl.cpp:63] Using AVX2 CPU kernels.
+I1101 22:39:35.569912 106354 sync.cpp:297] Total time spent synchronizing data: 0.023406
+I1101 22:39:35.572701 106354 colorspace.cpp:145] Colorspace sRGB is sRGB
+I1101 22:39:35.586071 106413 film.cpp:592] Effective scene passes:
+I1101 22:39:35.586088 106413 film.cpp:594] - type: combined, name: "Combined", mode: NOISY, is_written: True
+I1101 22:39:35.586103 106413 film.cpp:594] - type: emission, name: "Emit", mode: NOISY, is_written: True
+I1101 22:39:35.586107 106413 film.cpp:594] - type: ao, name: "AO", mode: NOISY, is_written: True
+I1101 22:39:35.586112 106413 film.cpp:594] - type: diffuse_direct, name: "DiffDir", mode: NOISY, is_written: True
+I1101 22:39:35.586117 106413 film.cpp:594] - type: diffuse_indirect, name: "DiffInd", mode: NOISY, is_written: True
+I1101 22:39:35.586119 106413 film.cpp:594] - type: glossy_direct, name: "GlossDir", mode: NOISY, is_written: True
+I1101 22:39:35.586123 106413 film.cpp:594] - type: glossy_indirect, name: "GlossInd", mode: NOISY, is_written: True
+I1101 22:39:35.586127 106413 film.cpp:594] - type: transmission_direct, name: "TransDir", mode: NOISY, is_written: True
+I1101 22:39:35.586130 106413 film.cpp:594] - type: transmission_indirect, name: "TransInd", mode: NOISY, is_written: True
+I1101 22:39:35.586134 106413 film.cpp:594] - type: normal, name: "Normal", mode: NOISY, is_written: True
+I1101 22:39:35.586138 106413 film.cpp:594] - type: diffuse_color, name: "DiffCol", mode: NOISY, is_written: True
+I1101 22:39:35.586141 106413 film.cpp:594] - type: glossy_color, name: "GlossCol", mode: NOISY, is_written: True
+I1101 22:39:35.586146 106413 film.cpp:594] - type: transmission_color, name: "TransCol", mode: NOISY, is_written: True
+I1101 22:39:35.586150 106413 film.cpp:594] - type: depth, name: "Depth", mode: NOISY, is_written: True
+I1101 22:39:35.586154 106413 film.cpp:594] - type: object_id, name: "IndexOB", mode: NOISY, is_written: True
+I1101 22:39:35.586269 106413 scene.cpp:589] Requested features:
+I1101 22:39:35.586273 106413 scene.cpp:590] Use BSDF True
+I1101 22:39:35.586277 106413 scene.cpp:591] Use Emission True
+I1101 22:39:35.586280 106413 scene.cpp:593] Use Volume False
+I1101 22:39:35.586283 106413 scene.cpp:594] Use Bump True
+I1101 22:39:35.586287 106413 scene.cpp:595] Use Voronoi False
+I1101 22:39:35.586289 106413 scene.cpp:597] Use Shader Raytrace False
+I1101 22:39:35.586292 106413 scene.cpp:599] Use MNEE False
+I1101 22:39:35.586295 106413 scene.cpp:600] Use Transparent True
+I1101 22:39:35.586299 106413 scene.cpp:602] Use Denoising False
+I1101 22:39:35.586302 106413 scene.cpp:603] Use Path Tracing True
+I1101 22:39:35.586305 106413 scene.cpp:605] Use Hair False
+I1101 22:39:35.586308 106413 scene.cpp:606] Use Pointclouds False
+I1101 22:39:35.586311 106413 scene.cpp:608] Use Object Motion False
+I1101 22:39:35.586314 106413 scene.cpp:610] Use Baking False
+I1101 22:39:35.586318 106413 scene.cpp:611] Use Subsurface False
+I1101 22:39:35.586321 106413 scene.cpp:612] Use Volume False
+I1101 22:39:35.586324 106413 scene.cpp:613] Use Patch Evaluation False
+I1101 22:39:35.586328 106413 scene.cpp:615] Use Shadow Catcher False
+I1101 22:39:35.586354 106413 device_impl.cpp:260] Testing for pre-compiled kernel /mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core/cycles/lib/kernel_sm_86.cubin.zst.
+I1101 22:39:35.586360 106413 device_impl.cpp:262] Using precompiled kernel.
+I1101 22:39:35.617228 106413 device_impl.cpp:503] Local memory reserved 668,991,488 bytes. (638.00M)
+I1101 22:39:35.618180 106413 device_impl.cpp:81] Cache hit for key: ptx-491457-key5f9ebe4c8578a6066cc014f71d5ef5bf-sm_86-rtc1-drv580.178.04
+I1101 22:39:35.618188 106413 device_impl.cpp:81] 
+I1101 22:39:35.624795 106413 device_impl.cpp:81] Info: Pipeline statistics
+	module(s)                            :     1
+	entry function(s)                    :    10
+	trace call(s)                        :     8
+	continuation callable call(s)        :     0
+	direct callable call(s)              :     0
+	basic block(s) in entry functions    :  1118
+	instruction(s) in entry functions    : 16193
+	non-entry function(s)                :     1
+	basic block(s) in non-entry functions:    37
+	instruction(s) in non-entry functions:   667
+	debug information                    :    no
+I1101 22:39:35.624823 106413 svm.cpp:69] Total 91 shaders.
+I1101 22:39:35.625574 106404 colorspace.cpp:140] Colorspace Non-Color is no-op
+I1101 22:39:35.637614 106413 svm.cpp:145] Shader manager updated 91 shaders in 0.012795 seconds.
+I1101 22:39:35.637673 106413 object.cpp:781] Total 854 objects.
+I1101 22:39:35.638278 106413 particles.cpp:106] Total 0 particle systems.
+I1101 22:39:35.638311 106413 geometry.cpp:719] Total 260 meshes.
+I1101 22:39:35.645866 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.647481 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.647976 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.648269 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.648505 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.648671 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.648814 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.649286 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.649600 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.649834 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.650063 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.650514 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.650939 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.651252 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.651496 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.651844 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.652215 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.652582 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.652945 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.653198 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.653391 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.653661 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.653884 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.654181 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.654408 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.654680 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.655059 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.655349 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.655572 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.655882 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.656517 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.656769 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.656975 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.657270 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.657685 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.658051 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.658298 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.658929 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.659139 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.659371 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.659623 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.659917 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.660171 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.660416 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.660687 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.660938 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.661186 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.661459 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.661687 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.661986 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.662292 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.662554 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.662850 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.663223 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.663431 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.663741 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.664090 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.664417 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.664642 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.664866 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.666013 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.666443 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.666687 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.666906 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.667210 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.667428 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.667771 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.668026 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.668234 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.668473 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.668689 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.668908 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.669198 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.669432 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.669638 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.670099 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.670542 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.670818 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.671119 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.671391 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.671643 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.672086 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.672511 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.673022 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.673420 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.673645 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.673914 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.674360 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.674722 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.675006 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.675379 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.675647 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.675892 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.676115 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.676426 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.676656 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.676924 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.677169 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.677508 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.677758 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.678110 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.678768 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.679032 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.679210 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.679490 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.679746 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.680060 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.680327 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.680517 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.681133 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.681448 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.682009 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.682574 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.683131 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.683342 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.683637 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.683971 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.684315 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.684703 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.685014 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.685278 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.685616 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.685951 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.686550 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.686789 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.687033 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.687251 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.687466 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.687798 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.688180 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.688647 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.689030 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.689256 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.689522 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.689791 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.690088 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.690464 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.690804 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.691061 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.691318 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.691677 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.692103 106391 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.692723 106393 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.693264 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.693651 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.694038 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.694409 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.694816 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.695209 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.695587 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.696141 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.696545 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.697000 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.697408 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.698067 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.698540 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.699002 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.699425 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.699772 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.700215 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.700634 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.701048 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.701459 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.701864 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.702337 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.702924 106391 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.703466 106393 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.704315 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.704926 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.705407 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.705930 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.706308 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.706692 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.707234 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.707590 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.707930 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.708278 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.708714 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.709154 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.709689 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.710224 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.710775 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.711225 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.711642 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.712081 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.712518 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.713074 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.713578 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.714018 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.714473 106391 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.714941 106393 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.715543 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.715958 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.716321 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.716702 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.717113 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.717465 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.717847 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.718241 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.718575 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.718940 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.719264 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.719601 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.719967 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.720320 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.720752 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.721211 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.721566 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.721928 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.722292 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.722638 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.722973 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.723331 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.723695 106391 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.724162 106393 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.724733 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.725103 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.725485 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.725852 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.726326 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.726784 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.727164 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.727526 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.727907 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.728264 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.728624 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.729001 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.729384 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.729722 106401 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.730083 106397 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.730376 106404 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.730666 106396 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.730952 106403 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.731223 106381 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.731567 106387 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.731910 106382 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.732200 106385 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.732496 106391 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.732869 106393 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.733453 106400 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.733753 106390 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.734038 106394 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.734455 106399 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.734894 106398 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.735329 106388 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.735731 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.736039 106402 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.736505 106406 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.737085 106384 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.737488 106392 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.737846 106395 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.738138 106405 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.738570 106413 geometry_bvh.cpp:127] Using OPTIX layout.
+I1101 22:39:35.738744 106413 device_impl.cpp:1045] Using fast to trace OptiX BVH
+I1101 22:39:35.819299 106413 tables.cpp:39] Total 9 lookup tables.
+I1101 22:39:35.819361 106413 light.cpp:1425] Total 10 lights.
+I1101 22:39:35.819370 106413 light.cpp:1405] Number of lights sent to the device: 10
+I1101 22:39:35.819530 106413 light.cpp:339] Use light distribution with 80658 emitters.
+I1101 22:39:35.828500 106413 tables.cpp:39] Total 10 lookup tables.
+I1101 22:39:35.828570 106413 scene.cpp:354] System memory statistics after full device sync:
+  Usage: 339,830,620 (324.09M)
+  Peak: 339,919,708 (324.17M)
+I1101 22:39:35.890714 106413 path_trace.cpp:412] Rendered 1 samples in 0.0596151 seconds (0.0596151 seconds per sample), occupancy: 0.213789
+I1101 22:40:00.942643 106413 path_trace.cpp:412] Rendered 512 samples in 25.0519 seconds (0.0489295 seconds per sample), occupancy: 0.569558
+I1101 22:40:07.217854 106413 path_trace.cpp:412] Rendered 128 samples in 6.27516 seconds (0.0490247 seconds per sample), occupancy: 0.561967
+I1101 22:40:07.379379 106413 session.cpp:174] Rendering in main loop is done in 31.5485 seconds.
+I1101 22:40:07.379395 106413 session.cpp:175] 
+Full path tracing report
+
+Path tracing on: NVIDIA GeForce RTX 3080 (OptiX) [CUDA_NVIDIA GeForce RTX 3080_0000:01:00_OptiX]
+
+Render Scheduler Summary
+
+Mode: Headless
+Resolution: 1920x1080
+
+Adaptive sampling:
+  Use: False
+
+Denoiser:
+  Use: False
+
+Time (in seconds):
+                                       Wall              Average
+          Path Tracing            31.386713             0.048965
+        Display Update             0.000002             0.000002
+
+  Total: 31.386715
+
+Rendered 641 samples in 31.548487 seconds
+Average time per sample: 0.049218 seconds
+I1101 22:40:07.379483 106354 session.cpp:479] Total render time: 31.932
+I1101 22:40:07.379492 106354 session.cpp:480] Render time (without synchronization): 31.5486
+I1101 22:40:07.418115 106354 device_impl.cpp:81] Closed database: "/var/tmp/OptixCache_root/optix7cache.db"
+I1101 22:40:07.418155 106354 device_impl.cpp:81]     Cache data size: "1.1 MiB"
