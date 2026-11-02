@@ -40,3 +40,46 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   user whether to add a bypass for the repository admin instead.
 - **2026-10-31** — Renaming `fix/ladder-grid` to `fix/stick` closed PR #21 (GitHub does not carry a PR across a branch
   rename here); reopened as rigsim-benchmark PR #22. Lesson: never rename a branch with an open PR.
+- **2026-10-31** — User decision: branches are sprints, and agent-docs live on the branch being worked on (replaces the
+  "notes only on main" rule and its `agent-docs-sync` workaround). Rule 7 rewritten. PR #22 (stick fixes, stick 0.13.4)
+  merged by the user. New sprint `sprint/stick-data` opened in both repositories.
+- **2026-10-31** — User decision: a missing part stops the build (not a warning). Built the seed self-test on
+  `sprint/stick-data` (stick 0.13.5): `stick/tools/selftest.py`, wired into `build.sh` before the seed manifest, option
+  `ALLOW_INCOMPLETE`; 140 tests pass; not yet run in a real build.
+- **2026-10-31** — First real build with the seed self-test: everything ok except llama.cpp CUDA, `libcuda.so.1` missing in
+  the CUDA image — a false alarm (the NVIDIA container toolkit injects driver libraries from the host). Fixed: driver
+  libraries are checked in the system image instead. 141 tests pass. (measured by the user's build)
+- **2026-10-31** — User report: the stick does not boot on some machines unless CSM / legacy mode is on. Causes read from
+  the build (MBR-only hybrid, no active flag) recorded as inferred in open-points; asked for the symptom first.
+- **2026-10-31** — UEFI boot: symptom = stick seen, no boot option. Switched to the GPT hybrid layout of current Ubuntu
+  ISOs (`stick/tools/layout.sh`), FAT16 ESP; `flash.sh` appends the data partition as GPT entry after relocating the
+  backup header and refuses in-place updates of old-layout sticks. While building a QEMU boot test found that the BIOS
+  GRUB core lacked `configfile` (legacy boot ended at `grub>`), fixed. Test green: UEFI, UEFI + Secure Boot, BIOS;
+  added as CI workflow "Boot test". 142 unit tests pass.
+- **2026-10-31** — User report: for an old-layout stick `flash.sh` refused the update but kept offering it. Fixed: the
+  blocker is checked before the menu; [u]pdate is offered only when it can work.
+- **2026-10-31** — Branches `sprint/old-gpus` and `ddr-timing-improvements` opened off this one. User's order: this
+  sprint first (its stick is running on hardware), then old GPUs, then DDR (parked).
+- **2026-10-31** — First hardware run of this sprint's stick (0.13.5): self-test build, Blender and ladder cap verified;
+  remaining noise: oneAPI SYCL aborts, Blender oneAPI with no render, gpu-p2p on one GPU. UEFI on an affected machine open.
+- **2026-10-31** — User: UEFI boot verified on an affected machine. D built (stick 0.13.6): skipped-with-reason for
+  gpu-p2p on one card, vendor runtime without GPU, Blender device types not found; traceback behind rc 0 = failure.
+  145 tests pass.
+- **2026-10-31** — E: SYCL logs read; the aborts come from the oneDNN path of llama.cpp's SYCL mul_mat on the UHD 770
+  (inferred from the message). Proposed: retry once without oneDNN, recorded. Waiting for the user.
+- **2026-10-31** — User chose variant 1 (retry without oneDNN, recorded) and asked for the plan before building.
+- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
+  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
+- **2026-10-31** — Manual SYCL test, first result: one test-backend-ops op without oneDNN ends "2/2 backends passed, OK" on the
+  UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
+- **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
+  all four aborted SYCL steps.
+- **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
+  VERSION 3); 149 tests pass; existing runs extract unchanged. Format / VERSION numbers collide with `sprint/old-gpus`.
+- **2026-11-01** — Side fix (user): the boot header shows the stick version (from /opt/rigsim/STICK_VERSION). No version bump: display only.
+- **2026-11-01** — Second hardware run (0.13.7): D and E work; FLASH_ATTN_EXT timed out with oneDNN (no error text, no
+  retry). Proposed: after the first oneDNN failure on a device, skip oneDNN for its remaining steps.
+- **2026-11-01** — Built the per-device oneDNN switch-off (stick 0.13.8, `OneDnnGuard`); 151 tests pass.
+- **2026-11-01** — Third hardware run (stick 0.13.8, run `…-03de`): `done`, no failures, 2 h 03 min; the oneDNN switch-off
+  ran FLASH_ATTN_EXT without the 30-min hang. User: the sprint is ready to merge. Closed in open-points: UEFI boot
+  (verified), the stick plan's A, B, D, E, ladder grid; C, F, G and the SELFTEST copy stay open.

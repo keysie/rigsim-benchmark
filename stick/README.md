@@ -22,7 +22,10 @@ bandwidth) and on again at the end.
 ## Requirements
 
 - **Stick:** 128 GB (64 GB without the AMD and Intel images, see `SKIP_ROCM` / `SKIP_ONEAPI`).
-- **Target machines:** x86_64, UEFI or legacy boot, Secure Boot may stay on.
+- **Target machines:** x86_64, UEFI or legacy boot, Secure Boot may stay on. The image is a GPT hybrid like current Ubuntu ISOs (since stick 0.13.5; before, some UEFI
+  firmwares offered no boot option without CSM). Sticks flashed with an older build cannot be updated in place to it:
+  `flash.sh` offers [s]eed only or [e]rase (results backed up first). `stick/tests/boot/boot-test.sh` boots the layout
+  in QEMU under UEFI, UEFI with Secure Boot and BIOS (CI: "Boot test").
 - **To make the stick:** a Linux host, or Windows with WSL 2 and Docker Desktop — see below. Internet for the
   build; everything else runs in a build container.
 - **Tools the build downloads itself,** directly from their makers (never part of this repository; links in
@@ -98,6 +101,7 @@ MIRROR=http://ch.archive.ubuntu.com/ubuntu stick/build.sh   # a nearby Ubuntu mi
 | `ROCM_IMAGE` / `AMDGPU_TARGETS` | see `build.sh` | ROCm base image / gfx targets to compile; check against current releases |
 | `ONEAPI_IMAGE` | see `build.sh` | oneAPI base image |
 | `SKIP_ROCM`, `SKIP_ONEAPI`, `SKIP_MODELS` | — | leave that part off the stick |
+| `ALLOW_INCOMPLETE` | `0` | `1`: finish the build even when the seed self-test finds a part missing or a binary without its libraries (a test stick; normal builds stop there, results in `seed/SELFTEST.json`) |
 | `MIRROR` | archive.ubuntu.com | Ubuntu mirror |
 | `REBUILD_ROOTFS` / `ROOTFS_MAX_AGE_DAYS` | — / `7` | the finished system image is reused while younger than this and its inputs are unchanged; `REBUILD_ROOTFS=1` forces a fresh one (newer drivers, security updates) |
 | `BUILD_IN_CONTAINER` | `1` | `0`: build on a Debian/Ubuntu host directly |

@@ -1,31 +1,38 @@
 # Briefing — rigsim-benchmark (entry point for every new agent)
 
 Hard limit: **16k tokens**. If this file grows beyond ~12k, move detail to `findings.md` or other docs.
-Last revised: 2026-10-31. Facts here are *read from the repository* unless marked otherwise.
+Last revised: 2026-11-01. Facts here are *read from the repository* unless marked otherwise.
 
 ## 0. Now: next steps and recently solved
 
-Keep this section current (instruction 3). Last updated 2026-10-31.
+Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**User priority (2026-10-31): make sure the stick works and collects the right data** (audit: findings, "Audit of all 15 runs").
+**Sprint `sprint/stick-data` — done, ready to merge (user, 2026-11-01).** Goal "the stick works and collects the
+right data" reached: third hardware run (stick 0.13.8, run `…-03de`, 13700K + RTX 3080 + UHD 770) ended `done`, no
+failures, 2 h 03 min (before: 2 h 26 min with failures). PR #23 (draft until now).
+
+**Open branches and their order (user):** 1. `sprint/stick-data` → merge now; 2. `sprint/old-gpus` (built, stick 0.14.0,
+waits for a build and a mixed-GPU machine), 3. `ddr-timing-improvements` (parked). Both are based on this branch;
+GitHub retargets their PRs to `main` once this branch is merged and deleted. **Merge note:** both this branch and
+`sprint/old-gpus` claim run format 1.5 and measurements VERSION 3 — `sprint/old-gpus` takes 1.6 / 4 (and stick
+0.14.x stays above 0.13.8). Their agent-docs were forked from this branch: merge notes by hand, journal in date order.
 
 **Next steps, in order**
-1. User merges **PR #22** (branch `fix/stick`, all stick fixes: thread ladder capped to the logical CPU count, stick 0.13.4;
-   conflict with #19 resolved). Every further stick fix goes into `fix/stick` while it is open.
-2. Build a stick from main and boot it on one machine; check that Blender delivers a result and the ladder has no failing
-   step (needs the user; neither fix is verified on hardware).
-3. **A — build-time self-test of every shipped tool** (extends #19's `ldd` check, which only warns, to MLC, llama.cpp
-   backends and the CPU toolkit; component summary in the build and as `seed_complete` in the run). Design given;
-   waiting for the user's answer: abort the build on a missing component (with `ALLOW_INCOMPLETE=1`), or warn and record.
-4. Then C (package energy readable), D (unsupported hardware recorded as skipped with a reason), E (SYCL/Vulkan aborts),
-   F (run-completeness audit tool), G (VM end-to-end test, optional) — see open-points 5.
+1. User merges PR #23. Then submit the three hardware runs of this sprint (`…-9c93`, `…-c72d`, `…-03de`) if wanted.
+2. Continue `sprint/old-gpus`: rebase onto `main`, renumber format / VERSION, build, test on a mixed-GPU machine.
+3. Still open from the stick plan (next stick sprint): C (package energy readable), F (run-completeness audit tool),
+   G (VM test, optional), `seed/SELFTEST.json` into each run, Blender oneAPI (Level Zero in the system image) —
+   open-points 5.
 
-**Recently solved** (merged, newest first)
-- 2026-10-31 PR #19 (stick 0.13.3): Blender's X11/GL client libraries in the system image, `ldd` check at build (warns).
-- 2026-10-31 PR #20: audit of all runs and the CPU-run analysis recorded in agent-docs.
-- 2026-10-31 PR #18: agent-docs added to both repos, outside `docs/`.
-- 2026-10-31 PR #17 (stick 0.13.2): the progress counter's total is fixed from the start.
-- 2026-10-30 PR #13 (stick 0.13.1): `cpu-gemm-ladder` and `cpu-power-time` were missing from the profile and now run.
+**Recently solved** (newest first)
+- 2026-11-01 (this sprint, verified on hardware): oneAPI steps that fail on oneDNN run without it, and a device stays
+  without oneDNN after its first failure (stick 0.13.7–0.13.8) — the UHD 770 now measures fully.
+- 2026-11-01 (this sprint, verified): what a machine cannot do is skipped with the reason (gpu-p2p on one card, vendor
+  runtime without GPU, Blender device types not offered); boot header shows the stick version.
+- 2026-10-31 (this sprint, verified): UEFI boot without CSM (GPT hybrid layout, QEMU boot test in CI); flash offers
+  [u]pdate only when it can work.
+- 2026-10-31 (this sprint, verified): build-time seed self-test (stops on missing parts), Blender libraries, ladder cap.
+- 2026-10-31 PR #22 / #19: ladder cap, Blender's libraries.
 
 ## 1. What this project is
 
@@ -35,7 +42,7 @@ Blender), stores results on the stick and powers off. Nothing is written to the 
 Data page: https://keysie.github.io/rigsim-benchmark/ . Like its sibling it is largely AI-written in chat sessions on the
 direction of one person (keysie); the data records everything that can influence a result so users can judge it.
 
-Current state (2026-10-31): stick **0.13.2**, run format **1.4**, **15 run folders from 12 distinct machines** (one machine
+State (2026-11-01): stick **0.13.8** on `sprint/stick-data` (main: 0.13.4), run format **1.5** there (main: 1.4), **15 run folders from 12 distinct machines** (one machine
 has 4 runs), 13 attribution files, predictions for tags v0.1.0 (2 files), v0.2.0 (7), v0.3.0 (15).
 
 ## 2. The two repositories and how they interact

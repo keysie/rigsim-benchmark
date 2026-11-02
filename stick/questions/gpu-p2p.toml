@@ -4,6 +4,7 @@ feeds = "Peer links and the path through the host for layer splits over several 
 image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
 toolkit = "cuda"
 gpus = "item"
+min_gpus = 2          # the stick skips it on one-card machines (stick.py plan)
 exclusive = true
 repeats = 2
 sample_ms = 200

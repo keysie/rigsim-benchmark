@@ -22,19 +22,14 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-5. **Make sure the stick collects the right data** [user, 2026-10-31: first priority]. Findings: see findings "Audit of all
-   15 runs". Proposed plan (not cleared yet): (A) a build-time self-test that starts every shipped tool (Blender with
-   `ldd`, MLC, llama.cpp backends) and fails the build when something is missing — PR #19 already adds the Blender `ldd`
-   check, as a warning only; (B) Blender's missing libraries (PR #19, merged, not verified on hardware) and the ladder grid (PR #22,
-   branch `fix/stick`, not merged); (C) make package energy readable or record why not; (D) record unsupported hardware as skipped with
-   the reason, not as a failure; (E) triage the SYCL and Vulkan aborts; (F) a run-completeness audit (expected vs
-   present data per machine class) as a tool and on the data page; (G) an end-to-end test (VM) if the user wants one.
-
-6. **Fix the new CPU questions** [agent, 2026-10-31]: (a) derive the ladder grid from the CPU count so runs stop ending
-   `done with failures`; (b) make package energy readable (find out why `energy_uj` is −1 in the container: permissions,
-   Secure Boot lockdown or sysfs masking — *unknown*); (c) expose cpu-gemm, ladder and power-time as value keys
-   (`measurements.py` `VERSION` bump); (d) consider per-thread rates or pinning so hybrid/SMT ladders are interpretable;
-   (e) take the idle-start reading after a cool-down or record the starting state. Each is a stick or tools change; propose first.
+5. **Stick: what is left after `sprint/stick-data`** [user plan of 2026-10-31; A, B, D, E and the UEFI boot are done and
+   verified on hardware, see journal]. (C) package energy: `energy_uj` reads −1 in the container — permissions, Secure
+   Boot lockdown or sysfs masking, *unknown*; (F) run-completeness audit (expected vs present data per machine class) as
+   a tool and on the data page; (G) an end-to-end test in a VM, if wanted; copy `seed/SELFTEST.json` into each run
+   (additive format change). Propose first.
+6. **CPU questions, rest** [agent, 2026-10-31; ladder grid done]: (a) expose cpu-gemm, ladder and power-time as value keys
+   (`measurements.py` VERSION bump); (b) per-thread rates or pinning so hybrid / SMT ladders are interpretable; (c) take
+   the idle-start reading after a cool-down or record the starting state. Propose first.
 
 7. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
    check the share of `unsupported` in `predictions/v0.3.0/` per key family and report which GPUs or CPUs are missing
@@ -44,11 +39,15 @@ Last revised: 2026-10-31.
 
 ## Low
 
-9. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
+9. **Blender oneAPI** [agent, 2026-10-31]: Blender's own oneAPI device needs Intel's Level Zero runtime and GPU
+   compute runtime in the system image (Blender runs there, not in the oneAPI image); today Blender finds no oneAPI
+   device (run `…-9c93`). Adding them = more system image size; decide with the user.
+
+10. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
-10. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
+11. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
     stick/README, decided 2026-10-29].
-11. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
+12. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
     Kepler and older not at all), MLC cannot switch prefetchers off under Secure Boot, ROCm only officially on some AMD
     generations, vkprobe's matrix GEMM is a plain kernel (lower bound), RAM timings as the BIOS set them are often
     invisible from Linux.

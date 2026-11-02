@@ -11,7 +11,7 @@ These apply to every agent in every session. The user may override one for a sin
 
 1. **Propose first, build after clearance.** Never just write code. Describe the change (what, where, why, risks,
    tests) in the answer and wait for the user's go-ahead. A proposal is short, not an essay.
-   Exception: the agent-docs themselves (rule 3) are updated without asking, directly on `main` (rule 7).
+   Exception: the agent-docs themselves (rule 3) are updated without asking, on the current sprint branch (rule 7).
 2. **Say what you are doing** in one line before any task that takes several tool calls.
 3. **Keep agent-docs updated with every answer.** Before finishing an answer, check each file in this folder:
    journal (new decision or finding, dated), open-points (added, reprioritised, closed), findings (new facts added,
@@ -29,19 +29,15 @@ These apply to every agent in every session. The user may override one for a sin
 6. **Conventional commit messages**: `<type>[(<scope>)][!]: <description>`, type one of feat, fix, docs, style,
    refactor, perf, test, build, ci, chore, revert. CI and `.githooks/commit-msg` reject anything else. Once per clone:
    `git config core.hooksPath .githooks`.
-7. **Branches and pull requests for all building** (user decisions 2026-10-31). Code, configuration and project docs
-   never go to `main` directly. Branches are cut by **component**, not by single fix: all fixes to one component are
-   one topic and share one branch and one PR until it is merged (e.g. every stick fix goes into `fix/stick`). Before
-   starting, check the open branches: one exists for this component and kind of work → add commits to it; none → open
-   one named after the component (`fix/<component>`, `feat/<feature>`). Unrelated components never share a branch.
-   One change per commit.
-   **The agent-docs never get a branch:** commit and push them directly to `main`, separately from code commits
-   (`docs(agent-docs): …`), so the notes are always current on `main` and never cause merge conflicts.
-   `main` requires a passing "Check Conventional Commits" status per commit, so a direct push is refused. Procedure:
-   push the commit to the throwaway ref `agent-docs-sync`, wait until the check is `completed/success`
-   (`GET /repos/keysie/<repo>/commits/<sha>/check-runs`), push `main`, delete `agent-docs-sync`. Not a working branch:
-   it lives only for the minute of the check.
-   Open a PR when the branch is ready for review. The user merges; agents do not merge their own PRs.
+7. **Branches are sprints** (user decision 2026-10-31). Code, configuration and docs never go to `main` directly.
+   A branch holds one sprint: a stretch of related work with one goal (e.g. "the stick collects the right data"), not a
+   single feature or fix. All work of the sprint goes into it — fixes, features, tests **and the agent-docs**, which
+   always live on the branch being worked on. Name it `sprint/<goal>`; a sprint touching both repositories uses the same
+   branch name in both. Before starting, check for an open sprint branch: work fits its goal → continue there; it does
+   not → ask the user whether to close the sprint (PR, user merges) before opening the next one from `main`. Never
+   rename a branch with an open PR (GitHub closes the PR). One change per commit; agent-docs commits separate from code
+   commits (`docs(agent-docs): …`).
+   Keep a PR open for the sprint (draft while work goes on) so the user sees it. The user merges; agents never merge.
 8. **Run the tests before and after** a change (commands in the briefing). Never hand over a red branch without saying so.
 
 ### Secrets and data

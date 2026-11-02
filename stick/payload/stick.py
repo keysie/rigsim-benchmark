@@ -70,6 +70,41 @@ VENDOR_GEMM_SHAPES = ["1x4096x4096", "8x2048x2048", "8x4096x4096", "32x4096x4096
 PROBE_TIMEOUT_S = 10 * 60
 AMD_DEVICES = ["--device", "/dev/kfd", "--device", "/dev/dri", "--security-opt", "seccomp=unconfined"]
 INTEL_DEVICES = ["--device", "/dev/dri"]
+# llama.cpp's SYCL backend hands batched GEMMs and flash attention to oneDNN. On an i7-13700K's UHD 770 (run d-9c93,
+# 2026-10-31) oneDNN failed with "could not create a memory object" and took llama-bench, MUL_MAT, MUL_MAT_ID and
+# FLASH_ATTN_EXT down; without oneDNN all four ran (manual test 2026-11-01). On exactly that error a oneAPI step runs
+# once more without oneDNN: the first output is kept as <step>.onednn-failed.txt, the step records `retry`.
+ONEDNN_ERROR = "could not create a memory object"
+NO_ONEDNN = {"GGML_SYCL_ENABLE_DNN": "0", "GGML_SYCL_FA_ONEDNN": "0"}
+
+
+def onednn_retry(rc: int, out: str, first: Path, again) -> tuple[int, str, dict | None]:
+    """again(env) -> (rc, out). Retries once without oneDNN if the step failed on oneDNN's allocation error."""
+    if rc == 0 or ONEDNN_ERROR not in out:
+        return rc, out, None
+    first.write_text(scrub(out))
+    rc2, out2 = again(NO_ONEDNN)
+    return rc2, out2, dict(reason=f"oneDNN: {ONEDNN_ERROR}", env=dict(NO_ONEDNN), first_rc=rc, first_output=first.name)
+
+
+class OneDnnGuard:
+    """One per oneAPI device. A llama.cpp step that fails on oneDNN runs again without it (onednn_retry); from then on
+    every further llama.cpp step on that device runs without oneDNN right away (run c72d, 2026-11-01: FLASH_ATTN_EXT
+    did not abort with oneDNN but hung for the full 30-min timeout, so the error text never came)."""
+
+    def __init__(self):
+        self.off_after = ""
+
+    def run(self, step: str, first: Path, attempt) -> tuple[int, str, dict]:
+        """attempt(env or None) -> (rc, out). Returns rc, out and what to add to the step's entry."""
+        if self.off_after:
+            rc, out = attempt(NO_ONEDNN)
+            return rc, out, dict(onednn_off=dict(after=self.off_after, env=dict(NO_ONEDNN)))
+        rc, out = attempt(None)
+        rc, out, retry = onednn_retry(rc, out, first, attempt)
+        if retry:
+            self.off_after = step
+        return rc, out, (dict(retry=retry) if retry else {})
 # HIP has no code for a gfx target it was not built for; the usual stand-in is the family's base target
 GFX_FAMILY = [("gfx103", "10.3.0"), ("gfx110", "11.0.0"), ("gfx115", "11.5.0"), ("gfx120", "12.0.0")]
 STICK_READ_MIB = 1024
@@ -549,8 +584,21 @@ def question_gpus(qfile: Path) -> str:
     return m.group(1) if m else "none"
 
 
-def plan(qdir: Path, nvidia: bool, nvidia_reason: str) -> list[tuple[str, Path, str | None]]:
-    """(question, file, skip reason or None), in profile order."""
+def question_min_gpus(qfile: Path) -> int:
+    """min_gpus = N in a question file: it needs at least N NVIDIA cards (gpu-p2p: 2)."""
+    m = re.search(r'(?m)^min_gpus\s*=\s*(\d+)', qfile.read_text())
+    return int(m.group(1)) if m else 1
+
+
+def nvidia_count() -> int:
+    rc, out = sh(["nvidia-smi", "-L"], timeout=60)
+    return sum(1 for l in out.splitlines() if l.startswith("GPU ")) if rc == 0 else 0
+
+
+def plan(qdir: Path, nvidia: bool, nvidia_reason: str, n_gpus: int | None = None) -> list[tuple[str, Path, str | None]]:
+    """(question, file, skip reason or None), in profile order. n_gpus: NVIDIA cards the driver drives (None: unknown,
+    no question skipped for it). A question this machine cannot answer is skipped with the reason, not run to fail
+    (run d-9c93, 2026-10-31: gpu-p2p "failed" twice on a one-card machine)."""
     out = []
     for q in PROFILE:
         f = qdir / f"{q}.toml"
@@ -558,6 +606,8 @@ def plan(qdir: Path, nvidia: bool, nvidia_reason: str) -> list[tuple[str, Path, 
             out.append((q, f, "question file missing"))
         elif question_gpus(f) != "none" and not nvidia:
             out.append((q, f, nvidia_reason))
+        elif question_gpus(f) != "none" and n_gpus is not None and n_gpus < question_min_gpus(f):
+            out.append((q, f, f"needs {question_min_gpus(f)} NVIDIA cards, this machine has {n_gpus}"))
         else:
             out.append((q, f, None))
     return out
@@ -858,21 +908,28 @@ def backend_ops_plan(binary: str, backend: str) -> list[tuple[str, list[str]]]:
     return out
 
 
-def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path) -> dict:
-    """run(cmd, timeout) -> (rc, output). Older builds lack --output: then plain console output. A build that does
-    not know the backend name: once more without -b (every backend it sees, CPU included)."""
+def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: Path,
+                    onednn: "OneDnnGuard | None" = None) -> dict:
+    """run(cmd, timeout[, env]) -> (rc, output). Older builds lack --output: then plain console output. A build that
+    does not know the backend name: once more without -b (every backend it sees, CPU included). onednn (SYCL): the
+    device's OneDnnGuard decides on oneDNN before anything else."""
     runs = {}
     ops = backend_ops_plan(binary, backend)
     for k, (key, cmd) in enumerate(ops, 1):
         STATUS.set(f"test-backend-ops {prefix} {key[4:]} {k}/{len(ops)}")
         t0 = time.time()
-        rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
+        extra = {}
+        if onednn:
+            rc, out, extra = onednn.run(f"{prefix}-{key}", d / f"{prefix}-{key}.onednn-failed.txt",
+                                        lambda env, cmd=cmd: run(cmd, BACKEND_OPS_TIMEOUT_S, env))
+        else:
+            rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
             cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         if rc != 0 and rc != 127:
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
-        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra)
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
 
@@ -1071,8 +1128,8 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
     targets = meta.splitlines()[0].split(";") if kind == "rocm" and meta else []
     have_probe = (Path(probe).name in meta.split())
     devices = [r for r in parse_lines(info) if r.get("mode") == "info"]
-    if not devices:
-        return dict(res, rc=1, error="the runtime sees no GPU (info.jsonl)")
+    if not devices:                  # e.g. an iGPU the runtime does not support: not a failure of the stick
+        return dict(res, skipped=f"the {'oneAPI' if kind == 'oneapi' else 'ROCm'} runtime sees no GPU on this machine (info.jsonl)")
     res["devices"], runs = [], {}
     for dev in devices:
         i = str(dev["index"])
@@ -1091,15 +1148,27 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
             runs[f"dev{i}"] = dict(rc=rc, error="container did not start"); continue
         plan = vendor_plan(kind) if have_probe else []
         plan += [(f"llama-{m.stem}", ["/rigsim/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS]) for m in models]
+        def ex(cmd, t, env=None, c=c):
+            return sh(["docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,
+                       "/rigsim/run.sh", *cmd], timeout=t)
+        guard = OneDnnGuard() if kind == "oneapi" else None     # llama.cpp steps only; the probe has no oneDNN
         for k, (key, cmd) in enumerate(plan, 1):
             STATUS.set(f"dev{i} {key} {k}/{len(plan)}")
             t0 = time.time()
-            rc, out = sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S)
+            t = LLAMA_TIMEOUT_S if key.startswith("llama") else PROBE_TIMEOUT_S
+            extra = {}
+            if guard and key.startswith("llama"):
+                rc, out, extra = guard.run(f"dev{i}-{key}", d / f"dev{i}-{key}.onednn-failed.txt",
+                                           lambda env, cmd=cmd, t=t: ex(cmd, t, env))
+                if "retry" in extra:
+                    say(f"oneapi dev{i} {key}: oneDNN failed, without oneDNN rc={rc}; oneDNN off for this device", log)
+            else:
+                rc, out = ex(cmd, t)
             (d / f"dev{i}-{key}.jsonl").write_text(scrub(out))
-            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1))
+            runs[f"dev{i}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra)
         if "test-backend-ops" in meta.split():
-            runs.update(run_backend_ops(lambda cmd, t, c=c: sh(["docker", "exec", c, "/rigsim/run.sh", *cmd], timeout=t),
-                                        d, f"dev{i}", "/rigsim/test-backend-ops", "ROCm0" if kind == "rocm" else "SYCL0", log))
+            runs.update(run_backend_ops(ex, d, f"dev{i}", "/rigsim/test-backend-ops",
+                                        "ROCm0" if kind == "rocm" else "SYCL0", log, onednn=guard))
         sh(["docker", "rm", "-f", c], timeout=120)
         say(f"{kind} device {i} ({dev.get('name')}): {sum(1 for k in runs if k.startswith(f'dev{i}-'))} runs"
             + (f", HSA_OVERRIDE_GFX_VERSION={ov}" if ov else "") + ("" if have_probe else ", probe not in the image"), log)
@@ -1191,9 +1260,15 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                 except subprocess.TimeoutExpired:
                     rc, out, err = -9, "", f"timeout after {BLENDER_TIMEOUT_S} s"
                 (d / f"{key}.log").write_text(scrub(out + ("\n--- stderr ---\n" + err if err.strip() else "")))
+                nodev = re.search(r"No matching device of type \w+ found", out + err)
+                if rc == 0 and "Traceback (most recent call last)" in out + err:
+                    rc = 1                                      # the script failed, Blender still exits 0
                 say(f"blender {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
-                if rc != 0 and i == 0 and t != "CPU":
-                    unavailable.append(t)                       # guessed type this GPU / build does not offer
+                if t != "CPU" and (nodev or (rc != 0 and i == 0)):
+                    # guessed type this GPU / build does not offer (run d-9c93: oneAPI on a UHD 770 — Blender's
+                    # script found no such device and Blender exited 0 after a second)
+                    unavailable.append(t)
+                    say(f"blender {t}: not available here" + (f" ({nodev.group(0)})" if nodev else ""), log)
                     break
                 runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
         return dict(rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, route="offline", blender=ver,
@@ -1257,10 +1332,16 @@ def append_index(data: Path, row: dict) -> None:
 
 
 # --- host actions ------------------------------------------------------------------------------------------------------
+def stick_version() -> str:
+    """The stick's release (build.sh writes stick/VERSION to /opt/rigsim/STICK_VERSION)."""
+    return _read(OPT / "STICK_VERSION") or "unknown"
+
+
 def notice(seconds: int = NOTICE_S) -> bool:
     """True = go on; False = a key was pressed (abort, nothing measured)."""
     print("\n" * 2 + "=" * 78)
-    print(" rigsim hardware stick — measures this machine's CPU, memory and GPUs, then powers it off.")
+    print(f" rigsim hardware stick {stick_version()}")
+    print(" Measures this machine's CPU, memory and GPUs, then powers it off.")
     print(" Nothing is written to this machine's disks. Results stay on the stick (no serial numbers) and may be")
     print(" published as open data (CC BY 4.0) with the owner's consent: github.com/keysie/rigsim-benchmark")
     print(f" Press any key within {seconds} s to ABORT (a shell is on Ctrl+Alt+F2).")
@@ -1547,7 +1628,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.4")
+FORMAT = dict(name="rigsim-stick-run", version="1.5")
 
 
 def runtime_versions() -> dict:
@@ -1690,7 +1771,7 @@ def main() -> int:
         say(f"screens off while measuring: {run['screens_blanked'] or 'not possible'}", log)
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
-            qplan = list(plan(OPT / "questions", nvidia, why))
+            qplan = list(plan(OPT / "questions", nvidia, why, nvidia_count() if nvidia else None))
             STATUS.n = 2 + len(qplan) + 7        # inventory, docker, the questions, the seven steps below
             threading.Thread(target=operator_keys, daemon=True).start()
             for q, f, skip in qplan:

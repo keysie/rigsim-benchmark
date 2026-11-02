@@ -1,0 +1,17 @@
+name: Boot test
+on:
+  push:
+    paths: ["stick/tools/layout.sh", "stick/build.sh", "stick/flash.sh", "stick/tests/boot/**", ".github/workflows/boot.yml"]
+  pull_request:
+    paths: ["stick/tools/layout.sh", "stick/build.sh", "stick/flash.sh", "stick/tests/boot/**", ".github/workflows/boot.yml"]
+jobs:
+  boot:
+    name: Boot the stick's disk layout in QEMU (UEFI, UEFI + Secure Boot, BIOS)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends xorriso mtools dosfstools fdisk e2fsprogs \
+            qemu-system-x86 ovmf seabios grub-pc-bin grub-common grub-efi-amd64-signed shim-signed
+      - run: sudo bash stick/tests/boot/boot-test.sh

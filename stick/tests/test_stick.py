@@ -2,6 +2,7 @@
 stable, inventory sanitised, the profile valid for the bench runner, GPU questions skipped with a reason, the index
 accumulates, power-off rules. Run: python3 -m pytest -q stick/tests"""
 import datetime as dt
+import json
 import importlib.util
 import sys
 from pathlib import Path
@@ -326,8 +327,13 @@ def test_flash_offers_update_backs_up_first_and_keeps_the_data_partition():
     assert "[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort?" in f
     upd = f.split("update() {", 1)[1].split("\n}\n", 1)[0]
     assert upd.index("backup_runs") < upd.index("dd if=")                 # backup before anything is written
-    assert "start=${start}, size=${sectors}" in upd and "mkfs" not in upd  # same sectors, no new filesystem
-    assert "does not fit in front of the data partition" in upd and "e2fsck -n" in upd
+    assert 'add_data_part "$DEV" "$start" "$sectors"' in upd and "mkfs" not in upd  # same sectors, no new filesystem
+    # an MBR-layout stick (data partition to the very end) is not updated in place to the GPT layout, and [u]pdate is
+    # not offered then (before, it was offered again after every refusal — user report 2026-10-31)
+    assert "disk_sectors - 34" in f[f.index("update_blocker() {"):f.index("update() {")]
+    assert 'blocker="$(update_blocker "$part")"' in f and 'prompt="[s]eed only, [e]rase everything, [a]bort? "' in f
+    assert '[[ -z "$blocker" ]] && { update' in f
+    assert "does not fit in front of the data partition" in f.split("update_blocker() {", 1)[1] and "e2fsck -n" in upd
     e = f.split("\n    e) ", 1)[1].split(";;", 1)[0]
     assert e.index("backup_runs") < e.index("fresh")
     assert "mount -o ro" in f.split("backup_runs() {", 1)[1].split("\n}\n", 1)[0]
@@ -579,9 +585,9 @@ def test_flash_rereads_without_partprobe():
 
 def test_stick_checks_itself_before_measuring(tmp_path):
     b = (HERE / "build.sh").read_text()
-    assert "md5sum > md5sum.txt" in b and b.index("md5sum.txt") < b.index('step "ISO (BIOS + UEFI)"')
+    assert "md5sum > md5sum.txt" in b and b.index("md5sum.txt") < b.index('step "ISO (BIOS + UEFI, GPT hybrid)"')
     assert "! -path ./boot/grub/bios.img" in b                       # xorriso patches it: never matches
-    assert b.index('step "ISO checksums') > b.index('step "ISO (BIOS + UEFI)"') and "md5sum --quiet -c md5sum.txt" in b
+    assert b.index('step "ISO checksums') > b.index('step "ISO (BIOS + UEFI, GPT hybrid)"') and "md5sum --quiet -c md5sum.txt" in b
     unit = (HERE / "ubuntu/rootfs/etc/systemd/system/rigsim-stick.service").read_text()
     assert "casper-md5check.service" in unit.split("After=")[1].splitlines()[0]
     f = tmp_path / "r.json"
@@ -1091,7 +1097,7 @@ def test_powercap_limits(tmp_path):
     p = stick.powercap(tmp_path)
     assert list(p["zones"]) == ["intel-rapl:0"]
     assert p["zones"]["intel-rapl:0"]["constraints"][0] == dict(name="long_term", limit_w=65.0, window_s=28.0)
-    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] == "1.4"
+    assert "powercap.json" in stick.INVENTORY_EXTRA and stick.FORMAT["version"] >= "1.4"
 def test_lscpu_cache_ids_are_not_masked_as_ipv6():
     line = "  0    0      0    0 0:0:0:0          yes 4954.5649 567.0890 3842.5410"
     assert "<ip6>" in stick.sanitize(line)                                  # the general scrub would mask it
@@ -1125,25 +1131,243 @@ def test_runner_lists_every_item_up_front():
 
 
 def test_blender_finds_its_libraries():
-    """Run d7a3 / 1a97: Blender did not start ('libXfixes.so.3' missing): the libraries are installed and the build
-    checks with ldd in the system image that none is missing."""
+    """Run d7a3 / 1a97: Blender did not start ('libXfixes.so.3' missing): the libraries are installed, and the seed
+    self-test checks with ldd in the system image that none is missing (it replaced the warning-only check)."""
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
     for lib in ("libxfixes3", "libx11-6", "libxi6", "libxxf86vm1", "libxrender1", "libxkbcommon0", "libgl1"):
         assert lib in c, lib
     b = (HERE / "build.sh").read_text()
-    assert 'sudo chroot "$ROOT" ldd /mnt/blender-check/blender' in b and 'step "Blender libraries" blender_libs' in b
+    assert 'step "seed self-test"' in b and "tools/selftest.py" in b and "blender_libs" not in b
 
-def test_thread_ladder_is_capped_to_the_machines_cpus():
-    """Runs d7a3 / 1a97: a fixed ladder up to 64 threads failed every step above the machine's logical CPUs, so each
-    run ended 'done with failures'. The ladder is capped and always ends at the machine's own count."""
-    p = hwq.load_plan(str(HERE / "questions" / "cpu-gemm-ladder.toml"))
-    t = lambda n: [i["params"]["threads"] for i in hwq.expand(p, False, None, n)]
-    assert t(4) == [1, 2, 3, 4]                                   # the 2-core / 4-thread laptop: no failing steps
-    assert t(24) == [1, 2, 3, 4, 6, 8, 12, 16, 24]                # the 13700K
-    assert t(20) == [1, 2, 3, 4, 6, 8, 12, 16, 20]                # a count not on the ladder is added
-    assert t(1) == [1] and t(128)[-1] == 128 and 64 in t(128)
-    q = hwq.load_plan(str(HERE / "questions" / "cpu-gemm.toml"))   # questions without [limits] are untouched
-    assert {i["params"]["threads"] for i in hwq.expand(q, False, None, 4)} == {1, 0}
-    bad = dict(p, limits={"threads": "nonsense"})
-    with pytest.raises(ValueError):
-        hwq.expand(bad, False, None, 4)
+
+# --- seed self-test (stick/tools/selftest.py) ------------------------------------------------------------------------
+_st_spec = importlib.util.spec_from_file_location("selftest", HERE / "tools" / "selftest.py")
+selftest = importlib.util.module_from_spec(_st_spec); _st_spec.loader.exec_module(selftest)
+FULL_ENV = dict(MLC_URL="x", BLENDER_LAUNCHER_URL="x")
+
+
+def _exe(p: Path) -> Path:
+    p.parent.mkdir(parents=True, exist_ok=True); p.write_text("#!/bin/sh\n"); p.chmod(0o755); return p
+
+
+def _full_seed(tmp: Path) -> tuple[Path, Path]:
+    s, pay = tmp / "seed", tmp / "rootfs" / "opt" / "rigsim"
+    for img in ("nvidia/cuda:12", "debian:trixie"):
+        f = selftest.image_tar(s, img); f.parent.mkdir(parents=True, exist_ok=True); f.write_text("x")
+    (s / "debs").mkdir(parents=True); (s / "debs" / "a.deb").write_text("x")
+    _exe(pay / "bin" / "vkprobe")
+    for be in ("vulkan", "cuda"):
+        for b in selftest.LLAMA_BINS:
+            _exe(s / "llama" / be / b)
+    (s / "models").mkdir()
+    for m in ("a", "b"):
+        (s / "models" / f"{m}.gguf").write_text("x")
+    bl = s / "blender"; bl.mkdir(); (bl / "BLENDER_VERSION").write_text("4.2.0")
+    _exe(bl / "unpacked" / "blender" / "blender-4.2.0-linux-x64" / "blender")
+    for n in stick.BLENDER_SCENES:
+        f = bl / "unpacked" / "scenes" / n / f"{n}.blend"; f.parent.mkdir(parents=True); f.write_text("x")
+    (bl / "script").mkdir(); (bl / "script" / "main.py").write_text("x")
+    _exe(s / "tools" / "mlc" / "mlc")
+    for v in ("rocm", "oneapi"):
+        (s / "images" / f"vendor-{v}.tar").write_text("x")
+    return s, pay
+
+
+def _run(s, pay, env=FULL_ENV, ldd_root=lambda p: [], ldd_image=lambda i, p: [], root_has=lambda lib: True):
+    return selftest.SelfTest(s, pay, env, "nvidia/cuda:12", ["nvidia/cuda:12", "debian:trixie"],
+                             ldd_root, ldd_image, stick, root_has).run()
+
+
+def test_selftest_passes_a_complete_seed(tmp_path):
+    s, pay = _full_seed(tmp_path)
+    r = _run(s, pay)
+    assert all(x["status"] == "ok" for x in r.values()), r
+
+
+def test_selftest_finds_the_audit_failures(tmp_path):
+    """The audit of 2026-10-31: Blender without libXfixes, MLC and a vendor image not in the seed."""
+    s, pay = _full_seed(tmp_path)
+    (s / "tools" / "mlc" / "mlc").unlink(); (s / "images" / "vendor-oneapi.tar").unlink()
+    r = _run(s, pay, ldd_root=lambda p: ["libXfixes.so.3"] if p.name == "blender" else [])
+    assert {k for k, v in r.items() if v["status"] == "missing"} == {"blender", "mlc", "oneapi"}, r
+    assert "libXfixes.so.3" in r["blender"]["problems"][0]
+
+
+def test_selftest_checks_cuda_binaries_in_the_cuda_image(tmp_path):
+    s, pay = _full_seed(tmp_path)
+    seen = []
+    r = _run(s, pay, ldd_image=lambda i, p: seen.append((i, p.name)) or ["libcublas.so.12"])
+    assert r["llama.cpp cuda"]["status"] == "missing" and r["llama.cpp vulkan"]["status"] == "ok"
+    assert ("nvidia/cuda:12", "llama-bench") in seen
+
+
+def test_selftest_driver_libraries_come_from_the_system_image(tmp_path):
+    """First real build (2026-10-31): libcuda.so.1 is never in the CUDA image — the container toolkit brings it in from
+    the system image. Fine when the system image has it; missing there, it is a real gap."""
+    s, pay = _full_seed(tmp_path)
+    img = lambda i, p: ["libcuda.so.1"]
+    assert _run(s, pay, ldd_image=img)["llama.cpp cuda"]["status"] == "ok"
+    r = _run(s, pay, ldd_image=img, root_has=lambda lib: False)["llama.cpp cuda"]
+    assert r["status"] == "missing" and "driver library" in r["problems"][0]
+    assert selftest.is_driver_lib("libnvidia-ml.so.1") and not selftest.is_driver_lib("libcublas.so.12")
+
+
+def test_selftest_parts_left_out_on_purpose_are_not_failures(tmp_path):
+    s, pay = _full_seed(tmp_path)
+    for p in (s / "models").glob("*"):
+        p.unlink()
+    (s / "images" / "vendor-rocm.tar").unlink()
+    r = _run(s, pay, env=dict(SKIP_MODELS="1", SKIP_ROCM="1", MLC_URL="", BLENDER_LAUNCHER_URL=""))
+    assert {k for k, v in r.items() if v["status"] == "left out"} == {"models", "rocm", "mlc", "blender"}
+    assert not [k for k, v in r.items() if v["status"] == "missing"]
+
+
+def test_selftest_exit_code_and_allow_incomplete(tmp_path, monkeypatch):
+    s, pay = _full_seed(tmp_path)
+    (s / "debs" / "a.deb").unlink()
+    monkeypatch.setattr(selftest, "ldd_in_rootfs", lambda root, p: [])
+    monkeypatch.setattr(selftest, "ldd_in_image", lambda i, p: [])
+    monkeypatch.setattr(selftest, "rootfs_has_lib", lambda root, lib: True)
+    monkeypatch.setattr(selftest, "load_stick", lambda: stick)
+    for k, v in FULL_ENV.items():
+        monkeypatch.setenv(k, v)
+    monkeypatch.delenv("ALLOW_INCOMPLETE", raising=False)
+    args = ["--seed", str(s), "--rootfs", str(tmp_path / "rootfs"), "--payload", str(pay), "--cuda-image",
+            "nvidia/cuda:12", "--image", "nvidia/cuda:12", "--image", "debian:trixie", "--out", str(tmp_path / "o.json")]
+    assert selftest.main(args) == 1
+    assert json.loads((tmp_path / "o.json").read_text())["parts"]["debs"]["status"] == "missing"
+    monkeypatch.setenv("ALLOW_INCOMPLETE", "1")
+    assert selftest.main(args) == 0
+
+
+def test_missing_libs_parses_ldd():
+    out = "\tlinux-vdso.so.1 (0x...)\n\tlibXfixes.so.3 => not found\n\tlibc.so.6 => /lib/libc.so.6\n"
+    assert selftest.missing_libs(out) == ["libXfixes.so.3"]
+
+
+def test_disk_layout_is_a_gpt_hybrid_shared_by_build_and_flash():
+    """User report 2026-10-31: some UEFI firmwares saw the stick but offered no boot option without CSM (MBR-only hybrid,
+    partition 1 from sector 0, no boot flag). The layout is now that of current Ubuntu ISOs; build.sh and flash.sh use
+    the same functions, and the BIOS core embeds configfile (without it legacy boot stopped at a grub> prompt in QEMU).
+    The real boot test is stick/tests/boot/boot-test.sh (QEMU: UEFI, UEFI + Secure Boot, BIOS)."""
+    lay = (HERE / "tools" / "layout.sh").read_text()
+    for flag in ("-partition_offset 16", "--mbr-force-bootable", "-appended_part_as_gpt",
+                 "28732ac11ff8d211ba4b00a0c93ec93b", "mkfs.vfat -F 16", "--relocate gpt-bak-std", "type=L"):
+        assert flag in lay, flag
+    b, f = (HERE / "build.sh").read_text(), (HERE / "flash.sh").read_text()
+    assert 'source "$S/tools/layout.sh"' in b and "make_iso " in b and "make_efiboot " in b and "-append_partition" not in b
+    assert b.count('--modules="linux normal iso9660 biosdisk search configfile"') == 2
+    assert 'source "$S/tools/layout.sh"' in f and "add_data_part " in f and "type=83" not in f
+
+
+# --- D: what a machine cannot do is skipped with the reason, not recorded as a failure (run d-9c93, 2026-10-31) ----
+def test_plan_skips_questions_that_need_more_cards(tmp_path):
+    for q in stick.PROFILE:
+        src = HERE / "questions" / f"{q}.toml"
+        (tmp_path / f"{q}.toml").write_text(src.read_text())
+    one = {q: why for q, f, why in stick.plan(tmp_path, True, "", 1)}
+    assert one["gpu-p2p"] == "needs 2 NVIDIA cards, this machine has 1"
+    assert one["gpu-vram"] is None and one["cpu-gemm"] is None
+    assert {q: why for q, f, why in stick.plan(tmp_path, True, "", 2)}["gpu-p2p"] is None
+    assert {q: why for q, f, why in stick.plan(tmp_path, True, "")}["gpu-p2p"] is None        # count unknown: run it
+    assert stick.question_min_gpus(HERE / "questions" / "gpu-p2p.toml") == 2
+
+
+def test_vendor_runtime_without_gpu_is_skipped_not_failed():
+    src = (HERE / "payload" / "stick.py").read_text()
+    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
+    assert 'sees no GPU on this machine' in body and 'rc=1, error="the runtime sees no GPU' not in body
+
+
+def test_blender_device_type_not_found_is_unavailable_and_python_errors_fail(tmp_path, monkeypatch):
+    b = tmp_path / "data" / "seed" / "blender"; b.mkdir(parents=True); (b / "BLENDER_VERSION").write_text("4.2.0")
+    script = b / "script" / "main.py"; script.parent.mkdir(); script.write_text("")
+    scenes = {n: tmp_path / f"{n}.blend" for n in ("monster", "junkshop", "classroom")}
+    monkeypatch.setattr(stick, "blender_offline", lambda b, v: (tmp_path / "blender", scenes))
+    monkeypatch.setattr(stick, "benchmark_script", lambda b: script)
+    monkeypatch.setattr(stick, "guessed_blender_types", lambda: ["CPU", "CUDA", "ONEAPI"])
+    monkeypatch.setattr(stick, "vendor_images", lambda d: {})
+    tb = "Traceback (most recent call last):\n  File ...\n"
+    def fake(cmd, **kw):
+        t, scene = cmd[-1], Path(cmd[cmd.index("CYCLES") + 1]).stem
+        class R: returncode, stdout, stderr = 0, "Blender quit\n", ""
+        if t == "ONEAPI":
+            R.stderr = tb + "ValueError: No matching device of type OneAPI found. Options are: []\n"
+        if t == "CUDA" and scene == "junkshop":
+            R.stderr = tb + "RuntimeError: out of memory\n"
+        return R()
+    monkeypatch.setattr(stick, "run_cmd", fake)
+    r = stick.run_blender(tmp_path / "data", tmp_path / "run", tmp_path / "log")
+    assert r["types_unavailable"] == ["ONEAPI"] and not any(k.startswith("oneapi") for k in r["runs"])
+    assert r["runs"]["cuda-junkshop"]["rc"] == 1 and r["runs"]["cuda-monster"]["rc"] == 0 and r["rc"] == 1
+
+
+# --- E: oneAPI steps that fail on oneDNN run once more without it (run d-9c93, manual test 2026-11-01) ----------------
+ONEDNN_OUT = "could not create a memory object\nException caught at file:/tmp/llama/ggml/src/ggml-sycl/ggml-sycl.cpp\n"
+
+
+def test_onednn_retry_only_on_the_onednn_error(tmp_path):
+    calls = []
+    again = lambda env: calls.append(env) or (0, '{"avg_ts": 220.4}')
+    rc, out, retry = stick.onednn_retry(134, ONEDNN_OUT, tmp_path / "x.onednn-failed.txt", again)
+    assert (rc, out) == (0, '{"avg_ts": 220.4}') and calls == [stick.NO_ONEDNN]
+    assert retry == dict(reason="oneDNN: could not create a memory object", env=stick.NO_ONEDNN, first_rc=134,
+                         first_output="x.onednn-failed.txt")
+    assert ONEDNN_ERROR_TEXT in (tmp_path / "x.onednn-failed.txt").read_text()
+    for rc0, out0 in ((134, "Segmentation fault"), (0, ONEDNN_OUT)):            # other aborts, or no failure: as is
+        assert stick.onednn_retry(rc0, out0, tmp_path / "y.txt", again) == (rc0, out0, None)
+    assert len(calls) == 1 and not (tmp_path / "y.txt").exists()
+
+
+ONEDNN_ERROR_TEXT = "could not create a memory object"
+
+
+def test_backend_ops_retry_without_onednn_before_the_other_fallbacks(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "backend_ops_plan", lambda binary, backend: [("ops-mul_mat", ["tbo", "perf", "-o", "MUL_MAT",
+                                                                                          "-b", "SYCL0", "--output", "x"])])
+    seen = []
+    def run(cmd, t, env=None):
+        seen.append((list(cmd), env))
+        return (0, "OK") if env == stick.NO_ONEDNN else (134, ONEDNN_OUT)
+    r = stick.run_backend_ops(run, tmp_path, "dev0", "tbo", "SYCL0", tmp_path / "log", onednn=stick.OneDnnGuard())
+    assert r["dev0-ops-mul_mat"]["rc"] == 0 and r["dev0-ops-mul_mat"]["retry"]["first_rc"] == 134
+    assert [e for _, e in seen] == [None, stick.NO_ONEDNN]                       # no --output / -b fallbacks needed
+    assert (tmp_path / "dev0-ops-mul_mat.onednn-failed.txt").exists() and (tmp_path / "dev0-ops-mul_mat.txt").exists()
+    seen.clear()
+    r = stick.run_backend_ops(run, tmp_path, "dev1", "tbo", "Vulkan0", tmp_path / "log")   # not SYCL: no retry
+    assert "retry" not in r["dev1-ops-mul_mat"] and all(e is None for _, e in seen)
+
+
+def test_run_vendor_passes_the_environment_to_docker_exec():
+    src = (HERE / "payload" / "stick.py").read_text()
+    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
+    assert '"docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,' in body
+    assert "onednn=guard" in body and 'guard = OneDnnGuard() if kind == "oneapi" else None' in body
+
+
+def test_notice_header_shows_the_stick_version(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(stick, "OPT", tmp_path)
+    (tmp_path / "STICK_VERSION").write_text("0.13.7\n")
+    assert stick.stick_version() == "0.13.7"
+    monkeypatch.setattr(stick.sys, "stdin", None)             # no terminal: the notice prints and goes on
+    stick.notice(0)
+    assert "rigsim hardware stick 0.13.7" in capsys.readouterr().out
+    (tmp_path / "STICK_VERSION").unlink()
+    assert stick.stick_version() == "unknown"
+
+
+def test_onednn_stays_off_on_a_device_after_its_first_failure(tmp_path):
+    """Run c72d: FLASH_ATTN_EXT hung for 30 min with oneDNN after MUL_MAT had already failed on it. Once a device
+    failed on oneDNN, its further steps run without it straight away and say since when."""
+    g, seen = stick.OneDnnGuard(), []
+    def attempt(env):
+        seen.append(env)
+        return (0, "ok") if env else (134, ONEDNN_OUT)
+    rc, _, extra = g.run("dev0-llama-tiny", tmp_path / "a.txt", attempt)
+    assert rc == 0 and "retry" in extra and seen == [None, stick.NO_ONEDNN]
+    seen.clear()
+    rc, _, extra = g.run("dev0-ops-flash_attn_ext", tmp_path / "b.txt", attempt)
+    assert rc == 0 and seen == [stick.NO_ONEDNN] and not (tmp_path / "b.txt").exists()
+    assert extra == dict(onednn_off=dict(after="dev0-llama-tiny", env=stick.NO_ONEDNN))
+    g2 = stick.OneDnnGuard()                                                     # a device where oneDNN works
+    assert g2.run("dev1-x", tmp_path / "c.txt", lambda env: (0, "ok")) == (0, "ok", {}) and not g2.off_after

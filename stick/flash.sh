@@ -22,6 +22,7 @@ source "$S/tools/deps.sh"
 need sfdisk:fdisk partx:util-linux blkid:util-linux blockdev:util-linux lsblk:util-linux e2fsck:e2fsprogs python3:python3 \
      mkfs.ext4:e2fsprogs rsync:rsync
 RESERVE_MIB="${RESERVE_MIB:-8192}"
+source "$S/tools/layout.sh"           # add_data_part: GPT (0.13.5 on) and older MBR images
 reseed=0; [[ "${1:-}" == --reseed ]] && { reseed=1; shift; }
 DEV="${1:?device, e.g. /dev/sdX}"
 [[ -b "$DEV" ]] || { echo "$DEV is not a block device" >&2; exit 2; }
@@ -35,8 +36,8 @@ done
 
 MNT=""; cleanup() { [[ -n "$MNT" ]] && { umount "$MNT" 2>/dev/null || true; rmdir "$MNT" 2>/dev/null || true; }; }
 trap cleanup EXIT
-# The kernel's view of the new partition table. Not partprobe: libparted rejects a hybrid ISO's table, whose first
-# partition starts at sector 0 and so contains the table itself ("recursive partition"); the kernel accepts it.
+# The kernel's view of the new partition table. Not partprobe: libparted rejected the hybrid ISO's table of sticks
+# before 0.13.5, whose first partition started at sector 0 ("recursive partition"); the kernel accepts both layouts.
 reread() {
   blockdev --rereadpt "$DEV" 2>/dev/null || { partx -u "$DEV" 2>/dev/null; partx -a "$DEV" 2>/dev/null; } || true
   if command -v udevadm >/dev/null; then udevadm settle; else sleep 2; fi
@@ -179,7 +180,7 @@ fresh() {
   dd if="$ISO" of="$DEV" bs=4M conv=fsync status=progress
   local iso_mib=$(( $(stat -c %s "$ISO") / 1048576 + 1 ))
   local start=$(( iso_mib + 2048 > RESERVE_MIB ? iso_mib + 2048 : RESERVE_MIB ))
-  echo "start=${start}MiB, type=83" | sfdisk --append --no-reread "$DEV"
+  add_data_part "$DEV" "${start}MiB"
   reread
   local part; part="$(lsblk -lnpo NAME,TYPE "$DEV" | awk '$2 == "part" {p = $1} END {print p}')"
   [[ "$(lsblk -lnpo TYPE "$DEV" | grep -c part)" -ge 3 && -b "$part" ]] || {
@@ -190,21 +191,29 @@ fresh() {
   echo "stick ready: $DEV (data partition $part from ${start} MiB)"
 }
 
-update() {                                           # $1 = data partition
-  local part="$1" nr start sectors ss
-  nr="$(cat "/sys/class/block/$(basename "$part")/partition")"
-  read -r start sectors < <(partx -g -o START,SECTORS --nr "$nr" "$DEV")
-  ss="$(blockdev --getss "$DEV")"
-  local iso_bytes; iso_bytes="$(stat -c %s "$ISO")"
-  if (( iso_bytes + 1048576 > start * ss )); then
-    echo "the new image ($(( iso_bytes / 1048576 )) MiB) does not fit in front of the data partition" \
-         "($(( start * ss / 1048576 )) MiB): choose [s]eed only, or [e]rase (results are backed up first)." >&2
-    return 3
+# Why the data partition cannot stay where it is for the new image (empty: an in-place update is possible).
+# Sets START and SECTORS of the data partition for update().
+update_blocker() {                                   # $1 = data partition
+  local nr ss iso_bytes disk_sectors
+  nr="$(cat "/sys/class/block/$(basename "$1")/partition")"
+  read -r START SECTORS < <(partx -g -o START,SECTORS --nr "$nr" "$DEV")
+  ss="$(blockdev --getss "$DEV")"; iso_bytes="$(stat -c %s "$ISO")"; disk_sectors="$(blockdev --getsz "$DEV")"
+  if (( iso_bytes + 1048576 > START * ss )); then
+    echo "the new image ($(( iso_bytes / 1048576 )) MiB) does not fit in front of the data partition ($(( START * ss / 1048576 )) MiB)"
+  # A GPT image (0.13.5 on) keeps its backup table in the stick's last 33 sectors. Sticks flashed before with the
+  # MBR layout have their data partition running to the very end: those sectors are filesystem there.
+  elif sfdisk -d "$ISO" 2>/dev/null | grep -q '^label: gpt' && (( START + SECTORS > disk_sectors - 34 )); then
+    echo "this stick was flashed with the older layout, and the new image needs the stick's last sectors for its partition table"
   fi
+}
+
+update() {                                           # $1 = data partition; only offered when update_blocker is empty
+  local part="$1" start sectors
+  update_blocker "$part" >/dev/null; start="$START"; sectors="$SECTORS"
   backup_runs "$part"
   echo "writing the new image in front of the data partition (sectors from $start stay untouched)"
   dd if="$ISO" of="$DEV" bs=4M conv=fsync status=progress
-  echo "start=${start}, size=${sectors}, type=83" | sfdisk --append --no-reread "$DEV"
+  add_data_part "$DEV" "$start" "$sectors"
   reread
   part="$(data_part || true)"
   if [[ -z "$part" ]] || ! e2fsck -n "$part" >/dev/null 2>&1; then
@@ -230,10 +239,19 @@ machines="$(ls "$MNT/runs" 2>/dev/null | awk -F- '{print $2}' | sort -u | wc -l)
 umount "$MNT"; rmdir "$MNT"; MNT=""
 new="$(cat "$OUT/seed/VERSION" 2>/dev/null || echo unknown)"
 echo "$DEV is already a rigsim stick: version $old, $runs runs from $machines machines. New build: $new."
+# [u]pdate is offered only when it can work (before, a blocked update was offered again after every refusal)
+blocker="$(update_blocker "$part")"
+if [[ -n "$blocker" ]]; then
+  echo "an update in place is not possible: $blocker."
+  echo "[s]eed only keeps the old system image; [e]rase backs up every run first, then writes the stick anew."
+  prompt="[s]eed only, [e]rase everything, [a]bort? "
+else
+  prompt="[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort? "
+fi
 while true; do
-  read -rp "[u]pdate (keep results), [s]eed only, [e]rase everything, [a]bort? " c
+  read -rp "$prompt" c
   case "$c" in
-    u) update "$part" && exit 0 || true ;;
+    u) [[ -z "$blocker" ]] && { update "$part" && exit 0 || true; } ;;
     s) seed_stick "$part"; verify_stick "$part" 0; echo "seed refreshed on $DEV"; exit 0 ;;
     e) backup_runs "$part"; fresh; exit 0 ;;
     a) exit 1 ;;
