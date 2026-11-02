@@ -147,3 +147,9 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   records as "stopped on request". *Inferred:* memory exhaustion without swap — the machine thrashes instead of the
   OOM killer acting quickly.
 - The stick checks no memory before a step today.
+- Built for this (stick 0.13.9; read from source): `StepMemory` per step — cgroup v2 `/sys/fs/cgroup/rigsim-step` with
+  `memory.max` = MemAvailable − 768 MiB (min 512 MiB) and `memory.swap.max` 0 for host processes (joined right after
+  start), `--memory`/`--memory-swap` for containers (runner via `RIGSIM_MEMORY_BYTES`); OOM detected by the kernel's
+  `oom_kill` counter (`/proc/vmstat`). Not covered: buffers of integrated GPUs (not charged to a cgroup) — hence the
+  model fit check (size × 1.3 + 1.5 GiB ≤ MemAvailable) for Vulkan iGPUs and the CPU; oneAPI / ROCm iGPUs not yet.
+  Whether MLC's `-b204800` avoids its 8 GB hugepage request is untested.

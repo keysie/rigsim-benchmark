@@ -86,3 +86,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — New branch `sprint/low-memory` from `main` (user: fix first): run `…-05ea` on an 8 GB laptop ended
   `stopped` (issue #29). Diagnosis: MLC asks for 8 GB of hugepages, Vulkan 7B runs out of memory and resets the GPU.
 - **2026-11-01** — User: run `…-05ea` hung in Blender and was shut down by hand. Plan extended by a memory limit per step.
+- **2026-11-01** — User cleared the low-memory plan and will test on the laptop. Built (stick 0.13.9, format 1.6): memory
+  limit per step, OOM recorded as `out_of_memory` (counts as done), model fit checks, MLC buffer on < 12 GiB. 157 tests.

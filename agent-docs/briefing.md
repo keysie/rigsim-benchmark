@@ -10,7 +10,9 @@ Keep this section current (instruction 3). Last updated 2026-11-01.
 **Current sprint:** `sprint/low-memory` (from `main`, 2026-11-01; user: a fix first, before `sprint/old-gpus`) — goal:
 the stick runs cleanly on small machines. Trigger: run `…-05ea` (Ryzen 5 2500U laptop, 7.3 GiB, no swap, issue #29)
 ended `stopped`. Diagnosis in findings; plan proposed (memory limit per step via cgroup, fit checks for
-llama models on CPU / UMA GPUs, MLC buffer), waiting for clearance; nothing built. Other open branches: `sprint/old-gpus` (built,
+llama models on CPU / UMA GPUs, MLC buffer) — **built** (user cleared; stick 0.13.9, run format 1.6), 157 tests pass,
+not on hardware yet. Next: the user builds and runs it on the 8 GB laptop.
+**Merge note:** this sprint takes run format 1.6 — `sprint/old-gpus` (also 1.6 since its merge with main) becomes 1.7. Other open branches: `sprint/old-gpus` (built,
 waits for hardware), `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
