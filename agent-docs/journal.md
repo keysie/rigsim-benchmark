@@ -91,3 +91,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-03** — Flashing 0.13.9: [e] stops silently (du + pipefail, issue #24), image verification fails after the GPT
   partition step, the verify bar counts both sides of a sparse store. Diagnosed and reproduced; fix proposed.
 - **2026-11-03** — User cleared the flash.sh fixes; built (160 tests, boot test incl. read-back verification green).
+- **2026-11-03** — Flash fixes verified: [e] now copies the store and verifies (75.1 GiB read back, identical). The sfdisk
+  warnings during [e] (PMBR size, backup GPT not at the end) are expected: the relocation fixes them.
