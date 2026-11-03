@@ -166,3 +166,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - **"235.6 GiB read back from a 128 GB stick":** the bar counts both sides (source and stick); the image store is a
   sparse file of 96 GiB apparent size (52 GiB used) whose holes read as zeros without I/O. Not a stick fault, but
   misleading.
+- Fixed (2026-11-03): `|| true` on the du; `verify.py` leaves bytes 446 … end of sector 33 out for GPT images (MBR images:
+  446–512 as before) and `flash.sh` checks the table with `sfdisk --verify`; holes of sparse files are hashed as zeros
+  without reading and not counted; the bar counts only the stick side. The QEMU boot test now also runs the read-back
+  verification on its flashed test stick.

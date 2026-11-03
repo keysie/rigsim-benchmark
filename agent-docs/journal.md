@@ -90,3 +90,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   limit per step, OOM recorded as `out_of_memory` (counts as done), model fit checks, MLC buffer on < 12 GiB. 157 tests.
 - **2026-11-03** — Flashing 0.13.9: [e] stops silently (du + pipefail, issue #24), image verification fails after the GPT
   partition step, the verify bar counts both sides of a sparse store. Diagnosed and reproduced; fix proposed.
+- **2026-11-03** — User cleared the flash.sh fixes; built (160 tests, boot test incl. read-back verification green).
