@@ -2,6 +2,8 @@
 stable, inventory sanitised, the profile valid for the bench runner, GPU questions skipped with a reason, the index
 accumulates, power-off rules. Run: python3 -m pytest -q stick/tests"""
 import datetime as dt
+import os
+import subprocess
 import json
 import importlib.util
 import sys
@@ -1461,3 +1463,45 @@ def test_every_step_and_container_is_under_the_limit():
     assert src.count("*docker_mem()") == 5 and "StepMemory.current.join(p.pid)" in src and "StepMemory.current.join(pr.pid)" in src
     h = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
     assert 'cmd += ["--memory", lim, "--memory-swap", lim]' in h
+
+
+# --- flash.sh faults seen while flashing 0.13.9 (2026-11-03) ----------------------------------------------------------
+_vspec = importlib.util.spec_from_file_location("verify", HERE / "tools" / "verify.py")
+verify = importlib.util.module_from_spec(_vspec); _vspec.loader.exec_module(verify)
+
+
+def test_erase_does_not_stop_when_the_stick_has_no_store_yet(tmp_path):
+    """Issue #24: on a fresh partition `du store.img` failed and set -e + pipefail ended flash.sh silently."""
+    f = (HERE / "flash.sh").read_text()
+    line = next(l for l in f.splitlines() if 'old="$(du -B1 "$MNT/store.img"' in l).strip()
+    script = f'set -euo pipefail\nMNT={tmp_path}\nf() {{ {line}; echo "went on: [$old]"; }}\nf\n'
+    r = subprocess.run(["bash", "-c", script], capture_output=True, text=True)
+    assert r.returncode == 0 and "went on: []" in r.stdout
+
+
+def test_verify_leaves_the_gpt_out_of_the_image_but_nothing_else(tmp_path):
+    img = bytearray(64 * 512); img[512:520] = b"EFI PART"; img[40 * 512:40 * 512 + 4] = b"data"
+    iso = tmp_path / "x.iso"; iso.write_bytes(bytes(img))
+    dev = bytearray(img) + bytes(1 << 20)
+    dev[450] = 7; dev[512 + 24] = 9; dev[3 * 512] = 1                  # MBR entry, GPT header, entry array
+    (tmp_path / "dev").write_bytes(bytes(dev))
+    run = lambda: verify.main(["--iso", str(iso), str(tmp_path / "dev")])
+    assert verify.table_skip(str(iso)) == verify.GPT_TABLE and run() == 0
+    dev[40 * 512] = ord("D"); (tmp_path / "dev").write_bytes(bytes(dev))
+    assert run() == 1                                                   # the image itself still checked
+    mbr = bytearray(img); mbr[512:520] = bytes(8); (tmp_path / "m.iso").write_bytes(bytes(mbr))
+    assert verify.table_skip(str(tmp_path / "m.iso")) == verify.MBR_TABLE
+
+
+def test_verify_hashes_holes_as_zeros_and_counts_what_is_read(tmp_path):
+    dense, sparse = tmp_path / "d", tmp_path / "s"
+    blob = os.urandom(1 << 20)
+    with open(dense, "wb") as f:
+        f.write(blob); f.write(bytes(64 << 20)); f.write(blob)
+    with open(sparse, "wb") as f:
+        f.write(blob); f.seek((1 << 20) + (64 << 20)); f.write(blob)
+    n = dense.stat().st_size
+    assert sparse.stat().st_size == n
+    assert verify.digest(str(dense), n, None, "") == verify.digest(str(sparse), n, None, "")
+    assert verify.allocated(str(sparse), n) < n // 4                    # holes not counted (where the FS reports them)
+    assert verify.main(["--file", str(dense), str(sparse)]) == 0
