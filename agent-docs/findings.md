@@ -153,3 +153,16 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   `oom_kill` counter (`/proc/vmstat`). Not covered: buffers of integrated GPUs (not charged to a cgroup) — hence the
   model fit check (size × 1.3 + 1.5 GiB ≤ MemAvailable) for Vulkan iGPUs and the CPU; oneAPI / ROCm iGPUs not yet.
   Whether MLC's `-b204800` avoids its 8 GB hugepage request is untested.
+
+## flash.sh: three faults seen while flashing 0.13.9 (2026-11-03; reproduced here)
+
+- **[e]rase stops silently after mkfs + seed copy:** `preload_images` does `old="$(du -B1 "$MNT/store.img" | cut -f1)"`;
+  on a fresh partition there is no store.img, du fails, `set -euo pipefail` ends the script with exit 1 and no message
+  (the trap unmounts). So no image store and no verification on [e] — issue #24. Reproduced with a 3-line script.
+- **Verification fails after every flash that writes the system image (since the GPT layout, 0.13.5):** verify.py
+  leaves only the MBR table (bytes 446–512) out of the image comparison, but adding the data partition also rewrites the
+  GPT header (sector 1) and the entry array (sectors 2–33). Measured on a test image: 60 bytes differ, all in sectors
+  0–2; the image's own backup GPT at its end stays as it was. The user's "[u]pdate found discrepancies" is this.
+- **"235.6 GiB read back from a 128 GB stick":** the bar counts both sides (source and stick); the image store is a
+  sparse file of 96 GiB apparent size (52 GiB used) whose holes read as zeros without I/O. Not a stick fault, but
+  misleading.

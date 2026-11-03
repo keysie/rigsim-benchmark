@@ -88,3 +88,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — User: run `…-05ea` hung in Blender and was shut down by hand. Plan extended by a memory limit per step.
 - **2026-11-01** — User cleared the low-memory plan and will test on the laptop. Built (stick 0.13.9, format 1.6): memory
   limit per step, OOM recorded as `out_of_memory` (counts as done), model fit checks, MLC buffer on < 12 GiB. 157 tests.
+- **2026-11-03** — Flashing 0.13.9: [e] stops silently (du + pipefail, issue #24), image verification fails after the GPT
+  partition step, the verify bar counts both sides of a sparse store. Diagnosed and reproduced; fix proposed.

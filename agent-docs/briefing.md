@@ -12,6 +12,7 @@ the stick runs cleanly on small machines. Trigger: run `…-05ea` (Ryzen 5 2500U
 ended `stopped`. Diagnosis in findings; plan proposed (memory limit per step via cgroup, fit checks for
 llama models on CPU / UMA GPUs, MLC buffer) — **built** (user cleared; stick 0.13.9, run format 1.6), 157 tests pass,
 not on hardware yet. Next: the user builds and runs it on the 8 GB laptop.
+Flashing it showed three flash.sh faults (findings, "flash.sh: three faults"): fix proposed, waiting for clearance.
 **Merge note:** this sprint takes run format 1.6 — `sprint/old-gpus` (also 1.6 since its merge with main) becomes 1.7. Other open branches: `sprint/old-gpus` (built,
 waits for hardware), `ddr-timing-improvements` (parked).
 
