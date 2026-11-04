@@ -170,3 +170,13 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   446–512 as before) and `flash.sh` checks the table with `sfdisk --verify`; holes of sparse files are hashed as zeros
   without reading and not counted; the bar counts only the stick side. The QEMU boot test now also runs the read-back
   verification on its flashed test stick.
+
+## Laptop run with stick 0.13.9 (2026-11-04, run `…-cfed`, Ryzen 5 2500U, 7.3 GiB; measured)
+
+- Memory limit works: no hang; Blender junkshop (CPU) was ended at the 5.1 GiB limit (rc −9) and recorded as
+  `out_of_memory` — Blender counts as done. The run took 1 h 29 min and ended by itself.
+- Still failing: **MLC** rc 22 on all five even with `-b204800` (the buffer was not the cause, or not the only one);
+  **llama-bench Vulkan 7B** rc −6 again — the fit check let it through: 3.56 GiB × 1.3 + 1.5 = 6.1 GiB < 6.2 GiB
+  available. On an integrated AMD GPU the limit is the driver's GPU memory (VRAM carve-out + GTT), not MemAvailable.
+  Then `cpy` and `flash_attn_ext` ops failed (rc −6) ~20 min later — reset consequence or their own memory need,
+  unknown until the logs are read.

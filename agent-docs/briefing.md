@@ -14,7 +14,8 @@ llama models on CPU / UMA GPUs, MLC buffer) — **built** (user cleared; stick 0
 not on hardware yet. Next: the user builds and runs it on the 8 GB laptop.
 Flashing it showed three flash.sh faults (findings, "flash.sh: three faults") — **fixed** (user cleared; closes #24):
 verified by the user's [e] flash (2026-11-03: store copied, "verification passed … 75.1 GiB read back"). Next: the
-run on the 8 GB laptop.
+run on the 8 GB laptop — done (run `…-cfed`): limit works, Blender OOM recorded; MLC and Vulkan 7B still fail; logs
+requested from the user (findings).
 **Merge note:** this sprint takes run format 1.6 — `sprint/old-gpus` (also 1.6 since its merge with main) becomes 1.7. Other open branches: `sprint/old-gpus` (built,
 waits for hardware), `ddr-timing-improvements` (parked).
 
