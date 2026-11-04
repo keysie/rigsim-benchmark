@@ -95,3 +95,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   warnings during [e] (PMBR size, backup GPT not at the end) are expected: the relocation fixes them.
 - **2026-11-04** — Laptop run with 0.13.9: no hang, Blender OOM recorded; MLC rc 22 despite the small buffer, Vulkan 7B
   passed the RAM fit check and failed (iGPU limit is GPU memory, not RAM). Logs requested.
+- **2026-11-04** — Logs read: iGPU has 3996 MB GPU memory (7B cannot fit); FA hung the GPU (reset), CPY lost its context
+  afterwards; MLC stops after the hugepage notice on AMD. Plan proposed to the user.

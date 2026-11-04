@@ -180,3 +180,10 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   available. On an integrated AMD GPU the limit is the driver's GPU memory (VRAM carve-out + GTT), not MemAvailable.
   Then `cpy` and `flash_attn_ext` ops failed (rc −6) ~20 min later — reset consequence or their own memory need,
   unknown until the logs are read.
+- Logs (user, 2026-11-04): the Vega 8 has **3996 MB of GPU memory** ("Device memory", uma: 1) — 7B Q4_0 (3.56 GiB) plus
+  context does not fit; "Not enough memory for command submission", device lost. FLASH_ATTN_EXT ran many cases (up to
+  1.6 s per run) and then hung the GPU ("guilty of a hard recovery": a GPU reset, *inferred* the driver's job timeout,
+  not memory); CPY measured 8 cases and then lost its context ("innocent"). Results before a reset are valid lines.
+- MLC: the output ends after the hugepage notice, rc 22, also with the 200 MiB buffer. MLC has never run on an AMD CPU
+  in the data (the only other AMD run had no MLC in its seed). Cause *unknown*: no hugepages, or Intel MLC refusing
+  non-Intel CPUs.
