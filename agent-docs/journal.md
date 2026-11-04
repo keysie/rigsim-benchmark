@@ -83,3 +83,21 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — Third hardware run (stick 0.13.8, run `…-03de`): `done`, no failures, 2 h 03 min; the oneDNN switch-off
   ran FLASH_ATTN_EXT without the 30-min hang. User: the sprint is ready to merge. Closed in open-points: UEFI boot
   (verified), the stick plan's A, B, D, E, ladder grid; C, F, G and the SELFTEST copy stay open.
+- **2026-11-01** — New branch `sprint/low-memory` from `main` (user: fix first): run `…-05ea` on an 8 GB laptop ended
+  `stopped` (issue #29). Diagnosis: MLC asks for 8 GB of hugepages, Vulkan 7B runs out of memory and resets the GPU.
+- **2026-11-01** — User: run `…-05ea` hung in Blender and was shut down by hand. Plan extended by a memory limit per step.
+- **2026-11-01** — User cleared the low-memory plan and will test on the laptop. Built (stick 0.13.9, format 1.6): memory
+  limit per step, OOM recorded as `out_of_memory` (counts as done), model fit checks, MLC buffer on < 12 GiB. 157 tests.
+- **2026-11-03** — Flashing 0.13.9: [e] stops silently (du + pipefail, issue #24), image verification fails after the GPT
+  partition step, the verify bar counts both sides of a sparse store. Diagnosed and reproduced; fix proposed.
+- **2026-11-03** — User cleared the flash.sh fixes; built (160 tests, boot test incl. read-back verification green).
+- **2026-11-03** — Flash fixes verified: [e] now copies the store and verifies (75.1 GiB read back, identical). The sfdisk
+  warnings during [e] (PMBR size, backup GPT not at the end) are expected: the relocation fixes them.
+- **2026-11-04** — Laptop run with 0.13.9: no hang, Blender OOM recorded; MLC rc 22 despite the small buffer, Vulkan 7B
+  passed the RAM fit check and failed (iGPU limit is GPU memory, not RAM). Logs requested.
+- **2026-11-04** — Logs read: iGPU has 3996 MB GPU memory (7B cannot fit); FA hung the GPU (reset), CPY lost its context
+  afterwards; MLC stops after the hugepage notice on AMD. Plan proposed to the user.
+- **2026-11-04** — MLC hypothesis confirmed by the user's manual test (hugepages); built (0.13.10, 161 tests).
+- **2026-11-04** — User cleared 1 + 2; built (0.13.11, 162 tests). GPU memory taken from llama.cpp's own report, not vulkaninfo.
+- **2026-11-04** — Laptop run with 0.13.11: only MLC fails — 750 of 1000 hugepages granted. Fix proposed.
+- **2026-11-04** — User: enough optimising — the MLC hugepage shortfall stays as it is (open point); prepare PR #33 for merge.

@@ -7,24 +7,20 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Sprint `sprint/stick-data` — done, ready to merge (user, 2026-11-01).** Goal "the stick works and collects the
-right data" reached: third hardware run (stick 0.13.8, run `…-03de`, 13700K + RTX 3080 + UHD 770) ended `done`, no
-failures, 2 h 03 min (before: 2 h 26 min with failures). PR #23 (draft until now).
-
-**Open branches and their order (user):** 1. `sprint/stick-data` → merge now; 2. `sprint/old-gpus` (built, stick 0.14.0,
-waits for a build and a mixed-GPU machine), 3. `ddr-timing-improvements` (parked). Both are based on this branch;
-GitHub retargets their PRs to `main` once this branch is merged and deleted. **Merge note:** both this branch and
-`sprint/old-gpus` claim run format 1.5 and measurements VERSION 3 — `sprint/old-gpus` takes 1.6 / 4 (and stick
-0.14.x stays above 0.13.8). Their agent-docs were forked from this branch: merge notes by hand, journal in date order.
+**Sprint `sprint/low-memory` — done, ready to merge (user, 2026-11-04).** Goal "the stick runs cleanly on small
+machines" reached on the 8 GB laptop (Ryzen 5 2500U, run `…-8b96`): no hang, every limit recorded with its reason;
+only MLC still fails there (hugepages, see open-points) — left as it is by the user's decision. PR #33.
+Other open branches: `sprint/old-gpus` (built, waits for hardware), `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
-1. User merges PR #23. Then submit the three hardware runs of this sprint (`…-9c93`, `…-c72d`, `…-03de`) if wanted.
-2. Continue `sprint/old-gpus`: rebase onto `main`, renumber format / VERSION, build, test on a mixed-GPU machine.
-3. Still open from the stick plan (next stick sprint): C (package energy readable), F (run-completeness audit tool),
-   G (VM test, optional), `seed/SELFTEST.json` into each run, Blender oneAPI (Level Zero in the system image) —
-   open-points 5.
+1. User merges PR #33 (stick 0.13.11, run format 1.6, closes #24, relates to #29).
+2. `sprint/old-gpus`: merge `main` in, renumber its run format 1.6 → 1.7, build, test on a mixed-GPU machine.
+3. Open stick items: open-points (MLC hugepages on long runs; C, F, G; SELFTEST copy; Blender oneAPI; CPU questions).
 
 **Recently solved** (newest first)
+- 2026-11-04 (this sprint, verified on the 8 GB laptop): memory limit per step (cgroup / --memory, OOM recorded as
+  `out_of_memory`), RAM and GPU-memory fit checks for llama models, GPU resets recorded as `device_lost`, hugepages
+  for MLC; flash.sh: [e] no longer stops silently (#24), GPT-aware and sparse-aware read-back verification.
 - 2026-11-01 (this sprint, verified on hardware): oneAPI steps that fail on oneDNN run without it, and a device stays
   without oneDNN after its first failure (stick 0.13.7–0.13.8) — the UHD 770 now measures fully.
 - 2026-11-01 (this sprint, verified): what a machine cannot do is skipped with the reason (gpu-p2p on one card, vendor

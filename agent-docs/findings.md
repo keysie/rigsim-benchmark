@@ -134,3 +134,70 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   stick's seed (data partition mounted read-only) — never the stick's own data dir, or `load_image` writes its
   "loaded" marker there and the stick later skips loading the image into its own store. `vendor_plan` and
   `BACKEND_OPS` can be narrowed for a short test. Caveat: the host's kernel and GPU driver differ from the stick's.
+
+## Run `…-05ea`: 8 GB laptop (2026-11-01; Ryzen 5 2500U, Vega 8 iGPU, 7.3 GiB RAM, no swap, stick 0.13.8; measured)
+
+- MLC: all five measurements rc 22 after 1 s. On this AMD part MLC picks a 1800 MiB buffer (200 MiB on the 15 GiB
+  Intel machines, 500 MiB on the 13700K) and asks for 4000 × 2 MiB hugepages = 8 GB, which this machine cannot give
+  (*inferred*: the hugepage request fails, MLC exits). The stick passes no buffer size.
+- llama-bench Vulkan, Llama 2 7B Q4_0 (3.8 GB file) on the UMA iGPU: "radv/amdgpu: Not enough memory for command
+  submission", device lost, rc −6. Afterwards cpy and flash_attn_ext ops also died with "context is lost" (a
+  consequence of the GPU reset, not of those ops). TinyLlama ran.
+- The run hung during Blender (CPU, junkshop), ~1 h 26 min in; the user shut it down from the tty2 shell, which the run
+  records as "stopped on request". *Inferred:* memory exhaustion without swap — the machine thrashes instead of the
+  OOM killer acting quickly.
+- The stick checks no memory before a step today.
+- Built for this (stick 0.13.9; read from source): `StepMemory` per step — cgroup v2 `/sys/fs/cgroup/rigsim-step` with
+  `memory.max` = MemAvailable − 768 MiB (min 512 MiB) and `memory.swap.max` 0 for host processes (joined right after
+  start), `--memory`/`--memory-swap` for containers (runner via `RIGSIM_MEMORY_BYTES`); OOM detected by the kernel's
+  `oom_kill` counter (`/proc/vmstat`). Not covered: buffers of integrated GPUs (not charged to a cgroup) — hence the
+  model fit check (size × 1.3 + 1.5 GiB ≤ MemAvailable) for Vulkan iGPUs and the CPU; oneAPI / ROCm iGPUs not yet.
+  Whether MLC's `-b204800` avoids its 8 GB hugepage request is untested.
+
+## flash.sh: three faults seen while flashing 0.13.9 (2026-11-03; reproduced here)
+
+- **[e]rase stops silently after mkfs + seed copy:** `preload_images` does `old="$(du -B1 "$MNT/store.img" | cut -f1)"`;
+  on a fresh partition there is no store.img, du fails, `set -euo pipefail` ends the script with exit 1 and no message
+  (the trap unmounts). So no image store and no verification on [e] — issue #24. Reproduced with a 3-line script.
+- **Verification fails after every flash that writes the system image (since the GPT layout, 0.13.5):** verify.py
+  leaves only the MBR table (bytes 446–512) out of the image comparison, but adding the data partition also rewrites the
+  GPT header (sector 1) and the entry array (sectors 2–33). Measured on a test image: 60 bytes differ, all in sectors
+  0–2; the image's own backup GPT at its end stays as it was. The user's "[u]pdate found discrepancies" is this.
+- **"235.6 GiB read back from a 128 GB stick":** the bar counts both sides (source and stick); the image store is a
+  sparse file of 96 GiB apparent size (52 GiB used) whose holes read as zeros without I/O. Not a stick fault, but
+  misleading.
+- Fixed (2026-11-03): `|| true` on the du; `verify.py` leaves bytes 446 … end of sector 33 out for GPT images (MBR images:
+  446–512 as before) and `flash.sh` checks the table with `sfdisk --verify`; holes of sparse files are hashed as zeros
+  without reading and not counted; the bar counts only the stick side. The QEMU boot test now also runs the read-back
+  verification on its flashed test stick.
+
+## Laptop run with stick 0.13.9 (2026-11-04, run `…-cfed`, Ryzen 5 2500U, 7.3 GiB; measured)
+
+- Memory limit works: no hang; Blender junkshop (CPU) was ended at the 5.1 GiB limit (rc −9) and recorded as
+  `out_of_memory` — Blender counts as done. The run took 1 h 29 min and ended by itself.
+- Still failing: **MLC** rc 22 on all five even with `-b204800` (the buffer was not the cause, or not the only one);
+  **llama-bench Vulkan 7B** rc −6 again — the fit check let it through: 3.56 GiB × 1.3 + 1.5 = 6.1 GiB < 6.2 GiB
+  available. On an integrated AMD GPU the limit is the driver's GPU memory (VRAM carve-out + GTT), not MemAvailable.
+  Then `cpy` and `flash_attn_ext` ops failed (rc −6) ~20 min later — reset consequence or their own memory need,
+  unknown until the logs are read.
+- Logs (user, 2026-11-04): the Vega 8 has **3996 MB of GPU memory** ("Device memory", uma: 1) — 7B Q4_0 (3.56 GiB) plus
+  context does not fit; "Not enough memory for command submission", device lost. FLASH_ATTN_EXT ran many cases (up to
+  1.6 s per run) and then hung the GPU ("guilty of a hard recovery": a GPU reset, *inferred* the driver's job timeout,
+  not memory); CPY measured 8 cases and then lost its context ("innocent"). Results before a reset are valid lines.
+- MLC: the output ends after the hugepage notice, rc 22, also with the 200 MiB buffer. MLC has never run on an AMD CPU
+  in the data (the only other AMD run had no MLC in its seed). Cause *unknown*: no hugepages, or Intel MLC refusing
+  non-Intel CPUs.
+- MLC manual test on the Ryzen 5 2500U (user, 2026-11-04): with `echo 1000 > /proc/sys/vm/nr_hugepages` MLC runs, rc 0,
+  idle latency 134.1 ns (267.7 base clocks). Cause confirmed: missing hugepages. Built: the stick reserves 1000 per NUMA
+  node (leaving ≥ 2 GiB available) for MLC and restores the previous value (stick 0.13.10).
+- Built (stick 0.13.11): free GPU memory per Vulkan device from `test-backend-ops perf -o RIGSIM_NONE` ("Device memory: X MB
+  (Y MB free)", no test runs); a model needs size × 1.2 + 0.5 GiB of it. Planned source was vulkaninfo; llama.cpp's own
+  figure is used instead because it is what llama.cpp allocates against. Also fixed: run_llama's rc crashed on a skipped
+  model entry (no `rc` key).
+
+## Laptop run with stick 0.13.11 (2026-11-04, run `…-8b96`; measured)
+
+- Everything but MLC behaves: 7B skipped for GPU memory (3.9 GiB free), FLASH_ATTN_EXT reset the GPU after 25 cases and
+  CPY lost its context after 8 — both recorded as `device_lost`, llama-bench rc 0; Blender junkshop at the limit.
+- MLC: the kernel gave only **750 of 1000** hugepages (an hour into the run; the manual test got them right after boot,
+  *inferred*: memory fragmented by then), and MLC still stops with rc 22 — it needs the full 1000 per node.

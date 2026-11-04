@@ -42,6 +42,43 @@ MLC_RUNS = [("idle_latency", ["--idle_latency"]), ("max_bandwidth", ["--max_band
             ("loaded_latency", ["--loaded_latency"]), ("latency_matrix", ["--latency_matrix"]),
             ("bandwidth_matrix", ["--bandwidth_matrix"])]
 MLC_TIMEOUT_S = 15 * 60
+# On small machines MLC gets a 200 MiB buffer (what it chose by itself on 16 GB Intel machines): on an 8 GB AMD laptop
+# it chose 1800 MiB, asked for 8 GB of hugepages and stopped (run 05ea).
+MLC_SMALL_GIB = 12
+MLC_SMALL_BUFFER_KIB = 200 * 1024
+# MLC wants 1000 hugepages (2 MiB) per NUMA node. On the Ryzen 5 2500U it stopped with rc 22 without them and ran with
+# them (manual test 2026-11-04, idle latency 134.1 ns); on the Intel machines it ran either way. The stick reserves them
+# for MLC (never more than leaves 2 GiB available) and gives them back afterwards.
+MLC_HUGEPAGES_PER_NODE = 1000
+HUGEPAGE = 2 << 20
+NR_HUGEPAGES = Path("/proc/sys/vm/nr_hugepages")
+NODES = Path("/sys/devices/system/node")
+
+
+def reserve_hugepages(per_node: int = MLC_HUGEPAGES_PER_NODE, nr: Path = NR_HUGEPAGES,
+                      nodes: Path = NODES) -> dict:
+    """Ask the kernel for hugepages; returns what was there before, what was asked for and what it gave."""
+    try:
+        before = int(nr.read_text().split()[0])
+    except (OSError, ValueError, IndexError):
+        return dict(error="hugepages not available")
+    n_nodes = max(1, len(list(nodes.glob("node[0-9]*"))))
+    room = (meminfo().get("MemAvailable", 0) - 2 * GIB) // HUGEPAGE
+    want = max(before, min(per_node * n_nodes, before + max(room, 0)))
+    try:
+        nr.write_text(str(want))
+        got = int(nr.read_text().split()[0])
+    except (OSError, ValueError, IndexError) as e:
+        return dict(before=before, requested=want, error=str(e))
+    return dict(before=before, requested=want, allocated=got)
+
+
+def release_hugepages(h: dict, nr: Path = NR_HUGEPAGES) -> None:
+    if "before" in h:
+        try:
+            nr.write_text(str(h["before"]))
+        except OSError:
+            pass
 LLAMA_ARGS = ["-p", "512", "-n", "128", "-r", "3", "-o", "jsonl"]
 LLAMA_TIMEOUT_S = 30 * 60
 # llama.cpp's own per-kernel timing (test-backend-ops perf): the engine's kernel factors at the bottom, llama-bench
@@ -222,18 +259,127 @@ def _kill_containers() -> None:
         pass
 
 
+# --- memory per step (run 05ea, 2026-11-01: an 8 GB laptop without swap hung in Blender until it was shut down) ------
+# Every measurement step runs under a memory limit: the available memory at its start minus a reserve, no swap.
+# Processes on the host join a cgroup v2 with that limit; containers get --memory (the runner's session container via
+# RIGSIM_MEMORY_BYTES). A step that needs more is ended by the kernel at once instead of thrashing the machine; the
+# kernel's oom_kill counter tells the step it happened, and the run records it and goes on.
+CGROUP = Path("/sys/fs/cgroup")
+MEM_RESERVE = 768 << 20
+MEM_MIN = 512 << 20
+GIB = 1 << 30
+
+
+def meminfo(path: Path = Path("/proc/meminfo")) -> dict[str, int]:
+    """/proc/meminfo in bytes."""
+    out = {}
+    for line in (path.read_text().splitlines() if path.exists() else []):
+        k, _, v = line.partition(":")
+        f = v.split()
+        if f and f[0].isdigit():
+            out[k] = int(f[0]) * (1024 if f[1:] == ["kB"] else 1)
+    return out
+
+
+def oom_kills(path: Path = Path("/proc/vmstat")) -> int:
+    """The kernel's count of OOM kills since boot (cgroup limits included)."""
+    for line in (path.read_text().splitlines() if path.exists() else []):
+        if line.startswith("oom_kill "):
+            return int(line.split()[1])
+    return 0
+
+
+class StepMemory:
+    """with StepMemory(name, log) as m: ... — the memory limit of one measurement step."""
+    current: "StepMemory | None" = None
+
+    def __init__(self, name: str, log: Path | None, root: Path = CGROUP):
+        self.name, self.log, self.cg = name, log, root / "rigsim-step"
+        self.cgroup = False
+        self.kills = 0
+
+    def __enter__(self) -> "StepMemory":
+        self.available = meminfo().get("MemAvailable", 0)
+        self.limit = max(self.available - MEM_RESERVE, MEM_MIN)
+        try:
+            self.cg.mkdir(exist_ok=True)
+            (self.cg / "memory.max").write_text(str(self.limit))
+            if (self.cg / "memory.swap.max").exists():
+                (self.cg / "memory.swap.max").write_text("0")
+            self.cgroup = True
+        except OSError:
+            pass
+        self.kills0 = oom_kills()
+        os.environ["RIGSIM_MEMORY_BYTES"] = str(self.limit)
+        StepMemory.current = self
+        say(f"{self.name}: {self.available / GIB:.1f} GiB available, step limit {self.limit / GIB:.1f} GiB", self.log)
+        return self
+
+    def join(self, pid: int) -> None:
+        if self.cgroup:
+            try:
+                (self.cg / "cgroup.procs").write_text(str(pid))
+            except OSError:
+                pass
+
+    def docker_args(self) -> list[str]:
+        return ["--memory", str(self.limit), "--memory-swap", str(self.limit)]
+
+    def __exit__(self, *exc) -> bool:
+        StepMemory.current = None
+        os.environ.pop("RIGSIM_MEMORY_BYTES", None)
+        self.kills = oom_kills() - self.kills0
+        try:
+            self.cg.rmdir()
+        except OSError:
+            pass
+        return False
+
+    def record(self) -> dict:
+        r = dict(available_gib=round(self.available / GIB, 2), limit_gib=round(self.limit / GIB, 2),
+                 cgroup=self.cgroup)
+        if self.kills:
+            r["oom_kills"] = self.kills
+        return r
+
+
+def docker_mem() -> list[str]:
+    """--memory for a container started inside a measurement step (none outside one)."""
+    return StepMemory.current.docker_args() if StepMemory.current else []
+
+
+def record_memory(entry: dict, mem: StepMemory, log: Path | None) -> None:
+    """The step's memory limit into its entry; if the kernel ended processes at it, say so (format 1.6)."""
+    entry["memory"] = mem.record()
+    if mem.kills and not entry.get("skipped"):
+        entry["out_of_memory"] = (f"the kernel ended {mem.kills} process(es) at the step's limit of "
+                                  f"{mem.limit / GIB:.1f} GiB (the machine had {mem.available / GIB:.1f} GiB available)")
+        say(f"{mem.name}: out of memory — {entry['out_of_memory']}", log)
+
+
+def step_ok(v: dict) -> bool:
+    """A step that counts as fine for the run's status: done, skipped with a reason, or ended by its memory limit (the
+    machine cannot do it — recorded as out_of_memory, like a skip with a reason)."""
+    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory"))
+
+
 def run_cmd(cmd: list[str], capture_output: bool = True, text: bool = True, timeout: float | None = None,
             env: dict | None = None, cwd: str | None = None) -> subprocess.CompletedProcess:
     """subprocess.run for measurement commands, but stoppable: raises StepSkipped when the operator skips the step
     (its whole process group is killed, running containers too)."""
+    k0 = oom_kills()
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE if capture_output else None,
                          stderr=subprocess.PIPE if capture_output else None, text=text, env=env, cwd=cwd,
                          start_new_session=True)
+    if StepMemory.current:
+        StepMemory.current.join(p.pid)
     t0 = time.time()
     while True:
         try:
             out, err = p.communicate(timeout=0.5)
-            return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+            r = subprocess.CompletedProcess(cmd, p.returncode, out, err)
+            r.oom = oom_kills() > k0                   # the kernel ended something at a memory limit meanwhile
+            return r
         except subprocess.TimeoutExpired:
             if SKIP.is_set():
                 _killpg(p); _kill_containers()
@@ -857,16 +1003,24 @@ def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
     d.mkdir(parents=True, exist_ok=True)
     sh(["modprobe", "msr"], timeout=20)
     res = {}
-    for k, (name, args) in enumerate(MLC_RUNS, 1):
-        STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")
-        t0 = time.time()
-        rc, out = sh([str(mlc), *args], timeout=MLC_TIMEOUT_S)
-        (d / f"{name}.txt").write_text(scrub(out))
-        res[name] = dict(rc=rc, seconds=round(time.time() - t0), values=parse_mlc(out))
-        say(f"mlc {name}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    small = meminfo().get("MemTotal", 0) < MLC_SMALL_GIB * GIB
+    buf = [f"-b{MLC_SMALL_BUFFER_KIB}"] if small else []
+    huge = reserve_hugepages()
+    say(f"mlc: hugepages {huge}", log)
+    try:
+        for k, (name, args) in enumerate(MLC_RUNS, 1):
+            STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")
+            t0 = time.time()
+            rc, out = sh([str(mlc), *args, *buf], timeout=MLC_TIMEOUT_S)
+            (d / f"{name}.txt").write_text(scrub(out))
+            res[name] = dict(rc=rc, seconds=round(time.time() - t0), values=parse_mlc(out))
+            say(f"mlc {name}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    finally:
+        release_hugepages(huge)
     prefetch = "unable" in " ".join((d / f).read_text().lower() for f in ("idle_latency.txt",) if (d / f).exists())
     return dict(rc=0 if all(v["rc"] == 0 for v in res.values()) else 1, runs={k: dict(rc=v["rc"], seconds=v["seconds"])
-                for k, v in res.items()}, prefetchers_left_on=prefetch or bool(secure_boot()))
+                for k, v in res.items()}, prefetchers_left_on=prefetch or bool(secure_boot()),
+                hugepages=huge, **(dict(buffer_kib=MLC_SMALL_BUFFER_KIB) if small else {}))
 
 
 # --- llama-bench: CUDA (in the CUDA image) and Vulkan (on the host, every vendor) -----------------------------------------
@@ -884,6 +1038,78 @@ def vulkan_devices(summary: str) -> list[tuple[int, str]]:
                 out.append((idx, name))
             idx = None
     return out
+
+
+def vulkan_integrated(summary: str) -> set[int]:
+    """Indices of integrated GPUs in `vulkaninfo --summary` (they use the machine's RAM)."""
+    out, idx = set(), None
+    for line in summary.splitlines():
+        m = re.match(r"\s*GPU(\d+):", line)
+        if m:
+            idx = int(m.group(1)); continue
+        if idx is not None and re.match(r"\s*deviceType\s*=\s*PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU", line):
+            out.add(idx)
+    return out
+
+
+GPU_LOST = ("ErrorDeviceLost", "device lost on")
+
+
+def device_lost(text: str) -> str:
+    """'' unless a GPU was lost (reset) during the command; then why, as the driver put it (run cfed, Vega 8)."""
+    if not any(s in text for s in GPU_LOST):
+        return ""
+    cases = sum(1 for l in text.splitlines() if " runs - " in l)
+    if "Not enough memory for command submission" in text:
+        why = "out of GPU memory, the GPU was reset"
+    elif "guilty of a hard recovery" in text:
+        why = "the GPU was reset while running this (a hang or the driver's job timeout)"
+    elif "innocent" in text:
+        why = "the GPU context was lost after a reset caused elsewhere"
+    else:
+        why = "the GPU was lost"
+    return why + (f"; {cases} case(s) measured before" if cases else "")
+
+
+def item_ok(v: dict) -> bool:
+    """A llama.cpp item that does not make its step fail: done, skipped with a reason, or ended by a limit of the
+    machine (memory limit, GPU reset) — recorded with the reason."""
+    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory") or v.get("device_lost"))
+
+
+VK_MEMORY = re.compile(r"Device memory:\s*(\d+) MB \((\d+) MB free\)")
+
+
+def vulkan_memory(tbo: Path, vi: int) -> int | None:
+    """Free memory of Vulkan device vi in MiB as llama.cpp sees it (test-backend-ops with an op that matches nothing:
+    it lists the device and runs no test). None if it cannot tell."""
+    if not tbo.exists():
+        return None
+    try:
+        r = run_cmd([str(tbo), "perf", "-o", "RIGSIM_NONE", "-b", "Vulkan0"], timeout=120,
+                    env=dict(os.environ, GGML_VK_VISIBLE_DEVICES=str(vi)))
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    m = VK_MEMORY.search((r.stdout or "") + (r.stderr or ""))
+    return int(m.group(2)) if m else None
+
+
+def model_fits_gpu(m: Path, free_mib: int | None) -> str:
+    """'' if the model fits the GPU's free memory (file size x 1.2 + 0.5 GiB for context and buffers), else why. On the
+    Vega 8 (3996 MB) Llama 2 7B Q4_0 (3.56 GiB) ran out of GPU memory and reset the GPU (run cfed)."""
+    if free_mib is None:
+        return ""
+    need = m.stat().st_size * 1.2 + 0.5 * GIB
+    return "" if need <= free_mib * (1 << 20) else \
+        f"needs about {need / GIB:.1f} GiB of GPU memory, the device has {free_mib / 1024:.1f} GiB free"
+
+
+def model_fits(m: Path) -> str:
+    """'' if the model fits in the RAM available now (file size x 1.3 + 1.5 GiB), else the reason it is skipped. An
+    integrated GPU's buffers are not charged to the step's cgroup, so they need this check before (run 05ea: Llama 2
+    7B on a Vega 8 with 7.3 GiB RAM ran out of memory and reset the GPU)."""
+    need, avail = m.stat().st_size * 1.3 + 1.5 * GIB, meminfo().get("MemAvailable", 0)
+    return "" if need <= avail else f"needs about {need / GIB:.1f} GiB of RAM, {avail / GIB:.1f} GiB available"
 
 
 def llama_models(data: Path) -> list[Path]:
@@ -929,7 +1155,11 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
         if rc != 0 and rc != 127:
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
-        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra)
+        lost = device_lost(out) if rc != 0 else ""
+        if lost:
+            say(f"test-backend-ops {prefix} {key}: {lost}", log)
+        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra,
+                                        **(dict(device_lost=lost) if lost else {}))
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
 
@@ -950,23 +1180,26 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
             r = run_cmd(cmd, capture_output=True, text=True, timeout=LLAMA_TIMEOUT_S,
                                env=dict(os.environ, **(env or {})))
             rc, out, err = r.returncode, r.stdout, r.stderr
+            oom = bool(getattr(r, "oom", False)) and rc != 0
         except subprocess.TimeoutExpired:
-            rc, out, err = -9, "", f"timeout after {LLAMA_TIMEOUT_S} s"
+            rc, out, err, oom = -9, "", f"timeout after {LLAMA_TIMEOUT_S} s", False
         (d / f"{key}.jsonl").write_text(scrub(out))
         (d / f"{key}.log").write_text(scrub(err))
-        runs[key] = dict(rc=rc, seconds=round(time.time() - t0))
+        lost = device_lost(out + err) if rc != 0 else ""
+        runs[key] = dict(rc=rc, seconds=round(time.time() - t0), **(dict(out_of_memory=True) if oom else {}),
+                         **(dict(device_lost=lost) if lost else {}))
         say(f"llama {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
 
     if nvidia and (seed / "cuda" / "llama-bench").exists():
         rc, out = sh(["nvidia-smi", "--query-gpu=index", "--format=csv,noheader"], timeout=60)
         for gi in [l.strip() for l in out.splitlines() if l.strip().isdigit()]:
             for m in models:
-                one(f"cuda-gpu{gi}-{m.stem}", ["docker", "run", "--rm", "--gpus", "all", "--network", "none",
+                one(f"cuda-gpu{gi}-{m.stem}", ["docker", "run", "--rm", *docker_mem(), "--gpus", "all", "--network", "none",
                     "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID", "-e", f"CUDA_VISIBLE_DEVICES={gi}",
                     "-v", f"{seed / 'cuda'}:/llama:ro", "-v", f"{m.parent}:/models:ro", cfg_image,
                     "/llama/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS])
             if (seed / "cuda" / "test-backend-ops").exists():
-                docker = ["docker", "run", "--rm", "--gpus", "all", "--network", "none", "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID",
+                docker = ["docker", "run", "--rm", *docker_mem(), "--gpus", "all", "--network", "none", "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID",
                           "-e", f"CUDA_VISIBLE_DEVICES={gi}", "-v", f"{seed / 'cuda'}:/llama:ro", cfg_image]
                 runs.update(run_backend_ops(lambda c, t: sh(docker + c, timeout=t), d, f"cuda-gpu{gi}",
                                             "/llama/test-backend-ops", "CUDA0", log))
@@ -975,8 +1208,16 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
         _, summary = sh(["vulkaninfo", "--summary"], timeout=60)
         (d / "vulkaninfo-summary.txt").write_text(scrub(summary))
         tbo = seed / "vulkan" / "test-backend-ops"
+        integrated = vulkan_integrated(summary)
         for vi, name in vulkan_devices(summary):
+            free = vulkan_memory(tbo, vi)
+            say(f"llama vulkan-dev{vi}: {free if free is not None else '?'} MiB GPU memory free", log)
             for m in models:
+                why = (model_fits(m) if vi in integrated else "") or model_fits_gpu(m, free)
+                if why:
+                    runs[f"vulkan-dev{vi}-{m.stem}"] = dict(skipped=why)
+                    say(f"llama vulkan-dev{vi}-{m.stem}: skipped ({why})", log)
+                    continue
                 one(f"vulkan-dev{vi}-{m.stem}", [str(vk), "-m", str(m), "-ngl", "99", *LLAMA_ARGS],
                     env={"GGML_VK_VISIBLE_DEVICES": str(vi)})
             if tbo.exists():
@@ -987,10 +1228,15 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
             runs.update(run_backend_ops(lambda c, t: _run_env(c, t, dict(os.environ, GGML_VK_VISIBLE_DEVICES="")),
                                         d, "cpu", str(tbo), "CPU", log))
         for m in models[:1]:                                  # CPU only: no GPU device, no offload
+            why = model_fits(m)
+            if why:
+                runs[f"cpu-{m.stem}"] = dict(skipped=why)
+                say(f"llama cpu-{m.stem}: skipped ({why})", log)
+                continue
             one(f"cpu-{m.stem}", [str(vk), "-m", str(m), "-ngl", "0", *LLAMA_ARGS], env={"GGML_VK_VISIBLE_DEVICES": ""})
     if not runs:
         return dict(skipped="no usable llama.cpp backend")
-    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+    return dict(rc=0 if all(item_ok(v) for v in runs.values()) else 1, runs=runs)
 
 
 # --- Vulkan probe: every GPU, every vendor (bandwidth, dispatch cost, vector FMA, matrix units; iGPU shared RAM) -----
@@ -1112,7 +1358,7 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
     d.mkdir(parents=True, exist_ok=True)
     name = f"rigsim-{kind}"
     sh(["docker", "rm", "-f", name], timeout=60)
-    base = ["docker", "run", "--rm", "--network", "none", *devs, "-v", f"{data / 'seed' / 'models'}:/models:ro", tag]
+    base = ["docker", "run", "--rm", *docker_mem(), "--network", "none", *devs, "-v", f"{data / 'seed' / 'models'}:/models:ro", tag]
     probe = "/rigsim/probe" if kind == "rocm" else "/rigsim/probe_sycl"
     # oneAPI's device discovery hung past 300 s on an i7-13700K's UHD 770 (second trial run): only Level Zero GPUs,
     # and sycl-ls's own account first (bounded), so the next run shows where it stops
@@ -1142,7 +1388,7 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
         c = f"{name}-{i}"
         sh(["docker", "rm", "-f", c], timeout=60)
         envargs = [x for k, v in env.items() for x in ("-e", f"{k}={v}")]
-        rc, _ = sh(["docker", "run", "-d", "--name", c, "--network", "none", *devs, *envargs,
+        rc, _ = sh(["docker", "run", "-d", "--name", c, *docker_mem(), "--network", "none", *devs, *envargs,
                     "-v", f"{data / 'seed' / 'models'}:/models:ro", tag, "sleep", "infinity"], timeout=300)
         if rc != 0:
             runs[f"dev{i}"] = dict(rc=rc, error="container did not start"); continue
@@ -1251,7 +1497,7 @@ def run_blender(data: Path, rundir: Path, log: Path) -> dict:
                     if not rocm_tag or load_image(data / "seed" / "images" / "vendor-rocm.tar", data, log).get("rc"):
                         unavailable.append(t)
                         break
-                    cmd = ["docker", "run", "--rm", "--network", "none", *AMD_DEVICES, "-v", f"{b}:{b}:ro",
+                    cmd = ["docker", "run", "--rm", *docker_mem(), "--network", "none", *AMD_DEVICES, "-v", f"{b}:{b}:ro",
                            "-w", str(script.parent), "-e", "HOME=/tmp", rocm_tag, "/rigsim/run.sh", *cmd]
                 try:
                     rr = run_cmd(cmd, capture_output=True, text=True, cwd=str(script.parent), env=env,
@@ -1598,6 +1844,8 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
     pr = subprocess.Popen([sys.executable, str(OPT / "runner" / "hwq.py"), "run", str(qfile), "--dir", str(d),
                            "--config", str(cfg)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                           start_new_session=True)
+    if StepMemory.current:
+        StepMemory.current.join(pr.pid)
     out_parts: list[str] = []
     reader = threading.Thread(target=lambda: out_parts.append(pr.stdout.read()), daemon=True)
     reader.start()
@@ -1628,7 +1876,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.5")
+FORMAT = dict(name="rigsim-stick-run", version="1.6")
 
 
 def runtime_versions() -> dict:
@@ -1778,11 +2026,13 @@ def main() -> int:
                 STATUS.begin(q, skippable=not skip)
                 if skip:
                     run["questions"][q] = dict(skipped=skip); say(f"{q}: skipped ({skip})", log); continue
-                try:
-                    run["questions"][q] = run_question(q, f, rundir, cfg, log)
-                except StepSkipped:
-                    run["questions"][q] = dict(skipped=OPERATOR_SKIP)
-                    run.setdefault("operator_skips", []).append(q)
+                with StepMemory(q, log) as mem:
+                    try:
+                        run["questions"][q] = run_question(q, f, rundir, cfg, log)
+                    except StepSkipped:
+                        run["questions"][q] = dict(skipped=OPERATOR_SKIP)
+                        run.setdefault("operator_skips", []).append(q)
+                record_memory(run["questions"][q], mem, log)
                 run["questions"][q]["tools"] = tools_for(q, man)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
             for name, step in (("mlc", lambda: run_mlc(data, rundir, log)),
@@ -1793,16 +2043,18 @@ def main() -> int:
                                ("llama-bench", lambda: run_llama(data, rundir, cuda_image, nvidia, log)),
                                ("blender", lambda: run_blender(data, rundir, log))):
                 STATUS.begin(name, skippable=True)
-                try:
-                    run["questions"][name] = step()
-                except StepSkipped:
-                    run["questions"][name] = dict(skipped=OPERATOR_SKIP)
-                    run.setdefault("operator_skips", []).append(name)
+                with StepMemory(name, log) as mem:
+                    try:
+                        run["questions"][name] = step()
+                    except StepSkipped:
+                        run["questions"][name] = dict(skipped=OPERATOR_SKIP)
+                        run.setdefault("operator_skips", []).append(name)
+                record_memory(run["questions"][name], mem, log)
                 run["questions"][name]["tools"] = tools_for(name, man, dict(mlc_version=mlc_version(rundir)) if name == "mlc" else None)
                 if run["questions"][name].get("skipped"):
                     say(f"{name}: skipped ({run['questions'][name]['skipped']})", log)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
-        ok = all(v.get("skipped") or (v.get("rc") == 0) for v in run["questions"].values())
+        ok = all(step_ok(v) for v in run["questions"].values())
         run["status"] = "done" if ok else "done with failures"
     except Stopped:
         run["status"] = "stopped"
