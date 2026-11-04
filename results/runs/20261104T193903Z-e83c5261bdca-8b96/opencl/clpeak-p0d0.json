@@ -1,0 +1,44 @@
+{
+ "platform": "rusticl",
+ "device": "AMD Radeon Vega 8 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-42-generic)",
+ "rc": 0,
+ "results": {
+  "info": {
+   "Driver version": "25.2.8-0ubuntu0.24.04.4 (Linux x64)",
+   "Compute units": 8.0,
+   "Clock frequency (MHz)": 1100.0
+  },
+  "Global memory bandwidth (GBPS)": {
+   "float": 27.72,
+   "float2": 28.82,
+   "float4": 29.7,
+   "float8": 29.68,
+   "float16": 31.26
+  },
+  "Single-precision compute (GFLOPS)": {
+   "float": 910.66,
+   "float2": 952.47,
+   "float4": 941.19,
+   "float8": 943.88,
+   "float16": 926.45
+  },
+  "Integer compute (GIOPS)": {
+   "int": 200.6,
+   "int2": 197.1,
+   "int4": 198.97,
+   "int8": 199.17,
+   "int16": 199.22
+  },
+  "Transfer bandwidth (GBPS)": {
+   "enqueueWriteBuffer": 10.16,
+   "enqueueReadBuffer": 9.73,
+   "enqueueWriteBuffer non-blocking": 10.21,
+   "enqueueReadBuffer non-blocking": 9.83,
+   "enqueueMapBuffer(for read)": 1.59,
+   "memcpy from mapped ptr": 8.62,
+   "enqueueUnmap(after write)": 4.7,
+   "memcpy to mapped ptr": 8.38,
+   "Kernel launch latency (us)": 295.32
+  }
+ }
+}
