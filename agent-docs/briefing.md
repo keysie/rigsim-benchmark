@@ -16,7 +16,8 @@ Flashing it showed three flash.sh faults (findings, "flash.sh: three faults") �
 verified by the user's [e] flash (2026-11-03: store copied, "verification passed … 75.1 GiB read back"). Next: the
 run on the 8 GB laptop — done (run `…-cfed`): limit works, Blender OOM recorded; MLC and Vulkan 7B still fail; logs
 read (findings). MLC fixed (hugepages, 0.13.10). Built (0.13.11): Vulkan fit check against the free GPU memory
-llama.cpp reports; GPU reset recorded as `device_lost` (counts like out_of_memory). Next: the user tests on the laptop.
+llama.cpp reports; GPU reset recorded as `device_lost` (counts like out_of_memory). Laptop run `…-8b96`: only MLC left (750 of 1000 hugepages). Proposed: drop caches + compact memory before the
+request, retry once; if still short, skip MLC with the reason. Waiting for clearance.
 **Merge note:** this sprint takes run format 1.6 — `sprint/old-gpus` (also 1.6 since its merge with main) becomes 1.7. Other open branches: `sprint/old-gpus` (built,
 waits for hardware), `ddr-timing-improvements` (parked).
 

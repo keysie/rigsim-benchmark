@@ -194,3 +194,10 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   (Y MB free)", no test runs); a model needs size × 1.2 + 0.5 GiB of it. Planned source was vulkaninfo; llama.cpp's own
   figure is used instead because it is what llama.cpp allocates against. Also fixed: run_llama's rc crashed on a skipped
   model entry (no `rc` key).
+
+## Laptop run with stick 0.13.11 (2026-11-04, run `…-8b96`; measured)
+
+- Everything but MLC behaves: 7B skipped for GPU memory (3.9 GiB free), FLASH_ATTN_EXT reset the GPU after 25 cases and
+  CPY lost its context after 8 — both recorded as `device_lost`, llama-bench rc 0; Blender junkshop at the limit.
+- MLC: the kernel gave only **750 of 1000** hugepages (an hour into the run; the manual test got them right after boot,
+  *inferred*: memory fragmented by then), and MLC still stops with rc 22 — it needs the full 1000 per node.
