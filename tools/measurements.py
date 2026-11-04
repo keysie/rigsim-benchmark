@@ -6,13 +6,13 @@ predict (predictions/README.md). Reads every run format 1.x; a value a run does 
 
 Every GPU value carries its card's PCI address (conditions.pci) where the run recorded it, so two cards of the same
 model stay apart; the device part of a key is the index within that backend (gpuN, devN), not a model name. Cards
-measured after the NVIDIA module switch (nvidia-swap/, format 1.6) continue the CUDA numbering: with two cards in the
+measured after the NVIDIA module switch (nvidia-swap/, format 1.7) continue the CUDA numbering: with two cards in the
 first phase, the first card of the second is gpu2.
 
 Keys are stable (they are how a prediction finds its measurement) and versioned with VERSION; a new kind of value
 gets a new key, an existing key never changes meaning:
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu, and
-                                                                    cuda+<fork> for the Pascal forks (format 1.6)
+                                                                    cuda+<fork> for the Pascal forks (format 1.7)
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
   mlc/idle_latency                                  ns

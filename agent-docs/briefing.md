@@ -7,24 +7,31 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Current sprint:** `sprint/old-gpus` (main merged in on 2026-11-01) — goal: the stick measures older NVIDIA cards
+**Current sprint:** `sprint/old-gpus` (main merged in on 2026-11-04) — goal: the stick measures older NVIDIA cards
 (Pascal P100/P40, Volta, Turing) with CUDA next to newer ones, incl. two P100 forks of llama.cpp. Status: **built**
-(stick 0.14.0, run format 1.6), 160 tests pass; not run on hardware. Then `ddr-timing-improvements` (parked).
+(stick 0.14.0, run format 1.7), 171 tests pass; not run on hardware. Then `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
-1. User reviews PR #25 and builds a stick from `sprint/old-gpus` (the rootfs is rebuilt: `chroot-setup.sh` changed; the
-   fork builds and the proprietary late-link run for the first time — the seed self-test checks both).
-2. Run on a machine with a Pascal card next to a newer one; check `nvidia_swap` in `run.json`, the `nvidia-swap/`
-   folder, the fork values (`cuda+qr0n`, `cuda+kmic68`) — open-points 1.
-3. Expected noise to handle then: cuBLAS precisions Pascal lacks (tf32, bf16) in gpu-gemm.
-4. Stick plan leftovers (C, F, G, SELFTEST copy, Blender oneAPI) and CPU-question rest — open-points.
+1. User builds a stick from `sprint/old-gpus` (the rootfs is rebuilt: `chroot-setup.sh` changed; the fork builds and the
+   proprietary late-link run for the first time — the seed self-test checks both).
+2. Run on a machine with a Pascal card next to a newer one; check `nvidia_swap` in `run.json`, the `nvidia-swap/` folder,
+   the fork values (`cuda+qr0n`, `cuda+kmic68`) — open-points 1.
+3. Expected noise then: cuBLAS precisions Pascal lacks (tf32, bf16) in gpu-gemm.
+4. Open stick items — open-points.
 
 **Recently solved** (newest first)
-- 2026-11-01 PR #23 `sprint/stick-data` merged: complete data on the test machine (run ends `done`), oneDNN fallback,
-  skipped-with-reason, UEFI boot without CSM, build-time seed self-test (stick 0.13.8, run format 1.5).
+- 2026-11-04 PR #33 `sprint/low-memory` merged (stick 0.13.11, run format 1.6).
+- 2026-11-04 (this sprint, verified on the 8 GB laptop): memory limit per step (cgroup / --memory, OOM recorded as
+  `out_of_memory`), RAM and GPU-memory fit checks for llama models, GPU resets recorded as `device_lost`, hugepages
+  for MLC; flash.sh: [e] no longer stops silently (#24), GPT-aware and sparse-aware read-back verification.
+- 2026-11-01 (this sprint, verified on hardware): oneAPI steps that fail on oneDNN run without it, and a device stays
+  without oneDNN after its first failure (stick 0.13.7–0.13.8) — the UHD 770 now measures fully.
+- 2026-11-01 (this sprint, verified): what a machine cannot do is skipped with the reason (gpu-p2p on one card, vendor
+  runtime without GPU, Blender device types not offered); boot header shows the stick version.
+- 2026-10-31 (this sprint, verified): UEFI boot without CSM (GPT hybrid layout, QEMU boot test in CI); flash offers
+  [u]pdate only when it can work.
+- 2026-10-31 (this sprint, verified): build-time seed self-test (stops on missing parts), Blender libraries, ladder cap.
 - 2026-10-31 PR #22 / #19: ladder cap, Blender's libraries.
-- 2026-10-31 PR #20 / #18: agent-docs and the run audit.
-- 2026-10-31 PR #17 (stick 0.13.2): progress counter total.
 
 ## 1. What this project is
 
@@ -34,27 +41,7 @@ Blender), stores results on the stick and powers off. Nothing is written to the 
 Data page: https://keysie.github.io/rigsim-benchmark/ . Like its sibling it is largely AI-written in chat sessions on the
 direction of one person (keysie); the data records everything that can influence a result so users can judge it.
 
-State (2026-11-01): main has stick **0.13.8**, run format **1.5**; this branch stick 0.14.0, format 1.6; **15 run folders from 12 distinct machines** (one machine
-has 4 runs), 13 attribution files, predictions for tags v0.1.0 (2 files), v0.2.0 (7), v0.3.0 (15).
-
-## 2. The two repositories and how they interact
-
-| | **rigsim** | **rigsim-benchmark** (this repo) |
-|---|---|---|
-| Is | the simulator (browser, static site): model, catalogs, UI | the measurement stick + open data |
-| Licence | Apache 2.0 | code Apache 2.0, data in `results/` and `docs/data.json` CC BY 4.0 |
-| Changes | fast, evolving model | runs immutable; format only grows |
-
-**Data flow.**
-1. **Stick → run.** Each boot writes `runs/<UTC time>-<machine hash>-<random>/` on the stick (`run.json`, `manifest.json`,
-   `inventory/`, `q/<question>/`, tool outputs, `stick.log`). `<machine>` is a salted hash of board identifiers.
-2. **Run → repo.** Contributors submit via a "Submit runs" issue (zip/tar.gz → `tools/submission.py` → PR from branch
-   `submission/issue-<n>`) or `tools/contribute.sh`. CI (`tools/validate.py`) allows only new run folders, exactly as the
-   stick wrote them, from finished (or stopped, with the interrupted step pruned) runs, nothing identifying. After merge the
-   table is rebuilt (`tools/index.py` → `docs/data.json`) and Pages rebuilt.
-3. **Run → values.** `tools/measurements.py` extracts stable named values: `llama-bench/<backend>/<dev>/<model>/<test>`,
-   `gpu-vram/<gpu>/<op>`, `cpu-mem-ladder/<kernel>/<threads>`, `mlc/idle_latency`, `mlc/max_bandwidth/<traffic>`.
-   Its `VERSION` (now "2") bumps when the set of values changes; the next daily job then predicts every run again.
+State (2026-11-04): main has stick **0.13.11**, run format **1.6**; this branch stick 0.14.0, format 1.7; the next daily job then predicts every run again.
 4. **Values → predictions.** Daily 03:17 UTC (`predictions.yml`): `tools/predict.py` finds rigsim's newest tag `vX.Y.Z`,
    and for each run without a file for that tag runs rigsim's `python3 -m app.predict --run … --measurements … --out …`
    from rigsim's `backend/`. Result: `predictions/<tag>/<run>.json` (never recomputed or removed; failures kept with

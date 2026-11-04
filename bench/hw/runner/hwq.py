@@ -363,6 +363,9 @@ def start_session(rundir: Path, plan: dict, cfg: dict, toolkit: Path, testdir: s
            "--security-opt", "no-new-privileges", "--entrypoint", "sleep"]
     if plan.get("gpus", "none") != "none":
         cmd += ["--gpus", "all"]
+    if os.environ.get("RIGSIM_MEMORY_BYTES"):          # the stick's memory limit for this step (stick.py StepMemory)
+        lim = os.environ["RIGSIM_MEMORY_BYTES"]
+        cmd += ["--memory", lim, "--memory-swap", lim]
     if testdir:
         cmd += ["-v", f"{testdir}:/data:rw"]
     r = sh(cmd + [image, "infinity"], timeout=300)

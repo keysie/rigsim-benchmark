@@ -124,7 +124,7 @@ def test_new_stick_files_allowed_and_local_ips_rejected(tmp_path):
 
 @pytest.mark.parametrize("change, expect", [
     (dict(format=None), "no run format"),
-    (dict(format=dict(name="rigsim-stick-run", version="1.7")), "newer than this repository knows"),
+    (dict(format=dict(name="rigsim-stick-run", version="1.8")), "newer than this repository knows"),
     (dict(format=dict(name="rigsim-stick-run", version="2.0")), "not a known version"),
     (dict(stick="abcdef1"), "stick without version"),
     (dict(questions={"cpu-gemm": dict(rc=0)}), "no tool versions"),
@@ -187,11 +187,11 @@ def test_stopped_run_keeps_finished_steps(tmp_path):
     assert V.step_of("q/gpu-vram/results.jsonl") == "gpu-vram" and V.step_of("inventory/lscpu.txt") is None
 
 
-def test_format_1_6_nvidia_switch_files_allowed(tmp_path):
+def test_format_1_7_nvidia_switch_files_allowed(tmp_path):
     """The second NVIDIA phase writes nvidia-swap/ with the same kinds of files as the run's top level; its steps are
     nvidia-swap/<step> (a stopped run prunes them like any other step)."""
     tools = dict(stick=dict(version="0.14.0", commit="a" * 40))
-    d = make_run(tmp_path, format=dict(name="rigsim-stick-run", version="1.6"),
+    d = make_run(tmp_path, format=dict(name="rigsim-stick-run", version="1.7"),
                  nvidia_swap=dict(flavour="proprietary", gpus=["Tesla P100-PCIE-16GB, 16384 MiB, 00000000:02:00.0"]))
     r = json.loads((d / "run.json").read_text())
     r["questions"].update({"nvidia-swap/gpu-vram": dict(rc=0, tools=tools), "nvidia-swap/llama-bench": dict(rc=0, tools=tools)})

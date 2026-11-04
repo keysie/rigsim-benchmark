@@ -50,6 +50,9 @@ sfdisk --verify "$STICK" >/dev/null || { echo "FAIL: sfdisk --verify"; sfdisk --
 start=$(awk -F'[=,]' '/type=0FC63DAF/ {gsub(/ /,"",$2); print $2}' "$W/table" | tail -1)
 mkfs.ext4 -q -F -L RIGSIM -E offset=$((start * 512)) "$STICK" 512M
 echo "ok: layout (GPT, ESP, data partition at sector $start, backup header at the end)"
+# flash.sh's read-back: the image compared with the stick, its partition table left out (flash.sh rewrote it)
+python3 "$S/tools/verify.py" --iso "$W/test.iso" "$STICK" >/dev/null || { echo "FAIL: verify.py rejects a correctly flashed stick"; exit 1; }
+echo "ok: read-back verification passes after the data partition was added"
 # flash.sh [u]pdate: the image written again in front, the data partition restored at the same sectors, untouched
 size=$(awk -F'[=,]' '/type=0FC63DAF/ {gsub(/ /,"",$4); print $4}' "$W/table" | tail -1)
 dd if="$W/test.iso" of="$STICK" conv=notrunc status=none

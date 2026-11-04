@@ -122,7 +122,9 @@ preload_images() {                                   # $1 = data partition (not 
   fi
   local used; used="$(du -B1 "$STORE" | cut -f1)"
   mount_data "$1"
-  local old free; old="$(du -B1 "$MNT/store.img" 2>/dev/null | cut -f1)"
+  # no store.img yet (a fresh partition): du fails — must not end the script (set -e + pipefail: [e]rase used to stop
+  # here silently, without image store and without verification; issue #24)
+  local old free; old="$(du -B1 "$MNT/store.img" 2>/dev/null | cut -f1 || true)"
   free="$(( $(df -B1 --output=avail "$MNT" | tail -1) + ${old:-0} ))"
   if (( used + 1073741824 > free )); then
     echo "images: the store needs $((used >> 30)) GiB, the stick has $((free >> 30)) GiB free — not copied" >&2
@@ -149,6 +151,10 @@ verify_stick() {                                     # $1 = data partition, $2 =
   [[ -f "$STORE" && -f "$MNT/store.img" ]] && args+=(--file "$STORE" "$MNT/store.img")
   echo "verifying the stick: reading back everything written"
   python3 "$S/tools/verify.py" "${args[@]}" || rc=$?
+  # verify.py leaves the partition table out of the image comparison (flash.sh rewrote it); check it on its own
+  if [[ "${2:-0}" == 1 ]] && ! sfdisk --verify "$DEV" >/dev/null 2>&1; then
+    echo "the partition table on $DEV is not valid:"; sfdisk --verify "$DEV" || true; rc=1
+  fi
   umount "$MNT"; rmdir "$MNT"; MNT=""
   if [[ $rc -ne 0 ]]; then
     echo "the stick does not hold what was written — flash again; if it fails again, the stick is failing" >&2

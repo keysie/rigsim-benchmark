@@ -2,6 +2,8 @@
 stable, inventory sanitised, the profile valid for the bench runner, GPU questions skipped with a reason, the index
 accumulates, power-off rules. Run: python3 -m pytest -q stick/tests"""
 import datetime as dt
+import os
+import subprocess
 import json
 import importlib.util
 import sys
@@ -1480,3 +1482,178 @@ def test_onednn_stays_off_on_a_device_after_its_first_failure(tmp_path):
     assert extra == dict(onednn_off=dict(after="dev0-llama-tiny", env=stick.NO_ONEDNN))
     g2 = stick.OneDnnGuard()                                                     # a device where oneDNN works
     assert g2.run("dev1-x", tmp_path / "c.txt", lambda env: (0, "ok")) == (0, "ok", {}) and not g2.off_after
+
+
+# --- low memory (run 05ea, 2026-11-01: an 8 GB laptop without swap hung) ---------------------------------------------
+def _mem(tmp_path, monkeypatch, avail_gib=6.0, total_gib=7.3, kills=(0,)):
+    k = iter(kills)
+    last = [0]
+    def ok():
+        try:
+            last[0] = next(k)
+        except StopIteration:
+            pass
+        return last[0]
+    monkeypatch.setattr(stick, "meminfo", lambda path=None: {"MemAvailable": int(avail_gib * stick.GIB),
+                                                              "MemTotal": int(total_gib * stick.GIB)})
+    monkeypatch.setattr(stick, "oom_kills", lambda path=None: ok())
+    cg = tmp_path / "cgroup"; cg.mkdir()
+    return cg
+
+
+def test_step_memory_sets_a_limit_for_processes_and_containers(tmp_path, monkeypatch):
+    root = _mem(tmp_path, monkeypatch, avail_gib=6.0, kills=(3, 3))
+    with stick.StepMemory("blender", None, root) as m:
+        lim = int((root / "rigsim-step" / "memory.max").read_text())
+        assert lim == int(6.0 * stick.GIB) - stick.MEM_RESERVE
+        assert stick.docker_mem() == ["--memory", str(lim), "--memory-swap", str(lim)]
+        assert stick.os.environ["RIGSIM_MEMORY_BYTES"] == str(lim)
+        m.join(4242)
+        assert (root / "rigsim-step" / "cgroup.procs").read_text() == "4242"
+    assert stick.docker_mem() == [] and "RIGSIM_MEMORY_BYTES" not in stick.os.environ
+    assert m.record() == dict(available_gib=6.0, limit_gib=round(lim / stick.GIB, 2), cgroup=True)
+
+
+def test_out_of_memory_is_recorded_and_counts_as_done(tmp_path, monkeypatch):
+    root = _mem(tmp_path, monkeypatch, kills=(5, 6))
+    with stick.StepMemory("blender", None, root) as m:
+        pass
+    entry = dict(rc=1)
+    stick.record_memory(entry, m, None)
+    assert entry["memory"]["oom_kills"] == 1 and "ended 1 process(es)" in entry["out_of_memory"]
+    assert stick.step_ok(entry) and not stick.step_ok(dict(rc=1)) and stick.step_ok(dict(skipped="x"))
+
+
+def test_no_cgroup_v2_still_runs(tmp_path, monkeypatch):
+    _mem(tmp_path, monkeypatch)
+    with stick.StepMemory("mlc", None, tmp_path / "missing" / "root") as m:
+        assert not m.cgroup and stick.docker_mem()                 # containers still limited
+    assert m.record()["cgroup"] is False
+
+
+def test_models_that_do_not_fit_in_ram_are_skipped(tmp_path, monkeypatch):
+    _mem(tmp_path, monkeypatch, avail_gib=5.0)
+    small, big = tmp_path / "tiny.gguf", tmp_path / "big.gguf"
+    with open(small, "wb") as f: f.truncate(600 << 20)
+    with open(big, "wb") as f: f.truncate(3800 << 20)
+    assert stick.model_fits(small) == "" and "needs about 6.3 GiB of RAM, 5.0 GiB available" == stick.model_fits(big)
+    summary = """GPU0:
+\tapiVersion = 1.3
+\tdeviceType = PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
+\tdeviceName = NVIDIA GeForce RTX 3080
+GPU1:
+\tdeviceType = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+\tdeviceName = AMD Radeon Vega 8 Graphics (RADV RAVEN)
+GPU2:
+\tdeviceType = PHYSICAL_DEVICE_TYPE_CPU
+\tdeviceName = llvmpipe (LLVM 19.1.1, 256 bits)
+"""
+    assert stick.vulkan_integrated(summary) == {1}
+
+
+def test_mlc_gets_a_small_buffer_on_small_machines(tmp_path, monkeypatch):
+    _mem(tmp_path, monkeypatch, total_gib=7.3)
+    data = tmp_path / "data"; mlc = data / "seed" / "tools" / "mlc" / "mlc"; mlc.parent.mkdir(parents=True); mlc.write_text("")
+    seen = []
+    monkeypatch.setattr(stick, "sh", lambda cmd, timeout=120: seen.append(cmd) or (0, ""))
+    monkeypatch.setattr(stick, "secure_boot", lambda: False)
+    monkeypatch.setattr(stick, "reserve_hugepages", lambda: dict(before=0, requested=1000, allocated=1000))
+    monkeypatch.setattr(stick, "release_hugepages", lambda h: None)
+    r = stick.run_mlc(data, tmp_path / "run", tmp_path / "log")
+    assert r["buffer_kib"] == 200 * 1024 and all("-b204800" in c for c in seen if str(mlc) in c[0])
+    seen.clear(); _mem(tmp_path / "x", monkeypatch, total_gib=31.1) if (tmp_path / "x").mkdir() is None else None
+    r = stick.run_mlc(data, tmp_path / "run", tmp_path / "log")
+    assert "buffer_kib" not in r and not any("-b204800" in c for c in seen)
+
+
+def test_every_step_and_container_is_under_the_limit():
+    src = (HERE / "payload" / "stick.py").read_text()
+    main = src.split("def main()", 1)[1]
+    assert main.count("with StepMemory(") == 2 and main.count("record_memory(") == 2
+    phase2 = src.split("def nvidia_phase2(", 1)[1].split("\ndef ", 1)[0]
+    assert "with StepMemory(name, log) as mem:" in phase2 and "record_memory(" in phase2
+    assert "ok = all(step_ok(v) for v in run[\"questions\"].values())" in main
+    assert src.count("*docker_mem()") == 6                                      # + the Pascal forks and "StepMemory.current.join(p.pid)" in src and "StepMemory.current.join(pr.pid)" in src
+    h = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
+    assert 'cmd += ["--memory", lim, "--memory-swap", lim]' in h
+
+
+# --- flash.sh faults seen while flashing 0.13.9 (2026-11-03) ----------------------------------------------------------
+_vspec = importlib.util.spec_from_file_location("verify", HERE / "tools" / "verify.py")
+verify = importlib.util.module_from_spec(_vspec); _vspec.loader.exec_module(verify)
+
+
+def test_erase_does_not_stop_when_the_stick_has_no_store_yet(tmp_path):
+    """Issue #24: on a fresh partition `du store.img` failed and set -e + pipefail ended flash.sh silently."""
+    f = (HERE / "flash.sh").read_text()
+    line = next(l for l in f.splitlines() if 'old="$(du -B1 "$MNT/store.img"' in l).strip()
+    script = f'set -euo pipefail\nMNT={tmp_path}\nf() {{ {line}; echo "went on: [$old]"; }}\nf\n'
+    r = subprocess.run(["bash", "-c", script], capture_output=True, text=True)
+    assert r.returncode == 0 and "went on: []" in r.stdout
+
+
+def test_verify_leaves_the_gpt_out_of_the_image_but_nothing_else(tmp_path):
+    img = bytearray(64 * 512); img[512:520] = b"EFI PART"; img[40 * 512:40 * 512 + 4] = b"data"
+    iso = tmp_path / "x.iso"; iso.write_bytes(bytes(img))
+    dev = bytearray(img) + bytes(1 << 20)
+    dev[450] = 7; dev[512 + 24] = 9; dev[3 * 512] = 1                  # MBR entry, GPT header, entry array
+    (tmp_path / "dev").write_bytes(bytes(dev))
+    run = lambda: verify.main(["--iso", str(iso), str(tmp_path / "dev")])
+    assert verify.table_skip(str(iso)) == verify.GPT_TABLE and run() == 0
+    dev[40 * 512] = ord("D"); (tmp_path / "dev").write_bytes(bytes(dev))
+    assert run() == 1                                                   # the image itself still checked
+    mbr = bytearray(img); mbr[512:520] = bytes(8); (tmp_path / "m.iso").write_bytes(bytes(mbr))
+    assert verify.table_skip(str(tmp_path / "m.iso")) == verify.MBR_TABLE
+
+
+def test_verify_hashes_holes_as_zeros_and_counts_what_is_read(tmp_path):
+    dense, sparse = tmp_path / "d", tmp_path / "s"
+    blob = os.urandom(1 << 20)
+    with open(dense, "wb") as f:
+        f.write(blob); f.write(bytes(64 << 20)); f.write(blob)
+    with open(sparse, "wb") as f:
+        f.write(blob); f.seek((1 << 20) + (64 << 20)); f.write(blob)
+    n = dense.stat().st_size
+    assert sparse.stat().st_size == n
+    assert verify.digest(str(dense), n, None, "") == verify.digest(str(sparse), n, None, "")
+    assert verify.allocated(str(sparse), n) < n // 4                    # holes not counted (where the FS reports them)
+    assert verify.main(["--file", str(dense), str(sparse)]) == 0
+
+
+def test_hugepages_reserved_for_mlc_and_given_back(tmp_path, monkeypatch):
+    """Ryzen 5 2500U: MLC stopped with rc 22 without hugepages and ran with 1000 of them (2026-11-04)."""
+    nr = tmp_path / "nr_hugepages"; nr.write_text("0\n")
+    nodes = tmp_path / "node"; (nodes / "node0").mkdir(parents=True)
+    _mem(tmp_path, monkeypatch, avail_gib=6.6)
+    h = stick.reserve_hugepages(1000, nr, nodes)
+    assert h == dict(before=0, requested=1000, allocated=1000) and nr.read_text() == "1000"
+    stick.release_hugepages(h, nr)
+    assert nr.read_text() == "0"
+    _mem(tmp_path / "x" if (tmp_path / "x").mkdir() is None else None, monkeypatch, avail_gib=2.5)
+    assert stick.reserve_hugepages(1000, nr, nodes)["requested"] == 256      # leaves 2 GiB available
+    (nodes / "node1").mkdir()
+    _mem(tmp_path / "y" if (tmp_path / "y").mkdir() is None else None, monkeypatch, avail_gib=30)
+    assert stick.reserve_hugepages(1000, nr, nodes)["requested"] == 2000     # per NUMA node
+    assert "error" in stick.reserve_hugepages(1000, tmp_path / "missing", nodes)
+
+
+def test_gpu_memory_check_and_device_lost(tmp_path, monkeypatch):
+    """Run cfed (Vega 8, 3996 MB GPU memory): 7B Q4_0 ran out of GPU memory; FLASH_ATTN_EXT then reset the GPU."""
+    big, small = tmp_path / "7b.gguf", tmp_path / "tiny.gguf"
+    with open(big, "wb") as f: f.truncate(3825065984)
+    with open(small, "wb") as f: f.truncate(637 << 20)
+    assert "needs about 4.8 GiB of GPU memory, the device has 3.9 GiB free" == stick.model_fits_gpu(big, 3960)
+    assert stick.model_fits_gpu(small, 3960) == "" and stick.model_fits_gpu(big, None) == ""
+    class R: stdout, stderr = "Backend 1/2: Vulkan0\n  Device memory: 3996 MB (3960 MB free)\n", ""
+    tbo = tmp_path / "test-backend-ops"; tbo.write_text("")
+    seen = []
+    monkeypatch.setattr(stick, "run_cmd", lambda cmd, **kw: seen.append((cmd, kw.get("env", {}).get("GGML_VK_VISIBLE_DEVICES"))) or R())
+    assert stick.vulkan_memory(tbo, 1) == 3960 and seen[0][1] == "1" and "RIGSIM_NONE" in seen[0][0]
+    guilty = "  FLASH_ATTN_EXT(...): 8 runs - 1 us/run\n  FLASH_ATTN_EXT(...): 2 runs - 2 us/run\n" \
+             "radv/amdgpu: The CS has been cancelled because the context is lost. This context is guilty of a hard recovery.\n" \
+             "ggml_vulkan: device lost on Vulkan0\nwhat():  vk::Queue::submit: ErrorDeviceLost\n"
+    assert stick.device_lost(guilty) == "the GPU was reset while running this (a hang or the driver's job timeout); 2 case(s) measured before"
+    assert stick.device_lost("radv/amdgpu: Not enough memory for command submission.\nErrorDeviceLost").startswith("out of GPU memory")
+    assert "after a reset caused elsewhere" in stick.device_lost("This context is innocent.\nErrorDeviceLost")
+    assert stick.device_lost("Segmentation fault") == ""
+    assert stick.item_ok(dict(rc=-6, device_lost="x")) and stick.item_ok(dict(skipped="y")) and not stick.item_ok(dict(rc=-6))

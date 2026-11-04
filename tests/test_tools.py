@@ -88,7 +88,7 @@ def test_bots_push_with_their_commit_message_check():
 
 
 def test_measurements_from_the_nvidia_switch_and_the_pascal_forks(tmp_path):
-    """Format 1.6: cards measured after the NVIDIA module switch continue the CUDA numbering (gpu1 after one card in the
+    """Format 1.7: cards measured after the NVIDIA module switch continue the CUDA numbering (gpu1 after one card in the
     first phase) with their own PCI address; a fork's values are their own backend on the same card."""
     import importlib.util, json as js
     spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
