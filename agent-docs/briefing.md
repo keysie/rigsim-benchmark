@@ -7,28 +7,20 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Current sprint:** `sprint/low-memory` (from `main`, 2026-11-01; user: a fix first, before `sprint/old-gpus`) — goal:
-the stick runs cleanly on small machines. Trigger: run `…-05ea` (Ryzen 5 2500U laptop, 7.3 GiB, no swap, issue #29)
-ended `stopped`. Diagnosis in findings; plan proposed (memory limit per step via cgroup, fit checks for
-llama models on CPU / UMA GPUs, MLC buffer) — **built** (user cleared; stick 0.13.9, run format 1.6), 157 tests pass,
-not on hardware yet. Next: the user builds and runs it on the 8 GB laptop.
-Flashing it showed three flash.sh faults (findings, "flash.sh: three faults") — **fixed** (user cleared; closes #24):
-verified by the user's [e] flash (2026-11-03: store copied, "verification passed … 75.1 GiB read back"). Next: the
-run on the 8 GB laptop — done (run `…-cfed`): limit works, Blender OOM recorded; MLC and Vulkan 7B still fail; logs
-read (findings). MLC fixed (hugepages, 0.13.10). Built (0.13.11): Vulkan fit check against the free GPU memory
-llama.cpp reports; GPU reset recorded as `device_lost` (counts like out_of_memory). Laptop run `…-8b96`: only MLC left (750 of 1000 hugepages). Proposed: drop caches + compact memory before the
-request, retry once; if still short, skip MLC with the reason. Waiting for clearance.
-**Merge note:** this sprint takes run format 1.6 — `sprint/old-gpus` (also 1.6 since its merge with main) becomes 1.7. Other open branches: `sprint/old-gpus` (built,
-waits for hardware), `ddr-timing-improvements` (parked).
+**Sprint `sprint/low-memory` — done, ready to merge (user, 2026-11-04).** Goal "the stick runs cleanly on small
+machines" reached on the 8 GB laptop (Ryzen 5 2500U, run `…-8b96`): no hang, every limit recorded with its reason;
+only MLC still fails there (hugepages, see open-points) — left as it is by the user's decision. PR #33.
+Other open branches: `sprint/old-gpus` (built, waits for hardware), `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
-1. User merges PR #23. Then submit the three hardware runs of this sprint (`…-9c93`, `…-c72d`, `…-03de`) if wanted.
-2. Continue `sprint/old-gpus`: rebase onto `main`, renumber format / VERSION, build, test on a mixed-GPU machine.
-3. Still open from the stick plan (next stick sprint): C (package energy readable), F (run-completeness audit tool),
-   G (VM test, optional), `seed/SELFTEST.json` into each run, Blender oneAPI (Level Zero in the system image) —
-   open-points 5.
+1. User merges PR #33 (stick 0.13.11, run format 1.6, closes #24, relates to #29).
+2. `sprint/old-gpus`: merge `main` in, renumber its run format 1.6 → 1.7, build, test on a mixed-GPU machine.
+3. Open stick items: open-points (MLC hugepages on long runs; C, F, G; SELFTEST copy; Blender oneAPI; CPU questions).
 
 **Recently solved** (newest first)
+- 2026-11-04 (this sprint, verified on the 8 GB laptop): memory limit per step (cgroup / --memory, OOM recorded as
+  `out_of_memory`), RAM and GPU-memory fit checks for llama models, GPU resets recorded as `device_lost`, hugepages
+  for MLC; flash.sh: [e] no longer stops silently (#24), GPT-aware and sparse-aware read-back verification.
 - 2026-11-01 (this sprint, verified on hardware): oneAPI steps that fail on oneDNN run without it, and a device stays
   without oneDNN after its first failure (stick 0.13.7–0.13.8) — the UHD 770 now measures fully.
 - 2026-11-01 (this sprint, verified): what a machine cannot do is skipped with the reason (gpu-p2p on one card, vendor

@@ -100,3 +100,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — MLC hypothesis confirmed by the user's manual test (hugepages); built (0.13.10, 161 tests).
 - **2026-11-04** — User cleared 1 + 2; built (0.13.11, 162 tests). GPU memory taken from llama.cpp's own report, not vulkaninfo.
 - **2026-11-04** — Laptop run with 0.13.11: only MLC fails — 750 of 1000 hugepages granted. Fix proposed.
+- **2026-11-04** — User: enough optimising — the MLC hugepage shortfall stays as it is (open point); prepare PR #33 for merge.
