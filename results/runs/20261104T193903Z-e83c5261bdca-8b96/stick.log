@@ -1,0 +1,59 @@
+19:39:03  run 20261104T193903Z-e83c5261bdca-8b96
+19:39:07  cpu AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx | board LENOVO LNVNB161216 | 7.3 GiB | gpus ['Advanced Micro Devices, Inc. [AMD/ATI] Raven Ridge [Radeon Vega Series / Radeon Vega Mobile Series] [1002:15dd] (rev c4)', 'Advanced Micro Devices, Inc. [AMD] Raven/Raven2/Renoir Non-Sensor Fusion Hub KMDF driver [1022:15e6]']
+19:39:07  stick check: pass
+19:39:12  stick read: {'file': 'nvidia_cuda_12.8.1-devel-ubuntu24.04.tar', 'mib': 1024, 'seconds': 4.74, 'mib_per_s': 215.9}
+19:39:12  docker: using the image store built at flash time (store.img)
+19:39:15  docker: works (overlayfs / [[driver-type io.containerd.snapshotter.v1]])
+19:39:16  screens: [('card1', 'eDP-1', '1920x1080')]
+19:39:16  screens off while measuring: ['fb0']
+19:39:16  cpu-mem-latency: 6.6 GiB available, step limit 5.8 GiB
+19:39:16  cpu-mem-latency: start
+19:45:42  cpu-mem-latency: rc=0 {'done': 9} (386 s)
+19:45:42  cpu-mem-ladder: 6.6 GiB available, step limit 5.9 GiB
+19:45:42  cpu-mem-ladder: start
+19:52:20  cpu-mem-ladder: rc=0 {'done': 48} (398 s)
+19:52:20  cpu-gemm: 6.5 GiB available, step limit 5.8 GiB
+19:52:20  cpu-gemm: start
+19:58:38  cpu-gemm: rc=0 {'done': 24} (378 s)
+19:58:38  cpu-gemm-ladder: 6.6 GiB available, step limit 5.8 GiB
+19:58:38  cpu-gemm-ladder: start
+20:01:57  cpu-gemm-ladder: rc=0 {'done': 6} (200 s)
+20:01:57  cpu-power-time: 6.6 GiB available, step limit 5.8 GiB
+20:01:57  cpu-power-time: start
+20:07:18  cpu-power-time: rc=0 {'done': 1} (321 s)
+20:07:18  pcie-copy: skipped (no NVIDIA GPU)
+20:07:18  gpu-p2p: skipped (no NVIDIA GPU)
+20:07:18  gpu-vram: skipped (no NVIDIA GPU)
+20:07:18  gpu-gemm: skipped (no NVIDIA GPU)
+20:07:18  gpu-launch: skipped (no NVIDIA GPU)
+20:07:18  mlc: 6.6 GiB available, step limit 5.8 GiB
+20:07:18  mlc: hugepages {'before': 0, 'requested': 1000, 'allocated': 750}
+20:07:19  mlc idle_latency: rc=22 (1 s)
+20:07:20  mlc max_bandwidth: rc=22 (1 s)
+20:07:21  mlc loaded_latency: rc=22 (1 s)
+20:07:22  mlc latency_matrix: rc=22 (1 s)
+20:07:23  mlc bandwidth_matrix: rc=22 (1 s)
+20:07:23  opencl: 6.6 GiB available, step limit 5.9 GiB
+20:07:24  opencl p0d0: AMD Radeon Vega 8 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-42-generic) (rusticl)
+20:08:33  opencl p0d0: rc=0 (69 s)
+20:08:33  vkprobe: 5.6 GiB available, step limit 4.9 GiB
+20:09:10  vkprobe: 16 runs on 1 device(s)
+20:09:10  rocm: 6.2 GiB available, step limit 5.5 GiB
+20:09:10  rocm: skipped (rocm image not in the seed)
+20:09:10  oneapi: 6.2 GiB available, step limit 5.5 GiB
+20:09:10  oneapi: skipped (no INTEL GPU)
+20:09:10  llama-bench: 6.2 GiB available, step limit 5.5 GiB
+20:09:10  llama vulkan-dev0: 3960 MiB GPU memory free
+20:09:34  llama vulkan-dev0-tinyllama-1.1b-q4_0: rc=0 (23 s)
+20:09:34  llama vulkan-dev0-llama-2-7b-q4_0: skipped (needs about 4.8 GiB of GPU memory, the device has 3.9 GiB free)
+20:23:13  test-backend-ops vulkan-dev0 ops-flash_attn_ext: the GPU was reset while running this (a hang or the driver's job timeout); 25 case(s) measured before
+20:27:14  test-backend-ops vulkan-dev0 ops-cpy: the GPU context was lost after a reset caused elsewhere; 8 case(s) measured before
+20:28:12  test-backend-ops vulkan-dev0: 10/12 ops
+21:03:30  test-backend-ops cpu: 12/12 ops
+21:04:30  llama cpu-tinyllama-1.1b-q4_0: rc=0 (60 s)
+21:04:30  blender: 5.7 GiB available, step limit 4.9 GiB
+21:05:10  blender cpu-monster: rc=0 (40 s)
+21:05:23  blender cpu-junkshop: rc=-9 (13 s)
+21:06:04  blender cpu-classroom: rc=0 (40 s)
+21:06:04  blender: out of memory — the kernel ended 1 process(es) at the step's limit of 4.9 GiB (the machine had 5.7 GiB available)
+21:06:04  finished: done with failures

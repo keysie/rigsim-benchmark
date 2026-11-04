@@ -1,0 +1,2 @@
+Platform #0: rusticl
+ `-- Device #0: AMD Radeon Vega 8 Graphics (radeonsi, raven, ACO, DRM 3.64, 7.0.0-42-generic)

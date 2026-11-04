@@ -1,0 +1,11 @@
+Intel(R) Memory Latency Checker - v3.13
+Command line parameters: --max_bandwidth -b204800 
+
+Using buffer size of 200.000MiB/thread for reads and an additional 200.000MiB/thread for writes
+
+*************   Hugepages need to be allocated using /proc/sys/vm/nr_hugepages ******
+*************   Without large pages, the latencies are not accurate
+*************   We need at least 1000 2M pages per numa node
+*************   Adjust 4000 below to account for # of NUMA nodes
+*************   and execute the following and re-run
+*************   echo 4000 > /proc/sys/vm/nr_hugepages

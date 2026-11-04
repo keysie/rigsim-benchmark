@@ -1,0 +1,28 @@
+/mnt/rigsim/seed/llama/vulkan/test-backend-ops perf -o RMS_NORM -b Vulkan0 --output sql
+CREATE TABLE IF NOT EXISTS test_backend_ops (
+  test_time TEXT,
+  build_commit TEXT,
+  backend_name TEXT,
+  op_name TEXT,
+  op_params TEXT,
+  test_mode TEXT,
+  supported INTEGER,
+  passed INTEGER,
+  error_message TEXT,
+  time_us REAL,
+  flops REAL,
+  bandwidth_gb_s REAL,
+  memory_kb INTEGER,
+  n_runs INTEGER,
+  device_description TEXT,
+  backend_reg_name TEXT
+);
+
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-04T20:23:17Z', '8642541b2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[4096,1,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '12.096292', '0.000000', '2.523041', '32', '90101', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-04T20:23:19Z', '8642541b2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[128,32,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '10.495340', '0.000000', '2.907904', '32', '98292', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-04T20:23:20Z', '8642541b2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[4096,512,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '612.895559', '0.000000', '25.499961', '16384', '2049', '', '');
+INSERT INTO test_backend_ops (test_time, build_commit, backend_name, op_name, op_params, test_mode, supported, passed, error_message, time_us, flops, bandwidth_gb_s, memory_kb, n_runs, device_description, backend_reg_name) VALUES ('2026-11-04T20:23:21Z', '8642541b2', 'Vulkan0', 'RMS_NORM', 'type=f32,ne=[128,16384,1,1],v=0,eps=0.000001,inplace=0', 'perf', '1', '1', '', '577.806735', '0.000000', '27.048513', '16384', '2049', '', '');
+
+--- stderr ---
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = AMD Radeon Vega 8 Graphics (RADV RAVEN) (radv) | uma: 1 | fp16: 1 | bf16: 0 | fp4: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: none

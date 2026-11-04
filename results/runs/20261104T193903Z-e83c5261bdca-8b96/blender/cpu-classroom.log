@@ -1,0 +1,488 @@
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.001'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.002'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.003'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.004'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.005'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.006'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.007'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.008'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.009'
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:489 main_namemap_validate_and_fix: ID name 'LIlib' (from library '<None>') is found more than once
+WARN (bke.main_namemap): source/blender/blenkernel/intern/main_namemap.cc:508 main_namemap_validate_and_fix: 	ID has been renamed to 'LIlib.010'
+Blender 4.2.0 (hash a51f293548ad built 2024-07-16 06:27:02)
+Read blend: "/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/main.blend"
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/lamps/lamps.blend', '//assets/lamps/lamps.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/chairs/chairs.blend', '//assets/chairs/chairs.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/coatStand/coatStand.blend', '//assets/coatStand/coatStand.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/desks/desks.blend', '//assets/desks/desks.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/dustBin/dustBin.blend', '//assets/dustBin/dustBin.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/radiator/radiator.blend', '//assets/radiator/radiator.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/suitcase/suitcase.blend', '//assets/suitcase/suitcase.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/wallClock/wallClock.blend', '//assets/wallClock/wallClock.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/wastes/wastes.blend', '//assets/wastes/wastes.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/books/books.blend', '//assets/books/books.blend', parent '<direct>'
+Info: Read library: '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/scenes/936f0a528f03eba291c67ea87743a0ebde58938fb87471b262721b89b46b875d/classroom/assets/officeSupplies/officeSupplies.blend', '//assets/officeSupplies/officeSupplies.blend', parent '<direct>'
+path: ['/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/benchmark-scripts/2881a9f160a24ccd4282e43b861bd727e33562a4a230401343b590d10e890272/blender_benchmark_script-3.1.2', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/startup', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python311.zip', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/lib-dynload', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/python/lib/python3.11/site-packages', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/freestyle/modules', '/mnt/rigsim/seed/blender/home/.config/blender/4.2/scripts/addons/modules', '/mnt/rigsim/seed/blender/home/.cache/blender-benchmark-launcher/blender-versions/4f4fd7646af01f6fee9d420408318381a6e52571268eb7cf9cd5033bd9e7a359/blender-4.2.0-linux-x64/4.2/scripts/addons_core']
+Time limit is set to 30.0
+Warning: region type 4 missing in space type "Info" (id: 7) - removing region
+Fra:1 Mem:111.24M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | zapBook
+Fra:1 Mem:111.49M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | pages
+Fra:1 Mem:111.56M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box013
+Fra:1 Mem:111.60M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane007.003
+Fra:1 Mem:111.68M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box013.001
+Fra:1 Mem:111.71M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane007.004
+Fra:1 Mem:111.79M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box309.002
+Fra:1 Mem:111.80M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | boiteLarge
+Fra:1 Mem:111.92M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.026
+Fra:1 Mem:112.02M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line291.005
+Fra:1 Mem:112.04M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line291.004
+Fra:1 Mem:112.42M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Rectangle018.002
+Fra:1 Mem:113.05M (Peak 118.04M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box25.002
+Fra:1 Mem:113.63M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.003
+Fra:1 Mem:113.61M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wallSwitch
+Fra:1 Mem:113.62M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.002
+Fra:1 Mem:113.77M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.000
+Fra:1 Mem:113.75M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder025.001
+Fra:1 Mem:113.76M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.002
+Fra:1 Mem:113.80M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.003
+Fra:1 Mem:113.83M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.004
+Fra:1 Mem:113.86M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder04.005
+Fra:1 Mem:113.99M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Sphere03.001
+Fra:1 Mem:114.71M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | crayonPapier
+Fra:1 Mem:115.09M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | whiteChalk
+Fra:1 Mem:115.10M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.002
+Fra:1 Mem:115.12M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.006
+Fra:1 Mem:115.15M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.003
+Fra:1 Mem:115.20M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.004
+Fra:1 Mem:115.25M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.004
+Fra:1 Mem:115.60M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.005
+Fra:1 Mem:115.71M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.007
+Fra:1 Mem:115.70M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.008
+Fra:1 Mem:115.72M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing
+Fra:1 Mem:115.72M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.025
+Fra:1 Mem:115.87M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | post-it
+Fra:1 Mem:116.29M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceilingMoulding
+Fra:1 Mem:116.34M (Peak 118.04M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | verticalPipe
+Fra:1 Mem:116.43M (Peak 118.04M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.026
+Fra:1 Mem:116.60M (Peak 118.04M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.027
+Fra:1 Mem:117.03M (Peak 118.04M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.028
+Fra:1 Mem:117.34M (Peak 118.04M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | coat 1
+Fra:1 Mem:117.34M (Peak 118.04M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBo1
+Fra:1 Mem:119.05M (Peak 119.05M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox
+Fra:1 Mem:119.07M (Peak 119.07M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCy1
+Fra:1 Mem:122.61M (Peak 122.61M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.029
+Fra:1 Mem:122.64M (Peak 122.64M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.030
+Fra:1 Mem:122.66M (Peak 122.66M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.031
+Fra:1 Mem:122.76M (Peak 122.76M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kofr03_kof.001
+Fra:1 Mem:124.02M (Peak 124.02M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | KOFR_TEXT
+Fra:1 Mem:125.26M (Peak 125.26M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k
+Fra:1 Mem:125.26M (Peak 125.26M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.001
+Fra:1 Mem:125.63M (Peak 125.63M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.002
+Fra:1 Mem:125.63M (Peak 125.63M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.004
+Fra:1 Mem:125.63M (Peak 125.63M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | kolesa01_k.006
+Fra:1 Mem:125.63M (Peak 125.63M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line13
+Fra:1 Mem:126.76M (Peak 126.77M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line14
+Fra:1 Mem:127.06M (Peak 127.06M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line15
+Fra:1 Mem:127.07M (Peak 127.07M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line16.001
+Fra:1 Mem:127.08M (Peak 127.08M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line18
+Fra:1 Mem:127.13M (Peak 127.13M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Loft01
+Fra:1 Mem:127.27M (Peak 127.27M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Loft02
+Fra:1 Mem:127.95M (Peak 127.95M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.011
+Fra:1 Mem:130.15M (Peak 130.23M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.012
+Fra:1 Mem:131.36M (Peak 131.36M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.013
+Fra:1 Mem:131.36M (Peak 131.36M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.014
+Fra:1 Mem:134.80M (Peak 134.80M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.017
+Fra:1 Mem:134.86M (Peak 134.86M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder
+Fra:1 Mem:134.94M (Peak 134.94M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.056
+Fra:1 Mem:135.25M (Peak 135.25M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.057
+Fra:1 Mem:135.61M (Peak 135.61M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Paper
+Fra:1 Mem:138.21M (Peak 138.21M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | clock_wood
+Fra:1 Mem:141.52M (Peak 141.63M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | background
+Fra:1 Mem:141.54M (Peak 141.63M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Axe
+Fra:1 Mem:141.57M (Peak 141.63M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | glass
+Fra:1 Mem:141.79M (Peak 141.79M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | bigHand
+Fra:1 Mem:141.83M (Peak 141.83M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | smallHand
+Fra:1 Mem:141.87M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | number
+Fra:1 Mem:138.94M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodBaseboard
+Fra:1 Mem:138.95M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | blackboardLamp
+Fra:1 Mem:138.97M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodBase
+Fra:1 Mem:138.98M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | plank
+Fra:1 Mem:139.03M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | lettersPlank.001
+Fra:1 Mem:139.10M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | alphabet
+Fra:1 Mem:139.44M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | blackBoard
+Fra:1 Mem:139.69M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox01.001
+Fra:1 Mem:139.84M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line03
+Fra:1 Mem:140.34M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line04
+Fra:1 Mem:140.27M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferBox065.001
+Fra:1 Mem:140.42M (Peak 141.87M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | focus
+Fra:1 Mem:145.50M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box25.001
+Fra:1 Mem:145.50M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.025
+Fra:1 Mem:145.94M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.024
+Fra:1 Mem:146.33M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | pipe
+Fra:1 Mem:146.51M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | hallWindow
+Fra:1 Mem:146.72M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.008
+Fra:1 Mem:147.28M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.009
+Fra:1 Mem:147.34M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.001
+Fra:1 Mem:147.42M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.010
+Fra:1 Mem:147.51M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ChamferCyl006.011
+Fra:1 Mem:147.66M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line263.002
+Fra:1 Mem:147.61M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line264.002
+Fra:1 Mem:147.72M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line265.002
+Fra:1 Mem:147.80M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.016
+Fra:1 Mem:147.89M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow
+Fra:1 Mem:148.13M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.002
+Fra:1 Mem:148.19M (Peak 148.30M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.004
+Fra:1 Mem:149.02M (Peak 149.02M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | woodWindow.005
+Fra:1 Mem:148.90M (Peak 149.02M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | pipe.001
+Fra:1 Mem:148.94M (Peak 149.02M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.005
+Fra:1 Mem:149.29M (Peak 149.29M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.006
+Fra:1 Mem:149.51M (Peak 149.51M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.007
+Fra:1 Mem:149.71M (Peak 149.71M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.008
+Fra:1 Mem:149.58M (Peak 149.71M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceiling_pipeHang
+Fra:1 Mem:149.78M (Peak 149.78M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceilingAirVent.005
+Fra:1 Mem:149.92M (Peak 149.92M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | worldMap
+Fra:1 Mem:150.24M (Peak 150.24M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | sol
+Fra:1 Mem:150.13M (Peak 150.24M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.018
+Fra:1 Mem:150.80M (Peak 150.80M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Rectangl16.002
+Fra:1 Mem:150.77M (Peak 150.80M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.012
+Fra:1 Mem:150.78M (Peak 150.80M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box280.002
+Fra:1 Mem:151.01M (Peak 151.01M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall
+Fra:1 Mem:151.42M (Peak 151.42M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | wall.009
+Fra:1 Mem:151.49M (Peak 151.49M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | blackBoard_upPart
+Fra:1 Mem:151.49M (Peak 151.49M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | corkboard
+Fra:1 Mem:151.65M (Peak 151.65M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.009
+Fra:1 Mem:151.74M (Peak 151.74M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.010
+Fra:1 Mem:152.32M (Peak 152.32M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.011
+Fra:1 Mem:152.45M (Peak 152.45M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.017
+Fra:1 Mem:152.68M (Peak 152.68M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box295.002
+Fra:1 Mem:152.64M (Peak 152.68M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.012
+Fra:1 Mem:152.70M (Peak 152.70M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box296.002
+Fra:1 Mem:152.70M (Peak 152.70M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box297.002
+Fra:1 Mem:152.60M (Peak 152.70M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.014
+Fra:1 Mem:152.64M (Peak 152.70M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.015
+Fra:1 Mem:153.01M (Peak 153.01M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | drawing.016
+Fra:1 Mem:153.12M (Peak 153.12M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | whitePages
+Fra:1 Mem:153.17M (Peak 153.17M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | paperClip.001
+Fra:1 Mem:153.22M (Peak 153.22M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | paperClip
+Fra:1 Mem:153.72M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | thumbtack.002
+Fra:1 Mem:153.10M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | thumbtack.003
+Fra:1 Mem:151.28M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | blackBoardLamp
+Fra:1 Mem:151.46M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | ceiling
+Fra:1 Mem:151.50M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | beams
+Fra:1 Mem:151.35M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box298.002
+Fra:1 Mem:151.43M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Box299.002
+Fra:1 Mem:151.44M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.024
+Fra:1 Mem:151.48M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.033
+Fra:1 Mem:151.72M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder813.000
+Fra:1 Mem:151.61M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder813.001
+Fra:1 Mem:151.89M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder813.003
+Fra:1 Mem:152.20M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line121.002
+Fra:1 Mem:152.23M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line122.002
+Fra:1 Mem:152.25M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line136.002
+Fra:1 Mem:152.27M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Line137.002
+Fra:1 Mem:152.29M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.003
+Fra:1 Mem:152.52M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Plane.004
+Fra:1 Mem:152.78M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Sphere123.003
+Fra:1 Mem:152.80M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.055
+Fra:1 Mem:152.80M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | venitianBlind.001
+Fra:1 Mem:152.80M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.018
+Fra:1 Mem:152.80M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.054
+Fra:1 Mem:152.81M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.053
+Fra:1 Mem:152.81M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.052
+Fra:1 Mem:152.81M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.051
+Fra:1 Mem:152.81M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.050
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.049
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.048
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.047
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.046
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.045
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.044
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.043
+Fra:1 Mem:152.82M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.042
+Fra:1 Mem:152.83M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.041
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.040
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.039
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.038
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.037
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.036
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.035
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.034
+Fra:1 Mem:152.84M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.033
+Fra:1 Mem:152.85M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.032
+Fra:1 Mem:152.85M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.031
+Fra:1 Mem:152.85M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.030
+Fra:1 Mem:152.85M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.029
+Fra:1 Mem:152.85M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.028
+Fra:1 Mem:152.86M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.027
+Fra:1 Mem:152.86M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.026
+Fra:1 Mem:152.86M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.025
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.024
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.023
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.022
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.021
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.020
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.019
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.018
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.017
+Fra:1 Mem:152.87M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.016
+Fra:1 Mem:152.88M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.015
+Fra:1 Mem:152.88M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.014
+Fra:1 Mem:152.88M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.007
+Fra:1 Mem:152.89M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.013
+Fra:1 Mem:152.89M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.012
+Fra:1 Mem:152.89M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.011
+Fra:1 Mem:152.89M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.010
+Fra:1 Mem:152.90M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.009
+Fra:1 Mem:152.90M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.008
+Fra:1 Mem:152.90M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.020
+Fra:1 Mem:152.92M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.011
+Fra:1 Mem:152.96M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.002
+Fra:1 Mem:153.63M (Peak 153.72M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.002
+Fra:1 Mem:153.78M (Peak 153.78M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.000
+Fra:1 Mem:153.84M (Peak 153.84M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.001
+Fra:1 Mem:153.88M (Peak 153.88M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.003
+Fra:1 Mem:153.87M (Peak 153.88M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.004
+Fra:1 Mem:153.87M (Peak 153.88M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder.005
+Fra:1 Mem:153.87M (Peak 153.88M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cube.021
+Fra:1 Mem:153.96M (Peak 153.96M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.003
+Fra:1 Mem:154.04M (Peak 154.04M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.002
+Fra:1 Mem:154.06M (Peak 154.06M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | BezierCurve.001
+Fra:1 Mem:154.07M (Peak 154.07M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Circle.006
+Fra:1 Mem:154.98M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder932.000
+Fra:1 Mem:154.99M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder935.000
+Fra:1 Mem:154.99M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder938.000
+Fra:1 Mem:155.03M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder939.000
+Fra:1 Mem:155.03M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Synchronizing object | Cylinder941.000
+Fra:1 Mem:155.07M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Initializing
+Fra:1 Mem:132.50M (Peak 155.08M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | _mainScene, interior | Updating Images | Loading checker
+Fra:1 Mem:123.51M (Peak 180.51M) | Time:00:00.26 | Mem:16.00M, Peak:16.00M | _mainScene, interior | Waiting for render to start
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.26 | Mem:16.00M, Peak:16.00M | _mainScene, interior | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.27 | Mem:16.00M, Peak:16.00M | _mainScene, interior | Updating Scene
+Fra:1 Mem:123.52M (Peak 180.51M) | Time:00:00.27 | Mem:16.00M, Peak:16.00M | _mainScene, interior | Updating Shaders
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.35 | Mem:16.28M, Peak:16.28M | _mainScene, interior | Updating Procedurals
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.35 | Mem:16.28M, Peak:16.28M | _mainScene, interior | Updating Background
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.35 | Mem:16.28M, Peak:16.28M | _mainScene, interior | Updating Camera
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.35 | Mem:16.28M, Peak:16.28M | _mainScene, interior | Updating Meshes Flags
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.35 | Mem:16.28M, Peak:16.28M | _mainScene, interior | Updating Objects
+Fra:1 Mem:123.90M (Peak 180.51M) | Time:00:00.35 | Mem:16.28M, Peak:16.28M | _mainScene, interior | Updating Objects | Copying Transformations to device
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.35 | Mem:16.48M, Peak:16.48M | _mainScene, interior | Updating Objects | Applying Static Transformations
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.35 | Mem:16.48M, Peak:16.48M | _mainScene, interior | Updating Particle Systems
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.35 | Mem:16.48M, Peak:16.48M | _mainScene, interior | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:124.10M (Peak 180.51M) | Time:00:00.35 | Mem:16.48M, Peak:16.48M | _mainScene, interior | Updating Meshes
+Fra:1 Mem:131.67M (Peak 180.51M) | Time:00:00.37 | Mem:16.48M, Peak:16.48M | _mainScene, interior | Updating Mesh | Computing attributes
+Fra:1 Mem:142.10M (Peak 180.51M) | Time:00:00.38 | Mem:16.49M, Peak:16.49M | _mainScene, interior | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.82M, Peak:26.82M | _mainScene, interior | Updating Geometry BVH Cylinder941.000 59/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.82M, Peak:26.82M | _mainScene, interior | Updating Geometry BVH Box318 1/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.84M, Peak:26.84M | _mainScene, interior | Updating Geometry BVH Box318 1/59 | Building BVH 0%
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.85M, Peak:26.85M | _mainScene, interior | Updating Geometry BVH Plane.009 2/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.85M, Peak:26.85M | _mainScene, interior | Updating Geometry BVH Line291 5/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.85M, Peak:26.85M | _mainScene, interior | Updating Geometry BVH Rectangle018 6/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.90M, Peak:26.90M | _mainScene, interior | Updating Geometry BVH Circle.003 7/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.90M, Peak:26.92M | _mainScene, interior | Updating Geometry BVH Cylinder.005 8/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.90M, Peak:26.92M | _mainScene, interior | Updating Geometry BVH Cylinder939.000 58/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.91M, Peak:26.92M | _mainScene, interior | Updating Geometry BVH ChamferCy1 9/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.94M, Peak:26.94M | _mainScene, interior | Updating Geometry BVH kolesa01_k.001 10/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:26.95M, Peak:26.95M | _mainScene, interior | Updating Geometry BVH Line18_Lin 11/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.03M, Peak:27.03M | _mainScene, interior | Updating Geometry BVH Mesh.715 12/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.58M, Peak:27.59M | _mainScene, interior | Updating Geometry BVH Cylinder936.000 56/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.60M, Peak:27.60M | _mainScene, interior | Updating Geometry BVH Line04 14/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.61M, Peak:27.61M | _mainScene, interior | Updating Geometry BVH Box18.002 15/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.66M, Peak:27.67M | _mainScene, interior | Updating Geometry BVH Cylinder933.000 55/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.67M, Peak:27.70M | _mainScene, interior | Updating Geometry BVH ChamferBox065.001 16/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:27.67M, Peak:27.70M | _mainScene, interior | Updating Geometry BVH Circle.010 54/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:28.08M, Peak:28.09M | _mainScene, interior | Updating Geometry BVH Line223 17/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:28.60M, Peak:28.60M | _mainScene, interior | Updating Geometry BVH Line06 18/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:28.95M, Peak:28.95M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.008 20/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:28.97M, Peak:28.97M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.009 21/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.09M, Peak:29.09M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.010 22/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.06M, Peak:29.09M | _mainScene, interior | Updating Geometry BVH ChamferCyl006.011 23/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.25M, Peak:29.26M | _mainScene, interior | Updating Geometry BVH Line263.002 24/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.31M, Peak:29.31M | _mainScene, interior | Updating Geometry BVH Line264.002 25/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.44M, Peak:29.48M | _mainScene, interior | Updating Geometry BVH Line265.002 26/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.59M, Peak:29.60M | _mainScene, interior | Updating Geometry BVH Plane.016 27/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:29.81M, Peak:29.81M | _mainScene, interior | Updating Geometry BVH Plane.018 28/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:30.26M, Peak:30.28M | _mainScene, interior | Updating Geometry BVH Rectangl16.002 29/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:30.80M, Peak:30.81M | _mainScene, interior | Updating Geometry BVH Box280.002 30/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:30.93M, Peak:30.93M | _mainScene, interior | Updating Geometry BVH Box295.002 31/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:30.99M, Peak:30.99M | _mainScene, interior | Updating Geometry BVH Box296.002 32/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.12M, Peak:31.12M | _mainScene, interior | Updating Geometry BVH Box297.002 33/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.03M, Peak:31.12M | _mainScene, interior | Updating Geometry BVH Box298.002 34/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.23M, Peak:31.23M | _mainScene, interior | Updating Geometry BVH Box299.002 35/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.18M, Peak:31.25M | _mainScene, interior | Updating Geometry BVH Cube.003 36/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.18M, Peak:31.25M | _mainScene, interior | Updating Geometry BVH Cube.024 37/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.45M, Peak:31.45M | _mainScene, interior | Updating Geometry BVH Mesh.001 38/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.45M, Peak:31.45M | _mainScene, interior | Updating Geometry BVH Mesh.003 39/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.75M, Peak:31.75M | _mainScene, interior | Updating Geometry BVH Mesh 40/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.42M, Peak:32.42M | _mainScene, interior | Updating Geometry BVH Line121.002 41/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.04M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Mesh.001 53/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.10M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Circle 52/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.22M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Mesh 51/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.27M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Line122.002 42/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.22M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Line136.002 43/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.84M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Cube.001 50/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.85M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Line137.002 44/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.89M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Cube.000 49/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.92M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Plane.002 48/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.94M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH chaise.boulon.002 47/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:31.96M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Plane.004 45/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.38 | Mem:32.07M, Peak:32.44M | _mainScene, interior | Updating Geometry BVH Plane.005 46/59 | Building BVH
+Fra:1 Mem:142.02M (Peak 180.51M) | Time:00:00.39 | Mem:32.61M, Peak:33.21M | _mainScene, interior | Updating Scene BVH | Building
+Fra:1 Mem:142.03M (Peak 180.51M) | Time:00:00.39 | Mem:32.61M, Peak:33.21M | _mainScene, interior | Updating Scene BVH | Building BVH
+Fra:1 Mem:142.03M (Peak 180.51M) | Time:00:00.45 | Mem:58.79M, Peak:71.24M | _mainScene, interior | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:142.03M (Peak 180.51M) | Time:00:00.45 | Mem:58.79M, Peak:71.24M | _mainScene, interior | Updating Mesh | Computing normals
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:58.79M, Peak:71.24M | _mainScene, interior | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.16M, Peak:77.16M | _mainScene, interior | Updating Objects Flags
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Primitive Offsets
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Images
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Images | Loading pencil_colorMask.png
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Images | Loading base_bluredMetal.png
+Fra:1 Mem:160.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Images | Loading zapBook.jpg
+Fra:1 Mem:179.40M (Peak 180.51M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Images | Loading base_leather.jpg
+Fra:1 Mem:180.77M (Peak 180.77M) | Time:00:00.46 | Mem:77.17M, Peak:77.17M | _mainScene, interior | Updating Images | Loading base_brownWood.jpg
+Fra:1 Mem:190.40M (Peak 190.40M) | Time:00:00.48 | Mem:78.17M, Peak:78.17M | _mainScene, interior | Updating Images | Loading base_bareMetal.png
+Fra:1 Mem:190.40M (Peak 190.40M) | Time:00:00.48 | Mem:79.54M, Peak:79.54M | _mainScene, interior | Updating Images | Loading base_scratch.jpg
+Fra:1 Mem:195.40M (Peak 195.40M) | Time:00:00.48 | Mem:81.54M, Peak:81.54M | _mainScene, interior | Updating Images | Loading ceilingAirVent_AO.png
+Fra:1 Mem:199.40M (Peak 199.40M) | Time:00:00.49 | Mem:84.30M, Peak:84.30M | _mainScene, interior | Updating Images | Loading pencil_brandMask.png
+Fra:1 Mem:201.40M (Peak 201.40M) | Time:00:00.49 | Mem:86.17M, Peak:86.17M | _mainScene, interior | Updating Images | Loading cork.jpg
+Fra:1 Mem:205.40M (Peak 205.40M) | Time:00:00.49 | Mem:87.17M, Peak:87.17M | _mainScene, interior | Updating Images | Loading base_wallPaint.jpg
+Fra:1 Mem:221.40M (Peak 221.40M) | Time:00:00.49 | Mem:88.17M, Peak:88.17M | _mainScene, interior | Updating Images | Loading childDrawing_04.jpg
+Fra:1 Mem:225.29M (Peak 225.29M) | Time:00:00.51 | Mem:92.17M, Peak:92.17M | _mainScene, interior | Updating Images | Loading childDrawing_03.jpg
+Fra:1 Mem:252.57M (Peak 252.57M) | Time:00:00.52 | Mem:96.17M, Peak:96.17M | _mainScene, interior | Updating Images | Loading childDrawing_06.jpg
+Fra:1 Mem:275.86M (Peak 275.86M) | Time:00:00.53 | Mem:100.06M, Peak:100.06M | _mainScene, interior | Updating Images | Loading childDrawing_08.png
+Fra:1 Mem:279.86M (Peak 279.86M) | Time:00:00.53 | Mem:104.06M, Peak:104.06M | _mainScene, interior | Updating Images | Loading europeMap.png
+Fra:1 Mem:283.86M (Peak 283.86M) | Time:00:00.53 | Mem:106.06M, Peak:106.06M | _mainScene, interior | Updating Images | Loading childDrawing_05.jpg
+Fra:1 Mem:297.60M (Peak 297.60M) | Time:00:00.54 | Mem:110.06M, Peak:110.06M | _mainScene, interior | Updating Images | Loading base_brightWood.png
+Fra:1 Mem:298.60M (Peak 298.60M) | Time:00:00.55 | Mem:111.06M, Peak:111.06M | _mainScene, interior | Updating Images | Loading pencil_color.png
+Fra:1 Mem:300.60M (Peak 300.60M) | Time:00:00.57 | Mem:113.06M, Peak:113.06M | _mainScene, interior | Updating Images | Loading childDrawing_07.png
+Fra:1 Mem:304.60M (Peak 304.60M) | Time:00:00.58 | Mem:129.06M, Peak:129.06M | _mainScene, interior | Updating Images | Loading childDrawing_01.jpg
+Fra:1 Mem:308.41M (Peak 308.41M) | Time:00:00.58 | Mem:145.06M, Peak:145.06M | _mainScene, interior | Updating Images | Loading base_darkWood.png
+Fra:1 Mem:311.16M (Peak 311.16M) | Time:00:00.58 | Mem:149.06M, Peak:149.06M | _mainScene, interior | Updating Images | Loading dustbin_wireframe.png
+Fra:1 Mem:319.16M (Peak 319.16M) | Time:00:00.62 | Mem:151.82M, Peak:151.82M | _mainScene, interior | Updating Images | Loading crinkledPaper_02.png
+Fra:1 Mem:323.16M (Peak 323.16M) | Time:00:00.62 | Mem:179.09M, Peak:179.09M | _mainScene, interior | Updating Images | Loading wallClock.png
+Fra:1 Mem:327.16M (Peak 327.16M) | Time:00:00.63 | Mem:183.09M, Peak:183.09M | _mainScene, interior | Updating Images | Loading radiator_AO.png
+Fra:1 Mem:331.16M (Peak 331.16M) | Time:00:00.63 | Mem:196.83M, Peak:196.83M | _mainScene, interior | Updating Images | Loading ceiling_AO.png
+Fra:1 Mem:347.16M (Peak 347.16M) | Time:00:00.63 | Mem:200.64M, Peak:200.64M | _mainScene, interior | Updating Images | Loading crinkledPaper_03.png
+Fra:1 Mem:351.16M (Peak 351.16M) | Time:00:00.64 | Mem:223.93M, Peak:223.93M | _mainScene, interior | Updating Images | Loading pencil_glossyMask.png
+Fra:1 Mem:353.16M (Peak 353.16M) | Time:00:00.65 | Mem:227.93M, Peak:227.93M | _mainScene, interior | Updating Images | Loading woodPlanks.jpg
+Fra:1 Mem:355.03M (Peak 355.03M) | Time:00:00.65 | Mem:229.80M, Peak:229.80M | _mainScene, interior | Updating Images | Loading base_woodFloor.jpg
+Fra:1 Mem:359.03M (Peak 359.03M) | Time:00:00.69 | Mem:231.80M, Peak:231.80M | _mainScene, interior | Updating Images | Loading blackBoard.png
+Fra:1 Mem:366.36M (Peak 366.36M) | Time:00:00.69 | Mem:235.80M, Peak:235.80M | _mainScene, interior | Updating Images | Loading crinkledPaper.png
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.78 | Mem:287.13M, Peak:287.13M | _mainScene, interior | Updating Camera Volume
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.78 | Mem:287.13M, Peak:287.13M | _mainScene, interior | Updating Lookup Tables
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.78 | Mem:287.21M, Peak:287.21M | _mainScene, interior | Updating Lights
+Fra:1 Mem:370.36M (Peak 370.36M) | Time:00:00.78 | Mem:287.21M, Peak:287.21M | _mainScene, interior | Updating Lights | Computing distribution
+Fra:1 Mem:371.59M (Peak 371.59M) | Time:00:00.78 | Mem:288.44M, Peak:288.44M | _mainScene, interior | Updating Integrator
+Fra:1 Mem:403.59M (Peak 403.59M) | Time:00:00.81 | Mem:320.44M, Peak:320.44M | _mainScene, interior | Updating Film
+Fra:1 Mem:403.59M (Peak 403.59M) | Time:00:00.81 | Mem:320.36M, Peak:320.44M | _mainScene, interior | Updating Lookup Tables
+Fra:1 Mem:403.59M (Peak 403.59M) | Time:00:00.81 | Mem:320.45M, Peak:320.45M | _mainScene, interior | Updating Baking
+Fra:1 Mem:403.59M (Peak 403.59M) | Time:00:00.81 | Mem:320.45M, Peak:320.45M | _mainScene, interior | Updating Device | Writing constant memory
+Fra:1 Mem:403.61M (Peak 403.61M) | Time:00:00.81 | Mem:320.45M, Peak:320.45M | _mainScene, interior | Sample 0/16777216
+Fra:1 Mem:735.87M (Peak 735.87M) | Time:00:05.73 | Remaining:00:25.07 | Mem:652.68M, Peak:652.68M | _mainScene, interior | Sample 1/16777216
+Fra:1 Mem:735.87M (Peak 735.87M) | Time:00:25.18 | Remaining:00:05.62 | Mem:652.68M, Peak:652.68M | _mainScene, interior | Sample 5/16777216
+Fra:1 Mem:735.87M (Peak 735.87M) | Time:00:30.36 | Remaining:00:00.44 | Mem:652.68M, Peak:652.68M | _mainScene, interior | Sample 6/16777216
+Fra:1 Mem:735.87M (Peak 735.87M) | Time:00:35.58 | Mem:652.68M, Peak:652.68M | _mainScene, interior | Sample 7/16777216
+Fra:1 Mem:1068.11M (Peak 1432.00M) | Time:00:35.98 | Mem:652.68M, Peak:652.68M | _mainScene, interior | Sample 0/16777216
+Fra:1 Mem:1068.11M (Peak 1432.00M) | Time:00:35.98 | Mem:652.68M, Peak:652.68M | _mainScene, interior | Finished
+Benchmark JSON Data: {"timestamp": "2026-11-04T21:06:03.724924+00:00", "blender_version": {"version": "4.2.0", "build_date": "2024-07-16", "build_time": "06:27:02", "build_commit_date": "2024-07-16", "build_commit_time": "06:20", "build_hash": "a51f293548ad"}, "system_info": {"bitness": "64bit", "machine": "x86_64", "system": "Linux", "dist_name": "Ubuntu", "dist_version": "24.04", "devices": [{"name": "AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx", "type": "CPU"}], "num_cpu_sockets": 1, "num_cpu_cores": 4, "num_cpu_threads": 8}, "device_info": {"device_type": "CPU", "compute_devices": [{"name": "AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx", "type": "CPU"}], "num_cpu_threads": 8}}
+
+Blender quit
+
+--- stderr ---
+I1104 21:05:27.404119 43121 device.cpp:36] CUEW initialization succeeded
+I1104 21:05:27.404245 43121 device.cpp:38] Found precompiled kernels
+I1104 21:05:27.715369 43121 device.cpp:63] HIPEW initialization failed: Error opening HIP dynamic library
+I1104 21:05:27.882275 43121 device_impl.cpp:63] Using AVX2 CPU kernels.
+I1104 21:05:27.882941 43121 device_impl.cpp:63] Using AVX2 CPU kernels.
+I1104 21:05:27.961809 43121 sync.cpp:297] Total time spent synchronizing data: 0.0782299
+I1104 21:05:27.970592 43121 colorspace.cpp:145] Colorspace sRGB is sRGB
+I1104 21:05:27.994721 43143 film.cpp:592] Effective scene passes:
+I1104 21:05:27.994756 43143 film.cpp:594] - type: combined, name: "Combined", mode: NOISY, is_written: True
+I1104 21:05:27.994783 43143 film.cpp:594] - type: emission, name: "Emit", mode: NOISY, is_written: True
+I1104 21:05:27.994801 43143 film.cpp:594] - type: ao, name: "AO", mode: NOISY, is_written: True
+I1104 21:05:27.994809 43143 film.cpp:594] - type: diffuse_direct, name: "DiffDir", mode: NOISY, is_written: True
+I1104 21:05:27.994822 43143 film.cpp:594] - type: diffuse_indirect, name: "DiffInd", mode: NOISY, is_written: True
+I1104 21:05:27.994839 43143 film.cpp:594] - type: glossy_direct, name: "GlossDir", mode: NOISY, is_written: True
+I1104 21:05:27.994848 43143 film.cpp:594] - type: glossy_indirect, name: "GlossInd", mode: NOISY, is_written: True
+I1104 21:05:27.994858 43143 film.cpp:594] - type: transmission_direct, name: "TransDir", mode: NOISY, is_written: True
+I1104 21:05:27.994867 43143 film.cpp:594] - type: transmission_indirect, name: "TransInd", mode: NOISY, is_written: True
+I1104 21:05:27.994875 43143 film.cpp:594] - type: normal, name: "Normal", mode: NOISY, is_written: True
+I1104 21:05:27.994887 43143 film.cpp:594] - type: diffuse_color, name: "DiffCol", mode: NOISY, is_written: True
+I1104 21:05:27.994897 43143 film.cpp:594] - type: glossy_color, name: "GlossCol", mode: NOISY, is_written: True
+I1104 21:05:27.994907 43143 film.cpp:594] - type: transmission_color, name: "TransCol", mode: NOISY, is_written: True
+I1104 21:05:27.994918 43143 film.cpp:594] - type: depth, name: "Depth", mode: NOISY, is_written: True
+I1104 21:05:27.994926 43143 film.cpp:594] - type: object_id, name: "IndexOB", mode: NOISY, is_written: True
+I1104 21:05:27.995253 43143 scene.cpp:589] Requested features:
+I1104 21:05:27.995266 43143 scene.cpp:590] Use BSDF True
+I1104 21:05:27.995276 43143 scene.cpp:591] Use Emission True
+I1104 21:05:27.995296 43143 scene.cpp:593] Use Volume False
+I1104 21:05:27.995306 43143 scene.cpp:594] Use Bump True
+I1104 21:05:27.995318 43143 scene.cpp:595] Use Voronoi False
+I1104 21:05:27.995327 43143 scene.cpp:597] Use Shader Raytrace False
+I1104 21:05:27.995335 43143 scene.cpp:599] Use MNEE False
+I1104 21:05:27.995347 43143 scene.cpp:600] Use Transparent True
+I1104 21:05:27.995355 43143 scene.cpp:602] Use Denoising False
+I1104 21:05:27.995362 43143 scene.cpp:603] Use Path Tracing True
+I1104 21:05:27.995373 43143 scene.cpp:605] Use Hair False
+I1104 21:05:27.995383 43143 scene.cpp:606] Use Pointclouds False
+I1104 21:05:27.995393 43143 scene.cpp:608] Use Object Motion False
+I1104 21:05:27.995401 43143 scene.cpp:610] Use Baking False
+I1104 21:05:27.995410 43143 scene.cpp:611] Use Subsurface False
+I1104 21:05:27.995421 43143 scene.cpp:612] Use Volume False
+I1104 21:05:27.995440 43143 scene.cpp:613] Use Patch Evaluation False
+I1104 21:05:27.995447 43143 scene.cpp:615] Use Shadow Catcher False
+I1104 21:05:27.995507 43143 svm.cpp:69] Total 91 shaders.
+I1104 21:05:28.004204 43141 colorspace.cpp:140] Colorspace Non-Color is no-op
+I1104 21:05:28.080003 43143 svm.cpp:145] Shader manager updated 91 shaders in 0.0845201 seconds.
+I1104 21:05:28.080410 43143 object.cpp:781] Total 854 objects.
+I1104 21:05:28.083149 43143 particles.cpp:106] Total 0 particle systems.
+I1104 21:05:28.083263 43143 geometry.cpp:719] Total 260 meshes.
+I1104 21:05:28.119210 43143 geometry_bvh.cpp:127] Using EMBREE layout.
+I1104 21:05:28.508442 43143 tables.cpp:39] Total 9 lookup tables.
+I1104 21:05:28.508510 43143 light.cpp:1425] Total 10 lights.
+I1104 21:05:28.508533 43143 light.cpp:1405] Number of lights sent to the device: 10
+I1104 21:05:28.508983 43143 light.cpp:339] Use light distribution with 80658 emitters.
+I1104 21:05:28.537505 43143 tables.cpp:39] Total 10 lookup tables.
+I1104 21:05:28.537608 43143 scene.cpp:354] System memory statistics after full device sync:
+  Usage: 339,826,220 (324.08M)
+  Peak: 339,915,308 (324.17M)
+I1104 21:05:33.460135 43143 path_trace.cpp:412] Rendered 1 samples in 4.85725 seconds (4.85725 seconds per sample), occupancy: 1
+I1104 21:05:52.907753 43143 path_trace.cpp:412] Rendered 4 samples in 19.4472 seconds (4.86179 seconds per sample), occupancy: 1
+I1104 21:05:58.090307 43143 path_trace.cpp:412] Rendered 1 samples in 5.18228 seconds (5.18228 seconds per sample), occupancy: 1
+I1104 21:06:03.307832 43143 path_trace.cpp:412] Rendered 1 samples in 5.2171 seconds (5.2171 seconds per sample), occupancy: 1
+I1104 21:06:03.710888 43143 session.cpp:174] Rendering in main loop is done in 35.1732 seconds.
+I1104 21:06:03.710925 43143 session.cpp:175] 
+Full path tracing report
+
+Path tracing on: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx (CPU) (8 threads) [CPU]
+
+Render Scheduler Summary
+
+Mode: Headless
+Resolution: 1920x1080
+
+Adaptive sampling:
+  Use: False
+
+Denoiser:
+  Use: False
+
+Time (in seconds):
+                                       Wall              Average
+          Path Tracing            34.704411             4.957773
+        Display Update             0.000009             0.000009
+
+  Total: 34.704420
+
+Rendered 7 samples in 35.173179 seconds
+Average time per sample: 5.024740 seconds
+I1104 21:06:03.711186 43121 session.cpp:479] Total render time: 35.829
+I1104 21:06:03.711227 43121 session.cpp:480] Render time (without synchronization): 35.1735

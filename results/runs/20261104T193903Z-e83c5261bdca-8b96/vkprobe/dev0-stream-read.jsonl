@@ -1,0 +1,1 @@
+{"mode":"stream","device":"AMD Radeon Vega 8 Graphics (RADV RAVEN)","device_type":"integrated","vendor_id":4098,"device_id":5597,"driver_version":104865800,"api":"1.4.318","timer":"gpu timestamps","pci":"0000:03:00.0","uuid":"00000000030000000000000000000000","op":"read","bytes":1073741824,"reps":20,"t_median_s":0.0342008,"t_min_s":0.03415136,"bytes_per_s":3.13952e+10}
