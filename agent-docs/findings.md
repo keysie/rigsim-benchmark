@@ -187,3 +187,6 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - MLC: the output ends after the hugepage notice, rc 22, also with the 200 MiB buffer. MLC has never run on an AMD CPU
   in the data (the only other AMD run had no MLC in its seed). Cause *unknown*: no hugepages, or Intel MLC refusing
   non-Intel CPUs.
+- MLC manual test on the Ryzen 5 2500U (user, 2026-11-04): with `echo 1000 > /proc/sys/vm/nr_hugepages` MLC runs, rc 0,
+  idle latency 134.1 ns (267.7 base clocks). Cause confirmed: missing hugepages. Built: the stick reserves 1000 per NUMA
+  node (leaving ≥ 2 GiB available) for MLC and restores the previous value (stick 0.13.10).
