@@ -98,3 +98,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — Logs read: iGPU has 3996 MB GPU memory (7B cannot fit); FA hung the GPU (reset), CPY lost its context
   afterwards; MLC stops after the hugepage notice on AMD. Plan proposed to the user.
 - **2026-11-04** — MLC hypothesis confirmed by the user's manual test (hugepages); built (0.13.10, 161 tests).
+- **2026-11-04** — User cleared 1 + 2; built (0.13.11, 162 tests). GPU memory taken from llama.cpp's own report, not vulkaninfo.

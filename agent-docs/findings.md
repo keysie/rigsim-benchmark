@@ -190,3 +190,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
 - MLC manual test on the Ryzen 5 2500U (user, 2026-11-04): with `echo 1000 > /proc/sys/vm/nr_hugepages` MLC runs, rc 0,
   idle latency 134.1 ns (267.7 base clocks). Cause confirmed: missing hugepages. Built: the stick reserves 1000 per NUMA
   node (leaving ≥ 2 GiB available) for MLC and restores the previous value (stick 0.13.10).
+- Built (stick 0.13.11): free GPU memory per Vulkan device from `test-backend-ops perf -o RIGSIM_NONE` ("Device memory: X MB
+  (Y MB free)", no test runs); a model needs size × 1.2 + 0.5 GiB of it. Planned source was vulkaninfo; llama.cpp's own
+  figure is used instead because it is what llama.cpp allocates against. Also fixed: run_llama's rc crashed on a skipped
+  model entry (no `rc` key).
