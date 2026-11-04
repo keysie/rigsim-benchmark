@@ -224,3 +224,14 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   not conflict as packages, so the swap flavour is installed, copied out and purged before the boot flavour.
 - The CUDA probe used to be compiled for sm_80+ only: Turing, Volta and Pascal could not run it even with a driver.
 - Existing 15 runs extract identical values with measurements VERSION 3 (checked 2026-10-31).
+
+## Coverage of what LLM engines depend on (2026-11-04; *inferred* estimate for the user, weights are judgment)
+
+Measured hardware functions: CPU GEMM fp32/fp64/int8 (1 core, all, thread ladder, 120 s sustained), RAM bandwidth by
+kernel × threads, latency by working set, MLC (latency, bandwidth, loaded latency, NUMA matrices); GPU GEMM fp32/fp16/int8
+(decode/prefill shapes), VRAM read/write/copy, launch cost incl. CUDA graphs, P2P per pair, PCIe h2d/d2h/bidir per card and
+all at once + topology; vkprobe, clpeak; 12 llama.cpp ops per backend; llama-bench pp512/tg128 on two small dense models.
+Estimated coverage of the factors that set throughput: vLLM-like (GPU-bound) ~50–60 %, Strata-like (MoE, experts on the
+CPU) ~60–70 %; engine-level validation (batching, long context, MoE, the engines themselves) ~15 %. Largest gaps: bf16/fp8/
+int4 GEMM on CUDA, vLLM's own attention kernels, small-message collectives (tensor parallel), small-transfer PCIe latency
+(expert paging), storage read speed, GPU power over time, concurrency.

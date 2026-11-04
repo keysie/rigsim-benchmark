@@ -117,3 +117,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — `sprint/low-memory` merged by the user; `main` merged into `sprint/old-gpus`: run format renumbered
   1.6 → 1.7 (low-memory took 1.6); the second NVIDIA phase and the fork containers now run under the memory limit
   per step. 171 tests pass.
+- **2026-11-04** — User asked how much of what LLM engines depend on the stick measures; estimate given and recorded in findings.
