@@ -41,8 +41,7 @@ Blender), stores results on the stick and powers off. Nothing is written to the 
 Data page: https://keysie.github.io/rigsim-benchmark/ . Like its sibling it is largely AI-written in chat sessions on the
 direction of one person (keysie); the data records everything that can influence a result so users can judge it.
 
-State (2026-11-04): main has stick **0.13.11**, run format **1.6**; this branch stick 0.14.0, format 1.7; **15 run folders from 12 distinct machines** (one machine
-has 4 runs), 13 attribution files, predictions for tags v0.1.0 (2 files), v0.2.0 (7), v0.3.0 (15).
+State (2026-11-04): main has stick **0.13.11**, run format **1.6**; this branch stick 0.14.0, format 1.7; **18 run folders from 14 distinct machines**, 16 attribution files, predictions for tags v0.1.0 (2), v0.2.0 (7), v0.3.0 (18).
 4. **Values → predictions.** Daily 03:17 UTC (`predictions.yml`): `tools/predict.py` finds rigsim's newest tag `vX.Y.Z`,
    and for each run without a file for that tag runs rigsim's `python3 -m app.predict --run … --measurements … --out …`
    from rigsim's `backend/`. Result: `predictions/<tag>/<run>.json` (never recomputed or removed; failures kept with
