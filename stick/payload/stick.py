@@ -1052,6 +1052,58 @@ def vulkan_integrated(summary: str) -> set[int]:
     return out
 
 
+GPU_LOST = ("ErrorDeviceLost", "device lost on")
+
+
+def device_lost(text: str) -> str:
+    """'' unless a GPU was lost (reset) during the command; then why, as the driver put it (run cfed, Vega 8)."""
+    if not any(s in text for s in GPU_LOST):
+        return ""
+    cases = sum(1 for l in text.splitlines() if " runs - " in l)
+    if "Not enough memory for command submission" in text:
+        why = "out of GPU memory, the GPU was reset"
+    elif "guilty of a hard recovery" in text:
+        why = "the GPU was reset while running this (a hang or the driver's job timeout)"
+    elif "innocent" in text:
+        why = "the GPU context was lost after a reset caused elsewhere"
+    else:
+        why = "the GPU was lost"
+    return why + (f"; {cases} case(s) measured before" if cases else "")
+
+
+def item_ok(v: dict) -> bool:
+    """A llama.cpp item that does not make its step fail: done, skipped with a reason, or ended by a limit of the
+    machine (memory limit, GPU reset) — recorded with the reason."""
+    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory") or v.get("device_lost"))
+
+
+VK_MEMORY = re.compile(r"Device memory:\s*(\d+) MB \((\d+) MB free\)")
+
+
+def vulkan_memory(tbo: Path, vi: int) -> int | None:
+    """Free memory of Vulkan device vi in MiB as llama.cpp sees it (test-backend-ops with an op that matches nothing:
+    it lists the device and runs no test). None if it cannot tell."""
+    if not tbo.exists():
+        return None
+    try:
+        r = run_cmd([str(tbo), "perf", "-o", "RIGSIM_NONE", "-b", "Vulkan0"], timeout=120,
+                    env=dict(os.environ, GGML_VK_VISIBLE_DEVICES=str(vi)))
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    m = VK_MEMORY.search((r.stdout or "") + (r.stderr or ""))
+    return int(m.group(2)) if m else None
+
+
+def model_fits_gpu(m: Path, free_mib: int | None) -> str:
+    """'' if the model fits the GPU's free memory (file size x 1.2 + 0.5 GiB for context and buffers), else why. On the
+    Vega 8 (3996 MB) Llama 2 7B Q4_0 (3.56 GiB) ran out of GPU memory and reset the GPU (run cfed)."""
+    if free_mib is None:
+        return ""
+    need = m.stat().st_size * 1.2 + 0.5 * GIB
+    return "" if need <= free_mib * (1 << 20) else \
+        f"needs about {need / GIB:.1f} GiB of GPU memory, the device has {free_mib / 1024:.1f} GiB free"
+
+
 def model_fits(m: Path) -> str:
     """'' if the model fits in the RAM available now (file size x 1.3 + 1.5 GiB), else the reason it is skipped. An
     integrated GPU's buffers are not charged to the step's cgroup, so they need this check before (run 05ea: Llama 2
@@ -1103,7 +1155,11 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
         if rc != 0 and rc != 127:
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
-        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra)
+        lost = device_lost(out) if rc != 0 else ""
+        if lost:
+            say(f"test-backend-ops {prefix} {key}: {lost}", log)
+        runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra,
+                                        **(dict(device_lost=lost) if lost else {}))
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
 
@@ -1129,7 +1185,9 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
             rc, out, err, oom = -9, "", f"timeout after {LLAMA_TIMEOUT_S} s", False
         (d / f"{key}.jsonl").write_text(scrub(out))
         (d / f"{key}.log").write_text(scrub(err))
-        runs[key] = dict(rc=rc, seconds=round(time.time() - t0), **(dict(out_of_memory=True) if oom else {}))
+        lost = device_lost(out + err) if rc != 0 else ""
+        runs[key] = dict(rc=rc, seconds=round(time.time() - t0), **(dict(out_of_memory=True) if oom else {}),
+                         **(dict(device_lost=lost) if lost else {}))
         say(f"llama {key}: rc={rc} ({time.time() - t0:.0f} s)", log)
 
     if nvidia and (seed / "cuda" / "llama-bench").exists():
@@ -1152,8 +1210,10 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
         tbo = seed / "vulkan" / "test-backend-ops"
         integrated = vulkan_integrated(summary)
         for vi, name in vulkan_devices(summary):
+            free = vulkan_memory(tbo, vi)
+            say(f"llama vulkan-dev{vi}: {free if free is not None else '?'} MiB GPU memory free", log)
             for m in models:
-                why = model_fits(m) if vi in integrated else ""
+                why = (model_fits(m) if vi in integrated else "") or model_fits_gpu(m, free)
                 if why:
                     runs[f"vulkan-dev{vi}-{m.stem}"] = dict(skipped=why)
                     say(f"llama vulkan-dev{vi}-{m.stem}: skipped ({why})", log)
@@ -1176,7 +1236,7 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
             one(f"cpu-{m.stem}", [str(vk), "-m", str(m), "-ngl", "0", *LLAMA_ARGS], env={"GGML_VK_VISIBLE_DEVICES": ""})
     if not runs:
         return dict(skipped="no usable llama.cpp backend")
-    return dict(rc=0 if all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+    return dict(rc=0 if all(item_ok(v) for v in runs.values()) else 1, runs=runs)
 
 
 # --- Vulkan probe: every GPU, every vendor (bandwidth, dispatch cost, vector FMA, matrix units; iGPU shared RAM) -----

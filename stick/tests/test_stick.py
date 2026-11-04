@@ -1524,3 +1524,25 @@ def test_hugepages_reserved_for_mlc_and_given_back(tmp_path, monkeypatch):
     _mem(tmp_path / "y" if (tmp_path / "y").mkdir() is None else None, monkeypatch, avail_gib=30)
     assert stick.reserve_hugepages(1000, nr, nodes)["requested"] == 2000     # per NUMA node
     assert "error" in stick.reserve_hugepages(1000, tmp_path / "missing", nodes)
+
+
+def test_gpu_memory_check_and_device_lost(tmp_path, monkeypatch):
+    """Run cfed (Vega 8, 3996 MB GPU memory): 7B Q4_0 ran out of GPU memory; FLASH_ATTN_EXT then reset the GPU."""
+    big, small = tmp_path / "7b.gguf", tmp_path / "tiny.gguf"
+    with open(big, "wb") as f: f.truncate(3825065984)
+    with open(small, "wb") as f: f.truncate(637 << 20)
+    assert "needs about 4.8 GiB of GPU memory, the device has 3.9 GiB free" == stick.model_fits_gpu(big, 3960)
+    assert stick.model_fits_gpu(small, 3960) == "" and stick.model_fits_gpu(big, None) == ""
+    class R: stdout, stderr = "Backend 1/2: Vulkan0\n  Device memory: 3996 MB (3960 MB free)\n", ""
+    tbo = tmp_path / "test-backend-ops"; tbo.write_text("")
+    seen = []
+    monkeypatch.setattr(stick, "run_cmd", lambda cmd, **kw: seen.append((cmd, kw.get("env", {}).get("GGML_VK_VISIBLE_DEVICES"))) or R())
+    assert stick.vulkan_memory(tbo, 1) == 3960 and seen[0][1] == "1" and "RIGSIM_NONE" in seen[0][0]
+    guilty = "  FLASH_ATTN_EXT(...): 8 runs - 1 us/run\n  FLASH_ATTN_EXT(...): 2 runs - 2 us/run\n" \
+             "radv/amdgpu: The CS has been cancelled because the context is lost. This context is guilty of a hard recovery.\n" \
+             "ggml_vulkan: device lost on Vulkan0\nwhat():  vk::Queue::submit: ErrorDeviceLost\n"
+    assert stick.device_lost(guilty) == "the GPU was reset while running this (a hang or the driver's job timeout); 2 case(s) measured before"
+    assert stick.device_lost("radv/amdgpu: Not enough memory for command submission.\nErrorDeviceLost").startswith("out of GPU memory")
+    assert "after a reset caused elsewhere" in stick.device_lost("This context is innocent.\nErrorDeviceLost")
+    assert stick.device_lost("Segmentation fault") == ""
+    assert stick.item_ok(dict(rc=-6, device_lost="x")) and stick.item_ok(dict(skipped="y")) and not stick.item_ok(dict(rc=-6))
