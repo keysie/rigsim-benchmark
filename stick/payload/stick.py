@@ -46,6 +46,39 @@ MLC_TIMEOUT_S = 15 * 60
 # it chose 1800 MiB, asked for 8 GB of hugepages and stopped (run 05ea).
 MLC_SMALL_GIB = 12
 MLC_SMALL_BUFFER_KIB = 200 * 1024
+# MLC wants 1000 hugepages (2 MiB) per NUMA node. On the Ryzen 5 2500U it stopped with rc 22 without them and ran with
+# them (manual test 2026-11-04, idle latency 134.1 ns); on the Intel machines it ran either way. The stick reserves them
+# for MLC (never more than leaves 2 GiB available) and gives them back afterwards.
+MLC_HUGEPAGES_PER_NODE = 1000
+HUGEPAGE = 2 << 20
+NR_HUGEPAGES = Path("/proc/sys/vm/nr_hugepages")
+NODES = Path("/sys/devices/system/node")
+
+
+def reserve_hugepages(per_node: int = MLC_HUGEPAGES_PER_NODE, nr: Path = NR_HUGEPAGES,
+                      nodes: Path = NODES) -> dict:
+    """Ask the kernel for hugepages; returns what was there before, what was asked for and what it gave."""
+    try:
+        before = int(nr.read_text().split()[0])
+    except (OSError, ValueError, IndexError):
+        return dict(error="hugepages not available")
+    n_nodes = max(1, len(list(nodes.glob("node[0-9]*"))))
+    room = (meminfo().get("MemAvailable", 0) - 2 * GIB) // HUGEPAGE
+    want = max(before, min(per_node * n_nodes, before + max(room, 0)))
+    try:
+        nr.write_text(str(want))
+        got = int(nr.read_text().split()[0])
+    except (OSError, ValueError, IndexError) as e:
+        return dict(before=before, requested=want, error=str(e))
+    return dict(before=before, requested=want, allocated=got)
+
+
+def release_hugepages(h: dict, nr: Path = NR_HUGEPAGES) -> None:
+    if "before" in h:
+        try:
+            nr.write_text(str(h["before"]))
+        except OSError:
+            pass
 LLAMA_ARGS = ["-p", "512", "-n", "128", "-r", "3", "-o", "jsonl"]
 LLAMA_TIMEOUT_S = 30 * 60
 # llama.cpp's own per-kernel timing (test-backend-ops perf): the engine's kernel factors at the bottom, llama-bench
@@ -972,17 +1005,22 @@ def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
     res = {}
     small = meminfo().get("MemTotal", 0) < MLC_SMALL_GIB * GIB
     buf = [f"-b{MLC_SMALL_BUFFER_KIB}"] if small else []
-    for k, (name, args) in enumerate(MLC_RUNS, 1):
-        STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")
-        t0 = time.time()
-        rc, out = sh([str(mlc), *args, *buf], timeout=MLC_TIMEOUT_S)
-        (d / f"{name}.txt").write_text(scrub(out))
-        res[name] = dict(rc=rc, seconds=round(time.time() - t0), values=parse_mlc(out))
-        say(f"mlc {name}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    huge = reserve_hugepages()
+    say(f"mlc: hugepages {huge}", log)
+    try:
+        for k, (name, args) in enumerate(MLC_RUNS, 1):
+            STATUS.set(f"{name} {k}/{len(MLC_RUNS)}")
+            t0 = time.time()
+            rc, out = sh([str(mlc), *args, *buf], timeout=MLC_TIMEOUT_S)
+            (d / f"{name}.txt").write_text(scrub(out))
+            res[name] = dict(rc=rc, seconds=round(time.time() - t0), values=parse_mlc(out))
+            say(f"mlc {name}: rc={rc} ({time.time() - t0:.0f} s)", log)
+    finally:
+        release_hugepages(huge)
     prefetch = "unable" in " ".join((d / f).read_text().lower() for f in ("idle_latency.txt",) if (d / f).exists())
     return dict(rc=0 if all(v["rc"] == 0 for v in res.values()) else 1, runs={k: dict(rc=v["rc"], seconds=v["seconds"])
                 for k, v in res.items()}, prefetchers_left_on=prefetch or bool(secure_boot()),
-                **(dict(buffer_kib=MLC_SMALL_BUFFER_KIB) if small else {}))
+                hugepages=huge, **(dict(buffer_kib=MLC_SMALL_BUFFER_KIB) if small else {}))
 
 
 # --- llama-bench: CUDA (in the CUDA image) and Vulkan (on the host, every vendor) -----------------------------------------

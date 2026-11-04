@@ -1448,6 +1448,8 @@ def test_mlc_gets_a_small_buffer_on_small_machines(tmp_path, monkeypatch):
     seen = []
     monkeypatch.setattr(stick, "sh", lambda cmd, timeout=120: seen.append(cmd) or (0, ""))
     monkeypatch.setattr(stick, "secure_boot", lambda: False)
+    monkeypatch.setattr(stick, "reserve_hugepages", lambda: dict(before=0, requested=1000, allocated=1000))
+    monkeypatch.setattr(stick, "release_hugepages", lambda h: None)
     r = stick.run_mlc(data, tmp_path / "run", tmp_path / "log")
     assert r["buffer_kib"] == 200 * 1024 and all("-b204800" in c for c in seen if str(mlc) in c[0])
     seen.clear(); _mem(tmp_path / "x", monkeypatch, total_gib=31.1) if (tmp_path / "x").mkdir() is None else None
@@ -1505,3 +1507,20 @@ def test_verify_hashes_holes_as_zeros_and_counts_what_is_read(tmp_path):
     assert verify.digest(str(dense), n, None, "") == verify.digest(str(sparse), n, None, "")
     assert verify.allocated(str(sparse), n) < n // 4                    # holes not counted (where the FS reports them)
     assert verify.main(["--file", str(dense), str(sparse)]) == 0
+
+
+def test_hugepages_reserved_for_mlc_and_given_back(tmp_path, monkeypatch):
+    """Ryzen 5 2500U: MLC stopped with rc 22 without hugepages and ran with 1000 of them (2026-11-04)."""
+    nr = tmp_path / "nr_hugepages"; nr.write_text("0\n")
+    nodes = tmp_path / "node"; (nodes / "node0").mkdir(parents=True)
+    _mem(tmp_path, monkeypatch, avail_gib=6.6)
+    h = stick.reserve_hugepages(1000, nr, nodes)
+    assert h == dict(before=0, requested=1000, allocated=1000) and nr.read_text() == "1000"
+    stick.release_hugepages(h, nr)
+    assert nr.read_text() == "0"
+    _mem(tmp_path / "x" if (tmp_path / "x").mkdir() is None else None, monkeypatch, avail_gib=2.5)
+    assert stick.reserve_hugepages(1000, nr, nodes)["requested"] == 256      # leaves 2 GiB available
+    (nodes / "node1").mkdir()
+    _mem(tmp_path / "y" if (tmp_path / "y").mkdir() is None else None, monkeypatch, avail_gib=30)
+    assert stick.reserve_hugepages(1000, nr, nodes)["requested"] == 2000     # per NUMA node
+    assert "error" in stick.reserve_hugepages(1000, tmp_path / "missing", nodes)
