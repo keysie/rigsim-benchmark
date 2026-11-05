@@ -80,6 +80,12 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — User cleared building the old-GPU design. Built on `sprint/old-gpus` (stick 0.14.0, format 1.5): module
   switch during the run, sm_60–75 CUDA builds, the qr0n and Kmic-68 forks pinned, validator and measurements for
   `nvidia-swap/` and `cuda+<fork>`. 151 tests pass; existing runs extract unchanged. Not run on hardware.
+- **2026-10-31** — New branch `ddr-timing-improvements` off `sprint/stick-data` (user-named; rule 7 now: the user's name,
+  else `sprint/<goal>`). Side-chat proposal on DRAM timings checked against runs and code: items 2 and 3 cheap and
+  useful (p95/p99 not with the current probe), item 1 blocked by lockdown on most runs, item 4 research, item 5's
+  premise wrong (rigsim already predicts too high; the fixed term is the error). Nothing built.
+- **2026-10-31** — User: keep the DDR assessment as recorded state only; the other branches come first (the stick-data
+  stick is running on hardware). Branch parked.
 - **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
   pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
 - **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
