@@ -7,15 +7,16 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Sprint `sprint/low-memory` — done, ready to merge (user, 2026-11-04).** Goal "the stick runs cleanly on small
-machines" reached on the 8 GB laptop (Ryzen 5 2500U, run `…-8b96`): no hang, every limit recorded with its reason;
-only MLC still fails there (hugepages, see open-points) — left as it is by the user's decision. PR #33.
+**Current sprint:** `sprint/engine-primitives` (from `main`, 2026-11-04) — goal: measure what LLM engines depend on and
+the stick does not cover yet: matrix throughput in bf16/fp8/fp4/int8/weight-only int4, small transfers (host ↔ GPU,
+GPU ↔ GPU, collectives, CPU core-to-core), storage read speed — for rigsim's hardware model and for engine bounds,
+Intel/AMD CPUs, NVIDIA/AMD/Intel GPUs. Status: **design proposed** (`design/engine-primitives.md`), nothing built.
 Other open branches: `sprint/old-gpus` (built, waits for hardware), `ddr-timing-improvements` (parked).
 
 **Next steps, in order**
-1. User merges PR #33 (stick 0.13.11, run format 1.6, closes #24, relates to #29).
-2. `sprint/old-gpus`: merge `main` in, renumber its run format 1.6 → 1.7, build, test on a mixed-GPU machine.
-3. Open stick items: open-points (MLC hugepages on long runs; C, F, G; SELFTEST copy; Blender oneAPI; CPU questions).
+1. User reviews `design/engine-primitives.md`; decisions: steps 1–4 in this sprint (5–6 next), raw read-only drive
+   measurement on by default with an opt-out.
+2. Then build step by step (each step its own commits, tests, smoke grid).
 
 **Recently solved** (newest first)
 - 2026-11-04 (this sprint, verified on the 8 GB laptop): memory limit per step (cgroup / --memory, OOM recorded as
@@ -106,6 +107,7 @@ bench/hw/         bench runner and toolkits (only home)
 agent-docs/       this folder (repository root, deliberately outside docs/, which Pages serves)
 results/          runs/<run>/ (CC BY 4.0), attribution/<run>.json, README.md, FORMAT.md (versioned format + changelog)
 predictions/      <rigsim tag>/<run>.json, README.md (contract)
+design/           design documents of sprints (engine-primitives.md)
 docs/             GitHub Pages site (legacy build from main:/docs): index.html, data.json (generated)
 tools/            contribute.sh, submission.py, validate.py, index.py, measurements.py, predict.py, import.sh
 tests/ stick/tests/   pytest

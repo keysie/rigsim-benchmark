@@ -101,3 +101,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — User cleared 1 + 2; built (0.13.11, 162 tests). GPU memory taken from llama.cpp's own report, not vulkaninfo.
 - **2026-11-04** — Laptop run with 0.13.11: only MLC fails — 750 of 1000 hugepages granted. Fix proposed.
 - **2026-11-04** — User: enough optimising — the MLC hugepage shortfall stays as it is (open point); prepare PR #33 for merge.
+- **2026-11-04** — New branch `sprint/engine-primitives` from `main` (user: work on gaps 2–4 of the coverage estimate,
+  think through which hardware details to sample, for the model and for engine bounds, all vendors). Design written:
+  `design/engine-primitives.md`. Nothing built.
