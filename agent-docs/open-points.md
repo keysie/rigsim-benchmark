@@ -40,7 +40,11 @@ Last revised: 2026-10-31.
 
 ## Medium
 
-7. **DDR timing improvements** [user, 2026-10-31, from a side chat; sprint `ddr-timing-improvements`; checked,
+7. **Older tests that mirror source text** [agent, 2026-11-04]: about 25 stick tests assert strings in build.sh,
+   flash.sh or stick.py. Keep the policy guards; turn the rest into behaviour tests — first flash.sh fresh/update/erase
+   on a loop device inside the boot workflow (root, QEMU job), then the status line, shutdown and runner listing.
+
+8. **DDR timing improvements** [user, 2026-10-31, from a side chat; sprint `ddr-timing-improvements`; checked,
    **parked** by the user until the other branches are done; proposed order when resumed: 2 + 3 + lockdown state, 1 as
    a spike, 4 parked, 5 as a rigsim topic]. Five items; assessment (measured = from the 15 runs): (1) programmed timings from controller registers —
    10 of 15 runs had Secure Boot on, where kernel lockdown (*inferred*: Ubuntu enables it with Secure Boot) blocks
@@ -58,43 +62,43 @@ Last revised: 2026-10-31.
    mesh machine) — a per-platform term in rigsim, not timings.
 
    **2026-11-04: items 2, 3 and the lockdown state built** in `sprint/engine-primitives`; left: 1 (spike), 4 (parked), 5 (rigsim).
-8. **Second-phase values of the new GPU questions** [agent, 2026-11-04]: after the NVIDIA module switch the stick also
+9. **Second-phase values of the new GPU questions** [agent, 2026-11-04]: after the NVIDIA module switch the stick also
    runs `gpu-gemm-shapes`, `pcie-xfer`, `gpu-p2p-xfer`, `gpu-overlap` into `nvidia-swap/q/`, but `measurements.py`
    extracts only llama-bench and gpu-vram from there (with gpuN continued). Extend the gemm/xfer/overlap extractors the same way.
 
-9. **Storage + GPU copy contention** [agent, 2026-11-04; design item 4.3]: drive reads while a chipset-attached GPU copies
+10. **Storage + GPU copy contention** [agent, 2026-11-04; design item 4.3]: drive reads while a chipset-attached GPU copies
    host→card — shows a shared chipset uplink. Needs fio and the CUDA probe at once (host fio + probe container).
 
-10. **MLC on long runs of small machines** [user decision 2026-11-04: left as it is]: an hour into the run the kernel
+11. **MLC on long runs of small machines** [user decision 2026-11-04: left as it is]: an hour into the run the kernel
    granted only 750 of 1000 hugepages on the 8 GB laptop and MLC stopped (rc 22). Options if revisited: drop caches +
    compact memory before the request and retry; reserve the hugepages at boot; skip MLC with the reason when short.
 
-11. **Stick: what is left after `sprint/stick-data`** [user plan of 2026-10-31; A, B, D, E and the UEFI boot are done and
+12. **Stick: what is left after `sprint/stick-data`** [user plan of 2026-10-31; A, B, D, E and the UEFI boot are done and
    verified on hardware, see journal]. (C) package energy: `energy_uj` reads −1 in the container — permissions, Secure
    Boot lockdown or sysfs masking, *unknown*; (F) run-completeness audit (expected vs present data per machine class) as
    a tool and on the data page; (G) an end-to-end test in a VM, if wanted; copy `seed/SELFTEST.json` into each run
    (additive format change). Propose first.
-12. **CPU questions, rest** [agent, 2026-10-31; ladder grid done]: (a) expose cpu-gemm, ladder and power-time as value keys
+13. **CPU questions, rest** [agent, 2026-10-31; ladder grid done]: (a) expose cpu-gemm, ladder and power-time as value keys
    (`measurements.py` VERSION bump); (b) per-thread rates or pinning so hybrid / SMT ladders are interpretable; (c) take
    the idle-start reading after a cool-down or record the starting state. Propose first.
 
-13. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
+14. **Value coverage in `tools/measurements.py`** [agent]: rigsim predicts only keys that were measured and supported;
    check the share of `unsupported` in `predictions/v0.3.0/` per key family and report which GPUs or CPUs are missing
    from rigsim's catalogue.
-14. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
+15. **Tests in CI** [agent]: CI runs `stick/tests` and `tests` only; there are no hardware-free tests of a full build or
    flash. Whether that is acceptable is a user decision.
 
 ## Low
 
-15. **Blender oneAPI** [agent, 2026-10-31]: Blender's own oneAPI device needs Intel's Level Zero runtime and GPU
+16. **Blender oneAPI** [agent, 2026-10-31]: Blender's own oneAPI device needs Intel's Level Zero runtime and GPU
    compute runtime in the system image (Blender runs there, not in the oneAPI image); today Blender finds no oneAPI
    device (run `…-9c93`). Adding them = more system image size; decide with the user.
 
-16. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
+17. **Blender**: runs by the official offline route with script version 3.1.1 (default); revisit when the script or scenes
    change [user: stick/README].
-17. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
+18. **llama.cpp release archives** are not used because they lack `test-backend-ops`; revisit if that changes [user:
     stick/README, decided 2026-10-29].
-18. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
+19. **Known stick limits** [user: stick/README]: no CUDA below Turing in the default image (use `NVIDIA_FLAVOUR=legacy`;
     Kepler and older not at all), MLC cannot switch prefetchers off under Secure Boot, ROCm only officially on some AMD
     generations, vkprobe's matrix GEMM is a plain kernel (lower bound), RAM timings as the BIOS set them are often
     invisible from Linux.

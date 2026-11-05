@@ -20,6 +20,7 @@ Goal: measure what LLM engines depend on (design `design/engine-primitives.md`),
   (stick probe overlay now sm_52, 60, 61, 70, 75, 80, 86, 89, 90, 100, 120), Pascal forks of llama.cpp (qr0n, Kmic-68).
 
 **Next steps, in order**
+0. Bug hunt done (2026-11-04, findings "Bug hunt"): six faults fixed, tests rework.
 1. User builds a stick from this branch (rootfs rebuilt: chroot-setup.sh changed — proprietary late-link, fio; fork
    builds; probe with cuBLASLt) and runs it: the 13700K + RTX 3080 covers most of it (hybrid CPU, NVMe, CUDA); fp8/fp4
    need Ada or newer; the module switch needs a Pascal card next to a newer one.

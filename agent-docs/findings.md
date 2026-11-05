@@ -253,3 +253,30 @@ int4 GEMM on CUDA, vLLM's own attention kernels, small-message collectives (tens
   the governor per CPU (13700K: powersave), not the frequency during the measurement.
 - rigsim's idle latency = CAS (SPD tAA) + fixed 75.35 ns; predictions v0.3.0: 13700K 76.9 vs measured 64.5 ns
   (fixed term only, no SPD), i7-9700 90.6 vs 58.1 ns (with CAS). The fixed term is too large for these desktop parts.
+
+## Bug hunt before the sprint's first build (2026-11-04; read from source, reproduced where possible)
+
+Flow (top down): inventory → questions (each under its memory limit) → named steps (mlc, storage, opencl, vkprobe,
+rocm, oneapi, llama-bench, blender) → NVIDIA module switch for undriven cards → status. Findings, all fixed:
+- **casper switched on the machine's swap partitions** (`casper-bottom/13swap`, read from casper 1.498: every
+  `/dev/[hsv]d*` partition with a swap signature gets `swapon`, no option to stop it). The stick could write to the
+  measured machine's disk, and memory measurements could swap. Removed from the initramfs; `swap_off()` at the start
+  switches off whatever is on and records `swap_was_on` (types only).
+- `drive_temp_c`: the NVMe controller name was derived by splitting on "n" (→ empty). Regex now.
+- The CPU toolkit's setup aborts on any failed build (`set -eu`): a broken `c2c` would have taken every CPU question
+  down. Its build failure is now contained.
+- cuBLASLt: a matmul refused at the first call exited the probe (rc 3) instead of being reported unsupported.
+- A failed NVIDIA module switch left the run `done` although cards stayed unmeasured; now `done with failures`.
+- `run_vendor`'s rc ignored recorded limits (`device_lost`) that `run_llama` already accepts.
+Checked and fine: the runner sets `CUDA_DEVICE_ORDER=PCI_BUS_ID`, so CUDA indices = nvidia-smi order = gpuN; the
+storage step cannot read the stick (mount check + USB/removable filter); phase 2 plans its questions for the cards it
+drives.
+
+Test suite: tests that only assert strings in the source were replaced where they were mine — the C probes (`c2c`,
+`chase`, `cgemm`) are now compiled and run by the tests (CI installs gcc, OpenBLAS, oneDNN, fio), fio runs read-only
+against a temp file, `run_vendor` runs against a pretend docker (oneDNN retry, switch-off, probe untouched, memory
+limit on the container), and one consistency test checks every question's command against its probe (mode and
+options). Removed as redundant: checks covered by the build's self-test or the QEMU boot test. Older tests that mirror
+source text remain: some are policy guards worth keeping (no DKMS, MLC never committed, nothing outside stick/ written,
+rootfs read through `rootfile`), others should become behaviour tests (flash.sh on a loop device in the boot workflow,
+status line / ticker, shutdown, runner item listing) — open point.

@@ -141,3 +141,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — `ddr-timing-improvements` folded in too; PRs #25 and #26 closed in favour of #36, branches deleted.
 - **2026-11-04** — DDR items built in this sprint: SPD status, lockdown mode, pinned latency probe with cache points and
   core type/clock; cpu-latency values (186 tests).
+- **2026-11-04** — Bug hunt before the first build (user): six faults fixed (casper swap the most serious); my source-mirroring
+  tests replaced by tests that run the probes, fio and run_vendor; 183 tests. Older mirror tests listed as an open point.
