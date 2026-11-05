@@ -33,7 +33,7 @@ OPENCL_TIMEOUT_S = 20 * 60
 CLPEAK_TESTS = ["--global-bandwidth", "--compute-sp", "--compute-hp", "--compute-integer", "--transfer-bandwidth",
                 "--kernel-latency"]
 SOFTWARE_DEVICES = re.compile(r"(?i)llvmpipe|softpipe|pthread|\bcpu\b|pocl")
-PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-shapes", "cpu-gemm-ladder", "cpu-power-time",
+PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-shapes", "cpu-gemm-ladder", "cpu-power-time", "cpu-c2c",
            "pcie-copy", "pcie-xfer", "gpu-p2p", "gpu-p2p-xfer", "gpu-vram", "gpu-gemm", "gpu-gemm-shapes", "gpu-launch",
            "gpu-overlap"]
 DRM = Path("/sys/class/drm")

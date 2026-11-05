@@ -132,7 +132,7 @@ def test_gemm_values_with_clock_isa_and_unsupported_left_out(tmp_path):
     assert b["conditions"]["pci"] == "0000:01:00.0" and not any("fp8" in k for k in got)
     a = got["cpu-gemm/bf16/512x4096x4096/t8"]
     assert abs(a["value"] - 635) < 1 and a["conditions"]["impl"] == "brg:avx512_core_amx"
-    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "6"
+    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "7"
 
 
 def test_transfer_sweep_and_overlap_values(tmp_path):
@@ -175,3 +175,21 @@ def test_storage_values(tmp_path):
     got = {m["key"]: m for m in M.extract(run)["measurements"]}
     assert got["storage/nvme0n1/seq-1m-qd32/rate"]["value"] == 6.8 and got["storage/nvme0n1/rand-4k-qd1/lat_p50"]["value"] == 62
     assert not any("rand-16m-qd4" in k for k in got) and got["storage/nvme0n1/seq-1m-qd32/rate"]["conditions"]["kind"] == "nvme"
+
+
+def test_core_to_core_and_barrier_values(tmp_path):
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    d = tmp_path / "r" / "q" / "cpu-c2c"; d.mkdir(parents=True)
+    rows = [dict(rc=0, params=dict(mode="pairs"), results=[
+                dict(mode="c2c", a=0, b=2, relation="same-l3", types="--", ns=40.0),
+                dict(mode="c2c", a=0, b=4, relation="same-l3", types="--", ns=44.0),
+                dict(mode="c2c", a=0, b=16, relation="other-l3", types="--", ns=82.0),
+                dict(mode="c2c", a=0, b=1, relation="smt", types="--", ns=9.0)]),
+            dict(rc=0, params=dict(mode="barrier"), results=[
+                dict(mode="barrier", kind="spin", placement="in-order", threads=16, iters=20000, ns=410.0)])]
+    (d / "results.jsonl").write_text("".join(js.dumps(r) + "\n" for r in rows))
+    got = {m["key"]: m for m in M.extract(tmp_path / "r")["measurements"]}
+    assert got["cpu-c2c/same-l3/--/latency"]["value"] == 42.0 and got["cpu-c2c/same-l3/--/latency"]["conditions"]["pairs"] == 2
+    assert got["cpu-c2c/other-l3/--/latency"]["value"] == 82.0 and got["cpu-barrier/spin/in-order/t16"]["value"] == 410.0

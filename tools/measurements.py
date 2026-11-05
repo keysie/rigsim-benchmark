@@ -14,6 +14,8 @@ gets a new key, an existing key never changes meaning:
   xfer/<gpu>/<dir>/<mem>/<size>/latency|rate        µs | GB/s       pcie-xfer: one copy + wait, queued copies
   xfer/<gpuA>-<gpuB>/d2d/peer|host/<size>/…         µs | GB/s       gpu-p2p-xfer: with / without peer access
   gpu-overlap/<gpu>/kernel_share|copy_share         ratio      each with the other running / alone
+  cpu-c2c/<relation>/<types>/latency                ns         one-way, median over the pairs of that kind
+  cpu-barrier/<kind>/<placement>/t<threads>         ns         one barrier (spin / futex)
   storage/<drive>/<job>/rate|iops|lat_p50|lat_p99   GB/s | IO/s | µs   read-only fio jobs (seq / rand, block, QD)
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
@@ -28,7 +30,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "6"                  # 2: ladder; 3: sycl_onednn; 4: gpu-gemm, cpu-gemm; 5: xfer, gpu-overlap; 6: storage.
+VERSION = "7"                  # 2: ladder; 3: sycl_onednn; 4: gemm; 5: xfer, overlap; 6: storage; 7: c2c, barrier.
 LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
@@ -289,6 +291,30 @@ def gpu_overlap(run: Path) -> list[dict]:
     return out
 
 
+def cpu_c2c(run: Path) -> list[dict]:
+    """cpu-c2c: core-to-core latency per relation (smt, same-l3, other-l3, other-package) and core types, and barriers."""
+    f = run / "q" / "cpu-c2c" / "results.jsonl"
+    pairs: dict[tuple[str, str], list[float]] = {}
+    out = []
+    for row in (_json_lines(f) if f.exists() else []):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        for r in row.get("results") or []:
+            if r.get("mode") == "c2c" and r.get("ns", -1) > 0:
+                pairs.setdefault((r.get("relation", ""), r.get("types", "")), []).append(r["ns"])
+            elif r.get("mode") == "barrier" and r.get("ns", -1) > 0:
+                out.append(dict(key=f"cpu-barrier/{r.get('kind')}/{r.get('placement')}/t{r.get('threads')}", value=r["ns"],
+                                unit="ns", spread=0.0, source="q/cpu-c2c/results.jsonl",
+                                conditions=dict(kind=r.get("kind"), placement=r.get("placement"), threads=r.get("threads"),
+                                                iters=r.get("iters"))))
+    for (rel, types), v in sorted(pairs.items()):
+        out.append(dict(key=f"cpu-c2c/{rel}/{types}/latency", value=statistics.median(v), unit="ns",
+                        spread=(max(v) - min(v)) / statistics.median(v) if len(v) > 1 else 0.0,
+                        source="q/cpu-c2c/results.jsonl", conditions=dict(relation=rel, types=types, pairs=len(v),
+                                                                           min_ns=min(v), max_ns=max(v))))
+    return out
+
+
 def storage(run: Path) -> list[dict]:
     """Read-only drive timings (format 1.7): per drive and fio job its rate, IOPS and latency."""
     try:
@@ -315,7 +341,7 @@ def storage(run: Path) -> list[dict]:
 def extract(run: Path) -> dict:
     return dict(version=VERSION, run=run.name,
                 measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run)
-                + xfer(run) + gpu_overlap(run) + storage(run))
+                + xfer(run) + gpu_overlap(run) + storage(run) + cpu_c2c(run))
 
 
 if __name__ == "__main__":

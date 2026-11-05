@@ -25,5 +25,6 @@ else
 fi
 gcc -O2 -o /usr/local/bin/chase src/chase.c
 gcc -O2 -fopenmp -o /usr/local/bin/cgemm src/cgemm.c -lopenblas -ldnnl
+gcc -O2 -o /usr/local/bin/c2c src/c2c.c -lpthread
 install -m 0755 src/cpuprobe /usr/local/bin/cpuprobe
 echo "cpu toolkit ready"

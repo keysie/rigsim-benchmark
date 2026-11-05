@@ -131,7 +131,8 @@ def test_overlay_only_adds_offline_setup_cpu_gemm_and_wider_cuda_archs():
     s = (HERE / "overlay" / "toolkits" / "cpu" / "setup.sh").read_text()
     assert "dpkg -i debs/*.deb" in s and "libopenblas-dev" in s and "cgemm.c -lopenblas" in s
     assert sorted(p.relative_to(HERE / "overlay") for p in (HERE / "overlay").rglob("*") if p.is_file()) == \
-        sorted([Path("toolkits/cpu/setup.sh"), Path("toolkits/cpu/src/cgemm.c"), Path("toolkits/cuda/setup.sh")])
+        sorted([Path("toolkits/cpu/setup.sh"), Path("toolkits/cpu/src/cgemm.c"), Path("toolkits/cpu/src/c2c.c"),
+                Path("toolkits/cuda/setup.sh")])
     cu = (HERE / "overlay" / "toolkits" / "cuda" / "setup.sh").read_text()
     for sm in ("sm_52", "sm_61", "sm_75", "sm_86", "sm_89", "sm_120"):
         assert sm in cu
@@ -1618,3 +1619,14 @@ def test_storage_jobs_are_read_only_and_skippable(tmp_path):
     assert stick.parse_fio("fio: note\n" + sample) == dict(bytes_per_s=6.8e9, iops=6485.0, lat_mean_us=4900.0,
                                                             lat_p50_us=4800.0, lat_p99_us=6000.0, ios=50000)
     assert "fio" in (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+
+
+def test_core_to_core_question_and_probe():
+    q = hwq.load_plan(str(HERE / "questions" / "cpu-c2c.toml"))
+    assert [i["params"]["mode"] for i in hwq.expand(q, False)] == ["pairs", "barrier"]
+    assert "cpu-c2c" in stick.PROFILE
+    src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "c2c.c").read_text()
+    for s in ("memory_order_acquire", "pthread_setaffinity_np", "cache/index3/id", "/sys/devices/cpu_atom/cpus",
+              "pthread_barrier_wait", "spread-l3", "p-cores"):
+        assert s in src, s
+    assert "src/c2c.c" in (HERE / "overlay" / "toolkits" / "cpu" / "setup.sh").read_text()
