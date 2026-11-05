@@ -18,7 +18,7 @@ apt-get install -y --no-install-recommends \
   "linux-image-$KFL" linux-firmware casper initramfs-tools \
   shim-signed grub-efi-amd64-signed grub-pc-bin grub-common \
   systemd-sysv sudo less nano rsync python3 python3-yaml kbd console-setup \
-  dmidecode lshw pciutils usbutils i2c-tools lm-sensors nvme-cli smartmontools util-linux hwloc numactl cpuid msr-tools \
+  dmidecode lshw pciutils usbutils i2c-tools lm-sensors nvme-cli smartmontools util-linux hwloc numactl cpuid msr-tools fio \
   docker.io containerd \
   ocl-icd-libopencl1 clinfo clpeak mesa-opencl-icd intel-opencl-icd
 # the extra modules (many GPU, USB and network drivers) for exactly the kernel the meta package pulled in; there is

@@ -132,7 +132,7 @@ def test_gemm_values_with_clock_isa_and_unsupported_left_out(tmp_path):
     assert b["conditions"]["pci"] == "0000:01:00.0" and not any("fp8" in k for k in got)
     a = got["cpu-gemm/bf16/512x4096x4096/t8"]
     assert abs(a["value"] - 635) < 1 and a["conditions"]["impl"] == "brg:avx512_core_amx"
-    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "5"
+    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "6"
 
 
 def test_transfer_sweep_and_overlap_values(tmp_path):
@@ -159,3 +159,19 @@ def test_transfer_sweep_and_overlap_values(tmp_path):
     assert got["xfer/gpu0/h2d/pinned/256MiB/rate"]["value"] == 25.0
     assert "xfer/gpu0-gpu1/d2d/host/1MiB/latency" in got
     assert got["gpu-overlap/gpu0/kernel_share"]["value"] == 0.95 and got["gpu-overlap/gpu0/copy_share"]["value"] == 0.96
+
+
+def test_storage_values(tmp_path):
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"; (run / "storage").mkdir(parents=True)
+    (run / "storage" / "drives.json").write_text(js.dumps([dict(drive="nvme0n1", kind="nvme", capacity_class_gb=1000,
+                                                                 link=dict(speed="16.0 GT/s PCIe", width="4"))]))
+    (run / "storage" / "results.json").write_text(js.dumps({
+        "nvme0n1-seq-1m-qd32": dict(rc=0, bytes_per_s=6.8e9, iops=6485, lat_p50_us=4900, lat_p99_us=6000, ios=50000),
+        "nvme0n1-rand-4k-qd1": dict(rc=0, bytes_per_s=6.0e7, iops=14650, lat_p50_us=62, lat_p99_us=90, ios=117000),
+        "nvme0n1-rand-16m-qd4": dict(rc=1, error="x")}))
+    got = {m["key"]: m for m in M.extract(run)["measurements"]}
+    assert got["storage/nvme0n1/seq-1m-qd32/rate"]["value"] == 6.8 and got["storage/nvme0n1/rand-4k-qd1/lat_p50"]["value"] == 62
+    assert not any("rand-16m-qd4" in k for k in got) and got["storage/nvme0n1/seq-1m-qd32/rate"]["conditions"]["kind"] == "nvme"

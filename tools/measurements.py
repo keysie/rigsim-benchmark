@@ -14,6 +14,7 @@ gets a new key, an existing key never changes meaning:
   xfer/<gpu>/<dir>/<mem>/<size>/latency|rate        µs | GB/s       pcie-xfer: one copy + wait, queued copies
   xfer/<gpuA>-<gpuB>/d2d/peer|host/<size>/…         µs | GB/s       gpu-p2p-xfer: with / without peer access
   gpu-overlap/<gpu>/kernel_share|copy_share         ratio      each with the other running / alone
+  storage/<drive>/<job>/rate|iops|lat_p50|lat_p99   GB/s | IO/s | µs   read-only fio jobs (seq / rand, block, QD)
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
@@ -27,7 +28,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "5"                  # 2: cpu-mem-ladder; 3: sycl_onednn; 4: gpu-gemm, cpu-gemm; 5: xfer, gpu-overlap.
+VERSION = "6"                  # 2: ladder; 3: sycl_onednn; 4: gpu-gemm, cpu-gemm; 5: xfer, gpu-overlap; 6: storage.
 LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
@@ -288,10 +289,33 @@ def gpu_overlap(run: Path) -> list[dict]:
     return out
 
 
+def storage(run: Path) -> list[dict]:
+    """Read-only drive timings (format 1.7): per drive and fio job its rate, IOPS and latency."""
+    try:
+        drives = {d["drive"]: d for d in json.loads((run / "storage" / "drives.json").read_text())}
+        res = json.loads((run / "storage" / "results.json").read_text())
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+    out = []
+    for key, r in sorted(res.items()):
+        drive, _, job = key.partition("-")
+        if r.get("rc") != 0 or drive not in drives:
+            continue
+        d = drives[drive]
+        c = dict(drive=drive, job=job, kind=d.get("kind"), capacity_class_gb=d.get("capacity_class_gb"),
+                 link=d.get("link"), ios=r.get("ios"))
+        for name, v, unit in (("rate", r.get("bytes_per_s", 0) / 1e9, "GB/s"), ("iops", r.get("iops", 0), "IO/s"),
+                              ("lat_p50", r.get("lat_p50_us", 0), "µs"), ("lat_p99", r.get("lat_p99_us", 0), "µs")):
+            if v:
+                out.append(dict(key=f"storage/{drive}/{job}/{name}", value=v, unit=unit, spread=0.0,
+                                source="storage/results.json", conditions=c))
+    return out
+
+
 def extract(run: Path) -> dict:
     return dict(version=VERSION, run=run.name,
                 measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run)
-                + xfer(run) + gpu_overlap(run))
+                + xfer(run) + gpu_overlap(run) + storage(run))
 
 
 if __name__ == "__main__":

@@ -1058,11 +1058,11 @@ def test_operator_can_skip_a_step(tmp_path, monkeypatch):
 def test_laptop_run_fixes(tmp_path):
     """A laptop without NVIDIA card (i7-7600U, HD 620): '16/15' steps, NVRM messages, CDI unit failures."""
     src = (HERE / "payload" / "stick.py").read_text()
-    assert "STATUS.n = 2 + len(qplan) + 7" in src
+    assert "STATUS.n = 2 + len(qplan) + 8" in src
     begins = src.count('STATUS.begin("inventory")') + src.count('STATUS.begin("docker")') + 1     # + the question loop
     assert begins == 3 and src.count("STATUS.begin(name, skippable=True)") == 1
     named = src.split('for name, step in (("mlc"', 1)[1].split("STATUS.begin(name", 1)[0]
-    assert named.count("lambda:") == 7                                       # the seven named steps counted
+    assert named.count("lambda:") == 8                                       # the eight named steps counted
     for vendor, cls, want in (("0x8086", "0x030000", False), ("0x10de", "0x030000", True), ("0x10de", "0x040300", False)):
         d = tmp_path / vendor / cls / "0000:01:00.0"; d.mkdir(parents=True)
         (d / "vendor").write_text(vendor + "\n"); (d / "class").write_text(cls + "\n")
@@ -1581,3 +1581,40 @@ def test_transfer_questions_and_probe_modes():
     assert 'mode == "xfer"' in sy and "malloc_host" in sy
     keys = [k for k, _ in stick.vendor_plan("rocm")]
     assert "xfer-bidir-pageable" in keys and "overlap" in keys and "overlap" not in [k for k, _ in stick.vendor_plan("oneapi")]
+
+
+def _blk(root, name, size_gb, model="Samsung SSD 980 PRO 1TB", removable="0", rot="0", devpath=None):
+    d = root / name; (d / "queue").mkdir(parents=True)
+    (d / "size").write_text(str(int(size_gb * 1e9 / 512))); (d / "removable").write_text(removable)
+    (d / "queue" / "rotational").write_text(rot); (d / "queue" / "logical_block_size").write_text("512")
+    target = root.parent / "devices" / (devpath or name); target.mkdir(parents=True)
+    (target / "model").write_text(model + "\n"); (target / "serial").write_text("S5GXNF0R123456\n")
+    (d / "device").symlink_to(target)
+
+
+def test_internal_drives_without_identifying_features(tmp_path):
+    root = tmp_path / "block"; root.mkdir()
+    _blk(root, "nvme0n1", 1000.2); _blk(root, "sda", 512.1, model="ST2000DM008\x01", rot="1", devpath="pci0/ata1/sda")
+    _blk(root, "sdb", 128, removable="1"); _blk(root, "sdc", 64, devpath="pci0/usb2/sdc"); _blk(root, "loop0", 100)
+    _blk(root, "nvme1n1", 4)                                                     # too small
+    d = stick.internal_drives({"sdb"}, root)
+    assert [x["drive"] for x in d] == ["nvme0n1", "sda"]
+    assert d[0] == dict(drive="nvme0n1", kind="nvme", capacity_class_gb=1000, rotational=False,
+                        model="Samsung SSD 980 PRO 1TB", logical_block=512)
+    assert d[1]["kind"] == "sata" and d[1]["rotational"] and d[1]["model"] == "ST2000DM008"
+    assert "serial" not in json.dumps(d) and "S5GXNF" not in json.dumps(d)
+    assert stick.capacity_class(960) == 1000 and stick.capacity_class(480) == 512
+
+
+def test_storage_jobs_are_read_only_and_skippable(tmp_path):
+    cmd = stick.fio_cmd("nvme0n1", "randread", "4k", 32, 8)
+    assert cmd[:2] == ["fio", "--readonly"] and "--direct=1" in cmd and "--filename=/dev/nvme0n1" in cmd
+    assert "--invalidate=1" in stick.fio_cmd("nvme0n1", "read", "1M", 8, 8, direct=False)
+    assert all(rw in ("read", "randread") for _, rw, _, _ in stick.STORAGE_JOBS)
+    assert stick.run_storage(tmp_path, tmp_path / "log", "quiet rigsim.nodisks splash")["skipped"].startswith("rigsim.nodisks")
+    assert stick.parse_fio("garbage") == {}
+    sample = json.dumps(dict(jobs=[dict(read=dict(bw_bytes=6.8e9, iops=6485.0, total_ios=50000, lat_ns=dict(mean=4.9e6),
+                                                   clat_ns=dict(percentile={"50.000000": 4.8e6, "99.000000": 6.0e6})))]))
+    assert stick.parse_fio("fio: note\n" + sample) == dict(bytes_per_s=6.8e9, iops=6485.0, lat_mean_us=4900.0,
+                                                            lat_p50_us=4800.0, lat_p99_us=6000.0, ios=50000)
+    assert "fio" in (HERE / "ubuntu" / "chroot-setup.sh").read_text()

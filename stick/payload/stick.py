@@ -995,6 +995,133 @@ def parse_mlc(text: str) -> dict:
     return out
 
 
+# --- storage read speed (design/engine-primitives.md, item 4) ----------------------------------------------------------
+# Read-only timings of the machine's internal drives with fio (--readonly refuses any write; O_DIRECT on the raw device).
+# User decision 2026-11-04: read access yes, as long as no content and no identifying feature of a drive ends up in the
+# report — so only timings and the drive's kind are kept (no serial, WWN/EUI, UUIDs, labels, partitions, filesystems,
+# firmware; capacity rounded); nothing read is written anywhere. `rigsim.nodisks` on the kernel command line skips it.
+SYS_BLOCK = Path("/sys/block")
+STORAGE_JOBS = [  # name, fio rw, block size, queue depth
+    ("seq-1m-qd1", "read", "1M", 1), ("seq-1m-qd8", "read", "1M", 8), ("seq-1m-qd32", "read", "1M", 32),
+    ("rand-4k-qd1", "randread", "4k", 1), ("rand-4k-qd32", "randread", "4k", 32), ("rand-4k-qd128", "randread", "4k", 128),
+    ("rand-128k-qd8", "randread", "128k", 8),
+    ("rand-4m-qd1", "randread", "4M", 1), ("rand-4m-qd4", "randread", "4M", 4),
+    ("rand-16m-qd1", "randread", "16M", 1), ("rand-16m-qd4", "randread", "16M", 4)]
+STORAGE_JOB_S = 8
+STORAGE_MAX_DRIVES = 4
+CAPACITY_CLASSES_GB = (16, 32, 64, 128, 256, 512, 1000, 2000, 4000, 8000, 16000, 32000)
+
+
+def capacity_class(gb: float) -> int:
+    """The nearest common drive size — a class, not the exact capacity (which could single out a drive)."""
+    return min(CAPACITY_CLASSES_GB, key=lambda c: abs(c - gb))
+
+
+def stick_disks(mounts: Path = Path("/proc/mounts")) -> set[str]:
+    """The disks the stick itself is on (data partition, boot medium): never measured."""
+    out = set()
+    for line in (mounts.read_text().splitlines() if mounts.exists() else []):
+        f = line.split()
+        if len(f) > 1 and f[0].startswith("/dev/") and f[1].startswith(("/mnt/rigsim", "/cdrom", "/run/live", "/isodevice")):
+            rc, parent = sh(["lsblk", "-no", "PKNAME", f[0]], timeout=10)
+            out.add(parent.strip() or Path(f[0]).name)
+    return out
+
+
+def internal_drives(exclude: set[str], sysblock: Path = SYS_BLOCK) -> list[dict]:
+    """Internal NVMe / SATA / SAS drives of at least 8 GB, without anything that identifies the drive."""
+    out = []
+    for d in sorted(sysblock.glob("*")):
+        name = d.name
+        if name.startswith(("loop", "ram", "zram", "sr", "dm-", "md", "fd", "nbd")) or name in exclude:
+            continue
+        dev = d / "device"
+        path = str(dev.resolve()) if dev.exists() else ""
+        if (_read(d / "removable") or "0") != "0" or "/usb" in path:
+            continue
+        sectors = int(_read(d / "size") or 0)
+        gb = sectors * 512 / 1e9
+        if gb < 8:
+            continue
+        kind = "nvme" if name.startswith("nvme") else ("sata" if "/ata" in path else "other")
+        info = dict(drive=name, kind=kind, capacity_class_gb=capacity_class(gb),
+                    rotational=(_read(d / "queue" / "rotational") or "0") == "1",
+                    model=re.sub(r"[^A-Za-z0-9 ._-]", "", _read(dev / "model") or "").strip(),
+                    logical_block=int(_read(d / "queue" / "logical_block_size") or 512))
+        if kind == "nvme":                                # the controller's PCIe link
+            pci = dev.resolve().parent if dev.exists() else None
+            for p in (dev / "device", pci):
+                if p and (p / "current_link_speed").exists():
+                    info["link"] = dict(speed=_read(p / "current_link_speed"), width=_read(p / "current_link_width"),
+                                        max_speed=_read(p / "max_link_speed"), max_width=_read(p / "max_link_width"))
+                    break
+        out.append(info)
+    return out[:STORAGE_MAX_DRIVES]
+
+
+def drive_temp_c(name: str) -> float | None:
+    """The drive's temperature from hwmon (nvme / drivetemp), read-only; None where there is none."""
+    for t in list(SYS_BLOCK.glob(f"{name}/device/hwmon*/temp1_input")) + \
+             list(Path("/sys/class/nvme").glob(f"{name.split('n')[0] if name.startswith('nvme') else name}/hwmon*/temp1_input")):
+        v = _read(t)
+        if v and v.lstrip("-").isdigit():
+            return int(v) / 1000
+    return None
+
+
+def parse_fio(out: str) -> dict:
+    """The numbers of one fio job (--output-format=json): read rate, IOPS, latency mean and percentiles."""
+    try:
+        j = json.loads(out[out.index("{"):])
+        r = j["jobs"][0]["read"]
+    except (ValueError, KeyError, IndexError):
+        return {}
+    clat = r.get("clat_ns", {}).get("percentile", {})
+    pct = lambda p: clat.get(f"{p:.6f}")
+    return dict(bytes_per_s=r.get("bw_bytes", 0), iops=r.get("iops", 0), lat_mean_us=r.get("lat_ns", {}).get("mean", 0) / 1e3,
+                lat_p50_us=(pct(50) or 0) / 1e3, lat_p99_us=(pct(99) or 0) / 1e3, ios=r.get("total_ios", 0))
+
+
+def fio_cmd(dev: str, rw: str, bs: str, qd: int, seconds: int, direct: bool = True) -> list[str]:
+    return ["fio", "--readonly", "--name=rigsim", f"--filename=/dev/{dev}", f"--rw={rw}", f"--bs={bs}",
+            f"--iodepth={qd}", "--ioengine=libaio", f"--direct={1 if direct else 0}", "--time_based",
+            f"--runtime={seconds}", "--norandommap", "--randrepeat=0", "--group_reporting", "--output-format=json"] + \
+           ([] if direct else ["--size=4G", "--invalidate=1"])
+
+
+def run_storage(rundir: Path, log: Path, cmdline: str) -> dict:
+    if "rigsim.nodisks" in cmdline.split():
+        return dict(skipped="rigsim.nodisks on the kernel command line")
+    if not shutil.which("fio"):
+        return dict(skipped="fio not in the system image")
+    drives = internal_drives(stick_disks())
+    if not drives:
+        return dict(skipped="no internal drive of 8 GB or more")
+    d = rundir / "storage"
+    d.mkdir(parents=True, exist_ok=True)
+    runs, rc_all = {}, 0
+    for info in drives:
+        dev = info["drive"]
+        info["temp_c_before"] = drive_temp_c(dev)
+        jobs = [(n, rw, bs, qd, True) for n, rw, bs, qd in STORAGE_JOBS] + [("seq-1m-buffered", "read", "1M", 8, False)]
+        for k, (n, rw, bs, qd, direct) in enumerate(jobs, 1):
+            STATUS.set(f"storage {dev} {n} {k}/{len(jobs)}")
+            if not direct:
+                sh(["sh", "-c", "sync; echo 3 > /proc/sys/vm/drop_caches"], timeout=60)
+            t0 = time.time()
+            rc, out = sh(fio_cmd(dev, rw, bs, qd, STORAGE_JOB_S, direct), timeout=STORAGE_JOB_S * 4 + 60)
+            res = parse_fio(out) if rc == 0 else {}
+            runs[f"{dev}-{n}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **res,
+                                      **({} if rc == 0 else dict(error=out.strip().splitlines()[-1][:200] if out.strip() else "")))
+            rc_all |= rc != 0
+        info["temp_c_after"] = drive_temp_c(dev)
+        say(f"storage {dev}: {info['kind']}, ~{info['capacity_class_gb']} GB, "
+            f"seq 1M QD32 {runs.get(f'{dev}-seq-1m-qd32', {}).get('bytes_per_s', 0) / 1e9:.2f} GB/s", log)
+    (d / "drives.json").write_text(json.dumps(drives, indent=1))
+    (d / "results.json").write_text(json.dumps(runs, indent=1))
+    return dict(rc=1 if rc_all else 0, drives=drives, runs=runs)
+
+
 def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
     mlc = data / "seed" / "tools" / "mlc" / "mlc"
     if not mlc.exists():
@@ -1881,7 +2008,7 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.6")
+FORMAT = dict(name="rigsim-stick-run", version="1.7")
 
 
 def runtime_versions() -> dict:
@@ -2025,7 +2152,7 @@ def main() -> int:
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
             qplan = list(plan(OPT / "questions", nvidia, why, nvidia_count() if nvidia else None))
-            STATUS.n = 2 + len(qplan) + 7        # inventory, docker, the questions, the seven steps below
+            STATUS.n = 2 + len(qplan) + 8        # inventory, docker, the questions, the eight steps below
             threading.Thread(target=operator_keys, daemon=True).start()
             for q, f, skip in qplan:
                 STATUS.begin(q, skippable=not skip)
@@ -2041,6 +2168,7 @@ def main() -> int:
                 run["questions"][q]["tools"] = tools_for(q, man)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
             for name, step in (("mlc", lambda: run_mlc(data, rundir, log)),
+                               ("storage", lambda: run_storage(rundir, log, cmdline)),
                                ("opencl", lambda: run_opencl(rundir, log)),
                                ("vkprobe", lambda: run_vulkan_probe(rundir, log)),
                                ("rocm", lambda: run_vendor("rocm", data, rundir, log)),
