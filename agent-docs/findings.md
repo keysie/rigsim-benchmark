@@ -280,3 +280,6 @@ options). Removed as redundant: checks covered by the build's self-test or the Q
 source text remain: some are policy guards worth keeping (no DKMS, MLC never committed, nothing outside stick/ written,
 rootfs read through `rootfile`), others should become behaviour tests (flash.sh on a loop device in the boot workflow,
 status line / ticker, shutdown, runner item listing) — open point.
+- Forks and sm_61 (2026-11-05, reproduced with nvcc 12.0): both pinned forks' flash-attention tile kernels for head size
+  256 need 0xc300–0xf900 bytes of static shared memory on sm_61 (48 KB limit) — sm_61 does not build; sm_60 does. The
+  forks run on P100 (sm_60) only; P40 / GTX 10 get upstream llama.cpp only.

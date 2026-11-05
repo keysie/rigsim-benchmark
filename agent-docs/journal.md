@@ -146,3 +146,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-05** — First build of the sprint failed in the rootfs: the proprietary NVIDIA modules link at install time and
   need objtool and scripts/module.lds from `linux-headers-<kernel>` (checked in the package). Headers now installed for
   the link and purged with it. Also: the user's build command had MLC_URL and BLENDER_LAUNCHER_URL swapped.
+- **2026-11-05** — Second build: the qr0n fork failed in `fattn-tile-instance-dkq256-dv256` (ptxas: 50–64 KB static shared
+  memory, 48 KB max). Reproduced here with nvcc 12.0 on the pinned commits: sm_60 builds, sm_61 fails, for both forks.
+  Forks now built for sm_60 only (P100); all 12 tile instances of qr0n compile for sm_60 here.
