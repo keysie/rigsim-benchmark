@@ -582,7 +582,7 @@ def collect_inventory(dst: Path, log: Path) -> dict:
                                 else MAC.sub("<mac>", out))
         if rc != 0:
             say(f"inventory: {name} rc={rc}", log)
-    spd_raw(dst)
+    raw = spd_raw(dst)
     (dst / "pcie.json").write_text(json.dumps(pcie_topology(names=lspci_names()), indent=1))
     (dst / "powercap.json").write_text(json.dumps(powercap(), indent=1))
     cpu = next(iter(re.findall(r"^model name\s*:\s*(.*)$", (dst / "cpuinfo.txt").read_text(), re.M)), "unknown")
@@ -596,7 +596,8 @@ def collect_inventory(dst: Path, log: Path) -> dict:
     mem_kb = int(next(iter(re.findall(r"MemTotal:\s*(\d+)", (dst / "meminfo.txt").read_text())), "0"))
     dimms = parse_dimms((dst / "dmidecode.txt").read_text())
     s = dict(cpu=cpu, board=board, bios=_dmi("bios_version"), gpus=gpu_list, ram_gib=round(mem_kb / 2**20, 1),
-             dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip())
+             dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip(),
+             spd=spd_status(dst, raw), lockdown=lockdown())
     (dst / "summary.json").write_text(json.dumps(s, indent=1))
     return s
 
@@ -715,6 +716,33 @@ def spd_raw(dst: Path, i2c: Path = Path("/sys/bus/i2c/devices")) -> list[str]:
                                 "\n".join(b[i:i + 16].hex(" ") for i in range(0, len(b), 16)) + "\n")
         out.append(name)
     return out
+
+
+def spd_status(dst: Path, raw: list[str], i2c: Path = Path("/sys/bus/i2c/devices"),
+               adapters: Path = Path("/sys/class/i2c-adapter")) -> dict:
+    """Whether the modules' SPD could be read, and if not what was there to read it with (DDR item 2 of 2026-10-31:
+    7 of 15 runs had "No EEPROM found", visible only in inventory/spd.txt)."""
+    txt = (dst / "spd.txt").read_text() if (dst / "spd.txt").exists() else ""
+    devs = sorted({(d / "driver").resolve().name for d in i2c.glob("*-00[5-9a-f]*") if (d / "driver").exists()}
+                  & set(SPD_SERIAL))
+    smbus = sorted({re.sub(r" at .*", "", _read(a / "name") or "") for a in adapters.glob("i2c-*")
+                    if "smbus" in (_read(a / "name") or "").lower()})
+    out = dict(spd_drivers=devs, smbus_adapters=smbus, raw_files=len(raw))
+    if "Decoding EEPROM" in txt:
+        return dict(out, status="decoded")
+    if raw:
+        return dict(out, status="raw", reason="decode-dimms decoded nothing; the raw SPD bytes are in inventory/spd-*.hex")
+    msg = next((l.strip() for l in txt.splitlines() if l.strip() and not l.startswith("#")), "no output")
+    why = [f"decode-dimms: {msg[:120]}", "SMBus adapters: " + (", ".join(smbus) or "none"),
+           "SPD devices bound: " + (", ".join(devs) or "none")]
+    return dict(out, status="unavailable", reason="; ".join(why))
+
+
+def lockdown(path: Path = Path("/sys/kernel/security/lockdown")) -> str:
+    """The kernel's lockdown mode ("none", "integrity", "confidentiality"), "" if the kernel has none: under lockdown
+    /dev/mem, PCI config writes and debugfs are refused (what reading memory-controller registers would need)."""
+    m = re.search(r"\[(\w+)\]", _read(path) or "")
+    return m.group(1) if m else ""
 
 
 def _dmi(k: str) -> str:

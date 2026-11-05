@@ -1751,3 +1751,30 @@ def test_fp8_fp4_through_cublaslt():
     assert "defined(__HIPCC__)" in src                  # the ROCm build reports the formats as unsupported
     for f in (HERE / "overlay" / "toolkits" / "cuda" / "setup.sh", HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "setup.sh"):
         assert "-lcublasLt" in f.read_text()
+
+
+# --- DDR items (folded into this sprint 2026-11-04): SPD status, lockdown, pinned latency probe ---------------------
+def test_spd_status_says_why(tmp_path):
+    inv = tmp_path / "inv"; inv.mkdir()
+    i2c = tmp_path / "i2c"; ad = tmp_path / "ad"; (ad / "i2c-0").mkdir(parents=True)
+    (ad / "i2c-0" / "name").write_text("SMBus I801 adapter at efa0\n")
+    (inv / "spd.txt").write_text("No EEPROM found, the kernel probably does not support your hardware.\n")
+    s = stick.spd_status(inv, [], i2c, ad)
+    assert s["status"] == "unavailable" and "No EEPROM found" in s["reason"] and "SMBus I801 adapter" in s["reason"]
+    assert "SPD devices bound: none" in s["reason"] and s["smbus_adapters"] == ["SMBus I801 adapter"]
+    assert stick.spd_status(inv, ["spd-0-0050.hex"], i2c, ad)["status"] == "raw"
+    (inv / "spd.txt").write_text("# decode-dimms\nDecoding EEPROM: /sys/bus/i2c/drivers/ee1004/0-0050\n")
+    assert stick.spd_status(inv, [], i2c, ad)["status"] == "decoded"
+
+
+def test_lockdown_mode(tmp_path):
+    f = tmp_path / "lockdown"; f.write_text("none [integrity] confidentiality\n")
+    assert stick.lockdown(f) == "integrity" and stick.lockdown(tmp_path / "missing") == ""
+
+
+def test_latency_probe_pinned_with_cache_points():
+    src = (HERE.parent / "bench" / "hw" / "toolkits" / "cpu" / "src" / "chase.c").read_text()
+    for t in ("sched_setaffinity", "core_type", "scaling_cur_freq", "cpuinfo_max_freq", "/sys/devices/cpu_atom/cpus"):
+        assert t in src, t
+    q = hwq.load_plan(str(HERE / "questions" / "cpu-mem-latency.toml"))
+    assert sorted({i["params"]["mib"] for i in hwq.expand(q, False)}) == [1, 16, 64, 1024, 4096]

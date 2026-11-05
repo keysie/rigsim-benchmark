@@ -18,6 +18,7 @@ gets a new key, an existing key never changes meaning:
   gpu-overlap/<gpu>/kernel_share|copy_share         ratio      each with the other running / alone
   cpu-c2c/<relation>/<types>/latency                ns         one-way, median over the pairs of that kind
   cpu-barrier/<kind>/<placement>/t<threads>         ns         one barrier (spin / futex)
+  cpu-latency/<MiB>MiB/<core type>                  ns         pointer chase, one pinned thread (P, E, - = not hybrid)
   storage/<drive>/<job>/rate|iops|lat_p50|lat_p99   GB/s | IO/s | µs   read-only fio jobs (seq / rand, block, QD)
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu, and
                                                                     cuda+<fork> for the Pascal forks (format 1.7)
@@ -33,7 +34,8 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "7"                  # 2: ladder; 3: sycl_onednn; 4: gemm; 5: xfer, overlap; 6: storage; 7: c2c, barrier;
+VERSION = "7"                  # 2: ladder; 3: sycl_onednn; 4: gemm; 5: xfer, overlap; 6: storage; 7: c2c, barrier,
+                               # cpu-latency;
                                # also 7: nvidia-swap cards, cuda+<fork> (the old-GPU sprint, merged into this one)
 LLAMA_FILE = re.compile(r"^(cuda(?:\+[a-z0-9]+)?-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
@@ -351,6 +353,28 @@ def cpu_c2c(run: Path) -> list[dict]:
     return out
 
 
+def cpu_latency(run: Path) -> list[dict]:
+    """cpu-mem-latency: ns per dependent load by working set, per core type (format 1.7: pinned, with its clock;
+    before 1.7: unpinned, core type "-")."""
+    f = run / "q" / "cpu-mem-latency" / "results.jsonl"
+    by: dict[tuple, dict] = {}
+    for row in (_json_lines(f) if f.exists() else []):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        for r in row.get("results") or []:
+            if r.get("mode") != "latency" or not r.get("ns_median"):
+                continue
+            e = by.setdefault((r.get("mib"), r.get("core_type", "-")), dict(v=[], mhz=[], cpu=r.get("cpu")))
+            e["v"].append(r["ns_median"])
+            if r.get("mhz_mean", -1) > 0:
+                e["mhz"].append(r["mhz_mean"])
+    return [dict(key=f"cpu-latency/{mib}MiB/{t}", value=statistics.median(e["v"]), unit="ns", spread=0.0,
+                 source="q/cpu-mem-latency/results.jsonl",
+                 conditions=dict(mib=mib, core_type=t, cpu=e["cpu"], repeats=len(e["v"]),
+                                 **({"mhz": statistics.median(e["mhz"])} if e["mhz"] else {})))
+            for (mib, t), e in sorted(by.items(), key=str)]
+
+
 def storage(run: Path) -> list[dict]:
     """Read-only drive timings (format 1.7): per drive and fio job its rate, IOPS and latency."""
     try:
@@ -377,7 +401,7 @@ def storage(run: Path) -> list[dict]:
 def extract(run: Path) -> dict:
     return dict(version=VERSION, run=run.name,
                 measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run)
-                + xfer(run) + gpu_overlap(run) + storage(run) + cpu_c2c(run))
+                + xfer(run) + gpu_overlap(run) + storage(run) + cpu_c2c(run) + cpu_latency(run))
 
 
 if __name__ == "__main__":

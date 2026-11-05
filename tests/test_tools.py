@@ -218,3 +218,18 @@ def test_core_to_core_and_barrier_values(tmp_path):
     got = {m["key"]: m for m in M.extract(tmp_path / "r")["measurements"]}
     assert got["cpu-c2c/same-l3/--/latency"]["value"] == 42.0 and got["cpu-c2c/same-l3/--/latency"]["conditions"]["pairs"] == 2
     assert got["cpu-c2c/other-l3/--/latency"]["value"] == 82.0 and got["cpu-barrier/spin/in-order/t16"]["value"] == 410.0
+
+
+def test_cpu_latency_values(tmp_path):
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    d = tmp_path / "r" / "q" / "cpu-mem-latency"; d.mkdir(parents=True)
+    rows = [dict(rc=0, params=dict(mib=1), results=[
+                dict(mode="latency", mib=1, ns_median=1.9, cpu=0, core_type="P", mhz_mean=5300, mhz_max=5400),
+                dict(mode="latency", mib=1, ns_median=3.1, cpu=16, core_type="E", mhz_mean=4200, mhz_max=4200)]),
+            dict(rc=0, params=dict(mib=1024), results=[dict(mode="latency", mib=1024, ns_median=48.7)])]  # before 1.7
+    (d / "results.jsonl").write_text("".join(js.dumps(r) + "\n" for r in rows))
+    got = {m["key"]: m for m in M.extract(tmp_path / "r")["measurements"]}
+    assert got["cpu-latency/1MiB/P"]["value"] == 1.9 and got["cpu-latency/1MiB/P"]["conditions"]["mhz"] == 5300
+    assert got["cpu-latency/1MiB/E"]["value"] == 3.1 and got["cpu-latency/1024MiB/-"]["value"] == 48.7
