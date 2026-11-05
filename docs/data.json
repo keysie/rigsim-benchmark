@@ -40805,7 +40805,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/cpu/cpu/tinyllama-1.1b-q4_0/tg128",
@@ -40815,7 +40820,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "llama.cpp cpu backend not modelled yet"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/pp512",
@@ -40840,7 +40850,12 @@
        "max_link": "x16 8.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (AMD Radeon Vega 8 Graphics (RADV RAVEN))"
+      }
+     ]
     },
     {
      "key": "llama-bench/vulkan/dev0/tinyllama-1.1b-q4_0/tg128",
@@ -40865,7 +40880,12 @@
        "max_link": "x16 8.0 GT/s PCIe"
       }
      ],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "Vulkan device not a catalogued GPU (AMD Radeon Vega 8 Graphics (RADV RAVEN))"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/1",
@@ -40875,7 +40895,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/2",
@@ -40885,7 +40910,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/4",
@@ -40895,7 +40925,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/8",
@@ -40905,7 +40940,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/16",
@@ -40915,7 +40955,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_avx/32",
@@ -40925,7 +40970,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/1",
@@ -40935,7 +40985,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/2",
@@ -40945,7 +41000,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/4",
@@ -40955,7 +41015,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/8",
@@ -40965,7 +41030,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/16",
@@ -40975,7 +41045,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/load_sse/32",
@@ -40985,7 +41060,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/1",
@@ -40995,7 +41075,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/2",
@@ -41005,7 +41090,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/4",
@@ -41015,7 +41105,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/8",
@@ -41025,7 +41120,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/16",
@@ -41035,7 +41135,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_avx/32",
@@ -41045,7 +41150,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "ordinary stores read each line first (write-allocate): needs a cache block in the graph"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/1",
@@ -41055,7 +41165,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/2",
@@ -41065,7 +41180,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/4",
@@ -41075,7 +41195,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/8",
@@ -41085,7 +41210,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/16",
@@ -41095,7 +41225,12 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     },
     {
      "key": "cpu-mem-ladder/store_mem_avx/32",
@@ -41105,10 +41240,19 @@
      "gpu": "",
      "pci": "",
      "pcie_path": [],
-     "predictions": []
+     "predictions": [
+      {
+       "tag": "v0.3.0",
+       "unsupported": "CPU not in rigsim's catalogue: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx"
+      }
+     ]
     }
    ],
-   "rigsim": {}
+   "rigsim": {
+    "tag": "v0.3.0",
+    "n": 0,
+    "median_abs_error": null
+   }
   }
  ]
 }
