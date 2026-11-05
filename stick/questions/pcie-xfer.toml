@@ -1,0 +1,21 @@
+question = "pcie-xfer"
+asks = "Host <-> card transfers by size, 4 KiB … 256 MiB in x4 steps, per card: the latency of one copy + wait and the rate of queued copies, host -> card, card -> host and both at once, from pinned and from pageable host memory (stick profile)."
+feeds = "Fixed cost and rate (alpha, beta) of each PCIe path and direction, the staging cost of pageable memory (hw/links.py); bounds for activation hand-offs, KV swapping and expert paging (design/engine-primitives.md, item 3)."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 1
+sample_ms = 100
+timeout_s = 300
+
+[grid]
+gpu = ["@all"]
+dir = ["h2d", "d2h", "bidir"]
+mem = ["pinned", "pageable"]
+
+[args]
+cmd = ["probe", "xfer", "--dir", "{dir}", "--mem", "{mem}", "--seconds", "0.2"]
+
+[smoke]
+grid = { dir = ["h2d"], mem = ["pinned"] }

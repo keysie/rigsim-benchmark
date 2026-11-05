@@ -6,6 +6,8 @@
 //   probe_sycl stream --op read|write|copy [--mib 1024] [--reps 20]
 //   probe_sycl launch [--count 2000]
 //   probe_sycl copy   --dir h2d|d2h [--mib 512] [--reps 10]
+//   probe_sycl xfer   --dir h2d|d2h [--mem pinned|pageable] [--min-kib 4] [--max-mib 256] [--seconds 0.2]
+//                     size sweep (x4 steps): latency of one copy + wait, and the rate of queued copies
 #include <sycl/sycl.hpp>
 #include <oneapi/mkl.hpp>
 
@@ -185,6 +187,42 @@ static int copy_mode(sycl::queue& q, int argc, char** argv) {
     return 0;
 }
 
+// ---- small transfers: latency and rate per size (design/engine-primitives.md, item 3) ---------------------------------
+static double quantile(std::vector<double> v, double qn) {
+    std::sort(v.begin(), v.end()); return v.empty() ? -1 : v[std::min(v.size() - 1, (size_t)(qn * v.size()))];
+}
+static int xfer_mode(sycl::queue& q, int argc, char** argv) {
+    std::string dir = arg(argc, argv, "--dir", "h2d"), mem = arg(argc, argv, "--mem", "pinned");
+    size_t lo = strtoull(arg(argc, argv, "--min-kib", "4").c_str(), nullptr, 10) << 10;
+    size_t hi = strtoull(arg(argc, argv, "--max-mib", "256").c_str(), nullptr, 10) << 20;
+    double budget = atof(arg(argc, argv, "--seconds", "0.2").c_str());
+    bool pinned = mem == "pinned";
+    char* h = pinned ? sycl::malloc_host<char>(hi, q) : (char*)malloc(hi);
+    char* d = sycl::malloc_device<char>(hi, q);
+    if (!h || !d) { fprintf(stderr, "alloc\n"); return 1; }
+    memset(h, 1, hi);
+    auto once = [&](size_t b) { return dir == "h2d" ? q.memcpy(d, h, b) : q.memcpy(h, d, b); };
+    for (size_t b = lo; b <= hi; b *= 4) {
+        once(b).wait();
+        std::vector<double> lat;
+        auto t_end = clk::now() + std::chrono::duration<double>(budget / 2);
+        while ((clk::now() < t_end || lat.size() < 5) && lat.size() < 20000) {
+            auto t0 = clk::now(); once(b).wait(); lat.push_back(secs(t0));
+        }
+        long copies = 0; auto t0 = clk::now(); double el = 0;
+        do { for (int i = 0; i < 8; ++i) once(b); q.wait(); copies += 8; el = secs(t0); } while (el < budget / 2);
+        head(q, "xfer");
+        printf(",\"dir\":\"%s\",\"mem\":\"%s\",\"bytes\":%zu,\"latency_s\":%.6g,\"latency_p10_s\":%.6g,"
+               "\"latency_p90_s\":%.6g,\"latency_samples\":%zu,\"copies\":%ld,\"rate_bytes_per_s\":%.6g}\n",
+               dir.c_str(), mem.c_str(), b, quantile(lat, 0.5), quantile(lat, 0.1), quantile(lat, 0.9), lat.size(), copies,
+               (double)b * copies / el);
+        fflush(stdout);
+    }
+    if (pinned) sycl::free(h, q); else free(h);
+    sycl::free(d, q);
+    return 0;
+}
+
 int main(int argc, char** argv) {
     if (argc < 2) { fprintf(stderr, "usage: probe_sycl info|gemm|stream|launch|copy ...\n"); return 1; }
     std::string mode = argv[1];
@@ -208,6 +246,7 @@ int main(int argc, char** argv) {
         if (mode == "stream") return stream_mode(q, argc, argv);
         if (mode == "launch") return launch_mode(q, argc, argv);
         if (mode == "copy") return copy_mode(q, argc, argv);
+        if (mode == "xfer") return xfer_mode(q, argc, argv);
     } catch (const std::exception& e) {
         printf("{\"mode\":\"%s\",\"error\":\"%.200s\"}\n", mode.c_str(), e.what());
         return 2;

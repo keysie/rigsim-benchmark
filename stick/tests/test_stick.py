@@ -1566,3 +1566,18 @@ def test_cpu_gemm_probe_knows_bf16_fp16_and_shapes():
     src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
     assert "--shape" in src and "dnnl_matmul_primitive_desc_create" in src and '!strncmp(info, "ref", 3)' in src
     assert "dnnl_format_tag_any" in src and "unsupported" in src
+
+
+def test_transfer_questions_and_probe_modes():
+    x = hwq.load_plan(str(HERE / "questions" / "pcie-xfer.toml"))
+    assert len(hwq.expand(x, False, [dict(name="gpu0", index=0)])) == 6 and len(hwq.expand(x, True, [dict(name="gpu0", index=0)])) == 1
+    p = hwq.load_plan(str(HERE / "questions" / "gpu-p2p-xfer.toml"))
+    assert stick.question_min_gpus(HERE / "questions" / "gpu-p2p-xfer.toml") == 2
+    for q in ("pcie-xfer", "gpu-p2p-xfer", "gpu-overlap"):
+        assert q in stick.PROFILE
+    src = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "src" / "probe.cu").read_text()
+    assert 'mode == "xfer"' in src and 'mode == "overlap"' in src and "cudaDeviceDisablePeerAccess" in src
+    sy = (HERE / "src" / "syclprobe" / "probe_sycl.cpp").read_text()
+    assert 'mode == "xfer"' in sy and "malloc_host" in sy
+    keys = [k for k, _ in stick.vendor_plan("rocm")]
+    assert "xfer-bidir-pageable" in keys and "overlap" in keys and "overlap" not in [k for k, _ in stick.vendor_plan("oneapi")]

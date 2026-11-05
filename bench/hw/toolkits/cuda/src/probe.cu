@@ -5,6 +5,9 @@
 //   probe copy   --dir h2d|d2h|bidir|d2d [--mib 512] [--reps 10]   every visible card at once (one thread each)
 //   probe info                      every visible device: name, PCI bus, units, clocks, memory
 //   probe launch [--count 2000]   kernel launch cost: back-to-back, launch + sync, replayed from a CUDA graph
+//   probe xfer   --dir h2d|d2h|bidir|d2d [--mem pinned|pageable] [--peer on|off] [--min-kib 4] [--max-mib 256]
+//                [--seconds 0.2]   size sweep (x4 steps): latency of one copy + sync, and the rate of queued copies
+//   probe overlap [--mib 256] [--seconds 2]   a GEMM alone, a host->card copy stream alone, both at once
 // Inputs are random (power depends on the data: zeros would draw less and run at a higher clock).
 #include <cublas_v2.h>
 #include <cuda_bf16.h>
@@ -367,6 +370,113 @@ static int launch_mode(int argc, char** argv) {
     return 0;
 }
 
+// ---- small transfers: latency and rate per size (design/engine-primitives.md, item 3) ---------------------------------
+static double wall() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
+static double quantile(std::vector<double> v, double q) {
+    std::sort(v.begin(), v.end()); return v.empty() ? -1 : v[std::min(v.size() - 1, (size_t)(q * v.size()))];
+}
+
+// One sweep: for every size, the latency of one transfer + wait, then the rate of queued transfers.
+template <typename Issue, typename Wait>
+static void sweep(const char* dir, const char* mem, int src, int dst, bool peer, size_t lo, size_t hi, double budget,
+                  double factor, Issue issue, Wait wait) {
+    for (size_t b = lo; b <= hi; b *= 4) {
+        issue(b); wait();                              // warm-up
+        std::vector<double> lat;                       // one at a time: what one dependent transfer costs
+        double t_end = wall() + budget / 2;
+        while ((wall() < t_end || lat.size() < 5) && lat.size() < 20000) {
+            double t0 = wall(); issue(b); wait(); lat.push_back(wall() - t0);
+        }
+        long copies = 0; double t0 = wall(), el = 0;   // queued, one wait per batch of 8: the rate
+        do { for (int i = 0; i < 8; ++i) issue(b); wait(); copies += 8; el = wall() - t0; } while (el < budget / 2);
+        printf("{\"mode\":\"xfer\",\"dir\":\"%s\",\"mem\":\"%s\",\"src\":%d,\"dst\":%d,\"peer_access\":%s,"
+               "\"bytes\":%zu,\"latency_s\":%.6g,\"latency_p10_s\":%.6g,\"latency_p90_s\":%.6g,\"latency_samples\":%zu,"
+               "\"copies\":%ld,\"rate_bytes_per_s\":%.6g}\n", dir, mem, src, dst, peer ? "true" : "false", b,
+               quantile(lat, 0.5), quantile(lat, 0.1), quantile(lat, 0.9), lat.size(), copies, (double)b * copies * factor / el);
+        fflush(stdout);
+    }
+}
+
+static int xfer_mode(int argc, char** argv) {
+    std::string dir = arg(argc, argv, "--dir", "h2d"), mem = arg(argc, argv, "--mem", "pinned");
+    bool want_peer = arg(argc, argv, "--peer", "on") == "on";
+    size_t lo = strtoull(arg(argc, argv, "--min-kib", "4").c_str(), nullptr, 10) << 10;
+    size_t hi = strtoull(arg(argc, argv, "--max-mib", "256").c_str(), nullptr, 10) << 20;
+    double budget = atof(arg(argc, argv, "--seconds", "0.2").c_str());
+    int n; CK(cudaGetDeviceCount(&n));
+    cudaStream_t s1, s2;
+    if (dir == "d2d") {                                // card i -> card i+1 for every visible pair, as `copy`
+        if (n < 2) { fprintf(stderr, "d2d needs two visible cards\n"); return 1; }
+        for (int a = 0; a + 1 < n; ++a) {
+            int b = a + 1, can = 0;
+            CK(cudaDeviceCanAccessPeer(&can, a, b));
+            bool peer = want_peer && can;
+            void *x, *y;
+            CK(cudaSetDevice(b)); CK(cudaMalloc(&y, hi));
+            if (peer) cudaDeviceEnablePeerAccess(a, 0);
+            CK(cudaSetDevice(a)); CK(cudaMalloc(&x, hi));
+            if (peer) cudaDeviceEnablePeerAccess(b, 0);
+            else cudaDeviceDisablePeerAccess(b);       // off: the copy goes through host memory
+            cudaGetLastError();
+            CK(cudaStreamCreateWithFlags(&s1, cudaStreamNonBlocking));
+            sweep("d2d", "device", a, b, peer, lo, hi, budget, 1.0,
+                  [&](size_t z) { CK(cudaMemcpyPeerAsync(y, b, x, a, z, s1)); },
+                  [&] { CK(cudaStreamSynchronize(s1)); });
+            CK(cudaStreamDestroy(s1)); cudaFree(x); CK(cudaSetDevice(b)); cudaFree(y);
+        }
+        return 0;
+    }
+    bool pinned = mem == "pinned", bidir = dir == "bidir";
+    CK(cudaSetDevice(0));
+    void *h1, *h2, *d1, *d2;
+    CK(cudaMalloc(&d1, hi)); CK(cudaMalloc(&d2, hi));
+    if (pinned) { CK(cudaHostAlloc(&h1, hi, cudaHostAllocDefault)); CK(cudaHostAlloc(&h2, hi, cudaHostAllocDefault)); }
+    else { h1 = malloc(hi); h2 = malloc(hi); if (!h1 || !h2) { fprintf(stderr, "alloc\n"); return 1; } }
+    memset(h1, 1, hi); memset(h2, 2, hi);
+    CK(cudaStreamCreateWithFlags(&s1, cudaStreamNonBlocking)); CK(cudaStreamCreateWithFlags(&s2, cudaStreamNonBlocking));
+    sweep(dir.c_str(), mem.c_str(), -1, 0, false, lo, hi, budget, bidir ? 2.0 : 1.0,
+          [&](size_t b) {
+              if (dir == "h2d" || bidir) CK(cudaMemcpyAsync(d1, h1, b, cudaMemcpyHostToDevice, s1));
+              if (dir == "d2h" || bidir) CK(cudaMemcpyAsync(h2, d2, b, cudaMemcpyDeviceToHost, s2));
+          },
+          [&] { CK(cudaStreamSynchronize(s1)); CK(cudaStreamSynchronize(s2)); });
+    return 0;
+}
+
+// Does a copy run beside a kernel at full speed (copy engines), and what does it cost the kernel? An fp16 GEMM on one
+// stream, 256 MiB host->card copies (pinned) on another: each alone, then both at once.
+static int overlap_mode(int argc, char** argv) {
+    size_t bytes = strtoull(arg(argc, argv, "--mib", "256").c_str(), nullptr, 10) << 20;
+    double secs = atof(arg(argc, argv, "--seconds", "2").c_str());
+    Gemm g(prec_by_name("fp16"), 4096, 4096, 4096);
+    cudaStream_t sk, sc;
+    CK(cudaStreamCreateWithFlags(&sk, cudaStreamNonBlocking)); CK(cudaStreamCreateWithFlags(&sc, cudaStreamNonBlocking));
+    CB(cublasSetStream(g.h, sk));
+    void *h, *d; CK(cudaHostAlloc(&h, bytes, cudaHostAllocDefault)); CK(cudaMalloc(&d, bytes)); memset(h, 3, bytes);
+    auto run = [&](bool kernel, bool copy, double* ops_s, double* bytes_s) {
+        long kc = 0, cc = 0; double t0 = wall(), el = 0;
+        do {
+            for (int i = 0; i < 4; ++i) {
+                if (kernel) { CB(g.call()); ++kc; }
+                if (copy) { CK(cudaMemcpyAsync(d, h, bytes, cudaMemcpyHostToDevice, sc)); ++cc; }
+            }
+            CK(cudaStreamSynchronize(sk)); CK(cudaStreamSynchronize(sc));
+            el = wall() - t0;
+        } while (el < secs);
+        *ops_s = kc * g.ops() / el; *bytes_s = cc * (double)bytes / el;
+    };
+    double ka, ca, kb, cb, x;
+    run(true, false, &ka, &x); run(true, false, &ka, &x);        // warm-up, then alone
+    run(false, true, &x, &ca);
+    run(true, true, &kb, &cb);
+    cudaDeviceProp pr; CK(cudaGetDeviceProperties(&pr, 0));
+    printf("{\"mode\":\"overlap\",\"bytes\":%zu,\"kernel_alone_ops_per_s\":%.6g,\"copy_alone_bytes_per_s\":%.6g,"
+           "\"kernel_with_copy_ops_per_s\":%.6g,\"copy_with_kernel_bytes_per_s\":%.6g,\"copy_engines\":%d}\n",
+           bytes, ka, ca, kb, cb, pr.asyncEngineCount);
+    cudaFreeHost(h); cudaFree(d);
+    return 0;
+}
+
 int main(int argc, char** argv) {
     if (argc < 2) { fprintf(stderr, "usage: probe gemm|stream|load|copy|launch ...\n"); return 1; }
     cudaDeviceProp pr; CK(cudaGetDeviceProperties(&pr, 0));
@@ -377,6 +487,8 @@ int main(int argc, char** argv) {
     if (mode == "load") return load_mode(argc, argv);
     if (mode == "copy") return copy_mode(argc, argv);
     if (mode == "launch") return launch_mode(argc, argv);
+    if (mode == "xfer") return xfer_mode(argc, argv);
+    if (mode == "overlap") return overlap_mode(argc, argv);
     fprintf(stderr, "unknown mode %s\n", mode.c_str());
     return 1;
 }

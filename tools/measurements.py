@@ -11,6 +11,9 @@ Keys are stable (they are how a prediction finds its measurement) and versioned 
 gets a new key, an existing key never changes meaning:
   gpu-gemm/<gpu>/<prec>/<M>x<N>x<K>                 TFLOP/s (int8: TOP/s)   cuBLAS, with SM clock and power
   cpu-gemm/<prec>/<M>x<N>x<K>/t<threads>            GFLOP/s (int8: GOP/s)   OpenBLAS / oneDNN, with ISA and kernel
+  xfer/<gpu>/<dir>/<mem>/<size>/latency|rate        µs | GB/s       pcie-xfer: one copy + wait, queued copies
+  xfer/<gpuA>-<gpuB>/d2d/peer|host/<size>/…         µs | GB/s       gpu-p2p-xfer: with / without peer access
+  gpu-overlap/<gpu>/kernel_share|copy_share         ratio      each with the other running / alone
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
@@ -24,7 +27,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "4"                  # 2: cpu-mem-ladder; 3: sycl_onednn condition; 4: gpu-gemm, cpu-gemm. Any change bumps it.
+VERSION = "5"                  # 2: cpu-mem-ladder; 3: sycl_onednn; 4: gpu-gemm, cpu-gemm; 5: xfer, gpu-overlap.
 LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
@@ -232,9 +235,63 @@ def cpu_gemm(run: Path) -> list[dict]:
     return out
 
 
+def _size(b: int) -> str:
+    return f"{b >> 20}MiB" if b >= 1 << 20 else f"{b >> 10}KiB"
+
+
+def xfer(run: Path) -> list[dict]:
+    """Transfer sweeps (pcie-xfer, gpu-p2p-xfer): per size the latency of one copy + wait and the rate of queued ones."""
+    out = []
+    for q in ("pcie-xfer", "gpu-p2p-xfer"):
+        f = run / "q" / q / "results.jsonl"
+        for row in (_json_lines(f) if f.exists() else []):
+            if row.get("rc") != 0 or row.get("smoke"):
+                continue
+            g = str(row.get("params", {}).get("gpu", ""))
+            for r in row.get("results") or []:
+                if r.get("mode") != "xfer" or not r.get("bytes"):
+                    continue
+                if r.get("dir") == "d2d":
+                    dev, path = f"gpu{r.get('src')}-gpu{r.get('dst')}", "peer" if r.get("peer_access") else "host"
+                    base = f"xfer/{dev}/d2d/{path}/{_size(r['bytes'])}"
+                else:
+                    dev, path = g, r.get("mem", "")
+                    base = f"xfer/{dev}/{r.get('dir')}/{path}/{_size(r['bytes'])}"
+                c = dict(device=dev, dir=r.get("dir"), path=path, bytes=r["bytes"], samples=r.get("latency_samples"))
+                if r.get("latency_s", -1) > 0:
+                    out.append(dict(key=f"{base}/latency", value=r["latency_s"] * 1e6, unit="µs", spread=0.0,
+                                    source=f"q/{q}/results.jsonl",
+                                    conditions=dict(c, p10_us=r.get("latency_p10_s", 0) * 1e6,
+                                                    p90_us=r.get("latency_p90_s", 0) * 1e6)))
+                if r.get("rate_bytes_per_s", 0) > 0:
+                    out.append(dict(key=f"{base}/rate", value=r["rate_bytes_per_s"] / 1e9, unit="GB/s", spread=0.0,
+                                    source=f"q/{q}/results.jsonl", conditions=dict(c, copies=r.get("copies"))))
+    return out
+
+
+def gpu_overlap(run: Path) -> list[dict]:
+    """gpu-overlap: the share of its own rate a GEMM keeps with a copy beside it, and the copy with the GEMM."""
+    out, f = [], run / "q" / "gpu-overlap" / "results.jsonl"
+    for row in (_json_lines(f) if f.exists() else []):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        g = str(row.get("params", {}).get("gpu", ""))
+        for r in row.get("results") or []:
+            if r.get("mode") != "overlap" or not r.get("kernel_alone_ops_per_s") or not r.get("copy_alone_bytes_per_s"):
+                continue
+            c = dict(gpu=g, copy_engines=r.get("copy_engines"), kernel_alone_tflops=r["kernel_alone_ops_per_s"] / 1e12,
+                     copy_alone_gbs=r["copy_alone_bytes_per_s"] / 1e9)
+            for name, a, b in (("kernel_share", "kernel_with_copy_ops_per_s", "kernel_alone_ops_per_s"),
+                               ("copy_share", "copy_with_kernel_bytes_per_s", "copy_alone_bytes_per_s")):
+                out.append(dict(key=f"gpu-overlap/{g}/{name}", value=r.get(a, 0) / r[b], unit="ratio", spread=0.0,
+                                source="q/gpu-overlap/results.jsonl", conditions=c))
+    return out
+
+
 def extract(run: Path) -> dict:
     return dict(version=VERSION, run=run.name,
-                measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run))
+                measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run)
+                + xfer(run) + gpu_overlap(run))
 
 
 if __name__ == "__main__":

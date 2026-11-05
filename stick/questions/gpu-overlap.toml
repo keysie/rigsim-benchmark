@@ -1,0 +1,16 @@
+question = "gpu-overlap"
+asks = "Does a host -> card copy run beside a kernel at full speed, and what does it cost the kernel: an fp16 GEMM 4096^3 alone, 256 MiB pinned copies alone, both at once on separate streams, per card (stick profile)."
+feeds = "Copy-engine overlap of compute and transfers (hw/links.py, the machine graph); whether prefetching layers or experts is free (design/engine-primitives.md, item 3)."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+exclusive = true
+repeats = 1
+sample_ms = 100
+timeout_s = 120
+
+[grid]
+gpu = ["@all"]
+
+[args]
+cmd = ["probe", "overlap", "--mib", "256", "--seconds", "2"]

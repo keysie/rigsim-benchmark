@@ -34,7 +34,8 @@ CLPEAK_TESTS = ["--global-bandwidth", "--compute-sp", "--compute-hp", "--compute
                 "--kernel-latency"]
 SOFTWARE_DEVICES = re.compile(r"(?i)llvmpipe|softpipe|pthread|\bcpu\b|pocl")
 PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-shapes", "cpu-gemm-ladder", "cpu-power-time",
-           "pcie-copy", "gpu-p2p", "gpu-vram", "gpu-gemm", "gpu-gemm-shapes", "gpu-launch"]
+           "pcie-copy", "pcie-xfer", "gpu-p2p", "gpu-p2p-xfer", "gpu-vram", "gpu-gemm", "gpu-gemm-shapes", "gpu-launch",
+           "gpu-overlap"]
 DRM = Path("/sys/class/drm")
 FBDEV = Path("/sys/class/graphics")
 SAMPLE_S = 0.2
@@ -1333,6 +1334,11 @@ def vendor_plan(kind: str) -> list[tuple[str, list[str]]]:
     out.append(("launch", [probe, "launch", "--count", "2000"]))
     for d in ("h2d", "d2h") + (("bidir",) if kind == "rocm" else ()):
         out.append((f"copy-{d}", [probe, "copy", "--dir", d, "--mib", "512", "--reps", "10"]))
+    for d in ("h2d", "d2h") + (("bidir",) if kind == "rocm" else ()):    # the size sweep (engine primitives, item 3)
+        for mem in ("pinned", "pageable"):
+            out.append((f"xfer-{d}-{mem}", [probe, "xfer", "--dir", d, "--mem", mem, "--seconds", "0.2"]))
+    if kind == "rocm":                                # the CUDA probe's HIP build has the overlap mode too
+        out.append(("overlap", [probe, "overlap", "--mib", "256", "--seconds", "2"]))
     for prec in VENDOR_GEMM_PRECS:
         for shape in VENDOR_GEMM_SHAPES:
             out.append((f"gemm-{prec}-{shape}", [probe, "gemm", "--prec", prec, "--shape", shape, "--reps", "10"]))

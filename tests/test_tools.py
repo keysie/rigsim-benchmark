@@ -132,4 +132,30 @@ def test_gemm_values_with_clock_isa_and_unsupported_left_out(tmp_path):
     assert b["conditions"]["pci"] == "0000:01:00.0" and not any("fp8" in k for k in got)
     a = got["cpu-gemm/bf16/512x4096x4096/t8"]
     assert abs(a["value"] - 635) < 1 and a["conditions"]["impl"] == "brg:avx512_core_amx"
-    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "4"
+    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "5"
+
+
+def test_transfer_sweep_and_overlap_values(tmp_path):
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"
+    for q, rows in (("pcie-xfer", [dict(rc=0, params=dict(gpu="gpu0", dir="h2d", mem="pinned"), results=[
+                        dict(mode="xfer", dir="h2d", mem="pinned", src=-1, dst=0, peer_access=False, bytes=4096,
+                             latency_s=9e-6, latency_p10_s=8e-6, latency_p90_s=1.2e-5, latency_samples=900, copies=4000,
+                             rate_bytes_per_s=1.1e9),
+                        dict(mode="xfer", dir="h2d", mem="pinned", bytes=268435456, latency_s=0.0215,
+                             rate_bytes_per_s=2.5e10)])]),
+                    ("gpu-p2p-xfer", [dict(rc=0, params=dict(gpu="@together", peer="off"), results=[
+                        dict(mode="xfer", dir="d2d", mem="device", src=0, dst=1, peer_access=False, bytes=1 << 20,
+                             latency_s=6e-5, rate_bytes_per_s=1.2e10)])]),
+                    ("gpu-overlap", [dict(rc=0, params=dict(gpu="gpu0"), results=[
+                        dict(mode="overlap", kernel_alone_ops_per_s=1e14, copy_alone_bytes_per_s=2.5e10,
+                             kernel_with_copy_ops_per_s=9.5e13, copy_with_kernel_bytes_per_s=2.4e10, copy_engines=2)])])):
+        d = run / "q" / q; d.mkdir(parents=True)
+        (d / "results.jsonl").write_text("".join(js.dumps(r) + "\n" for r in rows))
+    got = {m["key"]: m for m in M.extract(run)["measurements"]}
+    assert got["xfer/gpu0/h2d/pinned/4KiB/latency"]["value"] == 9.0 and got["xfer/gpu0/h2d/pinned/4KiB/rate"]["unit"] == "GB/s"
+    assert got["xfer/gpu0/h2d/pinned/256MiB/rate"]["value"] == 25.0
+    assert "xfer/gpu0-gpu1/d2d/host/1MiB/latency" in got
+    assert got["gpu-overlap/gpu0/kernel_share"]["value"] == 0.95 and got["gpu-overlap/gpu0/copy_share"]["value"] == 0.96
