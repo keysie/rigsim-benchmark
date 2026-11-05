@@ -765,11 +765,88 @@ def nvidia_state() -> tuple[bool, str]:
         return True, ""
     flavour = "legacy" if "legacy" in (OPT / "VERSION").read_text() else "open" if (OPT / "VERSION").exists() else "?"
     if flavour == "open" and _nvidia_pre_turing():
+        if (SWAP_DIR / "FLAVOUR").exists():
+            return False, "NVIDIA GPU older than Turing: measured after the switch to the proprietary modules (nvidia-swap)"
         return False, "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
     rc2, lspci = sh(["sh", "-c", "lspci -nn | grep -i nvidia"], timeout=30)
     if not lspci.strip():
         return False, "no NVIDIA GPU"
     return False, "NVIDIA GPU present but the driver did not load (card unsupported by the driver?)"
+
+
+# --- NVIDIA module switch (old-GPU sprint, 2026-10-31) ----------------------------------------------------------------
+# The open kernel modules drive Turing and newer, the proprietary ones Maxwell .. Ada. The stick boots one flavour and
+# carries the other one's signed .ko files (chroot-setup.sh, same driver version, one user-space stack). After every
+# step, cards the boot modules left undriven are measured in a second phase: the modules are swapped (the cards
+# already measured are kept off the new driver with driver_override) and the CUDA questions and llama-bench run again
+# for those cards only, into nvidia-swap/ (run format 1.7).
+SWAP_DIR = Path("/usr/lib/rigsim/nvidia-swap")
+SWAP_LOAD = ("nvidia", "nvidia-uvm", "nvidia-modeset")       # load order; nvidia-drm left out: nothing is displayed
+SWAP_UNLOAD = ("nvidia_drm", "nvidia_peermem", "nvidia_modeset", "nvidia_uvm", "nvidia")
+
+
+def norm_pci(bus: str) -> str:
+    """'00000000:01:00.0' (nvidia-smi) and '0000:01:00.0' (sysfs) -> '0000:01:00.0'."""
+    b = bus.strip().lower()
+    m = re.match(r"^(?:([0-9a-f]+):)?([0-9a-f]{2}):([0-9a-f]{2})\.([0-9a-f])$", b)
+    return f"{int(m.group(1) or '0', 16):04x}:{m.group(2)}:{m.group(3)}.{m.group(4)}" if m else b
+
+
+def nvidia_pci_devices(devices: Path = Path("/sys/bus/pci/devices")) -> list[str]:
+    """Every NVIDIA display device (vendor 0x10de, class 0x03xxxx), driven or not, by PCI address."""
+    return sorted(d.name for d in devices.glob("*")
+                  if _read(d / "vendor") == "0x10de" and (_read(d / "class") or "").startswith("0x03"))
+
+
+def nvidia_driven() -> dict[str, str]:
+    """PCI address -> nvidia-smi line ('name, memory, bus', as in hardware.gpus) for every card the loaded driver drives."""
+    rc, out = sh(["nvidia-smi", "--query-gpu=name,memory.total,pci.bus_id", "--format=csv,noheader"], timeout=60)
+    if rc != 0:
+        return {}
+    return {norm_pci(l.rsplit(",", 1)[-1]): l.strip() for l in out.splitlines() if l.count(",") >= 2}
+
+
+def swap_modules(keep_off: list[str], log: Path | None, swap: Path = SWAP_DIR, sysfs: Path = Path("/sys"),
+                 run=None) -> dict:
+    """Replace the loaded NVIDIA modules with the other flavour. keep_off: cards measured already, kept off the new
+    driver. Returns what happened; 'failed' says why it did not work (the cards are then recorded as not measured)."""
+    run = run or (lambda cmd: sh(cmd, timeout=120))
+    res = dict(flavour=_read(swap / "FLAVOUR") or "", version=_read(swap / "VERSION") or "", kept_off=keep_off)
+    if not res["flavour"]:
+        return dict(res, failed="the other NVIDIA module flavour is not on this stick")
+    _kill_containers()
+    run(["systemctl", "stop", "nvidia-persistenced"])
+    for m in SWAP_UNLOAD:
+        if not (sysfs / "module" / m).exists():
+            continue
+        rc, out = run(["rmmod", m])
+        if rc != 0:                                    # a framebuffer console on nvidia-drm holds it: unbind, retry
+            for v in sorted((sysfs / "class" / "vtconsole").glob("vtcon*")):
+                if "frame buffer" in (_read(v / "name") or ""):
+                    try:
+                        (v / "bind").write_text("0")
+                    except OSError:
+                        pass
+            rc, out = run(["rmmod", m])
+        if rc != 0:
+            return dict(res, failed=f"could not unload {m}: {out.strip()[:200]}")
+    for pci in keep_off:
+        try:
+            (sysfs / "bus" / "pci" / "devices" / pci / "driver_override").write_text("none")
+        except OSError as e:
+            say(f"nvidia-swap: driver_override for {pci}: {e}", log)
+    for m in SWAP_LOAD:
+        f = next(iter(sorted(swap.glob(f"{m}.ko*"))), None)
+        if f is None:
+            return dict(res, failed=f"{m}.ko is not on this stick")
+        _, deps = run(["modinfo", "-F", "depends", str(f)])
+        for d in [x for x in deps.strip().split(",") if x]:
+            run(["modprobe", d])
+        rc, out = run(["insmod", str(f)])
+        if rc != 0:
+            return dict(res, failed=f"could not load {f.name}: {out.strip()[:200]}")
+    run(["nvidia-modprobe", "-u", "-c=0"])
+    return res
 
 
 def _nvidia_pre_turing() -> bool:
@@ -1291,7 +1368,7 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
     return runs
 
 
-def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path) -> dict:
+def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path, cuda_only: bool = False) -> dict:
     seed = data / "seed" / "llama"
     models = llama_models(data)
     if not models or not seed.is_dir():
@@ -1330,8 +1407,24 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
                           "-e", f"CUDA_VISIBLE_DEVICES={gi}", "-v", f"{seed / 'cuda'}:/llama:ro", cfg_image]
                 runs.update(run_backend_ops(lambda c, t: sh(docker + c, timeout=t), d, f"cuda-gpu{gi}",
                                             "/llama/test-backend-ops", "CUDA0", log))
+    # forks tuned for Pascal (build.sh LLAMA_FORKS): on the cards of the architectures they were built for, as their own
+    # backend "cuda+<fork>", same models and arguments as upstream
+    forks = sorted(p for p in (seed / "forks").glob("*") if (p / "llama-bench").exists()) if nvidia else []
+    if forks:
+        _, out = sh(["nvidia-smi", "--query-gpu=index,compute_cap", "--format=csv,noheader"], timeout=60)
+        caps = [(i.strip(), c.strip().replace(".", "")) for i, c in (l.split(",", 1) for l in out.splitlines() if "," in l)]
+        for fk in forks:
+            archs = (_read(fk / "ARCHS") or "60 61").split()
+            for gi, cap in caps:
+                if cap not in archs:
+                    continue
+                for m in models:
+                    one(f"cuda+{fk.name}-gpu{gi}-{m.stem}", ["docker", "run", "--rm", *docker_mem(), "--gpus", "all", "--network", "none",
+                        "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID", "-e", f"CUDA_VISIBLE_DEVICES={gi}",
+                        "-v", f"{fk}:/llama:ro", "-v", f"{m.parent}:/models:ro", cfg_image,
+                        "/llama/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS])
     vk = seed / "vulkan" / "llama-bench"
-    if vk.exists():
+    if vk.exists() and not cuda_only:
         _, summary = sh(["vulkaninfo", "--summary"], timeout=60)
         (d / "vulkaninfo-summary.txt").write_text(scrub(summary))
         tbo = seed / "vulkan" / "test-backend-ops"
@@ -2005,6 +2098,53 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
     return dict(rc=rc, items=counts, seconds=round(time.time() - t0))
 
 
+def nvidia_phase2(data: Path, rundir: Path, cfg: Path, cuda_image: str, man: dict, run: dict, log: Path) -> dict | None:
+    """After every step: NVIDIA cards the boot modules did not drive are measured with the other flavour. None when
+    every NVIDIA card was driven (nothing to do)."""
+    driven = nvidia_driven()
+    left = [p for p in nvidia_pci_devices() if p not in driven]
+    if not left:
+        return None
+    say(f"nvidia-swap: cards the boot modules do not drive: {left}", log)
+    STATUS.n += 1
+    STATUS.begin("nvidia-swap")
+    res = dict(swap_modules(sorted(driven), log), pci=left)
+    if res.get("failed"):
+        say(f"nvidia-swap: {res['failed']} — those cards are not measured", log)
+        return res
+    now = nvidia_driven()
+    res["gpus"] = [line for pci, line in sorted(now.items())]
+    missing = [p for p in left if p not in now]
+    if missing:
+        res["not_driven"] = missing
+    if not now:
+        res["failed"] = "the other modules loaded, but they drive none of the cards either"
+        say(f"nvidia-swap: {res['failed']}", log)
+        return res
+    say(f"nvidia-swap: {res['flavour']} modules {res['version']} drive {res['gpus']}", log)
+    # questions as for the first phase, for the cards the new driver drives (gpu-p2p needs two of them)
+    gpu_q = [(q, f) for q, f, skip in plan(OPT / "questions", True, "", len(now)) if not skip and question_gpus(f) != "none"]
+    STATUS.n += len(gpu_q) + 1
+    sd = rundir / "nvidia-swap"
+    sd.mkdir(parents=True, exist_ok=True)
+    with NvidiaSampler(sd / "samples-nvidia.csv", True):
+        steps = [(f"nvidia-swap/{q}", q, lambda q=q, f=f: run_question(q, f, sd, cfg, log)) for q, f in gpu_q]
+        steps.append(("nvidia-swap/llama-bench", "llama-bench",
+                      lambda: run_llama(data, sd, cuda_image, True, log, cuda_only=True)))
+        for name, kind, step in steps:
+            STATUS.begin(name, skippable=True)
+            with StepMemory(name, log) as mem:                # the same memory limit as the first phase
+                try:
+                    run["questions"][name] = step()
+                except StepSkipped:
+                    run["questions"][name] = dict(skipped=OPERATOR_SKIP)
+                    run.setdefault("operator_skips", []).append(name)
+            record_memory(run["questions"][name], mem, log)
+            run["questions"][name]["tools"] = tools_for(kind, man)
+            (rundir / "run.json").write_text(json.dumps(run, indent=1))
+    return res
+
+
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
@@ -2187,6 +2327,10 @@ def main() -> int:
                 if run["questions"][name].get("skipped"):
                     say(f"{name}: skipped ({run['questions'][name]['skipped']})", log)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
+        swap = nvidia_phase2(data, rundir, cfg, cuda_image, man, run, log)
+        if swap is not None:
+            run["nvidia_swap"] = swap
+            (rundir / "run.json").write_text(json.dumps(run, indent=1))
         ok = all(step_ok(v) for v in run["questions"].values())
         run["status"] = "done" if ok else "done with failures"
     except Stopped:

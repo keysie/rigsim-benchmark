@@ -209,3 +209,37 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   old-GPU findings ("the CUDA probe is compiled for sm_80+ only, Turing/Volta/Pascal cannot run it") was wrong for the
   stick; only **sm_60 (P100)** is missing from the stick's list. `sprint/old-gpus` edited the bench file instead of the
   overlay — to fix there (add sm_60 to the overlay, revert or keep the bench change deliberately).
+
+## Older NVIDIA GPUs and P100 forks (2026-10-31; read from GitHub and the repo)
+
+- **qr0n/p100-llama-cpp** (MIT, 25 stars, created 2026-09-07): upstream llama.cpp `b10660` + 18 patches, with a
+  verify script that re-derives the tree from upstream; CUDA 12.x; claims e.g. Llama-3.1-8B Q4_K_M tg 39.3 → 79.6 on
+  one P100 (fp16 matrix-vector path), tensor-split gains on 2+ cards; patch 0010 carries Kmic-68's code. Patches are not
+  submitted upstream, by the author's decision.
+- **Kmic-68/llama.cpp** (fork of ggml-org/llama.cpp; default branch `p100-optimizations`, pushed 2026-10-25): tuned for
+  2× P100; cuBLAS-GEMM flash attention for long prefill and GQA-6 tile kernels.
+- **qr0n/p100-strata** (MIT): Strata v0.2.2 + 6 patches for P100 (MXFP4 expert kernels, …). Relevant to rigsim's Strata
+  engine, not to the stick (Strata is not on the stick).
+- CUDA 13 dropped Pascal (stated in qr0n/p100-strata); the stick's CUDA image is 12.8.1.
+- Space (2026-10-31, Ubuntu noble archive, driver 580.178.04, HWE kernel 7.0.0-42): the open modules package is 8.3 MB
+  (nvidia.ko 20.7 MB uncompressed); the proprietary set comes as `linux-objects-nvidia-580-<kver>` (98 MB download, 194 MB
+  installed, nv-kernel.o alone 113 MB) plus Canonical's detached signatures, linked at install time. Estimate for the old-GPU
+  sprint: system image +30–100 MB (proprietary set, more if the objects stay), llama.cpp CUDA +~1/9 per added
+  architecture, the two forks built for sm_60/61 only, firmware and user-space unchanged. To be measured on a build.
+- Build facts (2026-10-31): Ubuntu's proprietary NVIDIA module package for a kernel is a stub that depends on
+  `linux-objects-nvidia-580-<kver>` + `linux-signatures-nvidia-<kver>`; its postinst links the .ko files from `bits/`
+  (late-link, debconf default true). Both flavours install to their own directory with the same module names and do
+  not conflict as packages, so the swap flavour is installed, copied out and purged before the boot flavour.
+- The CUDA probe used to be compiled for sm_80+ only: Turing, Volta and Pascal could not run it even with a driver.
+- Existing 15 runs extract identical values with measurements VERSION 3 (checked 2026-10-31).
+
+## Coverage of what LLM engines depend on (2026-11-04; *inferred* estimate for the user, weights are judgment)
+
+Measured hardware functions: CPU GEMM fp32/fp64/int8 (1 core, all, thread ladder, 120 s sustained), RAM bandwidth by
+kernel × threads, latency by working set, MLC (latency, bandwidth, loaded latency, NUMA matrices); GPU GEMM fp32/fp16/int8
+(decode/prefill shapes), VRAM read/write/copy, launch cost incl. CUDA graphs, P2P per pair, PCIe h2d/d2h/bidir per card and
+all at once + topology; vkprobe, clpeak; 12 llama.cpp ops per backend; llama-bench pp512/tg128 on two small dense models.
+Estimated coverage of the factors that set throughput: vLLM-like (GPU-bound) ~50–60 %, Strata-like (MoE, experts on the
+CPU) ~60–70 %; engine-level validation (batching, long context, MoE, the engines themselves) ~15 %. Largest gaps: bf16/fp8/
+int4 GEMM on CUDA, vLLM's own attention kernels, small-message collectives (tensor parallel), small-transfer PCIe latency
+(expert paging), storage read speed, GPU power over time, concurrency.

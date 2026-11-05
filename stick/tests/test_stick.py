@@ -1061,7 +1061,7 @@ def test_laptop_run_fixes(tmp_path):
     src = (HERE / "payload" / "stick.py").read_text()
     assert "STATUS.n = 2 + len(qplan) + 8" in src
     begins = src.count('STATUS.begin("inventory")') + src.count('STATUS.begin("docker")') + 1     # + the question loop
-    assert begins == 3 and src.count("STATUS.begin(name, skippable=True)") == 1
+    assert begins == 3 and src.count("STATUS.begin(name, skippable=True)") == 2   # + nvidia_phase2 (counts its own)
     named = src.split('for name, step in (("mlc"', 1)[1].split("STATUS.begin(name", 1)[0]
     assert named.count("lambda:") == 8                                       # the eight named steps counted
     for vendor, cls, want in (("0x8086", "0x030000", False), ("0x10de", "0x030000", True), ("0x10de", "0x040300", False)):
@@ -1146,7 +1146,7 @@ def test_blender_finds_its_libraries():
 # --- seed self-test (stick/tools/selftest.py) ------------------------------------------------------------------------
 _st_spec = importlib.util.spec_from_file_location("selftest", HERE / "tools" / "selftest.py")
 selftest = importlib.util.module_from_spec(_st_spec); _st_spec.loader.exec_module(selftest)
-FULL_ENV = dict(MLC_URL="x", BLENDER_LAUNCHER_URL="x")
+FULL_ENV = dict(MLC_URL="x", BLENDER_LAUNCHER_URL="x", LLAMA_FORKS="qr0n=u@c:llama.cpp kmic68=u@c")
 
 
 def _exe(p: Path) -> Path:
@@ -1173,6 +1173,12 @@ def _full_seed(tmp: Path) -> tuple[Path, Path]:
     _exe(s / "tools" / "mlc" / "mlc")
     for v in ("rocm", "oneapi"):
         (s / "images" / f"vendor-{v}.tar").write_text("x")
+    for f in ("qr0n", "kmic68"):
+        _exe(s / "llama" / "forks" / f / "llama-bench"); (s / "llama" / "forks" / f / "COMMIT").write_text("abc")
+    sw = tmp / "rootfs" / selftest.SWAP; sw.mkdir(parents=True)
+    for m in ("nvidia", "nvidia-uvm", "nvidia-modeset", "nvidia-drm"):
+        (sw / f"{m}.ko").write_text("x")
+    (sw / "VERSION").write_text("580.178.04\n"); (sw / "BOOT_VERSION").write_text("580.178.04\n")
     return s, pay
 
 
@@ -1220,8 +1226,8 @@ def test_selftest_parts_left_out_on_purpose_are_not_failures(tmp_path):
     for p in (s / "models").glob("*"):
         p.unlink()
     (s / "images" / "vendor-rocm.tar").unlink()
-    r = _run(s, pay, env=dict(SKIP_MODELS="1", SKIP_ROCM="1", MLC_URL="", BLENDER_LAUNCHER_URL=""))
-    assert {k for k, v in r.items() if v["status"] == "left out"} == {"models", "rocm", "mlc", "blender"}
+    r = _run(s, pay, env=dict(SKIP_MODELS="1", SKIP_ROCM="1", MLC_URL="", BLENDER_LAUNCHER_URL="", LLAMA_FORKS=""))
+    assert {k for k, v in r.items() if v["status"] == "left out"} == {"models", "rocm", "mlc", "blender", "llama.cpp forks"}
     assert not [k for k, v in r.items() if v["status"] == "missing"]
 
 
@@ -1262,6 +1268,109 @@ def test_disk_layout_is_a_gpt_hybrid_shared_by_build_and_flash():
     assert b.count('--modules="linux normal iso9660 biosdisk search configfile"') == 2
     assert 'source "$S/tools/layout.sh"' in f and "add_data_part " in f and "type=83" not in f
 
+
+def test_selftest_checks_forks_and_the_module_swap_set(tmp_path):
+    """Old-GPU sprint: the P100 forks and the other NVIDIA module flavour (same driver version) must be on the stick."""
+    s, pay = _full_seed(tmp_path)
+    (s / "llama" / "forks" / "kmic68" / "llama-bench").unlink()
+    sw = tmp_path / "rootfs" / selftest.SWAP
+    (sw / "nvidia-uvm.ko").unlink(); (sw / "BOOT_VERSION").write_text("580.95.05")
+    r = _run(s, pay)
+    assert r["llama.cpp forks"]["status"] == "missing" and "llama-bench" in r["llama.cpp forks"]["problems"][0]
+    p = r["nvidia module swap"]["problems"]
+    assert r["nvidia module swap"]["status"] == "missing" and any("nvidia-uvm" in x for x in p) and any("differ" in x for x in p)
+
+
+# --- old-GPU sprint: NVIDIA module switch, Pascal builds and forks ---------------------------------------------------
+def _pci(root: Path, addr: str, vendor: str, cls: str) -> None:
+    d = root / addr; d.mkdir(parents=True)
+    (d / "vendor").write_text(vendor + "\n"); (d / "class").write_text(cls + "\n")
+
+
+def test_nvidia_pci_devices_and_norm_pci(tmp_path):
+    _pci(tmp_path, "0000:01:00.0", "0x10de", "0x030000"); _pci(tmp_path, "0000:02:00.0", "0x10de", "0x030200")
+    _pci(tmp_path, "0000:01:00.1", "0x10de", "0x040300"); _pci(tmp_path, "0000:00:02.0", "0x8086", "0x030000")
+    assert stick.nvidia_pci_devices(tmp_path) == ["0000:01:00.0", "0000:02:00.0"]
+    assert stick.norm_pci("00000000:01:00.0") == "0000:01:00.0" == stick.norm_pci("01:00.0")
+
+
+def _swap_set(tmp: Path) -> Path:
+    sw = tmp / "swap"; sw.mkdir()
+    for m in ("nvidia", "nvidia-uvm", "nvidia-modeset", "nvidia-drm"):
+        (sw / f"{m}.ko").write_text("x")
+    (sw / "FLAVOUR").write_text("proprietary\n"); (sw / "VERSION").write_text("580.178.04\n")
+    return sw
+
+
+def test_swap_modules_unloads_keeps_measured_cards_off_and_loads_the_other_flavour(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "_kill_containers", lambda: None)
+    sysfs = tmp_path / "sys"
+    for m in ("nvidia_drm", "nvidia_modeset", "nvidia_uvm", "nvidia"):
+        (sysfs / "module" / m).mkdir(parents=True)
+    (sysfs / "bus" / "pci" / "devices" / "0000:01:00.0").mkdir(parents=True)
+    cmds = []
+    def run(cmd):
+        cmds.append(cmd)
+        return (0, "drm" if cmd[:3] == ["modinfo", "-F", "depends"] and "nvidia-modeset" in cmd[-1] else "")
+    r = stick.swap_modules(["0000:01:00.0"], None, _swap_set(tmp_path), sysfs, run)
+    assert "failed" not in r and r["flavour"] == "proprietary" and r["version"] == "580.178.04"
+    rm = [c[1] for c in cmds if c[0] == "rmmod"]
+    assert rm == ["nvidia_drm", "nvidia_modeset", "nvidia_uvm", "nvidia"]                # dependants first
+    ins = [Path(c[1]).name for c in cmds if c[0] == "insmod"]
+    assert ins == ["nvidia.ko", "nvidia-uvm.ko", "nvidia-modeset.ko"]                   # no nvidia-drm: headless
+    ins_modeset = next(i for i, c in enumerate(cmds) if c[0] == "insmod" and c[1].endswith("nvidia-modeset.ko"))
+    assert cmds.index(["modprobe", "drm"]) < ins_modeset                              # a module's dependencies first
+    assert (sysfs / "bus" / "pci" / "devices" / "0000:01:00.0" / "driver_override").read_text() == "none"
+
+
+def test_swap_modules_reports_why_it_failed(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "_kill_containers", lambda: None)
+    sysfs = tmp_path / "sys"; (sysfs / "module" / "nvidia").mkdir(parents=True)
+    vt = sysfs / "class" / "vtconsole" / "vtcon1"; vt.mkdir(parents=True)
+    (vt / "name").write_text("(M) frame buffer device\n"); (vt / "bind").write_text("1")
+    r = stick.swap_modules([], None, _swap_set(tmp_path), sysfs,
+                           lambda cmd: (1, "Module nvidia is in use") if cmd[0] == "rmmod" else (0, ""))
+    assert "could not unload nvidia" in r["failed"] and (vt / "bind").read_text() == "0"     # tried the console first
+    (tmp_path / "swap" / "FLAVOUR").unlink()
+    assert "not on this stick" in stick.swap_modules([], None, tmp_path / "swap", sysfs, lambda c: (0, ""))["failed"]
+
+
+def test_nvidia_phase2_only_when_a_card_is_left_undriven(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "nvidia_driven", lambda: {"0000:01:00.0": "RTX 3080, 10240 MiB, 00000000:01:00.0"})
+    monkeypatch.setattr(stick, "nvidia_pci_devices", lambda: ["0000:01:00.0"])
+    assert stick.nvidia_phase2(tmp_path, tmp_path, tmp_path, "img", {}, {}, None) is None
+
+
+def test_run_llama_runs_the_pascal_forks_only_on_their_architectures(tmp_path, monkeypatch):
+    data = tmp_path / "data"; seed = data / "seed" / "llama"
+    for p in (seed / "cuda" / "llama-bench", seed / "forks" / "qr0n" / "llama-bench"):
+        p.parent.mkdir(parents=True, exist_ok=True); p.write_text("x")
+    (seed / "forks" / "qr0n" / "ARCHS").write_text("60 61\n")
+    (data / "seed" / "models").mkdir(parents=True); (data / "seed" / "models" / "tiny.gguf").write_text("x")
+    monkeypatch.setattr(stick, "sh", lambda cmd, timeout=120: (0, "0, 6.0\n1, 8.6") if "--query-gpu=index,compute_cap" in cmd
+                        else (0, "0\n1"))
+    seen = []
+    class R:
+        returncode, stdout, stderr = 0, "", ""
+    monkeypatch.setattr(stick, "run_cmd", lambda cmd, **kw: seen.append(cmd) or R())
+    r = stick.run_llama(data, tmp_path / "run", "img", True, tmp_path / "log", cuda_only=True)
+    keys = set(r.get("runs", r))
+    assert {"cuda-gpu0-tiny", "cuda-gpu1-tiny", "cuda+qr0n-gpu0-tiny"} <= keys and "cuda+qr0n-gpu1-tiny" not in keys
+    assert not any(k.startswith(("vulkan", "cpu")) for k in keys)                       # second phase: CUDA only
+
+
+def test_old_gpu_builds_and_module_harvest():
+    b = (HERE / "build.sh").read_text()
+    assert '-DCMAKE_CUDA_ARCHITECTURES="52;60;61;70;75;80;86;89;90;120"' in b
+    assert "qr0n=https://github.com/qr0n/p100-llama-cpp@" in b and "kmic68=https://github.com/Kmic-68/llama.cpp@" in b
+    assert '-DCMAKE_CUDA_ARCHITECTURES="60;61"' in b and "--target llama-bench" in b
+    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
+    assert "/usr/lib/rigsim/nvidia-swap" in c and 'apt-get purge -y --autoremove "$SWMOD"' in c
+    assert c.index("$SWMOD") < c.index('NVMOD="linux-modules-nvidia-')                 # harvested before the boot flavour
+    assert "NVIDIA module versions differ" in c
+    p = (HERE / "overlay" / "toolkits" / "cuda" / "setup.sh").read_text()          # the stick's own probe build
+    for a in ("52", "60", "61", "70", "75", "100", "120"):
+        assert f"arch=compute_{a},code=sm_{a}" in p
 
 # --- D: what a machine cannot do is skipped with the reason, not recorded as a failure (run d-9c93, 2026-10-31) ----
 def test_plan_skips_questions_that_need_more_cards(tmp_path):
@@ -1462,8 +1571,10 @@ def test_every_step_and_container_is_under_the_limit():
     src = (HERE / "payload" / "stick.py").read_text()
     main = src.split("def main()", 1)[1]
     assert main.count("with StepMemory(") == 2 and main.count("record_memory(") == 2
+    phase2 = src.split("def nvidia_phase2(", 1)[1].split("\ndef ", 1)[0]
+    assert "with StepMemory(name, log) as mem:" in phase2 and "record_memory(" in phase2
     assert "ok = all(step_ok(v) for v in run[\"questions\"].values())" in main
-    assert src.count("*docker_mem()") == 5 and "StepMemory.current.join(p.pid)" in src and "StepMemory.current.join(pr.pid)" in src
+    assert src.count("*docker_mem()") == 6                                      # + the Pascal forks and "StepMemory.current.join(p.pid)" in src and "StepMemory.current.join(pr.pid)" in src
     h = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
     assert 'cmd += ["--memory", lim, "--memory-swap", lim]' in h
 

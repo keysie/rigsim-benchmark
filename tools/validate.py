@@ -34,6 +34,9 @@ def step_of(rel: str) -> str | None:
     """The step a file in a run folder belongs to: q/<question>/... is that question, mlc/ is 'mlc', llama/ is
     'llama-bench' and so on; None for the run's own files."""
     parts = rel.split("/")
+    if parts[0] == "nvidia-swap" and len(parts) > 2:      # the second NVIDIA phase (format 1.7): its own steps
+        inner = step_of("/".join(parts[1:]))
+        return f"nvidia-swap/{inner}" if inner else None
     if parts[0] == "q" and len(parts) > 2:
         return parts[1]
     return STEP_DIRS.get(parts[0]) if len(parts) > 1 else None
@@ -77,6 +80,8 @@ LAYOUT = [re.compile(p) for p in (
     rf"opencl/clinfo-list\.txt", rf"opencl/clpeak-{N}\.(txt|json)",
     rf"llama/{N}\.(jsonl|log|txt)",
     r"storage/(drives|results)\.json",
+    rf"nvidia-swap/q/{N}/({RUNNER_FILES})", rf"nvidia-swap/q/{N}/samples/[0-9a-f]{{10}}\.csv",
+    rf"nvidia-swap/llama/{N}\.(jsonl|log|txt)", r"nvidia-swap/samples-nvidia\.csv",
     rf"vkprobe/(list|dev\d+-{N})\.jsonl",
     rf"(rocm|oneapi)/(info\.jsonl|image\.txt|sycl-ls\.txt|dev\d+-{N}\.(jsonl|txt))",
     rf"blender/(devices\.txt|{N}\.(json|log))",

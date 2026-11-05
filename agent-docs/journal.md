@@ -68,10 +68,20 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — E: SYCL logs read; the aborts come from the oneDNN path of llama.cpp's SYCL mul_mat on the UHD 770
   (inferred from the message). Proposed: retry once without oneDNN, recorded. Waiting for the user.
 - **2026-10-31** — User chose variant 1 (retry without oneDNN, recorded) and asked for the plan before building.
-- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
-  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
 - **2026-10-31** — Manual SYCL test, first result: one test-backend-ops op without oneDNN ends "2/2 backends passed, OK" on the
   UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
+- **2026-10-31** — New branch `sprint/old-gpus` off `sprint/stick-data` (user): benchmarking older NVIDIA GPUs such as the
+  P100, runtime choice of the older software, P100 forks of llama.cpp. Found: CUDA probe built only for sm_80+; runs
+  with Pascal/Maxwell cards have no CUDA data; qr0n's and Kmic-68's forks located, fallentree's not. Design proposed in
+  open-points; nothing built.
+- **2026-10-31** — User: ignore fallentree; asked whether modules can be swapped during a run so mixed hardware gets every
+  card measured. Design revised to two phases (open, then proprietary for pre-Turing cards); not built.
+- **2026-10-31** — User asked for the space needed by the old-GPU design; estimate from package sizes recorded in findings.
+- **2026-10-31** — User cleared building the old-GPU design. Built on `sprint/old-gpus` (stick 0.14.0, format 1.5): module
+  switch during the run, sm_60–75 CUDA builds, the qr0n and Kmic-68 forks pinned, validator and measurements for
+  `nvidia-swap/` and `cuda+<fork>`. 151 tests pass; existing runs extract unchanged. Not run on hardware.
+- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
+  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
 - **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
   all four aborted SYCL steps.
 - **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
@@ -88,6 +98,9 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — User: run `…-05ea` hung in Blender and was shut down by hand. Plan extended by a memory limit per step.
 - **2026-11-01** — User cleared the low-memory plan and will test on the laptop. Built (stick 0.13.9, format 1.6): memory
   limit per step, OOM recorded as `out_of_memory` (counts as done), model fit checks, MLC buffer on < 12 GiB. 157 tests.
+- **2026-11-01** — `sprint/stick-data` merged by the user. `main` merged into `sprint/old-gpus`: run format renumbered
+  1.5 → 1.6 (stick-data took 1.5), measurements VERSION 3 → 4; the second NVIDIA phase now plans its questions for the
+  cards it drives (gpu-p2p needs two). Agent-docs merged by hand. 160 tests pass.
 - **2026-11-03** — Flashing 0.13.9: [e] stops silently (du + pipefail, issue #24), image verification fails after the GPT
   partition step, the verify bar counts both sides of a sparse store. Diagnosed and reproduced; fix proposed.
 - **2026-11-03** — User cleared the flash.sh fixes; built (160 tests, boot test incl. read-back verification green).
@@ -112,3 +125,10 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   (sm_52…sm_120); the old-GPU sprint's claim about sm_80+ only was wrong, sm_60 is the one missing — recorded for that branch.
 - **2026-11-04** — Step 5 built (fp8/fp4 via cuBLASLt; 174 tests). All five steps of the engine-primitives sprint built;
   next: a stick build and runs on suitable hardware.
+- **2026-11-04** — `sprint/low-memory` merged by the user; `main` merged into `sprint/old-gpus`: run format renumbered
+  1.6 → 1.7 (low-memory took 1.6); the second NVIDIA phase and the fork containers now run under the memory limit
+  per step. 171 tests pass.
+- **2026-11-04** — User asked how much of what LLM engines depend on the stick measures; estimate given and recorded in findings.
+- **2026-11-04** — User: fold `sprint/old-gpus` and `ddr-timing-improvements` into this sprint. Merged: one run format 1.7
+  and one measurements VERSION 7 for all of it, stick 0.15.0; sm_60 (P100) and sm_100 added to the stick's own CUDA
+  probe build (overlay), the AI box's build back to sm_80+.

@@ -15,6 +15,8 @@
 # deliver stops the build at the seed self-test — ALLOW_INCOMPLETE=1 builds a test stick anyway):
 #   LLAMA_REF=release|latest-release|<tag|branch|commit>   llama.cpp to build; default "release": the newest patch
 #                            of the previous release line (see below); tag and commit are recorded
+#   LLAMA_FORKS="name=url@commit[:subdir] ..."   llama.cpp forks for Pascal cards (default: qr0n's and Kmic-68's P100
+#                            forks, pinned); "" leaves them out
 #   SKIP_MODELS=1            no GGUF models (TinyLlama 1.1B Q4_0, Llama 2 7B Q4_0 — the scoreboards' model)
 #   BLENDER_VERSION=4.2.0  BLENDER_LAUNCHER_URL=...   Blender Benchmark launcher CLI, Blender and scenes
 #   BLENDER_SCRIPT_URL=...   the benchmark script for the offline route (default: script 3.1.1 from opendata)
@@ -46,7 +48,7 @@ if [[ "${RIGSIM_IN_CONTAINER:-0}" != 1 && "${BUILD_IN_CONTAINER:-1}" == 1 ]]; th
   docker image inspect "$BUILDER" >/dev/null 2>&1 || { echo "building the build container $BUILDER"; docker build -q -t "$BUILDER" "$S/builder"; }
   envs=()
   for v in VERBOSE REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS SUITE NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR KERNEL ROCM_IMAGE ONEAPI_IMAGE AMDGPU_TARGETS LLAMA_REF \
-           SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL ALLOW_INCOMPLETE; do
+           SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL ALLOW_INCOMPLETE LLAMA_FORKS; do
     [[ -n "${!v+x}" ]] && envs+=(-e "$v=${!v}")          # set, even if empty ("" leaves a tool out)
   done
   tty=(); [[ -t 0 && -t 1 ]] && tty=(-it)
@@ -267,7 +269,7 @@ echo "llama.cpp ${LLAMA_TAG:-$LLAMA_REF} = $LLAMA_COMMIT"
 LLAMA_CUDA='
   set -e; apt-get update -qq && apt-get install -y -qq git cmake >/dev/null
   git clone -q https://github.com/ggml-org/llama.cpp /src && cd /src && git checkout -q "$REF"
-  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="52;61;70;75;80;86;89;90;120" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF         -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
+  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="52;60;61;70;75;80;86;89;90;120" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF         -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
   cmake --build b --target llama-bench test-backend-ops -j"$(nproc)"
   cp b/bin/llama-bench b/bin/test-backend-ops /out/ && git rev-parse HEAD > /out/COMMIT'
 LLAMA_VULKAN='
@@ -284,9 +286,35 @@ llama_build() {   # backend image script
 }
 docker pull -q "ubuntu:$SUITE" >/dev/null
 cached_step "$C/llama-cuda.key" "$(key "$LLAMA_COMMIT" "$(image_id "$CUDA_IMAGE")" "$LLAMA_CUDA")" \
-  "llama.cpp CUDA (9 architectures)" llama_build cuda "$CUDA_IMAGE" "$LLAMA_CUDA"
+  "llama.cpp CUDA (10 architectures)" llama_build cuda "$CUDA_IMAGE" "$LLAMA_CUDA"
 cached_step "$C/llama-vulkan.key" "$(key "$LLAMA_COMMIT" "$(image_id "ubuntu:$SUITE")" "$LLAMA_VULKAN")" \
   "llama.cpp Vulkan" llama_build vulkan "ubuntu:$SUITE" "$LLAMA_VULKAN"
+# llama.cpp forks tuned for Pascal (P100 sm_60, P40 / GTX 10 sm_61): llama-bench only, built for those two
+# architectures in the same CUDA 12 image, pinned by commit; the stick runs them only on sm_60 / sm_61 cards, as their
+# own backend ("cuda+<name>"), next to upstream. LLAMA_FORKS="" leaves them out; entries: name=url@commit[:subdir].
+LLAMA_FORKS="${LLAMA_FORKS-qr0n=https://github.com/qr0n/p100-llama-cpp@dc5c644c45f35167edfa041110f8c9bd75404b34:llama.cpp kmic68=https://github.com/Kmic-68/llama.cpp@7461904dbc7fb4e2959878b241a76f6dc19cd391}"
+LLAMA_FORK_BUILD='
+  set -e; apt-get update -qq && apt-get install -y -qq git cmake >/dev/null
+  git init -q /src && cd /src && git remote add origin "$URL" && git fetch -q --depth 1 origin "$COMMIT" && git checkout -q FETCH_HEAD
+  cd "/src/$SUB"
+  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="60;61" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DGGML_NATIVE=OFF >/dev/null
+  cmake --build b --target llama-bench -j"$(nproc)"
+  cp b/bin/llama-bench /out/ && echo "$URL" > /out/URL && echo "$COMMIT" > /out/COMMIT && echo "60 61" > /out/ARCHS'
+fork_build() {    # name url commit subdir
+  rm -rf "$L/forks/$1"; mkdir -p "$L/forks/$1"
+  docker run --rm --security-opt label=disable -v "$L/forks/$1:/out" -e URL="$2" -e COMMIT="$3" -e SUB="$4" \
+    "$CUDA_IMAGE" sh -c "$LLAMA_FORK_BUILD"
+}
+mkdir -p "$L/forks"
+for f in $(ls "$L/forks"); do                                  # forks no longer asked for: not on this stick
+  [[ " $LLAMA_FORKS " == *" $f="* ]] || rm -rf "$L/forks/$f" "$C/llama-fork-$f.key"
+done
+for spec in $LLAMA_FORKS; do
+  name="${spec%%=*}"; rest="${spec#*=}"; url="${rest%@*}"; cs="${rest##*@}"; commit="${cs%%:*}"; sub=""
+  [[ "$cs" == *:* ]] && sub="${cs#*:}"
+  cached_step "$C/llama-fork-$name.key" "$(key "$url" "$commit" "$sub" "$(image_id "$CUDA_IMAGE")" "$LLAMA_FORK_BUILD")" \
+    "llama.cpp fork $name (sm_60/61)" fork_build "$name" "$url" "$commit" "$sub"
+done
 : > "$OUT/seed/images/VENDOR.tsv"
 vendor_build() {  # name base src tag
   local c="rigsim-build-$1"
@@ -374,7 +402,7 @@ echo "$VERSION" > "$OUT/seed/VERSION"
 export LLAMA_REF LLAMA_SELECT AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
 # Seed self-test (user decision 2026-10-31): every part asked for is in the seed and every native binary finds its
 # libraries where it runs; otherwise the build stops here, before anyone boots a stick that lacks data
-step "seed self-test" sudo env MLC_URL="${MLC_URL:-}" BLENDER_LAUNCHER_URL="${BLENDER_LAUNCHER_URL:-}" \
+step "seed self-test" sudo env MLC_URL="${MLC_URL:-}" BLENDER_LAUNCHER_URL="${BLENDER_LAUNCHER_URL:-}" LLAMA_FORKS="$LLAMA_FORKS" \
   SKIP_MODELS="${SKIP_MODELS:-0}" SKIP_ROCM="${SKIP_ROCM:-0}" SKIP_ONEAPI="${SKIP_ONEAPI:-0}" \
   ALLOW_INCOMPLETE="${ALLOW_INCOMPLETE:-0}" python3 "$S/tools/selftest.py" --seed "$OUT/seed" --rootfs "$ROOT" \
   --payload "$P" --cuda-image "$CUDA_IMAGE" --image "$CUDA_IMAGE" --image "$CPU_IMAGE" --out "$OUT/seed/SELFTEST.json"

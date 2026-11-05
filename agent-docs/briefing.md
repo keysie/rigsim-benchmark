@@ -11,7 +11,8 @@ Keep this section current (instruction 3). Last updated 2026-11-01.
 the stick does not cover yet: matrix throughput in bf16/fp8/fp4/int8/weight-only int4, small transfers (host ↔ GPU,
 GPU ↔ GPU, collectives, CPU core-to-core), storage read speed — for rigsim's hardware model and for engine bounds,
 Intel/AMD CPUs, NVIDIA/AMD/Intel GPUs. Status: **design proposed** (`design/engine-primitives.md`), nothing built.
-Other open branches: `sprint/old-gpus` (built, waits for hardware), `ddr-timing-improvements` (parked).
+Folded into this sprint (user, 2026-11-04): the old-GPU work (module switch during a run, Pascal forks, sm_60) and
+the DDR assessment (parked items, open-points).
 
 **Next steps, in order**
 Decided (user): steps 1–5 in this sprint; drives read-only, nothing identifying in the report.
