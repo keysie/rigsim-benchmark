@@ -1546,3 +1546,23 @@ def test_gpu_memory_check_and_device_lost(tmp_path, monkeypatch):
     assert "after a reset caused elsewhere" in stick.device_lost("This context is innocent.\nErrorDeviceLost")
     assert stick.device_lost("Segmentation fault") == ""
     assert stick.item_ok(dict(rc=-6, device_lost="x")) and stick.item_ok(dict(skipped="y")) and not stick.item_ok(dict(rc=-6))
+
+
+# --- engine primitives, step 1: matrix throughput over shapes and formats (design/engine-primitives.md) --------------
+def test_gemm_shape_questions_expand():
+    g = hwq.load_plan(str(HERE / "questions" / "gpu-gemm-shapes.toml"))
+    items = hwq.expand(g, False, [dict(name="gpu0", index=0)])
+    assert len(items) == 6 * 16 and {i["params"]["prec"] for i in items} >= {"bf16", "tf32", "fp16_fp32acc"}
+    assert {i["params"]["shape"].split("x")[0] for i in items} == {"1", "4", "16", "64", "256", "1024", "4096", "8192"}
+    assert len(hwq.expand(g, True, [dict(name="gpu0", index=0)])) == 2
+    c = hwq.load_plan(str(HERE / "questions" / "cpu-gemm-shapes.toml"))
+    assert len(hwq.expand(c, False)) == 4 * 14 and len(hwq.expand(c, True)) == 4
+    assert stick.PROFILE.index("cpu-gemm-shapes") == stick.PROFILE.index("cpu-gemm") + 1
+    assert stick.PROFILE.index("gpu-gemm-shapes") == stick.PROFILE.index("gpu-gemm") + 1
+    assert "1x4096x4096" in stick.VENDOR_GEMM_SHAPES and "8192x14336x4096" in stick.VENDOR_GEMM_SHAPES
+
+
+def test_cpu_gemm_probe_knows_bf16_fp16_and_shapes():
+    src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
+    assert "--shape" in src and "dnnl_matmul_primitive_desc_create" in src and '!strncmp(info, "ref", 3)' in src
+    assert "dnnl_format_tag_any" in src and "unsupported" in src

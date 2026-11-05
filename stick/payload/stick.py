@@ -33,8 +33,8 @@ OPENCL_TIMEOUT_S = 20 * 60
 CLPEAK_TESTS = ["--global-bandwidth", "--compute-sp", "--compute-hp", "--compute-integer", "--transfer-bandwidth",
                 "--kernel-latency"]
 SOFTWARE_DEVICES = re.compile(r"(?i)llvmpipe|softpipe|pthread|\bcpu\b|pocl")
-PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-ladder", "cpu-power-time", "pcie-copy", "gpu-p2p",
-           "gpu-vram", "gpu-gemm", "gpu-launch"]
+PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-shapes", "cpu-gemm-ladder", "cpu-power-time",
+           "pcie-copy", "gpu-p2p", "gpu-vram", "gpu-gemm", "gpu-gemm-shapes", "gpu-launch"]
 DRM = Path("/sys/class/drm")
 FBDEV = Path("/sys/class/graphics")
 SAMPLE_S = 0.2
@@ -101,9 +101,8 @@ VKPROBE = OPT / "bin" / "vkprobe"
 VK_GEMM_TYPES = ["f16", "f16f32", "i8"]
 VK_GEMM_SHAPES = ["512x4096x4096", "2048x2048x2048", "4096x4096x4096"]
 VENDOR_GEMM_PRECS = ["fp32", "tf32", "fp16_fp32acc", "fp16", "bf16", "int8"]
-VENDOR_GEMM_SHAPES = ["1x4096x4096", "8x2048x2048", "8x4096x4096", "32x4096x4096", "128x4096x4096", "512x2048x2048",
-                      "2048x2048x2048", "512x8192x8192", "2048x8192x8192", "4096x4096x4096", "8192x8192x8192",
-                      "16384x16384x4096"]
+# the same tokens-in-flight sweep as gpu-gemm-shapes on CUDA (design/engine-primitives.md, item 2), plus the square peak
+VENDOR_GEMM_SHAPES = [f"{m}x{n}x4096" for n in (4096, 14336) for m in (1, 4, 16, 64, 256, 1024, 4096, 8192)] + ["8192x8192x8192"]
 PROBE_TIMEOUT_S = 10 * 60
 AMD_DEVICES = ["--device", "/dev/kfd", "--device", "/dev/dri", "--security-opt", "seccomp=unconfined"]
 INTEL_DEVICES = ["--device", "/dev/dri"]

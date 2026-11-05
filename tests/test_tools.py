@@ -104,3 +104,32 @@ def test_sycl_values_measured_without_onednn_are_flagged(tmp_path):
     assert got["llama-bench/sycl/dev0/tiny/tg128"]["sycl_onednn"] is False
     assert "sycl_onednn" not in got["llama-bench/sycl/dev1/tiny/tg128"]
     assert got["llama-bench/sycl/dev0/big/tg128"]["sycl_onednn"] is False
+
+
+def test_gemm_values_with_clock_isa_and_unsupported_left_out(tmp_path):
+    import importlib.util, json as js
+    spec = importlib.util.spec_from_file_location("m", ROOT / "tools" / "measurements.py")
+    M = importlib.util.module_from_spec(spec); spec.loader.exec_module(M)
+    run = tmp_path / "r"
+    g = run / "q" / "gpu-gemm-shapes"; g.mkdir(parents=True)
+    (g / "baseline.json").write_text(js.dumps(dict(gpus=[dict(name="gpu0", bus="00000000:01:00.0")])))
+    rows = [dict(rc=0, params=dict(gpu="gpu0", prec="bf16", shape="1x4096x4096"),
+                 results=[dict(mode="gemm", prec="bf16", m=1, n=4096, k=4096, ops_per_s=2e12)],
+                 samples=dict(gpu0={"clocks.sm": dict(median=1710.0), "power.draw": dict(median=180.0)})),
+            dict(rc=0, params=dict(gpu="gpu0", prec="fp8", shape="1x4096x4096"),
+                 results=[dict(mode="gemm", prec="fp8", m=1, n=4096, k=4096, unsupported=True)])]
+    (g / "results.jsonl").write_text("".join(js.dumps(r) + "\n" for r in rows))
+    c = run / "q" / "cpu-gemm-shapes"; c.mkdir(parents=True)
+    (c / "results.jsonl").write_text(js.dumps(dict(rc=0, params=dict(prec="bf16", shape="512x4096x4096", threads=0),
+        results=[dict(mode="cgemm", prec="bf16", n=4096, m=512, nn=4096, k=4096, threads=8, ops_per_s=6.35e11,
+                      isa=4079, impl="brg:avx512_core_amx", lib="onednn")])) + "\n")
+    old = run / "q" / "cpu-gemm"; old.mkdir(parents=True)                    # before shapes: square --n only
+    (old / "results.jsonl").write_text(js.dumps(dict(rc=0, params=dict(prec="fp32", n=512, threads=1),
+        results=[dict(mode="cgemm", prec="fp32", n=512, threads=1, ops_per_s=5.27e10, isa=15, lib="openblas")])) + "\n")
+    got = {m["key"]: m for m in M.extract(run)["measurements"]}
+    b = got["gpu-gemm/gpu0/bf16/1x4096x4096"]
+    assert b["value"] == 2.0 and b["unit"] == "TFLOP/s" and b["conditions"]["sm_clock_mhz"] == 1710.0
+    assert b["conditions"]["pci"] == "0000:01:00.0" and not any("fp8" in k for k in got)
+    a = got["cpu-gemm/bf16/512x4096x4096/t8"]
+    assert abs(a["value"] - 635) < 1 and a["conditions"]["impl"] == "brg:avx512_core_amx"
+    assert "cpu-gemm/fp32/512x512x512/t1" in got and M.VERSION == "4"

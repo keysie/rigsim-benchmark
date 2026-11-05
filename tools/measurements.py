@@ -9,6 +9,8 @@ model stay apart; the device part of a key is the index within that backend (gpu
 
 Keys are stable (they are how a prediction finds its measurement) and versioned with VERSION; a new kind of value
 gets a new key, an existing key never changes meaning:
+  gpu-gemm/<gpu>/<prec>/<M>x<N>x<K>                 TFLOP/s (int8: TOP/s)   cuBLAS, with SM clock and power
+  cpu-gemm/<prec>/<M>x<N>x<K>/t<threads>            GFLOP/s (int8: GOP/s)   OpenBLAS / oneDNN, with ISA and kernel
   llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
@@ -22,7 +24,7 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "3"                  # 2: cpu-mem-ladder values; 3: sycl_onednn condition. Any change bumps it.
+VERSION = "4"                  # 2: cpu-mem-ladder; 3: sycl_onednn condition; 4: gpu-gemm, cpu-gemm. Any change bumps it.
 LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
@@ -171,8 +173,68 @@ def mlc(run: Path) -> list[dict]:
     return out
 
 
+def _gemm_rows(run: Path, questions: tuple[str, ...]) -> dict[tuple, dict]:
+    """Rows of the GEMM questions, grouped by (device, prec, M, N, K, threads)."""
+    by: dict[tuple, dict] = {}
+    for q in questions:
+        f = run / "q" / q / "results.jsonl"
+        for row in (_json_lines(f) if f.exists() else []):
+            if row.get("rc") != 0 or row.get("smoke"):
+                continue
+            p = row.get("params", {})
+            for r in row.get("results") or []:
+                if r.get("unsupported") or not r.get("ops_per_s"):
+                    continue
+                m, n, k = r.get("m", r.get("n")), r.get("nn", r.get("n")), r.get("k", r.get("n"))
+                key = (str(p.get("gpu", "")), r.get("prec", p.get("prec", "")), m, n, k, r.get("threads", 0))
+                e = by.setdefault(key, dict(v=[], src=q, impl=r.get("impl", ""), isa=r.get("isa"), lib=r.get("lib", ""),
+                                            clock=[], power=[]))
+                e["v"].append(r["ops_per_s"])
+                s = (row.get("samples") or {}).get(str(p.get("gpu", "")), {})
+                if s.get("clocks.sm", {}).get("median") is not None:
+                    e["clock"].append(s["clocks.sm"]["median"])
+                if s.get("power.draw", {}).get("median") is not None:
+                    e["power"].append(s["power.draw"]["median"])
+    return by
+
+
+def gpu_gemm(run: Path) -> list[dict]:
+    """cuBLAS rates per card, format and shape (gpu-gemm, gpu-gemm-shapes): TFLOP/s (int8: TOP/s), with the card's SM
+    clock and power during the point (format 1.x samples)."""
+    bus = {}
+    for b in sorted((run / "q").glob("gpu-gemm*/baseline.json")):
+        try:
+            bus.update({g["name"]: _norm_pci(g.get("bus", "")) for g in json.loads(b.read_text()).get("gpus", [])})
+        except (ValueError, KeyError):
+            pass
+    out = []
+    for (g, prec, m, n, k, _), e in sorted(_gemm_rows(run, ("gpu-gemm", "gpu-gemm-shapes")).items(), key=str):
+        c = dict(gpu=g, prec=prec, m=m, n=n, k=k, repeats=len(e["v"]), pci=bus.get(g, ""))
+        if e["clock"]:
+            c["sm_clock_mhz"] = statistics.median(e["clock"])
+        if e["power"]:
+            c["power_w"] = statistics.median(e["power"])
+        out.append(dict(key=f"gpu-gemm/{g}/{prec}/{m}x{n}x{k}", value=statistics.median(e["v"]) / 1e12,
+                        unit="TOP/s" if prec == "int8" else "TFLOP/s", spread=0.0, source=f"q/{e['src']}/results.jsonl",
+                        conditions=c))
+    return out
+
+
+def cpu_gemm(run: Path) -> list[dict]:
+    """CPU rates per format, shape and thread count (cpu-gemm, cpu-gemm-shapes): GFLOP/s (int8: GOP/s), with the
+    library, oneDNN's ISA code and kernel."""
+    out = []
+    for (_, prec, m, n, k, t), e in sorted(_gemm_rows(run, ("cpu-gemm", "cpu-gemm-shapes")).items(), key=str):
+        out.append(dict(key=f"cpu-gemm/{prec}/{m}x{n}x{k}/t{t}", value=statistics.median(e["v"]) / 1e9,
+                        unit="GOP/s" if prec == "int8" else "GFLOP/s", spread=0.0, source=f"q/{e['src']}/results.jsonl",
+                        conditions=dict(prec=prec, m=m, n=n, k=k, threads=t, repeats=len(e["v"]), lib=e["lib"],
+                                        isa=e["isa"], impl=e["impl"])))
+    return out
+
+
 def extract(run: Path) -> dict:
-    return dict(version=VERSION, run=run.name, measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run))
+    return dict(version=VERSION, run=run.name,
+                measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run))
 
 
 if __name__ == "__main__":
