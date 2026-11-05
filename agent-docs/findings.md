@@ -226,7 +226,7 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   installed, nv-kernel.o alone 113 MB) plus Canonical's detached signatures, linked at install time. Estimate for the old-GPU
   sprint: system image +30–100 MB (proprietary set, more if the objects stay), llama.cpp CUDA +~1/9 per added
   architecture, the two forks built for sm_60/61 only, firmware and user-space unchanged. To be measured on a build.
-- Build facts (2026-10-31): Ubuntu's proprietary NVIDIA module package for a kernel is a stub that depends on
+- Build facts (2026-10-31, corrected 2026-11-05): the late-link also needs `linux-headers-<kernel>` (objtool, scripts/module.lds), which the package does not pull in. Ubuntu's proprietary NVIDIA module package for a kernel is a stub that depends on
   `linux-objects-nvidia-580-<kver>` + `linux-signatures-nvidia-<kver>`; its postinst links the .ko files from `bits/`
   (late-link, debconf default true). Both flavours install to their own directory with the same module names and do
   not conflict as packages, so the swap flavour is installed, copied out and purged before the boot flavour.

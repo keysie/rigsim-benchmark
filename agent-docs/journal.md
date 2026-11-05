@@ -143,3 +143,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   core type/clock; cpu-latency values (186 tests).
 - **2026-11-04** — Bug hunt before the first build (user): six faults fixed (casper swap the most serious); my source-mirroring
   tests replaced by tests that run the probes, fio and run_vendor; 183 tests. Older mirror tests listed as an open point.
+- **2026-11-05** — First build of the sprint failed in the rootfs: the proprietary NVIDIA modules link at install time and
+  need objtool and scripts/module.lds from `linux-headers-<kernel>` (checked in the package). Headers now installed for
+  the link and purged with it. Also: the user's build command had MLC_URL and BLENDER_LAUNCHER_URL swapped.
