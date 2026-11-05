@@ -19,7 +19,12 @@ Decided (user): steps 1–5 in this sprint; drives read-only, nothing identifyin
    shapes), `cpu-gemm-shapes` (OpenBLAS fp32, oneDNN int8/bf16/fp16 with the chosen ISA and kernel; tested here on a
    Sapphire Rapids core: AMX bf16 635 GFLOP/s vs fp32 170), vendor GEMM sweep on ROCm/oneAPI, `gpu-gemm`/`cpu-gemm`
    values (measurements VERSION 4). Not on hardware yet.
-2. Next: step 2 (transfer sweeps), 3 (storage), 4 (CPU core-to-core, barriers), 5 (fp8/fp4).
+2. **Step 2 built**: `pcie-xfer` (h2d/d2h/bidir × pinned/pageable, 4 KiB…256 MiB: latency of one copy + wait, rate
+   of queued copies), `gpu-p2p-xfer` (every neighbouring pair, peer on/off), `gpu-overlap` (GEMM vs copy); the same
+   sweep in the ROCm (hipified CUDA probe) and oneAPI probes; values `xfer/…`, `gpu-overlap/…` (measurements VERSION 5).
+   CUDA probe compile-checked here (nvcc 12.0, no GPU); the SYCL code is not compiled here — the oneAPI image build is
+   its first compile.
+3. Next: step 3 (storage), 4 (CPU core-to-core, barriers), 5 (fp8/fp4).
 **Merge note:** this branch uses stick 0.15.0 and measurements VERSION 4; `sprint/old-gpus` (0.14.0, VERSION 4, format 1.7)
 must renumber whichever merges second.
 
