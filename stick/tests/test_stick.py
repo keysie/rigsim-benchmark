@@ -1553,7 +1553,7 @@ def test_gpu_memory_check_and_device_lost(tmp_path, monkeypatch):
 def test_gemm_shape_questions_expand():
     g = hwq.load_plan(str(HERE / "questions" / "gpu-gemm-shapes.toml"))
     items = hwq.expand(g, False, [dict(name="gpu0", index=0)])
-    assert len(items) == 6 * 16 and {i["params"]["prec"] for i in items} >= {"bf16", "tf32", "fp16_fp32acc"}
+    assert len(items) == 9 * 16 and {i["params"]["prec"] for i in items} >= {"bf16", "tf32", "fp16_fp32acc", "fp8", "nvfp4", "mxfp4"}
     assert {i["params"]["shape"].split("x")[0] for i in items} == {"1", "4", "16", "64", "256", "1024", "4096", "8192"}
     assert len(hwq.expand(g, True, [dict(name="gpu0", index=0)])) == 2
     c = hwq.load_plan(str(HERE / "questions" / "cpu-gemm-shapes.toml"))
@@ -1630,3 +1630,13 @@ def test_core_to_core_question_and_probe():
               "pthread_barrier_wait", "spread-l3", "p-cores"):
         assert s in src, s
     assert "src/c2c.c" in (HERE / "overlay" / "toolkits" / "cpu" / "setup.sh").read_text()
+
+
+def test_fp8_fp4_through_cublaslt():
+    src = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "src" / "probe.cu").read_text()
+    for t in ("CUDA_R_8F_E4M3", "CUDA_R_4F_E2M1", "CUBLASLT_MATMUL_MATRIX_SCALE_VEC16_UE4M3", "CUBLASLT_MATMUL_MATRIX_SCALE_VEC32_UE8M0",
+              "cublasLtMatmulAlgoGetHeuristic", "fp8 needs sm_89 or newer", "fp4 needs sm_100 or newer", "CUBLAS_VERSION < 120800"):
+        assert t in src, t
+    assert "defined(__HIPCC__)" in src                  # the ROCm build reports the formats as unsupported
+    for f in (HERE / "overlay" / "toolkits" / "cuda" / "setup.sh", HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "setup.sh"):
+        assert "-lcublasLt" in f.read_text()

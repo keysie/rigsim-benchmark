@@ -1,5 +1,7 @@
 // rigsim hardware probe (CUDA + cuBLAS). Prints one JSON object per result line on stdout.
-//   probe gemm   --prec fp32|tf32|fp16_fp32acc|fp16|bf16|int8 --shape MxNxK [--reps 50] [--warmup 5]
+//   probe gemm   --prec fp32|tf32|fp16_fp32acc|fp16|bf16|int8|fp8|nvfp4|mxfp4 --shape MxNxK [--reps 50] [--warmup 5]
+//                fp8 (e4m3 x e4m3, sm_89+), nvfp4 / mxfp4 (e2m1 with block scales, sm_100+, cuBLAS 12.8+) go through
+//                cuBLASLt with bf16 output; elsewhere they are reported "unsupported" with the reason
 //   probe stream --op read|write|copy [--mib 4096] [--reps 20]
 //   probe load   --kind compute|memory [--duty 1.0] [--seconds 30] [--period-ms 20]
 //   probe copy   --dir h2d|d2h|bidir|d2d [--mib 512] [--reps 10]   every visible card at once (one thread each)
@@ -10,6 +12,9 @@
 //   probe overlap [--mib 256] [--seconds 2]   a GEMM alone, a host->card copy stream alone, both at once
 // Inputs are random (power depends on the data: zeros would draw less and run at a higher clock).
 #include <cublas_v2.h>
+#if !defined(__HIP_PLATFORM_AMD__) && !defined(__HIPCC__)
+#include <cublasLt.h>
+#endif
 #include <cuda_bf16.h>
 #include <cuda_fp16.h>
 #include <cuda_runtime.h>
@@ -112,11 +117,99 @@ static const Prec* prec_by_name(const std::string& s) {
     fprintf(stderr, "unknown precision %s\n", s.c_str()); exit(1);
 }
 
+// ---- fp8 / fp4 through cuBLASLt (design/engine-primitives.md, item 2, step 5) ---------------------------------------
+// The low-precision formats engines run on recent cards: e4m3 fp8 (Ada, Hopper, Blackwell) and e2m1 fp4 with a block
+// scale per 16 (nvfp4, UE4M3 scales) or 32 (mxfp4, UE8M0) values (Blackwell). A is used transposed ("TN"), as cuBLASLt
+// requires for these types; M is padded to 16 (the engines pad too); the output is bf16. Scales are constant: their
+// values do not change the speed. The ROCm build (hipified) reports these formats as unsupported for now.
+static void unsupported_line(const char* prec, int m, int n, int k, const char* why) {
+    printf("{\"mode\":\"gemm\",\"prec\":\"%s\",\"m\":%d,\"n\":%d,\"k\":%d,\"unsupported\":true,\"why\":\"%s\"}\n",
+           prec, m, n, k, why);
+}
+static int lt_gemm(const std::string& prec, int m, int n, int k, int reps, int warmup) {
+#if defined(__HIP_PLATFORM_AMD__) || defined(__HIPCC__)
+    unsupported_line(prec.c_str(), m, n, k, "fp8/fp4 not implemented in the ROCm build yet"); return 0;
+#else
+    cudaDeviceProp pr; CK(cudaGetDeviceProperties(&pr, 0));
+    int sm = pr.major * 10 + pr.minor;
+    bool fp4 = prec != "fp8";
+    if (!fp4 && sm < 89) { unsupported_line(prec.c_str(), m, n, k, "fp8 needs sm_89 or newer"); return 0; }
+#if !defined(CUBLAS_VERSION) || CUBLAS_VERSION < 120800
+    if (fp4) { unsupported_line(prec.c_str(), m, n, k, "fp4 needs cuBLAS 12.8 or newer"); return 0; }
+#else
+    if (fp4 && sm < 100) { unsupported_line(prec.c_str(), m, n, k, "fp4 needs sm_100 or newer"); return 0; }
+#endif
+    int mp = (m + 15) / 16 * 16;                         // padded M
+    cudaDataType_t ab = CUDA_R_8F_E4M3;
+    double elem = 1.0;                                    // bytes per element of A and B
+#if defined(CUBLAS_VERSION) && CUBLAS_VERSION >= 120800
+    if (fp4) { ab = CUDA_R_4F_E2M1; elem = 0.5; }
+#endif
+    cublasLtHandle_t lt; if (cublasLtCreate(&lt) != CUBLAS_STATUS_SUCCESS) { unsupported_line(prec.c_str(), m, n, k, "no cuBLASLt"); return 0; }
+    cublasLtMatmulDesc_t op; CB(cublasLtMatmulDescCreate(&op, CUBLAS_COMPUTE_32F, CUDA_R_32F));
+    cublasOperation_t ta = CUBLAS_OP_T, tb = CUBLAS_OP_N;
+    CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_TRANSA, &ta, sizeof ta));
+    CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_TRANSB, &tb, sizeof tb));
+    void *A, *B, *D, *sa = nullptr, *sb = nullptr;
+    size_t a_bytes = (size_t)((double)k * mp * elem), b_bytes = (size_t)((double)k * n * elem);
+    CK(cudaMalloc(&A, a_bytes)); CK(cudaMalloc(&B, b_bytes)); CK(cudaMalloc(&D, (size_t)mp * n * 2));
+    CK(cudaMemset(A, 0x33, a_bytes)); CK(cudaMemset(B, 0x2a, b_bytes)); CK(cudaMemset(D, 0, (size_t)mp * n * 2));
+    float one = 1.f, zero = 0.f;
+#if defined(CUBLAS_VERSION) && CUBLAS_VERSION >= 120800
+    if (fp4) {                                            // one scale per 16 (nvfp4) / 32 (mxfp4) values along K
+        int vec = prec == "nvfp4" ? 16 : 32;
+        cublasLtMatmulMatrixScale_t mode = prec == "nvfp4" ? CUBLASLT_MATMUL_MATRIX_SCALE_VEC16_UE4M3
+                                                           : CUBLASLT_MATMUL_MATRIX_SCALE_VEC32_UE8M0;
+        // the scale tensors' tiled layout rounds rows up to 128 and scale columns up to 4
+        size_t sa_bytes = (size_t)((mp + 127) / 128 * 128) * (((k / vec) + 3) / 4 * 4);
+        size_t sb_bytes = (size_t)((n + 127) / 128 * 128) * (((k / vec) + 3) / 4 * 4);
+        CK(cudaMalloc(&sa, sa_bytes)); CK(cudaMalloc(&sb, sb_bytes));
+        unsigned char s1 = prec == "nvfp4" ? 0x38 : 0x7f; // 1.0 in UE4M3 / UE8M0
+        CK(cudaMemset(sa, s1, sa_bytes)); CK(cudaMemset(sb, s1, sb_bytes));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_A_SCALE_MODE, &mode, sizeof mode));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_B_SCALE_MODE, &mode, sizeof mode));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_A_SCALE_POINTER, &sa, sizeof sa));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_B_SCALE_POINTER, &sb, sizeof sb));
+    }
+#endif
+    cublasLtMatrixLayout_t la, lb, lc, ld;
+    CB(cublasLtMatrixLayoutCreate(&la, ab, k, mp, k));    // A stored k x m (transposed in the op)
+    CB(cublasLtMatrixLayoutCreate(&lb, ab, k, n, k));
+    CB(cublasLtMatrixLayoutCreate(&lc, CUDA_R_16BF, mp, n, mp));
+    CB(cublasLtMatrixLayoutCreate(&ld, CUDA_R_16BF, mp, n, mp));
+    size_t ws = 32 << 20; void* wsp; CK(cudaMalloc(&wsp, ws));
+    cublasLtMatmulPreference_t pref; CB(cublasLtMatmulPreferenceCreate(&pref));
+    CB(cublasLtMatmulPreferenceSetAttribute(pref, CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES, &ws, sizeof ws));
+    cublasLtMatmulHeuristicResult_t h; int found = 0;
+    cublasStatus_t hs = cublasLtMatmulAlgoGetHeuristic(lt, op, la, lb, lc, ld, pref, 1, &h, &found);
+    if (hs != CUBLAS_STATUS_SUCCESS || found == 0) {
+        char why[96]; snprintf(why, sizeof why, "cuBLASLt has no kernel for this shape (status %d)", (int)hs);
+        unsupported_line(prec.c_str(), m, n, k, why); return 0;
+    }
+    auto call = [&] { return cublasLtMatmul(lt, op, &one, A, la, B, lb, &zero, D, lc, D, ld, &h.algo, wsp, ws, 0); };
+    for (int i = 0; i < warmup; ++i) CB(call());
+    CK(cudaDeviceSynchronize());
+    cudaEvent_t e0, e1; CK(cudaEventCreate(&e0)); CK(cudaEventCreate(&e1));
+    std::vector<float> ms(reps);
+    for (int i = 0; i < reps; ++i) { CK(cudaEventRecord(e0)); CB(call()); CK(cudaEventRecord(e1)); CK(cudaEventSynchronize(e1)); CK(cudaEventElapsedTime(&ms[i], e0, e1)); }
+    std::sort(ms.begin(), ms.end());
+    double med = ms[reps / 2] / 1e3, ops = 2.0 * m * (double)n * k;
+    printf("{\"mode\":\"gemm\",\"prec\":\"%s\",\"m\":%d,\"n\":%d,\"k\":%d,\"m_run\":%d,\"reps\":%d,\"ops\":%.0f,"
+           "\"t_median_s\":%.9g,\"t_min_s\":%.9g,\"t_max_s\":%.9g,\"ops_per_s\":%.6g,\"lib\":\"cublasLt\",\"cublas\":%d}\n",
+           prec.c_str(), m, n, k, mp, reps, ops, med, ms[0] / 1e3, ms[reps - 1] / 1e3, ops / med, (int)cublasLtGetVersion());
+    cudaFree(A); cudaFree(B); cudaFree(D); cudaFree(wsp); if (sa) cudaFree(sa); if (sb) cudaFree(sb);
+    cublasLtMatmulPreferenceDestroy(pref); cublasLtMatmulDescDestroy(op); cublasLtDestroy(lt);
+    return 0;
+#endif
+}
+
 static int gemm_mode(int argc, char** argv) {
-    const Prec* p = prec_by_name(arg(argc, argv, "--prec", "fp16"));
+    std::string pn = arg(argc, argv, "--prec", "fp16");
     int m, n, k;
     if (sscanf(arg(argc, argv, "--shape", "4096x4096x4096").c_str(), "%dx%dx%d", &m, &n, &k) != 3) return 1;
     int reps = atoi(arg(argc, argv, "--reps", "50").c_str()), warm = atoi(arg(argc, argv, "--warmup", "5").c_str());
+    if (pn == "fp8" || pn == "nvfp4" || pn == "mxfp4") return lt_gemm(pn, m, n, k, reps, warm);
+    const Prec* p = prec_by_name(pn);
     Gemm g(p, m, n, k);
     cublasStatus_t first = g.call();
     if (first == CUBLAS_STATUS_NOT_SUPPORTED || first == CUBLAS_STATUS_INVALID_VALUE) {

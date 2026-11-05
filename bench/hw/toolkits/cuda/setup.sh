@@ -4,7 +4,7 @@
 # sm_90 = Hopper; PTX for anything newer.
 set -eu
 cd /opt/rigsim-hwbench
-nvcc -O3 -std=c++17 -o /usr/local/bin/probe src/probe.cu -lcublas -lpthread \
+nvcc -O3 -std=c++17 -o /usr/local/bin/probe src/probe.cu -lcublas -lcublasLt -lpthread \
   -gencode arch=compute_80,code=sm_80 -gencode arch=compute_86,code=sm_86 \
   -gencode arch=compute_89,code=sm_89 -gencode arch=compute_90,code=sm_90 -gencode arch=compute_90,code=compute_90
 nvcc --version | tail -1

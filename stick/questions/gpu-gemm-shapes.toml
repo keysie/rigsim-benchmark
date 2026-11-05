@@ -1,5 +1,5 @@
 question = "gpu-gemm-shapes"
-asks = "cuBLAS matrix throughput over the tokens in flight (M = 1 … 8192) at two layer shapes of an 8B-class model, in every format the card's matrix units take: fp32, tf32, fp16 with fp16 or fp32 accumulation, bf16, int8 — the memory-bound decode region, the bend, the compute-bound prefill region (stick profile, default power limit; formats the card lacks are recorded as unsupported)."
+asks = "cuBLAS matrix throughput over the tokens in flight (M = 1 … 8192) at two layer shapes of an 8B-class model, in every format the card's matrix units take: fp32, tf32, fp16 with fp16 or fp32 accumulation, bf16, int8, and through cuBLASLt fp8 e4m3 (sm_89+) and fp4 e2m1 with nvfp4 / mxfp4 block scales (sm_100+) — the memory-bound decode region, the bend, the compute-bound prefill region (stick profile, default power limit; formats the card lacks are recorded as unsupported)."
 feeds = "Rates per (operation class, data type) and the weight-read rate of the GEMV region (hw/rates.py); decode and prefill bounds of engines (design/engine-primitives.md, item 2)."
 image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
 toolkit = "cuda"
@@ -11,7 +11,7 @@ timeout_s = 900
 
 [grid]
 gpu = ["@all"]
-prec = ["fp32", "tf32", "fp16", "fp16_fp32acc", "bf16", "int8"]
+prec = ["fp32", "tf32", "fp16", "fp16_fp32acc", "bf16", "int8", "fp8", "nvfp4", "mxfp4"]
 shape = ["1x4096x4096", "4x4096x4096", "16x4096x4096", "64x4096x4096", "256x4096x4096", "1024x4096x4096",
          "4096x4096x4096", "8192x4096x4096",
          "1x14336x4096", "4x14336x4096", "16x14336x4096", "64x14336x4096", "256x14336x4096", "1024x14336x4096",
