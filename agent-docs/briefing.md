@@ -23,8 +23,10 @@ Goal: measure what LLM engines depend on (design `design/engine-primitives.md`),
 1. User builds a stick from this branch (rootfs rebuilt: chroot-setup.sh changed — proprietary late-link, fio; fork
    builds; probe with cuBLASLt) and runs it: the 13700K + RTX 3080 covers most of it (hybrid CPU, NVMe, CUDA); fp8/fp4
    need Ada or newer; the module switch needs a Pascal card next to a newer one.
-2. DDR items now in this sprint (open-points "DDR timing improvements"): SPD status in run.json, latency probe pinned
-   with core type and frequency + 1 MiB point, lockdown state recorded — proposed earlier, waiting for the go.
+2. **DDR items built** (user cleared): `hardware.spd` (decoded / raw / unavailable + reason: decode-dimms' message,
+   SMBus adapters, SPD devices bound), `hardware.lockdown`, `cpu-mem-latency` pinned to the fastest core (and an E-core
+   on hybrid parts) with its clock, grid 1 / 16 / 64 / 1024 / 4096 MiB, values `cpu-latency/…`. Still parked: register
+   timings (spike, Secure Boot off only), row-hit/miss; the fixed latency term is a rigsim topic.
 3. Open points from the merge: second-phase values of the new GPU questions; storage + GPU contention; iGPU zero-copy;
    hipBLASLt fp8; collectives (next sprint).
 

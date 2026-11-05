@@ -57,6 +57,7 @@ Last revised: 2026-10-31.
    vs 90.6 (with CAS). Adding programmed CAS raises predictions; the error is the fixed term (75.35 ns, from the X299
    mesh machine) — a per-platform term in rigsim, not timings.
 
+   **2026-11-04: items 2, 3 and the lockdown state built** in `sprint/engine-primitives`; left: 1 (spike), 4 (parked), 5 (rigsim).
 8. **Second-phase values of the new GPU questions** [agent, 2026-11-04]: after the NVIDIA module switch the stick also
    runs `gpu-gemm-shapes`, `pcie-xfer`, `gpu-p2p-xfer`, `gpu-overlap` into `nvidia-swap/q/`, but `measurements.py`
    extracts only llama-bench and gpu-vram from there (with gpuN continued). Extend the gemm/xfer/overlap extractors the same way.

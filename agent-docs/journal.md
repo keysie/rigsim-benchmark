@@ -139,3 +139,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   and one measurements VERSION 7 for all of it, stick 0.15.0; sm_60 (P100) and sm_100 added to the stick's own CUDA
   probe build (overlay), the AI box's build back to sm_80+.
 - **2026-11-04** — `ddr-timing-improvements` folded in too; PRs #25 and #26 closed in favour of #36, branches deleted.
+- **2026-11-04** — DDR items built in this sprint: SPD status, lockdown mode, pinned latency probe with cache points and
+  core type/clock; cpu-latency values (186 tests).
