@@ -108,3 +108,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   built (GEMM shapes and formats, CPU and GPU; stick 0.15.0, measurements VERSION 4; 165 tests).
 - **2026-11-04** — Step 2 built (transfer sweeps, P2P sweep, overlap; vendor probes; measurements VERSION 5; 167 tests).
 - **2026-11-04** — Step 3 built (read-only storage step; format 1.7, measurements VERSION 6; 171 tests).
+- **2026-11-04** — Step 4 built (cpu-c2c; VERSION 7; 173 tests). Found that the stick's CUDA probe build is the overlay
+  (sm_52…sm_120); the old-GPU sprint's claim about sm_80+ only was wrong, sm_60 is the one missing — recorded for that branch.

@@ -201,3 +201,11 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   CPY lost its context after 8 — both recorded as `device_lost`, llama-bench rc 0; Blender junkshop at the limit.
 - MLC: the kernel gave only **750 of 1000** hugepages (an hour into the run; the manual test got them right after boot,
   *inferred*: memory fragmented by then), and MLC still stops with rc 22 — it needs the full 1000 per node.
+
+## Correction: which CUDA probe build the stick uses (2026-11-04; read from source)
+
+- The stick builds its CUDA probe with `stick/overlay/toolkits/cuda/setup.sh` (sm_52, 61, 70, 75, 80, 86, 89, 90, 120 +
+  PTX), not with `bench/hw/toolkits/cuda/setup.sh` (the AI box's sm_80+ variant). The statement of 2026-10-31 in the
+  old-GPU findings ("the CUDA probe is compiled for sm_80+ only, Turing/Volta/Pascal cannot run it") was wrong for the
+  stick; only **sm_60 (P100)** is missing from the stick's list. `sprint/old-gpus` edited the bench file instead of the
+  overlay — to fix there (add sm_60 to the overlay, revert or keep the bench change deliberately).

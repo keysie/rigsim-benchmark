@@ -29,7 +29,11 @@ Decided (user): steps 1–5 in this sprint; drives read-only, nothing identifyin
    sequential; ~100 s per drive, at most 4 drives; kept: kind, capacity class, model, NVMe link, temperature; values
    `storage/…` (VERSION 6), run format 1.7 (collides with `sprint/old-gpus` — renumber at merge). Tested here against a
    file (fio 3.36: parser, read-only guard refuses a write job). Deferred: drive + GPU copy contention.
-4. Next: step 4 (CPU core-to-core, barriers), 5 (fp8/fp4).
+4. **Step 4 built**: `cpu-c2c` — new C probe `c2c` in the CPU toolkit (stick overlay): one-way cache-line latency for
+   pairs of physical cores (≤ 32, sampled evenly beyond) by relation (smt, same-l3, other-l3, other-package) and core
+   types (P/E), spin and futex barriers over 2 … all cores in four placements; values `cpu-c2c/…`, `cpu-barrier/…`
+   (VERSION 7). Compiled here with -Wall -Wextra, no warnings; this sandbox has one CPU, so only the one-core path ran.
+5. Next: step 5 (fp8/fp4 through cuBLASLt, then hipBLASLt).
 **Merge note:** this branch uses stick 0.15.0 and measurements VERSION 4; `sprint/old-gpus` (0.14.0, VERSION 4, format 1.7)
 must renumber whichever merges second.
 
