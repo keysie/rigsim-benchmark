@@ -31,7 +31,7 @@ bandwidth) and on again at the end.
   after every other step and measures the CUDA questions and llama-bench on those cards (`nvidia-swap/` in the run);
   so a machine with a P100 next to an RTX 4090 gets both measured, each with the driver that supports it. Tests across
   the two groups (P2P between them) are not possible and not made. CUDA builds include sm_60 / sm_61 / sm_70 / sm_75.
-  On sm_60 / sm_61 cards (P100, P40, GTX 10) two llama.cpp forks tuned for Pascal run next to upstream, as their own
+  On sm_60 cards (P100) two llama.cpp forks tuned for it run next to upstream (sm_61 does not build: shared memory), as their own
   backend: [qr0n/p100-llama-cpp](https://github.com/qr0n/p100-llama-cpp) and
   [Kmic-68/llama.cpp](https://github.com/Kmic-68/llama.cpp) (`p100-optimizations`), pinned by commit in `build.sh`
   (`LLAMA_FORKS=""` leaves them out).

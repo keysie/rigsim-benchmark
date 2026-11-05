@@ -289,17 +289,19 @@ cached_step "$C/llama-cuda.key" "$(key "$LLAMA_COMMIT" "$(image_id "$CUDA_IMAGE"
   "llama.cpp CUDA (10 architectures)" llama_build cuda "$CUDA_IMAGE" "$LLAMA_CUDA"
 cached_step "$C/llama-vulkan.key" "$(key "$LLAMA_COMMIT" "$(image_id "ubuntu:$SUITE")" "$LLAMA_VULKAN")" \
   "llama.cpp Vulkan" llama_build vulkan "ubuntu:$SUITE" "$LLAMA_VULKAN"
-# llama.cpp forks tuned for Pascal (P100 sm_60, P40 / GTX 10 sm_61): llama-bench only, built for those two
-# architectures in the same CUDA 12 image, pinned by commit; the stick runs them only on sm_60 / sm_61 cards, as their
-# own backend ("cuda+<name>"), next to upstream. LLAMA_FORKS="" leaves them out; entries: name=url@commit[:subdir].
+# llama.cpp forks tuned for the Tesla P100 (sm_60): llama-bench only, built for sm_60 in the same CUDA 12 image, pinned
+# by commit; the stick runs them only on sm_60 cards, as their own backend ("cuda+<name>"), next to upstream. Both forks
+# build for sm_60 only: their flash-attention tile kernels for head size 256 need 50-64 KB of static shared memory on
+# sm_61, over the 48 KB limit (first build 2026-11-05; reproduced with nvcc 12.0 on the pinned commits). LLAMA_FORKS=""
+# leaves them out; entries: name=url@commit[:subdir].
 LLAMA_FORKS="${LLAMA_FORKS-qr0n=https://github.com/qr0n/p100-llama-cpp@dc5c644c45f35167edfa041110f8c9bd75404b34:llama.cpp kmic68=https://github.com/Kmic-68/llama.cpp@7461904dbc7fb4e2959878b241a76f6dc19cd391}"
 LLAMA_FORK_BUILD='
   set -e; apt-get update -qq && apt-get install -y -qq git cmake >/dev/null
   git init -q /src && cd /src && git remote add origin "$URL" && git fetch -q --depth 1 origin "$COMMIT" && git checkout -q FETCH_HEAD
   cd "/src/$SUB"
-  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="60;61" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DGGML_NATIVE=OFF >/dev/null
+  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="60" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DGGML_NATIVE=OFF >/dev/null
   cmake --build b --target llama-bench -j"$(nproc)"
-  cp b/bin/llama-bench /out/ && echo "$URL" > /out/URL && echo "$COMMIT" > /out/COMMIT && echo "60 61" > /out/ARCHS'
+  cp b/bin/llama-bench /out/ && echo "$URL" > /out/URL && echo "$COMMIT" > /out/COMMIT && echo "60" > /out/ARCHS'
 fork_build() {    # name url commit subdir
   rm -rf "$L/forks/$1"; mkdir -p "$L/forks/$1"
   docker run --rm --security-opt label=disable -v "$L/forks/$1:/out" -e URL="$2" -e COMMIT="$3" -e SUB="$4" \
@@ -313,7 +315,7 @@ for spec in $LLAMA_FORKS; do
   name="${spec%%=*}"; rest="${spec#*=}"; url="${rest%@*}"; cs="${rest##*@}"; commit="${cs%%:*}"; sub=""
   [[ "$cs" == *:* ]] && sub="${cs#*:}"
   cached_step "$C/llama-fork-$name.key" "$(key "$url" "$commit" "$sub" "$(image_id "$CUDA_IMAGE")" "$LLAMA_FORK_BUILD")" \
-    "llama.cpp fork $name (sm_60/61)" fork_build "$name" "$url" "$commit" "$sub"
+    "llama.cpp fork $name (sm_60)" fork_build "$name" "$url" "$commit" "$sub"
 done
 : > "$OUT/seed/images/VENDOR.tsv"
 vendor_build() {  # name base src tag

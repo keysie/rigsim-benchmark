@@ -1452,7 +1452,7 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path,
         _, out = sh(["nvidia-smi", "--query-gpu=index,compute_cap", "--format=csv,noheader"], timeout=60)
         caps = [(i.strip(), c.strip().replace(".", "")) for i, c in (l.split(",", 1) for l in out.splitlines() if "," in l)]
         for fk in forks:
-            archs = (_read(fk / "ARCHS") or "60 61").split()
+            archs = (_read(fk / "ARCHS") or "60").split()
             for gi, cap in caps:
                 if cap not in archs:
                     continue
