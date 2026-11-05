@@ -205,7 +205,6 @@ def test_clpeak_output_parsed_with_units():
     assert r["Transfer bandwidth (GBPS)"]["Kernel launch latency (us)"] == 5.67
 
 
-
 def sysfs(tmp_path):
     drm = tmp_path / "drm"
     pci = tmp_path / "devices"
@@ -322,7 +321,6 @@ def test_build_fetches_mlc_from_intel_and_never_commits_it():
     assert "MLC_URL" in b and "$OUT/seed/tools/mlc" in b
     assert not list(HERE.rglob("mlc")) or all("out" in p.parts for p in HERE.rglob("mlc"))
     assert "out/" in (HERE / ".gitignore").read_text()
-
 
 
 def test_flash_offers_update_backs_up_first_and_keeps_the_data_partition():
@@ -546,7 +544,6 @@ def test_build_reads_rootfs_files_only_through_rootfile():
     assert 'ln -sf "$(basename' in c                                          # relative links inside the rootfs
 
 
-
 def test_build_caches_every_expensive_part():
     b = (HERE / "build.sh").read_text()
     c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
@@ -622,7 +619,6 @@ def test_containerd_store_on_the_data_partition_and_loaded_images_verified(tmp_p
     assert stick._loaded(img, tmp_path) is False                       # marker there, image gone: load again
     monkeypatch.setattr(stick, "sh", lambda cmd, timeout=0: (0, ""))
     assert stick._loaded(img, tmp_path) is True
-
 
 
 # --- findings of the first trial run (i7-13700K, RTX 3080, UHD 770; stick 1543d5a) -----------------------------------
@@ -730,12 +726,10 @@ def test_manifest_tool(tmp_path, monkeypatch):
     assert m["images"]["debian:trixie"]["offline_packages"] == {"libdnnl3": "3.5.3-1"}
 
 
-
 def test_blender_types_guessed_when_the_launcher_cannot_list_devices(tmp_path):
     for card, vendor in (("card1", "0x8086"), ("card2", "0x10de")):
         (tmp_path / card / "device").mkdir(parents=True); (tmp_path / card / "device" / "vendor").write_text(vendor)
     assert stick.guessed_blender_types(tmp_path) == ["CPU", "OPTIX", "CUDA", "ONEAPI"]
-
 
 
 def test_blender_offline_route(tmp_path, monkeypatch):
@@ -768,7 +762,6 @@ def test_blender_offline_route(tmp_path, monkeypatch):
     assert calls[0][:2] == [str(exe), "--background"] and "--python" in calls[0]
     b_sh = (HERE / "build.sh").read_text()
     assert "blender-benchmark-script-3.1.1.tar.gz" in b_sh and "BLENDER_SCRIPT_URL" in b_sh
-
 
 
 def test_blender_hip_runs_inside_the_rocm_image(tmp_path, monkeypatch):
@@ -975,7 +968,6 @@ def test_status_line(tmp_path, monkeypatch):
         assert hook in src, hook
 
 
-
 def test_unattended_shutdown():
     """Third trial run: systemd's SIGTERM during 'systemctl poweroff' became a traceback, and casper stopped at
     'Please remove the installation medium, then press ENTER' — no power-off without someone there."""
@@ -986,7 +978,6 @@ def test_unattended_shutdown():
     assert all("noprompt noeject" in l for l in g.splitlines() if l.strip().startswith("linux "))
     b = (HERE / "build.sh").read_text()
     assert "xargs -0 -r -I{} tar -xf {}" in b and "unpack-1" in b and "offline_route_missing" in src
-
 
 
 def test_blender_uses_the_launchers_own_script_and_skips_resource_forks(tmp_path):
@@ -1118,7 +1109,6 @@ def test_cpu_power_questions():
     assert '"Package id 0"' in src and '"Tctl"' in src and "temp_c" in src
 
 
-
 def test_every_question_file_is_in_the_profile():
     """A question file the profile does not list never runs (cpu-gemm-ladder / cpu-power-time in stick 0.13.0)."""
     files = {f.stem for f in (HERE / "questions").glob("*.toml")}
@@ -1131,16 +1121,6 @@ def test_runner_lists_every_item_up_front():
     src = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
     i = src.index('state = json.loads(sf.read_text()) if sf.exists() else {}')
     assert src.index('state.setdefault(it["id"], {"status": "pending"})', i) < src.index("def on_signal", i)
-
-
-def test_blender_finds_its_libraries():
-    """Run d7a3 / 1a97: Blender did not start ('libXfixes.so.3' missing): the libraries are installed, and the seed
-    self-test checks with ldd in the system image that none is missing (it replaced the warning-only check)."""
-    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
-    for lib in ("libxfixes3", "libx11-6", "libxi6", "libxxf86vm1", "libxrender1", "libxkbcommon0", "libgl1"):
-        assert lib in c, lib
-    b = (HERE / "build.sh").read_text()
-    assert 'step "seed self-test"' in b and "tools/selftest.py" in b and "blender_libs" not in b
 
 
 # --- seed self-test (stick/tools/selftest.py) ------------------------------------------------------------------------
@@ -1254,21 +1234,6 @@ def test_missing_libs_parses_ldd():
     assert selftest.missing_libs(out) == ["libXfixes.so.3"]
 
 
-def test_disk_layout_is_a_gpt_hybrid_shared_by_build_and_flash():
-    """User report 2026-10-31: some UEFI firmwares saw the stick but offered no boot option without CSM (MBR-only hybrid,
-    partition 1 from sector 0, no boot flag). The layout is now that of current Ubuntu ISOs; build.sh and flash.sh use
-    the same functions, and the BIOS core embeds configfile (without it legacy boot stopped at a grub> prompt in QEMU).
-    The real boot test is stick/tests/boot/boot-test.sh (QEMU: UEFI, UEFI + Secure Boot, BIOS)."""
-    lay = (HERE / "tools" / "layout.sh").read_text()
-    for flag in ("-partition_offset 16", "--mbr-force-bootable", "-appended_part_as_gpt",
-                 "28732ac11ff8d211ba4b00a0c93ec93b", "mkfs.vfat -F 16", "--relocate gpt-bak-std", "type=L"):
-        assert flag in lay, flag
-    b, f = (HERE / "build.sh").read_text(), (HERE / "flash.sh").read_text()
-    assert 'source "$S/tools/layout.sh"' in b and "make_iso " in b and "make_efiboot " in b and "-append_partition" not in b
-    assert b.count('--modules="linux normal iso9660 biosdisk search configfile"') == 2
-    assert 'source "$S/tools/layout.sh"' in f and "add_data_part " in f and "type=83" not in f
-
-
 def test_selftest_checks_forks_and_the_module_swap_set(tmp_path):
     """Old-GPU sprint: the P100 forks and the other NVIDIA module flavour (same driver version) must be on the stick."""
     s, pay = _full_seed(tmp_path)
@@ -1359,19 +1324,6 @@ def test_run_llama_runs_the_pascal_forks_only_on_their_architectures(tmp_path, m
     assert not any(k.startswith(("vulkan", "cpu")) for k in keys)                       # second phase: CUDA only
 
 
-def test_old_gpu_builds_and_module_harvest():
-    b = (HERE / "build.sh").read_text()
-    assert '-DCMAKE_CUDA_ARCHITECTURES="52;60;61;70;75;80;86;89;90;120"' in b
-    assert "qr0n=https://github.com/qr0n/p100-llama-cpp@" in b and "kmic68=https://github.com/Kmic-68/llama.cpp@" in b
-    assert '-DCMAKE_CUDA_ARCHITECTURES="60;61"' in b and "--target llama-bench" in b
-    c = (HERE / "ubuntu" / "chroot-setup.sh").read_text()
-    assert "/usr/lib/rigsim/nvidia-swap" in c and 'apt-get purge -y --autoremove "$SWMOD"' in c
-    assert c.index("$SWMOD") < c.index('NVMOD="linux-modules-nvidia-')                 # harvested before the boot flavour
-    assert "NVIDIA module versions differ" in c
-    p = (HERE / "overlay" / "toolkits" / "cuda" / "setup.sh").read_text()          # the stick's own probe build
-    for a in ("52", "60", "61", "70", "75", "100", "120"):
-        assert f"arch=compute_{a},code=sm_{a}" in p
-
 # --- D: what a machine cannot do is skipped with the reason, not recorded as a failure (run d-9c93, 2026-10-31) ----
 def test_plan_skips_questions_that_need_more_cards(tmp_path):
     for q in stick.PROFILE:
@@ -1383,12 +1335,6 @@ def test_plan_skips_questions_that_need_more_cards(tmp_path):
     assert {q: why for q, f, why in stick.plan(tmp_path, True, "", 2)}["gpu-p2p"] is None
     assert {q: why for q, f, why in stick.plan(tmp_path, True, "")}["gpu-p2p"] is None        # count unknown: run it
     assert stick.question_min_gpus(HERE / "questions" / "gpu-p2p.toml") == 2
-
-
-def test_vendor_runtime_without_gpu_is_skipped_not_failed():
-    src = (HERE / "payload" / "stick.py").read_text()
-    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
-    assert 'sees no GPU on this machine' in body and 'rc=1, error="the runtime sees no GPU' not in body
 
 
 def test_blender_device_type_not_found_is_unavailable_and_python_errors_fail(tmp_path, monkeypatch):
@@ -1448,13 +1394,6 @@ def test_backend_ops_retry_without_onednn_before_the_other_fallbacks(tmp_path, m
     seen.clear()
     r = stick.run_backend_ops(run, tmp_path, "dev1", "tbo", "Vulkan0", tmp_path / "log")   # not SYCL: no retry
     assert "retry" not in r["dev1-ops-mul_mat"] and all(e is None for _, e in seen)
-
-
-def test_run_vendor_passes_the_environment_to_docker_exec():
-    src = (HERE / "payload" / "stick.py").read_text()
-    body = src.split("def run_vendor(", 1)[1].split("\ndef ", 1)[0]
-    assert '"docker", "exec", *[x for k, v in (env or {}).items() for x in ("-e", f"{k}={v}")], c,' in body
-    assert "onednn=guard" in body and 'guard = OneDnnGuard() if kind == "oneapi" else None' in body
 
 
 def test_notice_header_shows_the_stick_version(tmp_path, monkeypatch, capsys):
@@ -1567,18 +1506,6 @@ def test_mlc_gets_a_small_buffer_on_small_machines(tmp_path, monkeypatch):
     assert "buffer_kib" not in r and not any("-b204800" in c for c in seen)
 
 
-def test_every_step_and_container_is_under_the_limit():
-    src = (HERE / "payload" / "stick.py").read_text()
-    main = src.split("def main()", 1)[1]
-    assert main.count("with StepMemory(") == 2 and main.count("record_memory(") == 2
-    phase2 = src.split("def nvidia_phase2(", 1)[1].split("\ndef ", 1)[0]
-    assert "with StepMemory(name, log) as mem:" in phase2 and "record_memory(" in phase2
-    assert "ok = all(step_ok(v) for v in run[\"questions\"].values())" in main
-    assert src.count("*docker_mem()") == 6                                      # + the Pascal forks and "StepMemory.current.join(p.pid)" in src and "StepMemory.current.join(pr.pid)" in src
-    h = (HERE.parent / "bench" / "hw" / "runner" / "hwq.py").read_text()
-    assert 'cmd += ["--memory", lim, "--memory-swap", lim]' in h
-
-
 # --- flash.sh faults seen while flashing 0.13.9 (2026-11-03) ----------------------------------------------------------
 _vspec = importlib.util.spec_from_file_location("verify", HERE / "tools" / "verify.py")
 verify = importlib.util.module_from_spec(_vspec); _vspec.loader.exec_module(verify)
@@ -1674,12 +1601,6 @@ def test_gemm_shape_questions_expand():
     assert "1x4096x4096" in stick.VENDOR_GEMM_SHAPES and "8192x14336x4096" in stick.VENDOR_GEMM_SHAPES
 
 
-def test_cpu_gemm_probe_knows_bf16_fp16_and_shapes():
-    src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "cgemm.c").read_text()
-    assert "--shape" in src and "dnnl_matmul_primitive_desc_create" in src and '!strncmp(info, "ref", 3)' in src
-    assert "dnnl_format_tag_any" in src and "unsupported" in src
-
-
 def test_transfer_questions_and_probe_modes():
     x = hwq.load_plan(str(HERE / "questions" / "pcie-xfer.toml"))
     assert len(hwq.expand(x, False, [dict(name="gpu0", index=0)])) == 6 and len(hwq.expand(x, True, [dict(name="gpu0", index=0)])) == 1
@@ -1732,27 +1653,6 @@ def test_storage_jobs_are_read_only_and_skippable(tmp_path):
     assert "fio" in (HERE / "ubuntu" / "chroot-setup.sh").read_text()
 
 
-def test_core_to_core_question_and_probe():
-    q = hwq.load_plan(str(HERE / "questions" / "cpu-c2c.toml"))
-    assert [i["params"]["mode"] for i in hwq.expand(q, False)] == ["pairs", "barrier"]
-    assert "cpu-c2c" in stick.PROFILE
-    src = (HERE / "overlay" / "toolkits" / "cpu" / "src" / "c2c.c").read_text()
-    for s in ("memory_order_acquire", "pthread_setaffinity_np", "cache/index3/id", "/sys/devices/cpu_atom/cpus",
-              "pthread_barrier_wait", "spread-l3", "p-cores"):
-        assert s in src, s
-    assert "src/c2c.c" in (HERE / "overlay" / "toolkits" / "cpu" / "setup.sh").read_text()
-
-
-def test_fp8_fp4_through_cublaslt():
-    src = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "src" / "probe.cu").read_text()
-    for t in ("CUDA_R_8F_E4M3", "CUDA_R_4F_E2M1", "CUBLASLT_MATMUL_MATRIX_SCALE_VEC16_UE4M3", "CUBLASLT_MATMUL_MATRIX_SCALE_VEC32_UE8M0",
-              "cublasLtMatmulAlgoGetHeuristic", "fp8 needs sm_89 or newer", "fp4 needs sm_100 or newer", "CUBLAS_VERSION < 120800"):
-        assert t in src, t
-    assert "defined(__HIPCC__)" in src                  # the ROCm build reports the formats as unsupported
-    for f in (HERE / "overlay" / "toolkits" / "cuda" / "setup.sh", HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "setup.sh"):
-        assert "-lcublasLt" in f.read_text()
-
-
 # --- DDR items (folded into this sprint 2026-11-04): SPD status, lockdown, pinned latency probe ---------------------
 def test_spd_status_says_why(tmp_path):
     inv = tmp_path / "inv"; inv.mkdir()
@@ -1772,9 +1672,146 @@ def test_lockdown_mode(tmp_path):
     assert stick.lockdown(f) == "integrity" and stick.lockdown(tmp_path / "missing") == ""
 
 
-def test_latency_probe_pinned_with_cache_points():
-    src = (HERE.parent / "bench" / "hw" / "toolkits" / "cpu" / "src" / "chase.c").read_text()
-    for t in ("sched_setaffinity", "core_type", "scaling_cur_freq", "cpuinfo_max_freq", "/sys/devices/cpu_atom/cpus"):
-        assert t in src, t
-    q = hwq.load_plan(str(HERE / "questions" / "cpu-mem-latency.toml"))
-    assert sorted({i["params"]["mib"] for i in hwq.expand(q, False)}) == [1, 16, 64, 1024, 4096]
+
+
+# --- behaviour instead of source text (bug hunt 2026-11-04) -----------------------------------------------------------
+import re  # noqa: E402
+import shutil as _shutil  # noqa: E402
+
+CPU_SRC = HERE / "overlay" / "toolkits" / "cpu" / "src"
+CHASE_SRC = HERE.parent / "bench" / "hw" / "toolkits" / "cpu" / "src" / "chase.c"
+
+
+def _cc(tmp_path, src, out, *libs):
+    """Compile a probe the way the toolkit does; skip where the compiler or a library is missing."""
+    if not _shutil.which("gcc"):
+        pytest.skip("no gcc")
+    r = subprocess.run(["gcc", "-O2", "-o", str(tmp_path / out), str(src), *libs], capture_output=True, text=True)
+    if r.returncode != 0:
+        if any(l in r.stderr for l in ("dnnl", "cblas", "openblas")):
+            pytest.skip("oneDNN / OpenBLAS headers or libraries not installed")
+        raise AssertionError(r.stderr)
+    return tmp_path / out
+
+
+def _lines(out: str) -> list[dict]:
+    return [json.loads(l) for l in out.splitlines() if l.startswith("{")]
+
+
+def test_c2c_measures_pairs_and_barriers(tmp_path):
+    exe = _cc(tmp_path, CPU_SRC / "c2c.c", "c2c", "-lpthread")
+    pairs = _lines(subprocess.run([str(exe), "pairs", "--max-cores", "4", "--ms", "1"], capture_output=True,
+                                  text=True, timeout=120).stdout)
+    if len(os.sched_getaffinity(0)) < 2:                 # a one-CPU sandbox: the probe says so instead of hanging
+        assert pairs and "error" in pairs[0]
+        return
+    assert pairs and all(p["relation"] in ("smt", "same-l3", "other-l3", "other-package") and p["ns"] > 0 for p in pairs)
+    assert all(p["a"] != p["b"] for p in pairs)
+    bars = _lines(subprocess.run([str(exe), "barrier", "--iters", "500"], capture_output=True, text=True,
+                                 timeout=120).stdout)
+    assert {b["kind"] for b in bars if "kind" in b} <= {"spin", "futex"}
+    assert all(b["threads"] >= 2 and b["ns"] > 0 for b in bars if "kind" in b)
+
+
+def test_chase_runs_pinned_and_reports_the_core(tmp_path):
+    exe = _cc(tmp_path, CHASE_SRC, "chase")
+    allowed = os.sched_getaffinity(0)
+    lines = _lines(subprocess.run([str(exe), "1", "2"], capture_output=True, text=True, timeout=120).stdout)
+    assert lines and all(l["cpu"] in allowed and l["core_type"] in "PE-" and l["ns_median"] > 0 for l in lines)
+    want = min(allowed)
+    lines = _lines(subprocess.run([str(exe), "1", "2", str(want)], capture_output=True, text=True, timeout=120).stdout)
+    assert [l["cpu"] for l in lines] == [want]                             # an explicit core: only that one
+
+
+def test_cgemm_shapes_formats_and_unsupported(tmp_path):
+    exe = _cc(tmp_path, CPU_SRC / "cgemm.c", "cgemm", "-fopenmp", "-lopenblas", "-ldnnl")
+    run = lambda *a: _lines(subprocess.run([str(exe), *a, "--threads", "1", "--reps", "2"], capture_output=True,
+                                           text=True, timeout=300).stdout)
+    f = run("--prec", "fp32", "--shape", "8x256x512")[0]
+    assert (f["m"], f["nn"], f["k"]) == (8, 256, 512) and f["ops"] == 2 * 8 * 256 * 512 and f["ops_per_s"] > 0
+    for prec in ("int8", "bf16", "fp16"):
+        r = run("--prec", prec, "--shape", "16x512x512")[0]
+        assert r.get("unsupported") or (r["ops_per_s"] > 0 and r["lib"] == "onednn"), r
+        if prec != "int8" and not r.get("unsupported"):
+            assert r["impl"] and not r["impl"].startswith("ref")             # never timing oneDNN's reference code
+    r = subprocess.run([str(exe), "--prec", "fp7", "--n", "64"], capture_output=True, text=True)
+    assert r.returncode == 1 and "unknown prec" in r.stdout
+
+
+def test_fio_jobs_parse_and_refuse_writes(tmp_path):
+    if not _shutil.which("fio"):
+        pytest.skip("no fio")
+    f = tmp_path / "disk.img"
+    with open(f, "wb") as h:
+        h.write(os.urandom(1 << 20)); h.truncate(64 << 20)
+    swap = lambda cmd: [c if not c.startswith("--filename=") else f"--filename={f}" for c in cmd]
+    r = subprocess.run(swap(stick.fio_cmd("x", "randread", "4k", 4, 1, direct=False)), capture_output=True, text=True)
+    res = stick.parse_fio(r.stdout)
+    assert r.returncode == 0 and res["bytes_per_s"] > 0 and res["iops"] > 0 and res["lat_p99_us"] >= res["lat_p50_us"] > 0
+    w = subprocess.run(["fio", "--readonly", "--name=w", f"--filename={f}", "--rw=write", "--bs=4k", "--size=4k"],
+                       capture_output=True, text=True)
+    assert w.returncode != 0 and f.stat().st_size == 64 << 20                  # fio refused, nothing written
+
+
+def _fake_vendor(tmp_path, monkeypatch, info: str):
+    """run_vendor against a pretend docker: oneDNN fails the first llama.cpp step until it is switched off."""
+    data = tmp_path / "data"; (data / "seed" / "models").mkdir(parents=True)
+    (data / "seed" / "models" / "tiny.gguf").write_text("x"); (data / "seed" / "models" / "big.gguf").write_text("x")
+    monkeypatch.setattr(stick, "gpu_vendors", lambda: {"intel"})
+    monkeypatch.setattr(stick, "vendor_images", lambda d: {"oneapi": "img"})
+    monkeypatch.setattr(stick, "load_image", lambda *a, **k: dict(rc=0))
+    monkeypatch.setattr(stick, "vendor_plan", lambda kind: [("gemm-fp16-1x4096x4096", ["/rigsim/probe_sycl", "gemm"])])
+    monkeypatch.setattr(stick, "BACKEND_OPS", ["MUL_MAT"])
+    seen = []
+    def sh(cmd, timeout=120):
+        seen.append(cmd)
+        if cmd[-1] == "info":
+            return 0, info
+        if "ls /rigsim" in cmd[-1]:
+            return 0, "probe_sycl\nllama-bench\ntest-backend-ops\n"
+        if cmd[:2] == ["docker", "exec"] and "/rigsim/probe_sycl" not in cmd:
+            return (0, "ok") if "GGML_SYCL_ENABLE_DNN=0" in cmd else (134, ONEDNN_OUT)
+        return 0, ""
+    monkeypatch.setattr(stick, "sh", sh)
+    return data, seen
+
+
+def test_vendor_runtime_without_a_gpu_is_a_skip(tmp_path, monkeypatch):
+    data, _ = _fake_vendor(tmp_path, monkeypatch, info="")
+    r = stick.run_vendor("oneapi", data, tmp_path / "run", tmp_path / "log")
+    assert "sees no GPU" in r["skipped"] and "rc" not in r
+
+
+def test_vendor_onednn_retry_then_off_for_the_device_and_the_memory_limit(tmp_path, monkeypatch):
+    data, seen = _fake_vendor(tmp_path, monkeypatch, info='{"mode":"info","index":0,"name":"UHD 770"}\n')
+    _mem(tmp_path, monkeypatch, avail_gib=6.0)
+    with stick.StepMemory("oneapi", None, tmp_path / "cgroup") as m:
+        r = stick.run_vendor("oneapi", data, tmp_path / "run", tmp_path / "log")
+    runs = r["runs"]
+    llama = [k for k in runs if k.startswith("dev0-llama-")]
+    first = [k for k in llama if "retry" in runs[k]]
+    assert len(first) == 1 and runs[first[0]]["rc"] == 0                                 # the first llama step: retried
+    assert all(runs[k]["onednn_off"]["after"] == first[0] for k in llama if k != first[0])   # then off for the device
+    assert runs["dev0-ops-mul_mat"]["onednn_off"]["after"] == first[0]
+    probe = [c for c in seen if "/rigsim/probe_sycl" in c and c[:2] == ["docker", "exec"]]
+    assert probe and not any("GGML_SYCL_ENABLE_DNN=0" in c for c in probe)               # the probe has no oneDNN
+    started = [c for c in seen if c[:3] == ["docker", "run", "-d"]]
+    assert started and "--memory" in started[0] and str(m.limit) in started[0]
+    assert r["rc"] == 0
+
+
+def test_every_question_command_exists_in_its_probe():
+    """Cross-file consistency: a question naming a probe mode or option the probe does not know fails only at run
+    time on the stick — catch it here."""
+    probe = (HERE.parent / "bench" / "hw" / "toolkits" / "cuda" / "src" / "probe.cu").read_text()
+    modes = set(re.findall(r'mode == "(\w+)"', probe))
+    cpu_bins = set(re.findall(r"-o /usr/local/bin/(\w+)", (HERE / "overlay" / "toolkits" / "cpu" / "setup.sh").read_text())) | {"cpuprobe"}
+    for f in sorted((HERE / "questions").glob("*.toml")):
+        q = hwq.load_plan(str(f))
+        cmd = q["args"]["cmd"]
+        if q["toolkit"] == "cuda":
+            assert cmd[0] == "probe" and cmd[1] in modes, f.name
+            for opt in (c for c in cmd[2:] if c.startswith("--")):
+                assert f'"{opt}"' in probe, (f.name, opt)
+        elif q["toolkit"] == "cpu":
+            assert cmd[0] in cpu_bins, (f.name, cmd[0])

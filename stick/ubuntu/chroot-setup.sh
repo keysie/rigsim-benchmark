@@ -102,7 +102,9 @@ echo rigsim-stick > /etc/hostname
 # casper's live-session steps for a desktop install image that this stick has none of (accessibility settings, the
 # CD-ROM as apt source, update notifier, apport crash reports, keyboard / locale setup on the console, desktop
 # services): they only printed errors at every boot. Removed from the initramfs; the boot itself is untouched.
-for f in 14locales 19keyboard 30accessibility 31disable_update_notifier 32disable_hibernation 33enable_apport_crashes \
+# 13swap too, for another reason: it switches on every swap partition it finds on the machine's SATA disks, so the
+# kernel could write to the measured machine's disk (the stick must not) and memory measurements would swap.
+for f in 13swap 14locales 19keyboard 30accessibility 31disable_update_notifier 32disable_hibernation 33enable_apport_crashes \
          34disable_kde_services 35fix_language_selector 36disable_trackerd 41apt_cdrom 44pk_allow_ubuntu 45jackd2 \
          48kubuntu_disable_restart_notifications 49kubuntu_mobile_session 50ubiquity-bluetooth-agent; do
   rm -f "/usr/share/initramfs-tools/scripts/casper-bottom/$f"

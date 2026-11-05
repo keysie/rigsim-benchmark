@@ -187,6 +187,11 @@ static int lt_gemm(const std::string& prec, int m, int n, int k, int reps, int w
         unsupported_line(prec.c_str(), m, n, k, why); return 0;
     }
     auto call = [&] { return cublasLtMatmul(lt, op, &one, A, la, B, lb, &zero, D, lc, D, ld, &h.algo, wsp, ws, 0); };
+    cublasStatus_t first = call();
+    if (first != CUBLAS_STATUS_SUCCESS) {                 // a result: the library has no working path here
+        char why[64]; snprintf(why, sizeof why, "cublasLtMatmul status %d", (int)first);
+        unsupported_line(prec.c_str(), m, n, k, why); return 0;
+    }
     for (int i = 0; i < warmup; ++i) CB(call());
     CK(cudaDeviceSynchronize());
     cudaEvent_t e0, e1; CK(cudaEventCreate(&e0)); CK(cudaEventCreate(&e1));

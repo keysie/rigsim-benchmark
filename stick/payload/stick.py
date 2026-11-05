@@ -738,6 +738,15 @@ def spd_status(dst: Path, raw: list[str], i2c: Path = Path("/sys/bus/i2c/devices
     return dict(out, status="unavailable", reason="; ".join(why))
 
 
+def swap_off(swaps: Path = Path("/proc/swaps")) -> list[str]:
+    """Switch off any swap that is on (the boot must not use the machine's disks; casper's 13swap is removed from the
+    initramfs, this catches anything else). Returns what was on, by kind only (no device names)."""
+    on = [l.split()[1] for l in (swaps.read_text().splitlines()[1:] if swaps.exists() else []) if l.strip()]
+    if on:
+        sh(["swapoff", "-a"], timeout=120)
+    return on
+
+
 def lockdown(path: Path = Path("/sys/kernel/security/lockdown")) -> str:
     """The kernel's lockdown mode ("none", "integrity", "confidentiality"), "" if the kernel has none: under lockdown
     /dev/mem, PCI config writes and debugfs are refused (what reading memory-controller registers would need)."""
@@ -1166,8 +1175,9 @@ def internal_drives(exclude: set[str], sysblock: Path = SYS_BLOCK) -> list[dict]
 
 def drive_temp_c(name: str) -> float | None:
     """The drive's temperature from hwmon (nvme / drivetemp), read-only; None where there is none."""
+    ctrl = re.sub(r"n\d+$", "", name) if name.startswith("nvme") else name     # nvme0n1 -> nvme0
     for t in list(SYS_BLOCK.glob(f"{name}/device/hwmon*/temp1_input")) + \
-             list(Path("/sys/class/nvme").glob(f"{name.split('n')[0] if name.startswith('nvme') else name}/hwmon*/temp1_input")):
+             list(Path("/sys/class/nvme").glob(f"{ctrl}/hwmon*/temp1_input")):
         v = _read(t)
         if v and v.lstrip("-").isdigit():
             return int(v) / 1000
@@ -1671,7 +1681,7 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
         sh(["docker", "rm", "-f", c], timeout=120)
         say(f"{kind} device {i} ({dev.get('name')}): {sum(1 for k in runs if k.startswith(f'dev{i}-'))} runs"
             + (f", HSA_OVERRIDE_GFX_VERSION={ov}" if ov else "") + ("" if have_probe else ", probe not in the image"), log)
-    return dict(res, rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+    return dict(res, rc=0 if runs and all(item_ok(v) for v in runs.values()) else 1, runs=runs)   # as run_llama
 
 
 # --- Blender Benchmark (official launcher CLI, Blender and scenes pre-downloaded into the seed) ---------------------------
@@ -2295,6 +2305,9 @@ def main() -> int:
     STATUS.start()
     STATUS.begin("inventory")
     try:
+        run["swap_was_on"] = swap_off()                # by type ("partition", "file"); nothing may use the disks
+        if run["swap_was_on"]:
+            say(f"swap was on ({run['swap_was_on']}), switched off", log)
         run["hardware"] = collect_inventory(rundir / "inventory", log)
         say(f"cpu {run['hardware']['cpu']} | board {run['hardware']['board']} | {run['hardware']['ram_gib']} GiB | "
             f"gpus {run['hardware']['gpus'] or 'none'}", log)
@@ -2359,7 +2372,7 @@ def main() -> int:
         if swap is not None:
             run["nvidia_swap"] = swap
             (rundir / "run.json").write_text(json.dumps(run, indent=1))
-        ok = all(step_ok(v) for v in run["questions"].values())
+        ok = all(step_ok(v) for v in run["questions"].values()) and not (run.get("nvidia_swap") or {}).get("failed")
         run["status"] = "done" if ok else "done with failures"
     except Stopped:
         run["status"] = "stopped"
