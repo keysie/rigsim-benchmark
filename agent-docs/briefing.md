@@ -7,42 +7,26 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Current sprint:** `sprint/engine-primitives` (from `main`, 2026-11-04) — goal: measure what LLM engines depend on and
-the stick does not cover yet: matrix throughput in bf16/fp8/fp4/int8/weight-only int4, small transfers (host ↔ GPU,
-GPU ↔ GPU, collectives, CPU core-to-core), storage read speed — for rigsim's hardware model and for engine bounds,
-Intel/AMD CPUs, NVIDIA/AMD/Intel GPUs. Status: **design proposed** (`design/engine-primitives.md`), nothing built.
-Folded into this sprint (user, 2026-11-04): the old-GPU work (module switch during a run, Pascal forks, sm_60) and
-the DDR assessment (parked items, open-points).
+**Current sprint:** `sprint/engine-primitives` (from `main`, 2026-11-04; PR #36). Since 2026-11-04 it also holds the
+old-GPU work and the DDR assessment (user: fold `sprint/old-gpus` and `ddr-timing-improvements` into it; their PRs
+#25, #26 closed, branches deleted). One run format 1.7, one measurements VERSION 7, stick 0.15.0. 182 tests pass.
+Goal: measure what LLM engines depend on (design `design/engine-primitives.md`), on old and new NVIDIA cards alike.
+
+**Built, not yet on hardware**
+- Engine primitives 1–5: `gpu-gemm-shapes` (9 formats incl. fp8/nvfp4/mxfp4 via cuBLASLt), `cpu-gemm-shapes` (oneDNN
+  bf16/fp16/int8 + OpenBLAS fp32), `pcie-xfer`, `gpu-p2p-xfer`, `gpu-overlap`, `cpu-c2c`, step `storage` (fio read-only);
+  vendor (ROCm/oneAPI) sweeps for GEMM and transfers.
+- Old GPUs: both NVIDIA module flavours on the stick, switch during the run (`nvidia-swap/`), CUDA builds incl. sm_60
+  (stick probe overlay now sm_52, 60, 61, 70, 75, 80, 86, 89, 90, 100, 120), Pascal forks of llama.cpp (qr0n, Kmic-68).
 
 **Next steps, in order**
-Decided (user): steps 1–5 in this sprint; drives read-only, nothing identifying in the report.
-1. **Step 1 built** (stick 0.15.0): `gpu-gemm-shapes` (cuBLAS fp32/tf32/fp16/fp16_fp32acc/bf16/int8 × M 1…8192 × two layer
-   shapes), `cpu-gemm-shapes` (OpenBLAS fp32, oneDNN int8/bf16/fp16 with the chosen ISA and kernel; tested here on a
-   Sapphire Rapids core: AMX bf16 635 GFLOP/s vs fp32 170), vendor GEMM sweep on ROCm/oneAPI, `gpu-gemm`/`cpu-gemm`
-   values (measurements VERSION 4). Not on hardware yet.
-2. **Step 2 built**: `pcie-xfer` (h2d/d2h/bidir × pinned/pageable, 4 KiB…256 MiB: latency of one copy + wait, rate
-   of queued copies), `gpu-p2p-xfer` (every neighbouring pair, peer on/off), `gpu-overlap` (GEMM vs copy); the same
-   sweep in the ROCm (hipified CUDA probe) and oneAPI probes; values `xfer/…`, `gpu-overlap/…` (measurements VERSION 5).
-   CUDA probe compile-checked here (nvcc 12.0, no GPU); the SYCL code is not compiled here — the oneAPI image build is
-   its first compile.
-3. **Step 3 built**: step `storage` — internal drives ≥ 8 GB (not the stick, not USB/removable), fio `--readonly`
-   O_DIRECT: sequential 1 MiB at QD 1/8/32, random 4 KiB at QD 1/32/128, 128 KiB QD 8, 4 and 16 MiB at QD 1/4, buffered
-   sequential; ~100 s per drive, at most 4 drives; kept: kind, capacity class, model, NVMe link, temperature; values
-   `storage/…` (VERSION 6), run format 1.7 (collides with `sprint/old-gpus` — renumber at merge). Tested here against a
-   file (fio 3.36: parser, read-only guard refuses a write job). Deferred: drive + GPU copy contention.
-4. **Step 4 built**: `cpu-c2c` — new C probe `c2c` in the CPU toolkit (stick overlay): one-way cache-line latency for
-   pairs of physical cores (≤ 32, sampled evenly beyond) by relation (smt, same-l3, other-l3, other-package) and core
-   types (P/E), spin and futex barriers over 2 … all cores in four placements; values `cpu-c2c/…`, `cpu-barrier/…`
-   (VERSION 7). Compiled here with -Wall -Wextra, no warnings; this sandbox has one CPU, so only the one-core path ran.
-5. **Step 5 built**: fp8 e4m3 (sm_89+), nvfp4 and mxfp4 (sm_100+, cuBLAS 12.8+) through cuBLASLt (A transposed, M padded
-   to 16, bf16 out, constant block scales) as formats of `gpu-gemm-shapes`; elsewhere `unsupported` with the reason; the
-   ROCm build reports them unsupported for now (hipBLASLt fp8 later, needs MI300 / RDNA4 hardware). Compile-checked
-   here with nvcc 12.0 and against the cuBLAS 12.8 headers and libraries from PyPI (fp4 path; the fp4 enum patched for
-   that check only, nvcc 12.0 knows neither it nor sm_100).
-6. **Next:** the user builds a stick from this branch and runs it — on an Ada/Hopper/Blackwell card for fp8/fp4, on a
-   multi-core and ideally a hybrid or multi-CCD CPU for `cpu-c2c`, with an NVMe drive for `storage`.
-**Merge note:** this branch uses stick 0.15.0 and measurements VERSION 4; `sprint/old-gpus` (0.14.0, VERSION 4, format 1.7)
-must renumber whichever merges second.
+1. User builds a stick from this branch (rootfs rebuilt: chroot-setup.sh changed — proprietary late-link, fio; fork
+   builds; probe with cuBLASLt) and runs it: the 13700K + RTX 3080 covers most of it (hybrid CPU, NVMe, CUDA); fp8/fp4
+   need Ada or newer; the module switch needs a Pascal card next to a newer one.
+2. DDR items now in this sprint (open-points "DDR timing improvements"): SPD status in run.json, latency probe pinned
+   with core type and frequency + 1 MiB point, lockdown state recorded — proposed earlier, waiting for the go.
+3. Open points from the merge: second-phase values of the new GPU questions; storage + GPU contention; iGPU zero-copy;
+   hipBLASLt fp8; collectives (next sprint).
 
 **Recently solved** (newest first)
 - 2026-11-04 (this sprint, verified on the 8 GB laptop): memory limit per step (cgroup / --memory, OOM recorded as
