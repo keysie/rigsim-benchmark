@@ -1,7 +1,9 @@
 # Engine primitives: low-precision GEMM, small transfers, storage — design
 
 Sprint `sprint/engine-primitives`, started 2026-11-04 (user). Status: **cleared by the user (2026-11-04): steps 1–5 in
-this sprint**, step 6 (collectives) next. Building step by step. Covers the three gaps
+this sprint** — all five built 2026-11-04 (see agent-docs briefing for what was tested where); step 6 (collectives)
+next sprint; deferred within the items: drive + GPU copy contention (4.3), the iGPU zero-copy read rate (3), hipBLASLt
+fp8 (2), MUL_MAT n = 16 … 256 (needs a llama.cpp patch). Covers the three gaps
 2–4 of the coverage estimate (agent-docs findings, "Coverage of what LLM engines depend on"):
 
 2. matrix throughput in the formats engines actually run (bf16, fp8, fp4, int8, weight-only int4/int8),

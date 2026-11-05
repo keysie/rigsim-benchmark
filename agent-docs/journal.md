@@ -110,3 +110,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — Step 3 built (read-only storage step; format 1.7, measurements VERSION 6; 171 tests).
 - **2026-11-04** — Step 4 built (cpu-c2c; VERSION 7; 173 tests). Found that the stick's CUDA probe build is the overlay
   (sm_52…sm_120); the old-GPU sprint's claim about sm_80+ only was wrong, sm_60 is the one missing — recorded for that branch.
+- **2026-11-04** — Step 5 built (fp8/fp4 via cuBLASLt; 174 tests). All five steps of the engine-primitives sprint built;
+  next: a stick build and runs on suitable hardware.

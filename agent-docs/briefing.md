@@ -33,7 +33,13 @@ Decided (user): steps 1–5 in this sprint; drives read-only, nothing identifyin
    pairs of physical cores (≤ 32, sampled evenly beyond) by relation (smt, same-l3, other-l3, other-package) and core
    types (P/E), spin and futex barriers over 2 … all cores in four placements; values `cpu-c2c/…`, `cpu-barrier/…`
    (VERSION 7). Compiled here with -Wall -Wextra, no warnings; this sandbox has one CPU, so only the one-core path ran.
-5. Next: step 5 (fp8/fp4 through cuBLASLt, then hipBLASLt).
+5. **Step 5 built**: fp8 e4m3 (sm_89+), nvfp4 and mxfp4 (sm_100+, cuBLAS 12.8+) through cuBLASLt (A transposed, M padded
+   to 16, bf16 out, constant block scales) as formats of `gpu-gemm-shapes`; elsewhere `unsupported` with the reason; the
+   ROCm build reports them unsupported for now (hipBLASLt fp8 later, needs MI300 / RDNA4 hardware). Compile-checked
+   here with nvcc 12.0 and against the cuBLAS 12.8 headers and libraries from PyPI (fp4 path; the fp4 enum patched for
+   that check only, nvcc 12.0 knows neither it nor sm_100).
+6. **Next:** the user builds a stick from this branch and runs it — on an Ada/Hopper/Blackwell card for fp8/fp4, on a
+   multi-core and ideally a hybrid or multi-CCD CPU for `cpu-c2c`, with an NVMe drive for `storage`.
 **Merge note:** this branch uses stick 0.15.0 and measurements VERSION 4; `sprint/old-gpus` (0.14.0, VERSION 4, format 1.7)
 must renumber whichever merges second.
 
