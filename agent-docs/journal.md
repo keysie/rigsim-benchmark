@@ -104,3 +104,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — New branch `sprint/engine-primitives` from `main` (user: work on gaps 2–4 of the coverage estimate,
   think through which hardware details to sample, for the model and for engine bounds, all vendors). Design written:
   `design/engine-primitives.md`. Nothing built.
+- **2026-11-04** — User cleared the design: steps 1–5 in this sprint; drives read-only with nothing identifying. Step 1
+  built (GEMM shapes and formats, CPU and GPU; stick 0.15.0, measurements VERSION 4; 165 tests).

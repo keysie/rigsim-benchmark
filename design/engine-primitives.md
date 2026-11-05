@@ -1,6 +1,7 @@
 # Engine primitives: low-precision GEMM, small transfers, storage — design
 
-Sprint `sprint/engine-primitives`, started 2026-11-04 (user). Status: **proposal, nothing built**. Covers the three gaps
+Sprint `sprint/engine-primitives`, started 2026-11-04 (user). Status: **cleared by the user (2026-11-04): steps 1–5 in
+this sprint**, step 6 (collectives) next. Building step by step. Covers the three gaps
 2–4 of the coverage estimate (agent-docs findings, "Coverage of what LLM engines depend on"):
 
 2. matrix throughput in the formats engines actually run (bf16, fp8, fp4, int8, weight-only int4/int8),
@@ -70,10 +71,11 @@ General rules for all new measurements:
 - Vulkan (vkprobe, all vendors): its matrix kernel is a plain shader (lower bound); keep as is, add fp16 and int8
   dot-product variants where the device reports them (`VK_KHR_cooperative_matrix` types listed in vulkaninfo).
 
-**GPU, llama.cpp kernels** (vendor-neutral, weight-only quantisation): extend the `MUL_MAT` filter of
-test-backend-ops to an M (= n) sweep {1, 2, 4, 8, 16, 32, 64, 128, 256, 512} for f16, bf16, q8_0, q4_0, q4_K, q6_K,
-iq4_xs, mxfp4 at m×k = 4096×14336 on every backend (CUDA, HIP, SYCL, Vulkan, CPU). Gives the dequant cost per type
-and backend against f16 at the same M.
+**GPU, llama.cpp kernels** (vendor-neutral, weight-only quantisation): test-backend-ops' perf cases for `MUL_MAT`
+already run n = 1, 2, 3, 4, 5, 8 and 512 at m×k = 4096×14336 for f32, f16, bf16, q4_0, q8_0, q4_K, q5_K, q6_K, iq4_xs,
+mxfp4 on every backend (checked in run `…-03de`) — the decode region and one prefill point, no change needed. The
+cases are fixed in the binary; n = 16 … 256 (batched serving) would need a patch to the llama.cpp build — later, if the
+gap shows in the data. What is missing is the *extraction*: these values are not in `tools/measurements.py` yet.
 
 **CPU** (cpu-gemm, oneDNN matmul, Intel and AMD):
 
@@ -193,9 +195,8 @@ drive at all; drives are the fourth primitive in rigsim and still unmodelled.
   at QD 1 and 4 — ~10 s each, spread over the device (`--size` = whole device, random offsets), ~2 min per drive.
 - Buffered sequential read of 4 GiB (`direct=0`, caches dropped first) — the readahead path.
 - Contention: sequential 1 MiB QD 32 alone, then together with `probe copy --dir h2d` on each GPU (5 s each).
-- Recorded: model, interface, PCIe link of the controller, namespace size, firmware revision (no serial), the drive's
-  temperature before/after (NVMe SMART via `nvme smart-log`, read-only), whether it is encrypted/locked (then the raw
-  reads still work; an OPAL-locked drive reads as errors → `unsupported`).
+- Recorded: see "Decided" below — kind, link, rounded capacity, model family, temperature before/after; an OPAL-locked
+  drive reads as errors → `unsupported`.
 
 ### What it gives
 
@@ -204,11 +205,13 @@ drive at all; drives are the fourth primitive in rigsim and still unmodelled.
 - (b) Load time = model bytes ÷ sequential rate (direct) or buffered rate (mmap); MoE-from-SSD bound = expert bytes per
   token ÷ random-read rate at the engine's queue depth and block size.
 
-### Open questions (need the user's decision)
+### Decided (user, 2026-11-04)
 
-- **Reading the machine's own drives.** Read-only raw reads are harmless to the data and the stick keeps nothing, but
-  they touch the owners' disks. Proposal: on by default, a boot-menu entry / kernel parameter `rigsim.nodisks` to skip,
-  and the drives' presence stated on the notice screen.
+- **Read access to the machine's drives: yes, as long as no content and no identifying feature of a drive ends up in
+  the report.** So the run records only timings and the drive's kind: interface (NVMe/SATA), PCIe link, capacity
+  rounded to a decade step, vendor/model family, and NVMe temperature. Never: serial, WWN/EUI-64/NGUID, namespace or
+  partition UUIDs, labels, partition tables, filesystem types, firmware revision, SMART counters beyond temperature,
+  or any byte read. Nothing read is written anywhere. `rigsim.nodisks` on the kernel command line skips the question.
 - Drives behind RAID/VMD (Intel VMD hides NVMe from Linux without `vmd`): record `unsupported` with the reason.
 
 ---
@@ -225,4 +228,4 @@ drive at all; drives are the fourth primitive in rigsim and still unmodelled.
 | 6 | nccl-tests / rccl-tests on multi-GPU machines | medium | +3–6 min |
 
 Each step: new or extended questions (additive run format), new value keys in `tools/measurements.py` (VERSION bump),
-the matching rigsim primitives afterwards (in rigsim, separately). Proposal: steps 1–4 in this sprint, 5–6 next.
+the matching rigsim primitives afterwards (in rigsim, separately). Decided: steps 1–5 in this sprint, 6 next.
