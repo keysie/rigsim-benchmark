@@ -107,3 +107,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — User cleared the design: steps 1–5 in this sprint; drives read-only with nothing identifying. Step 1
   built (GEMM shapes and formats, CPU and GPU; stick 0.15.0, measurements VERSION 4; 165 tests).
 - **2026-11-04** — Step 2 built (transfer sweeps, P2P sweep, overlap; vendor probes; measurements VERSION 5; 167 tests).
+- **2026-11-04** — Step 3 built (read-only storage step; format 1.7, measurements VERSION 6; 171 tests).

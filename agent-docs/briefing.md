@@ -24,7 +24,12 @@ Decided (user): steps 1–5 in this sprint; drives read-only, nothing identifyin
    sweep in the ROCm (hipified CUDA probe) and oneAPI probes; values `xfer/…`, `gpu-overlap/…` (measurements VERSION 5).
    CUDA probe compile-checked here (nvcc 12.0, no GPU); the SYCL code is not compiled here — the oneAPI image build is
    its first compile.
-3. Next: step 3 (storage), 4 (CPU core-to-core, barriers), 5 (fp8/fp4).
+3. **Step 3 built**: step `storage` — internal drives ≥ 8 GB (not the stick, not USB/removable), fio `--readonly`
+   O_DIRECT: sequential 1 MiB at QD 1/8/32, random 4 KiB at QD 1/32/128, 128 KiB QD 8, 4 and 16 MiB at QD 1/4, buffered
+   sequential; ~100 s per drive, at most 4 drives; kept: kind, capacity class, model, NVMe link, temperature; values
+   `storage/…` (VERSION 6), run format 1.7 (collides with `sprint/old-gpus` — renumber at merge). Tested here against a
+   file (fio 3.36: parser, read-only guard refuses a write job). Deferred: drive + GPU copy contention.
+4. Next: step 4 (CPU core-to-core, barriers), 5 (fp8/fp4).
 **Merge note:** this branch uses stick 0.15.0 and measurements VERSION 4; `sprint/old-gpus` (0.14.0, VERSION 4, format 1.7)
 must renumber whichever merges second.
 
