@@ -38,7 +38,10 @@ if [ "$MODSUFFIX" = "-open" ]; then SWSUFFIX=""; SWFLAVOUR=proprietary; else SWS
 SWMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${SWSUFFIX}-$KVER"
 SW=/usr/lib/rigsim/nvidia-swap
 rm -rf "$SW"; mkdir -p "$SW"
-apt-get install -y --no-install-recommends "$SWMOD"
+# The proprietary flavour links its .ko files at install time and needs the kernel's build files for that (objtool,
+# scripts/module.lds from linux-headers-<kernel>; first build of 2026-11-05 failed without them): installed for the
+# link only and removed again with the package.
+apt-get install -y --no-install-recommends "linux-headers-$KVER" "$SWMOD"
 for m in nvidia nvidia-uvm nvidia-modeset nvidia-drm; do
   f="$(find "/lib/modules/$KVER/kernel/nvidia-${NVIDIA_BRANCH}${SWSUFFIX}" -maxdepth 1 -name "$m.ko*" | head -1)"
   [ -n "$f" ] || { echo "no $m module in $SWMOD" >&2; exit 1; }
@@ -46,7 +49,7 @@ for m in nvidia nvidia-uvm nvidia-modeset nvidia-drm; do
 done
 echo "$SWFLAVOUR" > "$SW/FLAVOUR"
 modinfo -F version "$SW"/nvidia.ko* > "$SW/VERSION"
-apt-get purge -y --autoremove "$SWMOD"
+apt-get purge -y --autoremove "$SWMOD" "linux-headers-$KVER"
 rm -rf "/lib/modules/$KVER/kernel/nvidia-${NVIDIA_BRANCH}${SWSUFFIX}"
 # NVIDIA, the boot flavour: precompiled, signed modules matching the installed kernel + userspace without DKMS (meta
 # package for the series if there is one, else the one for this exact kernel)
