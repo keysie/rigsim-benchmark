@@ -847,11 +847,43 @@ def test_flash_preloads_images_into_a_store_file_and_copies_it_once():
     assert '"e2fsck", "-p"' in ms and '"mount", "-o", "loop"' in ms and 'return "partition"' in ms
     assert src.index("store = mount_store(data, log)") < src.index('cl = Path("/var/lib/containerd")')
 
-def test_rocm_build_drops_targets_llama_cpp_cannot_compile():
+def _rocm_loop(tmp_path, targets: str, fail: str) -> subprocess.CompletedProcess:
+    """The ROCm image's llama.cpp build loop, run with a pretend cmake: `fail` = the targets that do not compile
+    ("*" = an error not tied to a target)."""
     s = (HERE / "src" / "rocm" / "build-in-image.sh").read_text()
-    assert "errors? generated when compiling for gfx[0-9a-f]+" in s and "/rigsim/TARGETS_DROPPED" in s
-    assert "for attempt in 1 2 3 4" in s and "not a per-target error" in s
+    loop = s[s.index(": > /rigsim/TARGETS_DROPPED"):s.index("\ndone\n", s.index("for attempt in")) + 6]
+    root = tmp_path / "rigsim"; root.mkdir(); (root / "TARGETS").write_text(targets + "\n")
+    bin_ = tmp_path / "bin"; bin_.mkdir()
+    (bin_ / "hipconfig").write_text("#!/bin/sh\necho /opt\n")
+    (bin_ / "cmake").write_text(f"""#!/bin/bash
+[ "$1" = --build ] || exit 0
+[ "{fail}" = "*" ] && {{ echo "error: something else"; exit 1; }}
+for t in $(tr ';' ' ' < {root}/TARGETS); do
+  case " {fail} " in *" $t "*) echo "14 errors generated when compiling for $t."; exit 1;; esac
+done
+""")
+    for f in bin_.iterdir():
+        f.chmod(0o755)
+    script = "set -euo pipefail\n" + loop.replace("/tmp/", "@TMP@/").replace("/rigsim/", f"{root}/").replace("@TMP@", str(tmp_path))
+    return subprocess.run(["bash", "-c", script], capture_output=True, text=True, cwd=tmp_path,
+                          env=dict(os.environ, PATH=f"{bin_}:{os.environ['PATH']}"))
+
+
+def test_rocm_build_drops_targets_llama_cpp_cannot_compile(tmp_path):
+    r = _rocm_loop(tmp_path, "gfx900;gfx1031;gfx1100;gfx1201", "gfx1031 gfx1201")
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert (tmp_path / "rigsim" / "TARGETS").read_text().strip() == "gfx900;gfx1100"
+    assert (tmp_path / "rigsim" / "TARGETS_DROPPED").read_text().split() == ["gfx1031", "gfx1201"]
     assert "TARGETS_DROPPED" in (HERE / "tools" / "manifest.py").read_text()
+
+
+def test_rocm_build_says_when_no_target_compiles(tmp_path):
+    """Build of 2026-11-06 (ROCm 6.4.1, llama.cpp v0.8.0): every target failed in turn; the old loop gave up after four
+    attempts with "not a per-target error"."""
+    r = _rocm_loop(tmp_path, "gfx900;gfx1031;gfx1100;gfx1201;gfx942", "gfx900 gfx1031 gfx1100 gfx1201 gfx942")
+    assert r.returncode == 1 and "for every GPU target" in r.stdout
+    r = _rocm_loop(tmp_path / "x" if (tmp_path / "x").mkdir() is None else None, "gfx900;gfx1100", "*")
+    assert r.returncode == 1 and "not for one GPU target" in r.stdout
 
 
 def test_llama_cpp_release_choice(tmp_path):
