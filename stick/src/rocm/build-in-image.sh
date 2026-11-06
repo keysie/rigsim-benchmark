@@ -16,11 +16,17 @@ done
 echo "targets: $(cat TARGETS)"
 cat /opt/rocm/.info/version > ROCM_VERSION 2>/dev/null || hipconfig --version > ROCM_VERSION
 # probe: the CUDA source, hipified; built or recorded as missing (llama-bench still runs)
-hipify-perl /src/probe.cu > probe.hip.cpp
-if hipcc -O3 -std=c++17 $(printf -- '--offload-arch=%s ' "${T[@]}") -o probe probe.hip.cpp -lhipblas -lpthread 2> probe-build.log; then
+# hipify-perl: on PATH in ROCm 6, not in the ROCm 7.2.1 image (build of 2026-11-06) — /opt/rocm/bin, else the
+# hipify-clang package that ships it; without it the probe is missing, not the image
+HIPIFY="$(command -v hipify-perl || ls /opt/rocm*/bin/hipify-perl 2>/dev/null | head -1 || true)"
+if [ -z "$HIPIFY" ]; then
+  apt-get update -qq && apt-get install -y -qq hipify-clang >/dev/null 2>&1 || true
+  HIPIFY="$(command -v hipify-perl || ls /opt/rocm*/bin/hipify-perl 2>/dev/null | head -1 || true)"
+fi
+if [ -n "$HIPIFY" ] && "$HIPIFY" /src/probe.cu > probe.hip.cpp && hipcc -O3 -std=c++17 $(printf -- '--offload-arch=%s ' "${T[@]}") -o probe probe.hip.cpp -lhipblas -lpthread 2> probe-build.log; then
   echo "probe built"
 else
-  echo "probe NOT built (probe-build.log):"; tail -5 probe-build.log; rm -f probe
+  echo "probe NOT built (hipify-perl: ${HIPIFY:-missing}; probe-build.log):"; tail -5 probe-build.log 2>/dev/null; rm -f probe
 fi
 git clone -q https://github.com/ggml-org/llama.cpp /tmp/llama && cd /tmp/llama && git checkout -q "$LLAMA_REF"
 # A llama.cpp commit can fail to compile for single older targets (e.g. gfx1010 with a newer kernel template); then

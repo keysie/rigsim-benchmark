@@ -432,7 +432,7 @@ def test_build_wires_vkprobe_vendor_images_and_hwe_kernel():
     for f in ("src/rocm/build-in-image.sh", "src/oneapi/build-in-image.sh", "src/vkprobe/build.sh",
               "src/vkprobe/vkprobe.c", "src/syclprobe/probe_sycl.cpp"):
         assert (HERE / f).exists(), f
-    assert "hipify-perl /src/probe.cu" in (HERE / "src/rocm/build-in-image.sh").read_text()
+    assert '"$HIPIFY" /src/probe.cu' in (HERE / "src/rocm/build-in-image.sh").read_text()
 
 
 def test_backend_ops_per_device_with_fallbacks(tmp_path):
@@ -1185,6 +1185,7 @@ def _full_seed(tmp: Path) -> tuple[Path, Path]:
     _exe(s / "tools" / "mlc" / "mlc")
     for v in ("rocm", "oneapi"):
         (s / "images" / f"vendor-{v}.tar").write_text("x")
+    (s / "images" / "VENDOR.tsv").write_text("rocm\trigsim/rocm:k\tbase\noneapi\trigsim/oneapi:k\tbase\n")
     for f in ("qr0n", "kmic68"):
         _exe(s / "llama" / "forks" / f / "llama-bench"); (s / "llama" / "forks" / f / "COMMIT").write_text("abc")
     sw = tmp / "rootfs" / selftest.SWAP; sw.mkdir(parents=True)
@@ -1847,3 +1848,12 @@ def test_every_question_command_exists_in_its_probe():
                 assert f'"{opt}"' in probe, (f.name, opt)
         elif q["toolkit"] == "cpu":
             assert cmd[0] in cpu_bins, (f.name, cmd[0])
+
+
+def test_selftest_refuses_a_vendor_archive_left_from_an_earlier_build(tmp_path):
+    """Build of 2026-11-06: the ROCm image failed, the 6.4.1 archive of the build before stayed and the self-test said ok."""
+    s, pay = _full_seed(tmp_path)
+    (s / "images" / "VENDOR.tsv").write_text("oneapi\trigsim/oneapi:k\tbase\n")          # this build: oneAPI only
+    r = _run(s, pay)
+    assert r["rocm"]["status"] == "missing" and "not from this build" in r["rocm"]["problems"][0]
+    assert r["oneapi"]["status"] == "ok"
