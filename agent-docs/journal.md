@@ -153,3 +153,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   llama.cpp v0.8.0's top-k MoE kernel (HIP). Options given to the user.
 - **2026-11-06** — User: upgrade ROCm. Default ROCm image now 7.2.1 (what llama.cpp v0.8.0 uses for its own image);
   the target-dropping loop tries every target and reports "every target failed"; its test runs the loop with a fake cmake.
+- **2026-11-06** — Build with ROCm 7.2.1: `hipify-perl` not on PATH (whole ROCm build stopped under set -e). And a hole: the
+  failed ROCm build left the previous build's vendor-rocm.tar in the seed and the self-test said ok — the stick would
+  have shipped a stale ROCm 6.4.1 image with another llama.cpp. Fixed both: hipify looked up / installed, probe-only
+  failure; failed vendor builds remove the old archive; self-test requires the image in this build's VENDOR.tsv.
