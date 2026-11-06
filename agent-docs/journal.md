@@ -149,3 +149,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-05** — Second build: the qr0n fork failed in `fattn-tile-instance-dkq256-dv256` (ptxas: 50–64 KB static shared
   memory, 48 KB max). Reproduced here with nvcc 12.0 on the pinned commits: sm_60 builds, sm_61 fails, for both forks.
   Forks now built for sm_60 only (P100); all 12 tile instances of qr0n compile for sm_60 here.
+- **2026-11-06** — Build: forks and oneAPI image (first compile of the new SYCL probe code) built; the ROCm image failed on
+  llama.cpp v0.8.0's top-k MoE kernel (HIP). Options given to the user.

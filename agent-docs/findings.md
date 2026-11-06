@@ -283,3 +283,9 @@ status line / ticker, shutdown, runner item listing) — open point.
 - Forks and sm_61 (2026-11-05, reproduced with nvcc 12.0): both pinned forks' flash-attention tile kernels for head size
   256 need 0xc300–0xf900 bytes of static shared memory on sm_61 (48 KB limit) — sm_61 does not build; sm_60 does. The
   forks run on P100 (sm_60) only; P40 / GTX 10 get upstream llama.cpp only.
+- ROCm image build of 2026-11-06 (read from the log and upstream, not reproducible here — no ROCm toolchain): llama.cpp
+  released v0.9.0, so the "release" rule now picks **v0.8.0** (was v0.7.0). v0.8.0 contains the grouped-experts top-k
+  fusion (`group_mask_warp_inplace` in `topk-moe.cu`, added upstream 2026-10-17; absent in v0.7.0, still present on
+  master) and its HIP compile fails with ROCm 6.4.1 ("candidate template ignored: substitution failure" for 384…576
+  experts). The per-target fallback then dropped one target per attempt and gave up after four with the misleading
+  message "not a per-target error". CUDA and Vulkan build v0.8.0 fine.
