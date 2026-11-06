@@ -345,10 +345,14 @@ vendor() {   # name base-image label source-dir. Image reused while base, llama.
 for v in rocm oneapi; do                                  # skipped this time: not on this stick (local images stay)
   u="SKIP_${v^^}"; [[ "${!u:-0}" == 1 ]] && rm -f "$OUT/seed/images/vendor-$v.tar" "$OUT/seed/images/vendor-$v.tar.key"
 done
+# a failed vendor image takes the previous build's archive with it: otherwise the stick would ship a stale image built
+# from another base and llama.cpp commit, and the self-test would see "an image" (build of 2026-11-06)
+vendor_failed() { rm -f "$OUT/seed/images/vendor-$1.tar" "$OUT/seed/images/vendor-$1.tar.key"
+                  echo "    WARN: no $2 image; the seed self-test will stop the build (SKIP_${1^^}=1 leaves it out)"; }
 [[ "${SKIP_ROCM:-0}" == 1 ]] || vendor rocm "$ROCM_IMAGE" "AMD ROCm image" "$REPO/bench/hw/toolkits/cuda/src" \
-  || echo "    WARN: no ROCm image; the seed self-test will stop the build (SKIP_ROCM=1 leaves it out)"
+  || vendor_failed rocm ROCm
 [[ "${SKIP_ONEAPI:-0}" == 1 ]] || vendor oneapi "$ONEAPI_IMAGE" "Intel oneAPI image" "$S/src/syclprobe" \
-  || echo "    WARN: no oneAPI image; the seed self-test will stop the build (SKIP_ONEAPI=1 leaves it out)"
+  || vendor_failed oneapi oneAPI
 if [[ "${SKIP_MODELS:-0}" != 1 ]]; then
   M="$OUT/seed/models"; mkdir -p "$M"
   fetch() { [[ -s "$M/$2" ]] || curl -fL --retry 3 -# -o "$M/$2" "$1"; }

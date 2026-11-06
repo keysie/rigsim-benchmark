@@ -188,7 +188,10 @@ class SelfTest:
             if self.opt_off(opt):
                 self.set(v, [], f"{opt}=1")
             else:
-                self.set(v, [] if nonempty(s / "images" / f"vendor-{v}.tar") else [f"vendor-{v}.tar not in the seed"])
+                listed = (s / "images" / "VENDOR.tsv").read_text().split("\n") if (s / "images" / "VENDOR.tsv").exists() else []
+                self.set(v, ([] if nonempty(s / "images" / f"vendor-{v}.tar") else [f"vendor-{v}.tar not in the seed"])
+                         + ([] if any(l.startswith(v + "\t") for l in listed) else
+                            [f"{v} not in images/VENDOR.tsv: the archive is not from this build"]))
         return self.results
 
 
