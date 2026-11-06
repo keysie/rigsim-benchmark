@@ -72,7 +72,9 @@ sudo -v                                                  # ask for the password 
 echo "logs: $LOGS"
 SUITE="${SUITE:-noble}"; NVIDIA_BRANCH="${NVIDIA_BRANCH:-580}"; NVIDIA_FLAVOUR="${NVIDIA_FLAVOUR:-open}"
 MIRROR="${MIRROR:-http://archive.ubuntu.com/ubuntu}"; KERNEL="${KERNEL:-hwe}"
-ROCM_IMAGE="${ROCM_IMAGE:-rocm/dev-ubuntu-24.04:6.4.1-complete}"
+# ROCm 7.2.1: the version llama.cpp's own ROCm image uses since v0.8.0 (.devops/rocm.Dockerfile); 6.4.1 cannot compile
+# v0.8.0's top-k MoE kernel (build of 2026-11-06). Targets this ROCm no longer knows are dropped by the build script.
+ROCM_IMAGE="${ROCM_IMAGE:-rocm/dev-ubuntu-24.04:7.2.1-complete}"
 ONEAPI_IMAGE="${ONEAPI_IMAGE:-intel/oneapi-basekit:2025.2.0-0-devel-ubuntu24.04}"
 AMDGPU_TARGETS="${AMDGPU_TARGETS:-gfx900 gfx906 gfx908 gfx90a gfx942 gfx1010 gfx1012 gfx1030 gfx1031 gfx1032 gfx1100 gfx1101 gfx1102 gfx1103 gfx1150 gfx1151 gfx1200 gfx1201}"
 case "$NVIDIA_FLAVOUR" in open) SUFFIX=""; MODSUFFIX="-open";; legacy) SUFFIX="-legacy"; MODSUFFIX="";;
