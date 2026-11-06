@@ -6,10 +6,9 @@ Last revised: 2026-10-31.
 
 ## High
 
-1. **ROCm image vs llama.cpp v0.8.0** [agent, 2026-11-06; waiting for the user's choice]: options — build everything
-   from `LLAMA_REF=v0.7.0` (one commit for all backends, last known good), or `SKIP_ROCM=1` for now; later a
-   ROCm-only fallback to the previous release, recorded, and an upstream report. Fix the fallback's message either way.
-
+1. **ROCm 7.2.1 image: verify in a build** [user decision 2026-11-06: upgrade ROCm]: default `ROCM_IMAGE` is now
+   `rocm/dev-ubuntu-24.04:7.2.1-complete` (llama.cpp v0.8.0's own ROCm Dockerfile). To check: the hipified probe
+   still builds (hipBLAS 3 in ROCm 7 changed GemmEx types; the probe build is non-fatal), which targets 7.2.1 drops.
 2. **Old GPUs: verify on hardware** [user, 2026-10-31; sprint `sprint/old-gpus`; **built**, stick 0.14.0, format 1.7].
    Built: the other module flavour harvested in `chroot-setup.sh` (`/usr/lib/rigsim/nvidia-swap`, same version checked
    at build and by the self-test); `stick.py` `nvidia_phase2` after every step (rmmod, measured cards kept off with

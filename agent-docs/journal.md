@@ -151,3 +151,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   Forks now built for sm_60 only (P100); all 12 tile instances of qr0n compile for sm_60 here.
 - **2026-11-06** — Build: forks and oneAPI image (first compile of the new SYCL probe code) built; the ROCm image failed on
   llama.cpp v0.8.0's top-k MoE kernel (HIP). Options given to the user.
+- **2026-11-06** — User: upgrade ROCm. Default ROCm image now 7.2.1 (what llama.cpp v0.8.0 uses for its own image);
+  the target-dropping loop tries every target and reports "every target failed"; its test runs the loop with a fake cmake.
