@@ -157,3 +157,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   failed ROCm build left the previous build's vendor-rocm.tar in the seed and the self-test said ok — the stick would
   have shipped a stale ROCm 6.4.1 image with another llama.cpp. Fixed both: hipify looked up / installed, probe-only
   failure; failed vendor builds remove the old archive; self-test requires the image in this build's VENDOR.tsv.
+- **2026-11-06** — User: the stick of this sprint builds (ROCm 7.2.1, forks sm_60, oneAPI, self-test all ok). Next: runs.
