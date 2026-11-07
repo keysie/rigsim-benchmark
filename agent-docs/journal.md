@@ -165,3 +165,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-07** — User: the cleanup belongs in the build. build.sh now writes the seed's image set (SET) and removes
   stick/out/store.img when the store was built from another set (flash.sh records the set it built); the prune at flash
   time stays as a second line. A store without a record (the current 83 GiB one) is removed by the next build.
+- **2026-11-07** — Store measured by the user: containerd content 21 GiB (compressed layers) + snapshots 62 GiB (unpacked). The
+  stick and the flash-time dockerd now use the classic overlay2 store (each image once, ~62 GiB, fits next to the 25 GiB
+  seed on a 128 GB stick); STORE_LAYOUT in the build's image set removes the old store.
