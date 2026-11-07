@@ -416,4 +416,14 @@ step "seed self-test" sudo env MLC_URL="${MLC_URL:-}" BLENDER_LAUNCHER_URL="${BL
   --payload "$P" --cuda-image "$CUDA_IMAGE" --image "$CUDA_IMAGE" --image "$CPU_IMAGE" --out "$OUT/seed/SELFTEST.json"
 sed -n '/^seed self-test:/,$p' "$LOGS"/*-seed-self-test.log 2>/dev/null | head -20 || true
 step "manifest (seed)" env IMAGES="$CUDA_IMAGE $CPU_IMAGE" python3 "$S/tools/manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"
+# The image store flash.sh builds from the seed (stick/out/store.img) belongs to one set of images. When this build
+# changed that set (a new ROCm, a rebuilt vendor image), the store is removed here, where the change happens: flash.sh
+# then builds a fresh one instead of piling new images onto old ones (83 GiB on 2026-11-07, too big for the stick).
+SET="$( (cd "$OUT/seed/images" && ls -l --time-style=+%s -- *.tar 2>/dev/null | awk '{print $5, $6, $7}') | sha256sum | cut -c1-16)"
+echo "$SET" > "$OUT/seed/images/SET"
+STORE="${STORE:-$OUT/store.img}"
+if [[ -f "$STORE" && "$(cat "$STORE.set" 2>/dev/null)" != "$SET" ]]; then
+  rm -f "$STORE" "$STORE.set"
+  echo "    images changed: removed $STORE (flash.sh builds a fresh one)"
+fi
 echo "built $OUT/rigsim-stick$SUFFIX.iso ($VERSION) and $OUT/seed"

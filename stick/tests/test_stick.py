@@ -1879,3 +1879,20 @@ def test_prune_images_keeps_exactly_the_seeds_images(tmp_path, monkeypatch):
         f.unlink()
     calls.clear()
     assert stick.prune_images(tmp_path) == [] and calls == []                 # no seed images known: nothing removed
+
+
+def test_build_removes_a_store_built_from_other_images(tmp_path):
+    """The store belongs to one set of seed images; build.sh, which changes that set, removes a store of another set."""
+    b = (HERE / "build.sh").read_text()
+    part = b[b.index('SET="$( (cd "$OUT/seed/images"'):b.index('echo "built $OUT/rigsim-stick')]
+    out = tmp_path / "out"; imgs = out / "seed" / "images"; imgs.mkdir(parents=True)
+    (imgs / "vendor-rocm.tar").write_text("6.4.1")
+    run = lambda: subprocess.run(["bash", "-c", f'set -euo pipefail\nOUT={out}\n{part}'], capture_output=True, text=True)
+    store = out / "store.img"; store.write_text("store")
+    r = run(); assert r.returncode == 0 and not store.exists()               # no record of its set: removed
+    store.write_text("store"); (out / "store.img.set").write_text((imgs / "SET").read_text())
+    r = run(); assert store.exists()                                           # same images: kept
+    import time; time.sleep(1.1); (imgs / "vendor-rocm.tar").write_text("7.2.1 rebuilt")
+    r = run(); assert not store.exists() and "images changed" in r.stdout      # a rebuilt archive: removed
+    f = (HERE / "flash.sh").read_text()
+    assert 'cp "$OUT/seed/images/SET" "$STORE.set"' in f

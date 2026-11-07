@@ -122,6 +122,7 @@ preload_images() {                                   # $1 = data partition (not 
   if ! build_store; then
     echo "images: preloading failed — the stick loads what is missing on its first boot"; return 0
   fi
+  cp "$OUT/seed/images/SET" "$STORE.set" 2>/dev/null || true   # which image set this store holds (build.sh checks it)
   local used; used="$(du -B1 "$STORE" | cut -f1)"
   mount_data "$1"
   # no store.img yet (a fresh partition): du fails — must not end the script (set -e + pipefail: [e]rase used to stop
