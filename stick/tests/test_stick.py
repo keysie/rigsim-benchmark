@@ -1884,7 +1884,7 @@ def test_prune_images_keeps_exactly_the_seeds_images(tmp_path, monkeypatch):
 def test_build_removes_a_store_built_from_other_images(tmp_path):
     """The store belongs to one set of seed images; build.sh, which changes that set, removes a store of another set."""
     b = (HERE / "build.sh").read_text()
-    part = b[b.index('SET="$( (cd "$OUT/seed/images"'):b.index('echo "built $OUT/rigsim-stick')]
+    part = b[b.index('SET="$( (echo "STORE_LAYOUT'):b.index('echo "built $OUT/rigsim-stick')]
     out = tmp_path / "out"; imgs = out / "seed" / "images"; imgs.mkdir(parents=True)
     (imgs / "vendor-rocm.tar").write_text("6.4.1")
     run = lambda: subprocess.run(["bash", "-c", f'set -euo pipefail\nOUT={out}\n{part}'], capture_output=True, text=True)
@@ -1896,3 +1896,13 @@ def test_build_removes_a_store_built_from_other_images(tmp_path):
     r = run(); assert not store.exists() and "images changed" in r.stdout      # a rebuilt archive: removed
     f = (HERE / "flash.sh").read_text()
     assert 'cp "$OUT/seed/images/SET" "$STORE.set"' in f
+
+
+def test_docker_keeps_each_image_once():
+    """Store of 2026-11-07: containerd's image store held 21 GiB of compressed layers beside 62 GiB unpacked."""
+    d = stick.docker_config({"log-driver": "json-file"}, Path("/mnt/rigsim/docker"))
+    assert d == {"log-driver": "json-file", "features": {"containerd-snapshotter": False}, "storage-driver": "overlay2",
+                 "data-root": "/mnt/rigsim/docker"}
+    f = (HERE / "flash.sh").read_text()                                       # the flash-time dockerd: the same store
+    cfg = json.loads(re.search(r'echo "(\{.*\})" > /tmp/rigsim-daemon.json', f).group(1).replace('\\"', '"'))
+    assert cfg == stick.DOCKER_STORAGE and "--config-file /tmp/rigsim-daemon.json" in f

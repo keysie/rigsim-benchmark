@@ -1891,6 +1891,16 @@ def mount_data() -> Path | None:
     return MNT
 
 
+DOCKER_STORAGE = {"features": {"containerd-snapshotter": False}, "storage-driver": "overlay2"}
+
+
+def docker_config(d: dict, root: Path) -> dict:
+    """dockerd's settings on the stick (and at flash time, flash.sh writes the same): data on the stick, and the
+    classic overlay2 image store. The containerd image store keeps every image twice — the compressed layers (21 GiB)
+    beside the unpacked ones (62 GiB): 83 GiB, more than a 128 GB stick holds next to the seed (2026-11-07)."""
+    return dict(d, **DOCKER_STORAGE, **{"data-root": str(root)})
+
+
 def start_docker(data: Path, log: Path) -> dict:
     """Docker and containerd keep everything on the data partition. The live system's root is an overlay; an
     overlay snapshot cannot sit on it ("not supported as upperdir"), so both stores move to the stick's ext4:
@@ -1905,8 +1915,7 @@ def start_docker(data: Path, log: Path) -> dict:
     if subprocess.run(["mountpoint", "-q", str(cl)]).returncode != 0:
         sh(["mount", "--bind", str(croot), str(cl)])
     cfg = Path("/etc/docker/daemon.json")
-    d = json.loads(cfg.read_text()) if cfg.exists() else {}
-    d["data-root"] = str(root)
+    d = docker_config(json.loads(cfg.read_text()) if cfg.exists() else {}, root)
     cfg.parent.mkdir(parents=True, exist_ok=True)
     cfg.write_text(json.dumps(d, indent=1))
     sh(["systemctl", "start", "containerd", "docker"], timeout=300)

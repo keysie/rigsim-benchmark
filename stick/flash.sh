@@ -65,7 +65,9 @@ STORE="${STORE:-$OUT/store.img}"; STORE_GB="${STORE_GB:-96}"
 PRELOAD_IN_CHROOT='
 containerd >/tmp/containerd.log 2>&1 & cpid=$!
 for i in $(seq 60); do [ -S /run/containerd/containerd.sock ] && break; sleep 1; done
-dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
+# the same image store as on the stick (stick.py docker_config): classic overlay2, not the containerd store (twice the space)
+echo "{\"features\": {\"containerd-snapshotter\": false}, \"storage-driver\": \"overlay2\"}" > /tmp/rigsim-daemon.json
+dockerd --config-file /tmp/rigsim-daemon.json --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
   >/tmp/dockerd.log 2>&1 & dpid=$!
 for i in $(seq 90); do docker info >/dev/null 2>&1 && break; sleep 1; done
 if ! docker info >/dev/null 2>&1; then
