@@ -162,3 +162,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   old ROCm 6.4.1 image inside, did not fit (76 GiB free), was not copied — and the stick's previous store.img stayed and
   was compared against the new one. Fixed: prune images not in the seed after preloading, fstrim the store, remove the
   stick's old store.img when the new one does not fit. Open: whether the pruned store fits on a 128 GB stick.
+- **2026-11-07** — User: the cleanup belongs in the build. build.sh now writes the seed's image set (SET) and removes
+  stick/out/store.img when the store was built from another set (flash.sh records the set it built); the prune at flash
+  time stays as a second line. A store without a record (the current 83 GiB one) is removed by the next build.
