@@ -840,7 +840,7 @@ def test_flash_preloads_images_into_a_store_file_and_copies_it_once():
     pre = f.split("preload_images() {", 1)[1].split("\n}\n", 1)[0]
     assert 'dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse' in pre and "NO_PRELOAD" in pre
     assert "not copied" in pre and pre.rstrip().endswith("return 0")              # never fails the flash
-    assert "dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock" in f
+    assert "dockerd --config-file /tmp/rigsim-daemon.json --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock" in f
     src = (HERE / "payload" / "stick.py").read_text()
     assert 'sys.argv[1] == "--preload"' in src and "def mount_store(" in src
     ms = src.split("def mount_store(", 1)[1].split("\ndef ", 1)[0]
