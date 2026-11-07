@@ -2404,6 +2404,22 @@ def main() -> int:
     return 0
 
 
+def prune_images(data: Path, log: Path | None = None) -> list[str]:
+    """Remove every image the seed no longer has (an older ROCm, an earlier build's vendor tag): the store is reused
+    from flash to flash and only ever grew — 83 GiB on 2026-11-07, more than the stick could take."""
+    want = {t for img in (data / "seed" / "images").glob("*.tar") for t in image_tags(img)}
+    if not want:                                       # cannot tell what belongs: remove nothing
+        return []
+    rc, out = sh(["docker", "image", "ls", "--format", "{{.Repository}}:{{.Tag}}"], timeout=120)
+    gone = [t for t in out.split() if rc == 0 and t not in want and not t.endswith(":<none>")]
+    for t in gone:
+        sh(["docker", "image", "rm", "-f", t], timeout=600)
+    sh(["docker", "image", "prune", "-f"], timeout=600)      # the layers nothing refers to any more
+    if gone:
+        say(f"docker: removed images the seed no longer has: {gone}", log)
+    return gone
+
+
 def preload(data: Path) -> int:
     """Run by flash.sh at flash time, inside the stick's own system image (chroot) with containerd and dockerd
     already started on the data partition: loads every seeded image — the vendor images too — so the stick's
@@ -2415,6 +2431,7 @@ def preload(data: Path) -> int:
         if r.get("cached"):
             say(f"docker: {img.name} already on the stick")
         failed += r.get("rc", 0) != 0
+    prune_images(data)
     return 1 if failed else 0
 
 

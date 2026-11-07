@@ -1857,3 +1857,25 @@ def test_selftest_refuses_a_vendor_archive_left_from_an_earlier_build(tmp_path):
     r = _run(s, pay)
     assert r["rocm"]["status"] == "missing" and "not from this build" in r["rocm"]["problems"][0]
     assert r["oneapi"]["status"] == "ok"
+
+
+def test_prune_images_keeps_exactly_the_seeds_images(tmp_path, monkeypatch):
+    """Flash of 2026-11-07: the reused store held the old ROCm 6.4.1 image beside 7.2.1 and had grown to 83 GiB."""
+    imgs = tmp_path / "seed" / "images"; imgs.mkdir(parents=True)
+    for name in ("debian_trixie.tar", "vendor-rocm.tar"):
+        (imgs / name).write_text("x")
+    tags = {"debian_trixie.tar": ["debian:trixie"], "vendor-rocm.tar": ["rigsim/rocm:new"]}
+    monkeypatch.setattr(stick, "image_tags", lambda img: tags[img.name])
+    calls = []
+    def sh(cmd, timeout=120):
+        calls.append(cmd)
+        return (0, "debian:trixie\nrigsim/rocm:new\nrigsim/rocm:old\nrocm/dev-ubuntu-24.04:6.4.1-complete\n<none>:<none>\n") \
+            if cmd[:3] == ["docker", "image", "ls"] else (0, "")
+    monkeypatch.setattr(stick, "sh", sh)
+    assert stick.prune_images(tmp_path) == ["rigsim/rocm:old", "rocm/dev-ubuntu-24.04:6.4.1-complete"]
+    assert ["docker", "image", "rm", "-f", "rigsim/rocm:old"] in calls and ["docker", "image", "prune", "-f"] in calls
+    assert not any(c[:3] == ["docker", "image", "rm"] and c[-1] in ("debian:trixie", "rigsim/rocm:new") for c in calls)
+    for f in imgs.iterdir():
+        f.unlink()
+    calls.clear()
+    assert stick.prune_images(tmp_path) == [] and calls == []                 # no seed images known: nothing removed

@@ -96,6 +96,8 @@ mount --bind "$t/store/containerd" "$r/var/lib/containerd"
 set +e
 chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"; rc=$?
 sync
+# blocks freed inside the store (removed images) become holes in the sparse file again, so the copy shrinks too
+fstrim "$t/store" 2>/dev/null || true
 umount "$t/store" 2>/dev/null || umount -l "$t/store"
 exit $rc'
 build_store() {                                      # loads the seed's images into $STORE (on this machine)
@@ -128,6 +130,8 @@ preload_images() {                                   # $1 = data partition (not 
   free="$(( $(df -B1 --output=avail "$MNT" | tail -1) + ${old:-0} ))"
   if (( used + 1073741824 > free )); then
     echo "images: the store needs $((used >> 30)) GiB, the stick has $((free >> 30)) GiB free — not copied" >&2
+    # an older store on the stick would hold other images than this seed: gone, the stick loads from the seed instead
+    rm -f "$MNT/store.img"
     umount "$MNT"; rmdir "$MNT"; MNT=""; return 0
   fi
   echo "images: copying the store to the stick ($((used >> 30)) GiB, one sequential write)"
