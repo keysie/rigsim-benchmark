@@ -7,15 +7,29 @@ Last revised: 2026-11-01. Facts here are *read from the repository* unless marke
 
 Keep this section current (instruction 3). Last updated 2026-11-01.
 
-**Sprint `sprint/low-memory` — done, ready to merge (user, 2026-11-04).** Goal "the stick runs cleanly on small
-machines" reached on the 8 GB laptop (Ryzen 5 2500U, run `…-8b96`): no hang, every limit recorded with its reason;
-only MLC still fails there (hugepages, see open-points) — left as it is by the user's decision. PR #33.
-Other open branches: `sprint/old-gpus` (built, waits for hardware), `ddr-timing-improvements` (parked).
+**Current sprint:** `sprint/engine-primitives` (from `main`, 2026-11-04; PR #36). Since 2026-11-04 it also holds the
+old-GPU work and the DDR assessment (user: fold `sprint/old-gpus` and `ddr-timing-improvements` into it; their PRs
+#25, #26 closed, branches deleted). One run format 1.7, one measurements VERSION 7, stick 0.15.0. 182 tests pass.
+Goal: measure what LLM engines depend on (design `design/engine-primitives.md`), on old and new NVIDIA cards alike.
+
+**Built, not yet on hardware**
+- Engine primitives 1–5: `gpu-gemm-shapes` (9 formats incl. fp8/nvfp4/mxfp4 via cuBLASLt), `cpu-gemm-shapes` (oneDNN
+  bf16/fp16/int8 + OpenBLAS fp32), `pcie-xfer`, `gpu-p2p-xfer`, `gpu-overlap`, `cpu-c2c`, step `storage` (fio read-only);
+  vendor (ROCm/oneAPI) sweeps for GEMM and transfers.
+- Old GPUs: both NVIDIA module flavours on the stick, switch during the run (`nvidia-swap/`), CUDA builds incl. sm_60
+  (stick probe overlay now sm_52, 60, 61, 70, 75, 80, 86, 89, 90, 100, 120), Pascal forks of llama.cpp (qr0n, Kmic-68).
 
 **Next steps, in order**
-1. User merges PR #33 (stick 0.13.11, run format 1.6, closes #24, relates to #29).
-2. `sprint/old-gpus`: merge `main` in, renumber its run format 1.6 → 1.7, build, test on a mixed-GPU machine.
-3. Open stick items: open-points (MLC hugepages on long runs; C, F, G; SELFTEST copy; Blender oneAPI; CPU questions).
+0. Bug hunt done (2026-11-04, findings "Bug hunt"): six faults fixed, tests rework.
+1. **Stick builds (2026-11-06).** User runs it — first on the 13700K + RTX 3080. Earlier: user builds a stick from this branch (rootfs rebuilt: chroot-setup.sh changed — proprietary late-link, fio; fork
+   builds; probe with cuBLASLt) and runs it: the 13700K + RTX 3080 covers most of it (hybrid CPU, NVMe, CUDA); fp8/fp4
+   need Ada or newer; the module switch needs a Pascal card next to a newer one.
+2. **DDR items built** (user cleared): `hardware.spd` (decoded / raw / unavailable + reason: decode-dimms' message,
+   SMBus adapters, SPD devices bound), `hardware.lockdown`, `cpu-mem-latency` pinned to the fastest core (and an E-core
+   on hybrid parts) with its clock, grid 1 / 16 / 64 / 1024 / 4096 MiB, values `cpu-latency/…`. Still parked: register
+   timings (spike, Secure Boot off only), row-hit/miss; the fixed latency term is a rigsim topic.
+3. Open points from the merge: second-phase values of the new GPU questions; storage + GPU contention; iGPU zero-copy;
+   hipBLASLt fp8; collectives (next sprint).
 
 **Recently solved** (newest first)
 - 2026-11-04 (this sprint, verified on the 8 GB laptop): memory limit per step (cgroup / --memory, OOM recorded as
@@ -106,6 +120,7 @@ bench/hw/         bench runner and toolkits (only home)
 agent-docs/       this folder (repository root, deliberately outside docs/, which Pages serves)
 results/          runs/<run>/ (CC BY 4.0), attribution/<run>.json, README.md, FORMAT.md (versioned format + changelog)
 predictions/      <rigsim tag>/<run>.json, README.md (contract)
+design/           design documents of sprints (engine-primitives.md)
 docs/             GitHub Pages site (legacy build from main:/docs): index.html, data.json (generated)
 tools/            contribute.sh, submission.py, validate.py, index.py, measurements.py, predict.py, import.sh
 tests/ stick/tests/   pytest

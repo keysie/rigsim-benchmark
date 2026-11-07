@@ -18,7 +18,7 @@ apt-get install -y --no-install-recommends \
   "linux-image-$KFL" linux-firmware casper initramfs-tools \
   shim-signed grub-efi-amd64-signed grub-pc-bin grub-common \
   systemd-sysv sudo less nano rsync python3 python3-yaml kbd console-setup \
-  dmidecode lshw pciutils usbutils i2c-tools lm-sensors nvme-cli smartmontools util-linux hwloc numactl cpuid msr-tools \
+  dmidecode lshw pciutils usbutils i2c-tools lm-sensors nvme-cli smartmontools util-linux hwloc numactl cpuid msr-tools fio \
   docker.io containerd \
   ocl-icd-libopencl1 clinfo clpeak mesa-opencl-icd intel-opencl-icd
 # the extra modules (many GPU, USB and network drivers) for exactly the kernel the meta package pulled in; there is
@@ -29,13 +29,39 @@ if apt-cache show "linux-modules-extra-$KVER" >/dev/null 2>&1; then
 else
   echo "no linux-modules-extra-$KVER: the image package carries all modules for this kernel"
 fi
-# NVIDIA: precompiled, signed modules matching the installed kernel + userspace without DKMS (meta package for the
-# series if there is one, else the one for this exact kernel)
+# NVIDIA, the other module flavour first: kept for switching during a run (stick.py, "nvidia-swap": the open modules
+# drive Turing and newer, the proprietary ones Maxwell .. Ada; a machine with cards of both sides gets every card
+# measured). Installed for this exact kernel, its signed .ko files copied to /usr/lib/rigsim/nvidia-swap/, the package
+# removed again, so depmod and udev only know the boot flavour. The proprietary flavour is linked at install time from
+# Canonical's objects and signed with their detached signatures (late-link, the package's default).
+if [ "$MODSUFFIX" = "-open" ]; then SWSUFFIX=""; SWFLAVOUR=proprietary; else SWSUFFIX="-open"; SWFLAVOUR=open; fi
+SWMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${SWSUFFIX}-$KVER"
+SW=/usr/lib/rigsim/nvidia-swap
+rm -rf "$SW"; mkdir -p "$SW"
+# The proprietary flavour links its .ko files at install time and needs the kernel's build files for that (objtool,
+# scripts/module.lds from linux-headers-<kernel>; first build of 2026-11-05 failed without them): installed for the
+# link only and removed again with the package.
+apt-get install -y --no-install-recommends "linux-headers-$KVER" "$SWMOD"
+for m in nvidia nvidia-uvm nvidia-modeset nvidia-drm; do
+  f="$(find "/lib/modules/$KVER/kernel/nvidia-${NVIDIA_BRANCH}${SWSUFFIX}" -maxdepth 1 -name "$m.ko*" | head -1)"
+  [ -n "$f" ] || { echo "no $m module in $SWMOD" >&2; exit 1; }
+  cp "$f" "$SW/"
+done
+echo "$SWFLAVOUR" > "$SW/FLAVOUR"
+modinfo -F version "$SW"/nvidia.ko* > "$SW/VERSION"
+apt-get purge -y --autoremove "$SWMOD" "linux-headers-$KVER"
+rm -rf "/lib/modules/$KVER/kernel/nvidia-${NVIDIA_BRANCH}${SWSUFFIX}"
+# NVIDIA, the boot flavour: precompiled, signed modules matching the installed kernel + userspace without DKMS (meta
+# package for the series if there is one, else the one for this exact kernel)
 NVMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${MODSUFFIX}-$KFL"
 apt-cache show "$NVMOD" >/dev/null 2>&1 || NVMOD="linux-modules-nvidia-${NVIDIA_BRANCH}${MODSUFFIX}-$KVER"
 apt-get install -y --no-install-recommends \
   "$NVMOD" \
   "nvidia-headless-no-dkms-${NVIDIA_BRANCH}${MODSUFFIX}" "nvidia-utils-${NVIDIA_BRANCH}" "libnvidia-compute-${NVIDIA_BRANCH}"
+# one user-space stack serves both flavours, so both modules must be exactly the same driver version
+BOOTV="$(modinfo -k "$KVER" -F version nvidia)"
+[ "$BOOTV" = "$(cat "$SW/VERSION")" ] || { echo "NVIDIA module versions differ: boot $BOOTV, swap $(cat "$SW/VERSION")" >&2; exit 1; }
+echo "$BOOTV" > "$SW/BOOT_VERSION"
 # Vulkan (llama-bench on every vendor; NVIDIA's ICD is in libnvidia-gl), OpenMP for llama.cpp's CPU path,
 # Level Zero for Blender's oneAPI device — optional: a missing package must not stop the build
 apt-get install -y --no-install-recommends libvulkan1 mesa-vulkan-drivers vulkan-tools libgomp1
@@ -79,7 +105,9 @@ echo rigsim-stick > /etc/hostname
 # casper's live-session steps for a desktop install image that this stick has none of (accessibility settings, the
 # CD-ROM as apt source, update notifier, apport crash reports, keyboard / locale setup on the console, desktop
 # services): they only printed errors at every boot. Removed from the initramfs; the boot itself is untouched.
-for f in 14locales 19keyboard 30accessibility 31disable_update_notifier 32disable_hibernation 33enable_apport_crashes \
+# 13swap too, for another reason: it switches on every swap partition it finds on the machine's SATA disks, so the
+# kernel could write to the measured machine's disk (the stick must not) and memory measurements would swap.
+for f in 13swap 14locales 19keyboard 30accessibility 31disable_update_notifier 32disable_hibernation 33enable_apport_crashes \
          34disable_kde_services 35fix_language_selector 36disable_trackerd 41apt_cdrom 44pk_allow_ubuntu 45jackd2 \
          48kubuntu_disable_restart_notifications 49kubuntu_mobile_session 50ubiquity-bluetooth-agent; do
   rm -f "/usr/share/initramfs-tools/scripts/casper-bottom/$f"

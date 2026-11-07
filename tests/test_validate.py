@@ -124,7 +124,7 @@ def test_new_stick_files_allowed_and_local_ips_rejected(tmp_path):
 
 @pytest.mark.parametrize("change, expect", [
     (dict(format=None), "no run format"),
-    (dict(format=dict(name="rigsim-stick-run", version="1.7")), "newer than this repository knows"),
+    (dict(format=dict(name="rigsim-stick-run", version="1.9")), "newer than this repository knows"),
     (dict(format=dict(name="rigsim-stick-run", version="2.0")), "not a known version"),
     (dict(stick="abcdef1"), "stick without version"),
     (dict(questions={"cpu-gemm": dict(rc=0)}), "no tool versions"),
@@ -185,3 +185,13 @@ def test_stopped_run_keeps_finished_steps(tmp_path):
     r["questions"] = {}; (d / "run.json").write_text(json.dumps(r))
     assert any("stopped before any step finished" in x for x in V.check_run(d))
     assert V.step_of("q/gpu-vram/results.jsonl") == "gpu-vram" and V.step_of("inventory/lscpu.txt") is None
+
+
+def test_storage_files_allowed(tmp_path):
+    tools = dict(stick=dict(version="0.15.0", commit="a" * 40))
+    d = make_run(tmp_path, format=dict(name="rigsim-stick-run", version="1.7"))
+    r = json.loads((d / "run.json").read_text()); r["questions"]["storage"] = dict(rc=0, tools=tools)
+    (d / "run.json").write_text(json.dumps(r))
+    (d / "storage").mkdir()
+    (d / "storage" / "drives.json").write_text("[]"); (d / "storage" / "results.json").write_text("{}")
+    assert V.check_run(d) == [] and V.step_of("storage/results.json") == "storage"

@@ -1,0 +1,21 @@
+question = "gpu-p2p-xfer"
+asks = "Card -> card transfers by size, 4 KiB … 256 MiB in x4 steps, for every pair of neighbouring cards, with peer access and with it switched off (then through host memory): latency of one copy + wait and the rate of queued copies (stick profile; needs two or more NVIDIA cards)."
+feeds = "Fixed cost and rate of peer links and of the path through the host for layer splits and tensor parallel (hw/links.py; design/engine-primitives.md, item 3)."
+image = "nvidia/cuda:12.8.1-devel-ubuntu24.04"
+toolkit = "cuda"
+gpus = "item"
+min_gpus = 2          # the stick skips it on one-card machines (stick.py plan)
+exclusive = true
+repeats = 1
+sample_ms = 100
+timeout_s = 600
+
+[grid]
+gpu = ["@together"]
+peer = ["on", "off"]
+
+[args]
+cmd = ["probe", "xfer", "--dir", "d2d", "--peer", "{peer}", "--seconds", "0.2"]
+
+[smoke]
+grid = { peer = ["on"] }

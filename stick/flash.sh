@@ -65,7 +65,9 @@ STORE="${STORE:-$OUT/store.img}"; STORE_GB="${STORE_GB:-96}"
 PRELOAD_IN_CHROOT='
 containerd >/tmp/containerd.log 2>&1 & cpid=$!
 for i in $(seq 60); do [ -S /run/containerd/containerd.sock ] && break; sleep 1; done
-dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
+# the same image store as on the stick (stick.py docker_config): classic overlay2, not the containerd store (twice the space)
+echo "{\"features\": {\"containerd-snapshotter\": false}, \"storage-driver\": \"overlay2\"}" > /tmp/rigsim-daemon.json
+dockerd --config-file /tmp/rigsim-daemon.json --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
   >/tmp/dockerd.log 2>&1 & dpid=$!
 for i in $(seq 90); do docker info >/dev/null 2>&1 && break; sleep 1; done
 if ! docker info >/dev/null 2>&1; then
@@ -96,6 +98,8 @@ mount --bind "$t/store/containerd" "$r/var/lib/containerd"
 set +e
 chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"; rc=$?
 sync
+# blocks freed inside the store (removed images) become holes in the sparse file again, so the copy shrinks too
+fstrim "$t/store" 2>/dev/null || true
 umount "$t/store" 2>/dev/null || umount -l "$t/store"
 exit $rc'
 build_store() {                                      # loads the seed's images into $STORE (on this machine)
@@ -120,6 +124,7 @@ preload_images() {                                   # $1 = data partition (not 
   if ! build_store; then
     echo "images: preloading failed — the stick loads what is missing on its first boot"; return 0
   fi
+  cp "$OUT/seed/images/SET" "$STORE.set" 2>/dev/null || true   # which image set this store holds (build.sh checks it)
   local used; used="$(du -B1 "$STORE" | cut -f1)"
   mount_data "$1"
   # no store.img yet (a fresh partition): du fails — must not end the script (set -e + pipefail: [e]rase used to stop
@@ -128,6 +133,8 @@ preload_images() {                                   # $1 = data partition (not 
   free="$(( $(df -B1 --output=avail "$MNT" | tail -1) + ${old:-0} ))"
   if (( used + 1073741824 > free )); then
     echo "images: the store needs $((used >> 30)) GiB, the stick has $((free >> 30)) GiB free — not copied" >&2
+    # an older store on the stick would hold other images than this seed: gone, the stick loads from the seed instead
+    rm -f "$MNT/store.img"
     umount "$MNT"; rmdir "$MNT"; MNT=""; return 0
   fi
   echo "images: copying the store to the stick ($((used >> 30)) GiB, one sequential write)"

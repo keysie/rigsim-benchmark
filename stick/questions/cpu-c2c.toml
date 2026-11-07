@@ -1,0 +1,18 @@
+question = "cpu-c2c"
+asks = "How long a cache line takes from one core to another (ping-pong on one atomic, one-way, pairs of physical cores: same L3, other L3 / CCD, other package, SMT siblings, P/E on hybrid parts) and what one barrier over 2 … all cores costs (spin and futex; in order, on one L3, spread over L3s, P-cores only) (stick profile)."
+feeds = "Core-to-core latency per level of the CPU graph (hw/cpus.py); the per-operation synchronisation floor of CPU engines such as llama.cpp, which wait for all threads after every operation (design/engine-primitives.md, item 3)."
+image = "debian:trixie"
+toolkit = "cpu"
+gpus = "none"
+exclusive = true
+repeats = 1
+timeout_s = 600
+
+[grid]
+mode = ["pairs", "barrier"]
+
+[args]
+cmd = ["c2c", "{mode}"]
+
+[smoke]
+grid = { mode = ["barrier"] }

@@ -201,3 +201,91 @@ Vulkan), tool versions and `stick_check`. Does **not** deliver data:
   CPY lost its context after 8 — both recorded as `device_lost`, llama-bench rc 0; Blender junkshop at the limit.
 - MLC: the kernel gave only **750 of 1000** hugepages (an hour into the run; the manual test got them right after boot,
   *inferred*: memory fragmented by then), and MLC still stops with rc 22 — it needs the full 1000 per node.
+
+## Correction: which CUDA probe build the stick uses (2026-11-04; read from source)
+
+- The stick builds its CUDA probe with `stick/overlay/toolkits/cuda/setup.sh` (sm_52, 61, 70, 75, 80, 86, 89, 90, 120 +
+  PTX), not with `bench/hw/toolkits/cuda/setup.sh` (the AI box's sm_80+ variant). The statement of 2026-10-31 in the
+  old-GPU findings ("the CUDA probe is compiled for sm_80+ only, Turing/Volta/Pascal cannot run it") was wrong for the
+  stick; only **sm_60 (P100)** is missing from the stick's list. `sprint/old-gpus` edited the bench file instead of the
+  overlay — to fix there (add sm_60 to the overlay, revert or keep the bench change deliberately).
+
+## Older NVIDIA GPUs and P100 forks (2026-10-31; read from GitHub and the repo)
+
+- **qr0n/p100-llama-cpp** (MIT, 25 stars, created 2026-09-07): upstream llama.cpp `b10660` + 18 patches, with a
+  verify script that re-derives the tree from upstream; CUDA 12.x; claims e.g. Llama-3.1-8B Q4_K_M tg 39.3 → 79.6 on
+  one P100 (fp16 matrix-vector path), tensor-split gains on 2+ cards; patch 0010 carries Kmic-68's code. Patches are not
+  submitted upstream, by the author's decision.
+- **Kmic-68/llama.cpp** (fork of ggml-org/llama.cpp; default branch `p100-optimizations`, pushed 2026-10-25): tuned for
+  2× P100; cuBLAS-GEMM flash attention for long prefill and GQA-6 tile kernels.
+- **qr0n/p100-strata** (MIT): Strata v0.2.2 + 6 patches for P100 (MXFP4 expert kernels, …). Relevant to rigsim's Strata
+  engine, not to the stick (Strata is not on the stick).
+- CUDA 13 dropped Pascal (stated in qr0n/p100-strata); the stick's CUDA image is 12.8.1.
+- Space (2026-10-31, Ubuntu noble archive, driver 580.178.04, HWE kernel 7.0.0-42): the open modules package is 8.3 MB
+  (nvidia.ko 20.7 MB uncompressed); the proprietary set comes as `linux-objects-nvidia-580-<kver>` (98 MB download, 194 MB
+  installed, nv-kernel.o alone 113 MB) plus Canonical's detached signatures, linked at install time. Estimate for the old-GPU
+  sprint: system image +30–100 MB (proprietary set, more if the objects stay), llama.cpp CUDA +~1/9 per added
+  architecture, the two forks built for sm_60/61 only, firmware and user-space unchanged. To be measured on a build.
+- Build facts (2026-10-31, corrected 2026-11-05): the late-link also needs `linux-headers-<kernel>` (objtool, scripts/module.lds), which the package does not pull in. Ubuntu's proprietary NVIDIA module package for a kernel is a stub that depends on
+  `linux-objects-nvidia-580-<kver>` + `linux-signatures-nvidia-<kver>`; its postinst links the .ko files from `bits/`
+  (late-link, debconf default true). Both flavours install to their own directory with the same module names and do
+  not conflict as packages, so the swap flavour is installed, copied out and purged before the boot flavour.
+- The CUDA probe used to be compiled for sm_80+ only: Turing, Volta and Pascal could not run it even with a driver.
+- Existing 15 runs extract identical values with measurements VERSION 3 (checked 2026-10-31).
+
+## Coverage of what LLM engines depend on (2026-11-04; *inferred* estimate for the user, weights are judgment)
+
+Measured hardware functions: CPU GEMM fp32/fp64/int8 (1 core, all, thread ladder, 120 s sustained), RAM bandwidth by
+kernel × threads, latency by working set, MLC (latency, bandwidth, loaded latency, NUMA matrices); GPU GEMM fp32/fp16/int8
+(decode/prefill shapes), VRAM read/write/copy, launch cost incl. CUDA graphs, P2P per pair, PCIe h2d/d2h/bidir per card and
+all at once + topology; vkprobe, clpeak; 12 llama.cpp ops per backend; llama-bench pp512/tg128 on two small dense models.
+Estimated coverage of the factors that set throughput: vLLM-like (GPU-bound) ~50–60 %, Strata-like (MoE, experts on the
+CPU) ~60–70 %; engine-level validation (batching, long context, MoE, the engines themselves) ~15 %. Largest gaps: bf16/fp8/
+int4 GEMM on CUDA, vLLM's own attention kernels, small-message collectives (tensor parallel), small-transfer PCIe latency
+(expert paging), storage read speed, GPU power over time, concurrency.
+
+## Memory data in the runs (2026-10-31; measured from the 15 runs)
+
+- `hardware.dimms` already has rated and configured speed (dmidecode): the 13700K machine runs DDR5 rated 6000 MT/s at
+  6200. Its SPD read fails ("No EEPROM found"), as in 7 of 15 runs; Secure Boot was on in 10 of 15.
+- `cpu-mem-latency` (chase): one thread, unpinned, random cyclic chase over 64-byte lines with THP; 20M loads per pass,
+  5 passes, reports median / min / max of the pass averages; grid 64 / 1024 / 4096 MiB. The runner's baseline records
+  the governor per CPU (13700K: powersave), not the frequency during the measurement.
+- rigsim's idle latency = CAS (SPD tAA) + fixed 75.35 ns; predictions v0.3.0: 13700K 76.9 vs measured 64.5 ns
+  (fixed term only, no SPD), i7-9700 90.6 vs 58.1 ns (with CAS). The fixed term is too large for these desktop parts.
+
+## Bug hunt before the sprint's first build (2026-11-04; read from source, reproduced where possible)
+
+Flow (top down): inventory → questions (each under its memory limit) → named steps (mlc, storage, opencl, vkprobe,
+rocm, oneapi, llama-bench, blender) → NVIDIA module switch for undriven cards → status. Findings, all fixed:
+- **casper switched on the machine's swap partitions** (`casper-bottom/13swap`, read from casper 1.498: every
+  `/dev/[hsv]d*` partition with a swap signature gets `swapon`, no option to stop it). The stick could write to the
+  measured machine's disk, and memory measurements could swap. Removed from the initramfs; `swap_off()` at the start
+  switches off whatever is on and records `swap_was_on` (types only).
+- `drive_temp_c`: the NVMe controller name was derived by splitting on "n" (→ empty). Regex now.
+- The CPU toolkit's setup aborts on any failed build (`set -eu`): a broken `c2c` would have taken every CPU question
+  down. Its build failure is now contained.
+- cuBLASLt: a matmul refused at the first call exited the probe (rc 3) instead of being reported unsupported.
+- A failed NVIDIA module switch left the run `done` although cards stayed unmeasured; now `done with failures`.
+- `run_vendor`'s rc ignored recorded limits (`device_lost`) that `run_llama` already accepts.
+Checked and fine: the runner sets `CUDA_DEVICE_ORDER=PCI_BUS_ID`, so CUDA indices = nvidia-smi order = gpuN; the
+storage step cannot read the stick (mount check + USB/removable filter); phase 2 plans its questions for the cards it
+drives.
+
+Test suite: tests that only assert strings in the source were replaced where they were mine — the C probes (`c2c`,
+`chase`, `cgemm`) are now compiled and run by the tests (CI installs gcc, OpenBLAS, oneDNN, fio), fio runs read-only
+against a temp file, `run_vendor` runs against a pretend docker (oneDNN retry, switch-off, probe untouched, memory
+limit on the container), and one consistency test checks every question's command against its probe (mode and
+options). Removed as redundant: checks covered by the build's self-test or the QEMU boot test. Older tests that mirror
+source text remain: some are policy guards worth keeping (no DKMS, MLC never committed, nothing outside stick/ written,
+rootfs read through `rootfile`), others should become behaviour tests (flash.sh on a loop device in the boot workflow,
+status line / ticker, shutdown, runner item listing) — open point.
+- Forks and sm_61 (2026-11-05, reproduced with nvcc 12.0): both pinned forks' flash-attention tile kernels for head size
+  256 need 0xc300–0xf900 bytes of static shared memory on sm_61 (48 KB limit) — sm_61 does not build; sm_60 does. The
+  forks run on P100 (sm_60) only; P40 / GTX 10 get upstream llama.cpp only.
+- ROCm image build of 2026-11-06 (read from the log and upstream, not reproducible here — no ROCm toolchain): llama.cpp
+  released v0.9.0, so the "release" rule now picks **v0.8.0** (was v0.7.0). v0.8.0 contains the grouped-experts top-k
+  fusion (`group_mask_warp_inplace` in `topk-moe.cu`, added upstream 2026-10-17; absent in v0.7.0, still present on
+  master) and its HIP compile fails with ROCm 6.4.1 ("candidate template ignored: substitution failure" for 384…576
+  experts). The per-target fallback then dropped one target per attempt and gave up after four with the misleading
+  message "not a per-target error". CUDA and Vulkan build v0.8.0 fine.

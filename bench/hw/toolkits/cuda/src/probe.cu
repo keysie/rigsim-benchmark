@@ -1,12 +1,20 @@
 // rigsim hardware probe (CUDA + cuBLAS). Prints one JSON object per result line on stdout.
-//   probe gemm   --prec fp32|tf32|fp16_fp32acc|fp16|bf16|int8 --shape MxNxK [--reps 50] [--warmup 5]
+//   probe gemm   --prec fp32|tf32|fp16_fp32acc|fp16|bf16|int8|fp8|nvfp4|mxfp4 --shape MxNxK [--reps 50] [--warmup 5]
+//                fp8 (e4m3 x e4m3, sm_89+), nvfp4 / mxfp4 (e2m1 with block scales, sm_100+, cuBLAS 12.8+) go through
+//                cuBLASLt with bf16 output; elsewhere they are reported "unsupported" with the reason
 //   probe stream --op read|write|copy [--mib 4096] [--reps 20]
 //   probe load   --kind compute|memory [--duty 1.0] [--seconds 30] [--period-ms 20]
 //   probe copy   --dir h2d|d2h|bidir|d2d [--mib 512] [--reps 10]   every visible card at once (one thread each)
 //   probe info                      every visible device: name, PCI bus, units, clocks, memory
 //   probe launch [--count 2000]   kernel launch cost: back-to-back, launch + sync, replayed from a CUDA graph
+//   probe xfer   --dir h2d|d2h|bidir|d2d [--mem pinned|pageable] [--peer on|off] [--min-kib 4] [--max-mib 256]
+//                [--seconds 0.2]   size sweep (x4 steps): latency of one copy + sync, and the rate of queued copies
+//   probe overlap [--mib 256] [--seconds 2]   a GEMM alone, a host->card copy stream alone, both at once
 // Inputs are random (power depends on the data: zeros would draw less and run at a higher clock).
 #include <cublas_v2.h>
+#if !defined(__HIP_PLATFORM_AMD__) && !defined(__HIPCC__)
+#include <cublasLt.h>
+#endif
 #include <cuda_bf16.h>
 #include <cuda_fp16.h>
 #include <cuda_runtime.h>
@@ -109,11 +117,104 @@ static const Prec* prec_by_name(const std::string& s) {
     fprintf(stderr, "unknown precision %s\n", s.c_str()); exit(1);
 }
 
+// ---- fp8 / fp4 through cuBLASLt (design/engine-primitives.md, item 2, step 5) ---------------------------------------
+// The low-precision formats engines run on recent cards: e4m3 fp8 (Ada, Hopper, Blackwell) and e2m1 fp4 with a block
+// scale per 16 (nvfp4, UE4M3 scales) or 32 (mxfp4, UE8M0) values (Blackwell). A is used transposed ("TN"), as cuBLASLt
+// requires for these types; M is padded to 16 (the engines pad too); the output is bf16. Scales are constant: their
+// values do not change the speed. The ROCm build (hipified) reports these formats as unsupported for now.
+static void unsupported_line(const char* prec, int m, int n, int k, const char* why) {
+    printf("{\"mode\":\"gemm\",\"prec\":\"%s\",\"m\":%d,\"n\":%d,\"k\":%d,\"unsupported\":true,\"why\":\"%s\"}\n",
+           prec, m, n, k, why);
+}
+static int lt_gemm(const std::string& prec, int m, int n, int k, int reps, int warmup) {
+#if defined(__HIP_PLATFORM_AMD__) || defined(__HIPCC__)
+    unsupported_line(prec.c_str(), m, n, k, "fp8/fp4 not implemented in the ROCm build yet"); return 0;
+#else
+    cudaDeviceProp pr; CK(cudaGetDeviceProperties(&pr, 0));
+    int sm = pr.major * 10 + pr.minor;
+    bool fp4 = prec != "fp8";
+    if (!fp4 && sm < 89) { unsupported_line(prec.c_str(), m, n, k, "fp8 needs sm_89 or newer"); return 0; }
+#if !defined(CUBLAS_VERSION) || CUBLAS_VERSION < 120800
+    if (fp4) { unsupported_line(prec.c_str(), m, n, k, "fp4 needs cuBLAS 12.8 or newer"); return 0; }
+#else
+    if (fp4 && sm < 100) { unsupported_line(prec.c_str(), m, n, k, "fp4 needs sm_100 or newer"); return 0; }
+#endif
+    int mp = (m + 15) / 16 * 16;                         // padded M
+    cudaDataType_t ab = CUDA_R_8F_E4M3;
+    double elem = 1.0;                                    // bytes per element of A and B
+#if defined(CUBLAS_VERSION) && CUBLAS_VERSION >= 120800
+    if (fp4) { ab = CUDA_R_4F_E2M1; elem = 0.5; }
+#endif
+    cublasLtHandle_t lt; if (cublasLtCreate(&lt) != CUBLAS_STATUS_SUCCESS) { unsupported_line(prec.c_str(), m, n, k, "no cuBLASLt"); return 0; }
+    cublasLtMatmulDesc_t op; CB(cublasLtMatmulDescCreate(&op, CUBLAS_COMPUTE_32F, CUDA_R_32F));
+    cublasOperation_t ta = CUBLAS_OP_T, tb = CUBLAS_OP_N;
+    CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_TRANSA, &ta, sizeof ta));
+    CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_TRANSB, &tb, sizeof tb));
+    void *A, *B, *D, *sa = nullptr, *sb = nullptr;
+    size_t a_bytes = (size_t)((double)k * mp * elem), b_bytes = (size_t)((double)k * n * elem);
+    CK(cudaMalloc(&A, a_bytes)); CK(cudaMalloc(&B, b_bytes)); CK(cudaMalloc(&D, (size_t)mp * n * 2));
+    CK(cudaMemset(A, 0x33, a_bytes)); CK(cudaMemset(B, 0x2a, b_bytes)); CK(cudaMemset(D, 0, (size_t)mp * n * 2));
+    float one = 1.f, zero = 0.f;
+#if defined(CUBLAS_VERSION) && CUBLAS_VERSION >= 120800
+    if (fp4) {                                            // one scale per 16 (nvfp4) / 32 (mxfp4) values along K
+        int vec = prec == "nvfp4" ? 16 : 32;
+        cublasLtMatmulMatrixScale_t mode = prec == "nvfp4" ? CUBLASLT_MATMUL_MATRIX_SCALE_VEC16_UE4M3
+                                                           : CUBLASLT_MATMUL_MATRIX_SCALE_VEC32_UE8M0;
+        // the scale tensors' tiled layout rounds rows up to 128 and scale columns up to 4
+        size_t sa_bytes = (size_t)((mp + 127) / 128 * 128) * (((k / vec) + 3) / 4 * 4);
+        size_t sb_bytes = (size_t)((n + 127) / 128 * 128) * (((k / vec) + 3) / 4 * 4);
+        CK(cudaMalloc(&sa, sa_bytes)); CK(cudaMalloc(&sb, sb_bytes));
+        unsigned char s1 = prec == "nvfp4" ? 0x38 : 0x7f; // 1.0 in UE4M3 / UE8M0
+        CK(cudaMemset(sa, s1, sa_bytes)); CK(cudaMemset(sb, s1, sb_bytes));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_A_SCALE_MODE, &mode, sizeof mode));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_B_SCALE_MODE, &mode, sizeof mode));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_A_SCALE_POINTER, &sa, sizeof sa));
+        CB(cublasLtMatmulDescSetAttribute(op, CUBLASLT_MATMUL_DESC_B_SCALE_POINTER, &sb, sizeof sb));
+    }
+#endif
+    cublasLtMatrixLayout_t la, lb, lc, ld;
+    CB(cublasLtMatrixLayoutCreate(&la, ab, k, mp, k));    // A stored k x m (transposed in the op)
+    CB(cublasLtMatrixLayoutCreate(&lb, ab, k, n, k));
+    CB(cublasLtMatrixLayoutCreate(&lc, CUDA_R_16BF, mp, n, mp));
+    CB(cublasLtMatrixLayoutCreate(&ld, CUDA_R_16BF, mp, n, mp));
+    size_t ws = 32 << 20; void* wsp; CK(cudaMalloc(&wsp, ws));
+    cublasLtMatmulPreference_t pref; CB(cublasLtMatmulPreferenceCreate(&pref));
+    CB(cublasLtMatmulPreferenceSetAttribute(pref, CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES, &ws, sizeof ws));
+    cublasLtMatmulHeuristicResult_t h; int found = 0;
+    cublasStatus_t hs = cublasLtMatmulAlgoGetHeuristic(lt, op, la, lb, lc, ld, pref, 1, &h, &found);
+    if (hs != CUBLAS_STATUS_SUCCESS || found == 0) {
+        char why[96]; snprintf(why, sizeof why, "cuBLASLt has no kernel for this shape (status %d)", (int)hs);
+        unsupported_line(prec.c_str(), m, n, k, why); return 0;
+    }
+    auto call = [&] { return cublasLtMatmul(lt, op, &one, A, la, B, lb, &zero, D, lc, D, ld, &h.algo, wsp, ws, 0); };
+    cublasStatus_t first = call();
+    if (first != CUBLAS_STATUS_SUCCESS) {                 // a result: the library has no working path here
+        char why[64]; snprintf(why, sizeof why, "cublasLtMatmul status %d", (int)first);
+        unsupported_line(prec.c_str(), m, n, k, why); return 0;
+    }
+    for (int i = 0; i < warmup; ++i) CB(call());
+    CK(cudaDeviceSynchronize());
+    cudaEvent_t e0, e1; CK(cudaEventCreate(&e0)); CK(cudaEventCreate(&e1));
+    std::vector<float> ms(reps);
+    for (int i = 0; i < reps; ++i) { CK(cudaEventRecord(e0)); CB(call()); CK(cudaEventRecord(e1)); CK(cudaEventSynchronize(e1)); CK(cudaEventElapsedTime(&ms[i], e0, e1)); }
+    std::sort(ms.begin(), ms.end());
+    double med = ms[reps / 2] / 1e3, ops = 2.0 * m * (double)n * k;
+    printf("{\"mode\":\"gemm\",\"prec\":\"%s\",\"m\":%d,\"n\":%d,\"k\":%d,\"m_run\":%d,\"reps\":%d,\"ops\":%.0f,"
+           "\"t_median_s\":%.9g,\"t_min_s\":%.9g,\"t_max_s\":%.9g,\"ops_per_s\":%.6g,\"lib\":\"cublasLt\",\"cublas\":%d}\n",
+           prec.c_str(), m, n, k, mp, reps, ops, med, ms[0] / 1e3, ms[reps - 1] / 1e3, ops / med, (int)cublasLtGetVersion());
+    cudaFree(A); cudaFree(B); cudaFree(D); cudaFree(wsp); if (sa) cudaFree(sa); if (sb) cudaFree(sb);
+    cublasLtMatmulPreferenceDestroy(pref); cublasLtMatmulDescDestroy(op); cublasLtDestroy(lt);
+    return 0;
+#endif
+}
+
 static int gemm_mode(int argc, char** argv) {
-    const Prec* p = prec_by_name(arg(argc, argv, "--prec", "fp16"));
+    std::string pn = arg(argc, argv, "--prec", "fp16");
     int m, n, k;
     if (sscanf(arg(argc, argv, "--shape", "4096x4096x4096").c_str(), "%dx%dx%d", &m, &n, &k) != 3) return 1;
     int reps = atoi(arg(argc, argv, "--reps", "50").c_str()), warm = atoi(arg(argc, argv, "--warmup", "5").c_str());
+    if (pn == "fp8" || pn == "nvfp4" || pn == "mxfp4") return lt_gemm(pn, m, n, k, reps, warm);
+    const Prec* p = prec_by_name(pn);
     Gemm g(p, m, n, k);
     cublasStatus_t first = g.call();
     if (first == CUBLAS_STATUS_NOT_SUPPORTED || first == CUBLAS_STATUS_INVALID_VALUE) {
@@ -367,6 +468,113 @@ static int launch_mode(int argc, char** argv) {
     return 0;
 }
 
+// ---- small transfers: latency and rate per size (design/engine-primitives.md, item 3) ---------------------------------
+static double wall() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
+static double quantile(std::vector<double> v, double q) {
+    std::sort(v.begin(), v.end()); return v.empty() ? -1 : v[std::min(v.size() - 1, (size_t)(q * v.size()))];
+}
+
+// One sweep: for every size, the latency of one transfer + wait, then the rate of queued transfers.
+template <typename Issue, typename Wait>
+static void sweep(const char* dir, const char* mem, int src, int dst, bool peer, size_t lo, size_t hi, double budget,
+                  double factor, Issue issue, Wait wait) {
+    for (size_t b = lo; b <= hi; b *= 4) {
+        issue(b); wait();                              // warm-up
+        std::vector<double> lat;                       // one at a time: what one dependent transfer costs
+        double t_end = wall() + budget / 2;
+        while ((wall() < t_end || lat.size() < 5) && lat.size() < 20000) {
+            double t0 = wall(); issue(b); wait(); lat.push_back(wall() - t0);
+        }
+        long copies = 0; double t0 = wall(), el = 0;   // queued, one wait per batch of 8: the rate
+        do { for (int i = 0; i < 8; ++i) issue(b); wait(); copies += 8; el = wall() - t0; } while (el < budget / 2);
+        printf("{\"mode\":\"xfer\",\"dir\":\"%s\",\"mem\":\"%s\",\"src\":%d,\"dst\":%d,\"peer_access\":%s,"
+               "\"bytes\":%zu,\"latency_s\":%.6g,\"latency_p10_s\":%.6g,\"latency_p90_s\":%.6g,\"latency_samples\":%zu,"
+               "\"copies\":%ld,\"rate_bytes_per_s\":%.6g}\n", dir, mem, src, dst, peer ? "true" : "false", b,
+               quantile(lat, 0.5), quantile(lat, 0.1), quantile(lat, 0.9), lat.size(), copies, (double)b * copies * factor / el);
+        fflush(stdout);
+    }
+}
+
+static int xfer_mode(int argc, char** argv) {
+    std::string dir = arg(argc, argv, "--dir", "h2d"), mem = arg(argc, argv, "--mem", "pinned");
+    bool want_peer = arg(argc, argv, "--peer", "on") == "on";
+    size_t lo = strtoull(arg(argc, argv, "--min-kib", "4").c_str(), nullptr, 10) << 10;
+    size_t hi = strtoull(arg(argc, argv, "--max-mib", "256").c_str(), nullptr, 10) << 20;
+    double budget = atof(arg(argc, argv, "--seconds", "0.2").c_str());
+    int n; CK(cudaGetDeviceCount(&n));
+    cudaStream_t s1, s2;
+    if (dir == "d2d") {                                // card i -> card i+1 for every visible pair, as `copy`
+        if (n < 2) { fprintf(stderr, "d2d needs two visible cards\n"); return 1; }
+        for (int a = 0; a + 1 < n; ++a) {
+            int b = a + 1, can = 0;
+            CK(cudaDeviceCanAccessPeer(&can, a, b));
+            bool peer = want_peer && can;
+            void *x, *y;
+            CK(cudaSetDevice(b)); CK(cudaMalloc(&y, hi));
+            if (peer) cudaDeviceEnablePeerAccess(a, 0);
+            CK(cudaSetDevice(a)); CK(cudaMalloc(&x, hi));
+            if (peer) cudaDeviceEnablePeerAccess(b, 0);
+            else cudaDeviceDisablePeerAccess(b);       // off: the copy goes through host memory
+            cudaGetLastError();
+            CK(cudaStreamCreateWithFlags(&s1, cudaStreamNonBlocking));
+            sweep("d2d", "device", a, b, peer, lo, hi, budget, 1.0,
+                  [&](size_t z) { CK(cudaMemcpyPeerAsync(y, b, x, a, z, s1)); },
+                  [&] { CK(cudaStreamSynchronize(s1)); });
+            CK(cudaStreamDestroy(s1)); cudaFree(x); CK(cudaSetDevice(b)); cudaFree(y);
+        }
+        return 0;
+    }
+    bool pinned = mem == "pinned", bidir = dir == "bidir";
+    CK(cudaSetDevice(0));
+    void *h1, *h2, *d1, *d2;
+    CK(cudaMalloc(&d1, hi)); CK(cudaMalloc(&d2, hi));
+    if (pinned) { CK(cudaHostAlloc(&h1, hi, cudaHostAllocDefault)); CK(cudaHostAlloc(&h2, hi, cudaHostAllocDefault)); }
+    else { h1 = malloc(hi); h2 = malloc(hi); if (!h1 || !h2) { fprintf(stderr, "alloc\n"); return 1; } }
+    memset(h1, 1, hi); memset(h2, 2, hi);
+    CK(cudaStreamCreateWithFlags(&s1, cudaStreamNonBlocking)); CK(cudaStreamCreateWithFlags(&s2, cudaStreamNonBlocking));
+    sweep(dir.c_str(), mem.c_str(), -1, 0, false, lo, hi, budget, bidir ? 2.0 : 1.0,
+          [&](size_t b) {
+              if (dir == "h2d" || bidir) CK(cudaMemcpyAsync(d1, h1, b, cudaMemcpyHostToDevice, s1));
+              if (dir == "d2h" || bidir) CK(cudaMemcpyAsync(h2, d2, b, cudaMemcpyDeviceToHost, s2));
+          },
+          [&] { CK(cudaStreamSynchronize(s1)); CK(cudaStreamSynchronize(s2)); });
+    return 0;
+}
+
+// Does a copy run beside a kernel at full speed (copy engines), and what does it cost the kernel? An fp16 GEMM on one
+// stream, 256 MiB host->card copies (pinned) on another: each alone, then both at once.
+static int overlap_mode(int argc, char** argv) {
+    size_t bytes = strtoull(arg(argc, argv, "--mib", "256").c_str(), nullptr, 10) << 20;
+    double secs = atof(arg(argc, argv, "--seconds", "2").c_str());
+    Gemm g(prec_by_name("fp16"), 4096, 4096, 4096);
+    cudaStream_t sk, sc;
+    CK(cudaStreamCreateWithFlags(&sk, cudaStreamNonBlocking)); CK(cudaStreamCreateWithFlags(&sc, cudaStreamNonBlocking));
+    CB(cublasSetStream(g.h, sk));
+    void *h, *d; CK(cudaHostAlloc(&h, bytes, cudaHostAllocDefault)); CK(cudaMalloc(&d, bytes)); memset(h, 3, bytes);
+    auto run = [&](bool kernel, bool copy, double* ops_s, double* bytes_s) {
+        long kc = 0, cc = 0; double t0 = wall(), el = 0;
+        do {
+            for (int i = 0; i < 4; ++i) {
+                if (kernel) { CB(g.call()); ++kc; }
+                if (copy) { CK(cudaMemcpyAsync(d, h, bytes, cudaMemcpyHostToDevice, sc)); ++cc; }
+            }
+            CK(cudaStreamSynchronize(sk)); CK(cudaStreamSynchronize(sc));
+            el = wall() - t0;
+        } while (el < secs);
+        *ops_s = kc * g.ops() / el; *bytes_s = cc * (double)bytes / el;
+    };
+    double ka, ca, kb, cb, x;
+    run(true, false, &ka, &x); run(true, false, &ka, &x);        // warm-up, then alone
+    run(false, true, &x, &ca);
+    run(true, true, &kb, &cb);
+    cudaDeviceProp pr; CK(cudaGetDeviceProperties(&pr, 0));
+    printf("{\"mode\":\"overlap\",\"bytes\":%zu,\"kernel_alone_ops_per_s\":%.6g,\"copy_alone_bytes_per_s\":%.6g,"
+           "\"kernel_with_copy_ops_per_s\":%.6g,\"copy_with_kernel_bytes_per_s\":%.6g,\"copy_engines\":%d}\n",
+           bytes, ka, ca, kb, cb, pr.asyncEngineCount);
+    cudaFreeHost(h); cudaFree(d);
+    return 0;
+}
+
 int main(int argc, char** argv) {
     if (argc < 2) { fprintf(stderr, "usage: probe gemm|stream|load|copy|launch ...\n"); return 1; }
     cudaDeviceProp pr; CK(cudaGetDeviceProperties(&pr, 0));
@@ -377,6 +585,8 @@ int main(int argc, char** argv) {
     if (mode == "load") return load_mode(argc, argv);
     if (mode == "copy") return copy_mode(argc, argv);
     if (mode == "launch") return launch_mode(argc, argv);
+    if (mode == "xfer") return xfer_mode(argc, argv);
+    if (mode == "overlap") return overlap_mode(argc, argv);
     fprintf(stderr, "unknown mode %s\n", mode.c_str());
     return 1;
 }
