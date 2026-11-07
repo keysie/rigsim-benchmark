@@ -158,3 +158,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   have shipped a stale ROCm 6.4.1 image with another llama.cpp. Fixed both: hipify looked up / installed, probe-only
   failure; failed vendor builds remove the old archive; self-test requires the image in this build's VENDOR.tsv.
 - **2026-11-06** — User: the stick of this sprint builds (ROCm 7.2.1, forks sm_60, oneAPI, self-test all ok). Next: runs.
+- **2026-11-07** — Flash failed verification: the store (reused from flash to flash, never pruned) had grown to 83 GiB with the
+  old ROCm 6.4.1 image inside, did not fit (76 GiB free), was not copied — and the stick's previous store.img stayed and
+  was compared against the new one. Fixed: prune images not in the seed after preloading, fstrim the store, remove the
+  stick's old store.img when the new one does not fit. Open: whether the pruned store fits on a 128 GB stick.
