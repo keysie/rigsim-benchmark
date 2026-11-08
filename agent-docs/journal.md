@@ -175,3 +175,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   storage `zero_share` (256 evenly sampled 1 MiB blocks, only the share kept). 191 tests.
 - **2026-11-08** — With overlay2 the image store holds 44 GiB (was 83 GiB with containerd's store) and is copied to the 128 GB
   stick. dd's progress counts the sparse file's apparent size (holes included), so it shows more than 44 GiB.
+- **2026-11-08** — Store copy now says it is sparse: apparent size, data size, and what was written (du of the copy).
