@@ -170,3 +170,6 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   seed on a 128 GB stick); STORE_LAYOUT in the build's image set removes the old store.
 - **2026-11-08** — First run of the sprint's stick: everything new ran; only oneAPI FLASH_ATTN_EXT timed out. SPD reason
   parse fixed. Storage shows the unmapped-block effect (identical drives 0.5 vs 4.9 GB/s). Two proposals in open-points.
+- **2026-11-08** — User cleared both proposals; built: timeouts return 124 with the partial output (run_cmd keeps what
+  the process printed), test-backend-ops records `time_limit` with the cases measured (counts as done if > 0);
+  storage `zero_share` (256 evenly sampled 1 MiB blocks, only the share kept). 191 tests.
