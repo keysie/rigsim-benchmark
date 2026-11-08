@@ -389,7 +389,7 @@ def storage(run: Path) -> list[dict]:
             continue
         d = drives[drive]
         c = dict(drive=drive, job=job, kind=d.get("kind"), capacity_class_gb=d.get("capacity_class_gb"),
-                 link=d.get("link"), ios=r.get("ios"))
+                 link=d.get("link"), ios=r.get("ios"), zero_share=d.get("zero_share"))
         for name, v, unit in (("rate", r.get("bytes_per_s", 0) / 1e9, "GB/s"), ("iops", r.get("iops", 0), "IO/s"),
                               ("lat_p50", r.get("lat_p50_us", 0), "µs"), ("lat_p99", r.get("lat_p99_us", 0), "µs")):
             if v:

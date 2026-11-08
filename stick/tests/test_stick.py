@@ -1908,3 +1908,32 @@ def test_docker_keeps_each_image_once():
     f = (HERE / "flash.sh").read_text()                                       # the flash-time dockerd: the same store
     cfg = json.loads(re.search(r'echo "(\{.*\})" > /tmp/rigsim-daemon.json', f).group(1).replace('\\"', '"'))
     assert cfg == stick.DOCKER_STORAGE and "--config-file /tmp/rigsim-daemon.json" in f
+
+
+def test_a_time_limit_keeps_what_was_measured(tmp_path):
+    """Run f78e: FLASH_ATTN_EXT hit the 30-min limit and everything it had measured was lost."""
+    script = tmp_path / "slow.sh"
+    script.write_text("#!/bin/sh\necho '  FA(a): 10 runs - 1 us/run'\necho '  FA(b): 10 runs - 2 us/run'\nsleep 30\n")
+    script.chmod(0o755)
+    rc, out = stick.sh([str(script)], timeout=2)
+    assert rc == stick.TIME_LIMIT_RC and "FA(a)" in out and "FA(b)" in out and "time limit: 2 s" in out
+
+
+def test_backend_ops_records_the_time_limit(tmp_path, monkeypatch):
+    monkeypatch.setattr(stick, "backend_ops_plan", lambda binary, backend: [("ops-flash_attn_ext", ["tbo", "perf"])])
+    partial = "  FLASH_ATTN_EXT(x): 8 runs - 1 us/run\n  FLASH_ATTN_EXT(y): 2 runs - 9 us/run\n--- time limit: 1800 s ---\n"
+    r = stick.run_backend_ops(lambda cmd, t, env=None: (stick.TIME_LIMIT_RC, partial), tmp_path, "dev0", "tbo", "SYCL0",
+                              tmp_path / "log")
+    e = r["dev0-ops-flash_attn_ext"]
+    assert "2 case(s) measured before" in e["time_limit"] and stick.item_ok(e)
+    assert "FLASH_ATTN_EXT(y)" in (tmp_path / "dev0-ops-flash_attn_ext.txt").read_text()   # the measured lines are kept
+    assert not stick.item_ok(dict(rc=124, time_limit="stopped at the 1800 s limit; 0 case(s) measured before"))
+
+
+def test_zero_share_counts_unwritten_blocks_and_keeps_nothing_else(tmp_path):
+    f = tmp_path / "disk"
+    with open(f, "wb") as h:
+        h.truncate(64 << 20)
+        h.seek(0); h.write(os.urandom(16 << 20))                              # the first quarter holds data
+    assert stick.zero_share("x", samples=16, path=f) == 0.75
+    assert stick.zero_share("x", path=tmp_path / "missing") is None

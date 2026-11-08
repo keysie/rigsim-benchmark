@@ -385,19 +385,21 @@ def run_cmd(cmd: list[str], capture_output: bool = True, text: bool = True, time
                 _killpg(p); _kill_containers()
                 raise StepSkipped()
             if timeout is not None and time.time() - t0 > timeout:
-                _killpg(p)
-                raise subprocess.TimeoutExpired(cmd, timeout)
+                out, err = _killpg(p)                  # what it printed until then is kept (run f78e: 30 min lost)
+                raise subprocess.TimeoutExpired(cmd, timeout, output=out, stderr=err)
 
 
-def _killpg(p: subprocess.Popen) -> None:
+def _killpg(p: subprocess.Popen) -> tuple[str, str]:
+    """Kill the process group; returns what it printed (empty where nothing was captured)."""
     try:
         os.killpg(p.pid, signal.SIGKILL)
     except OSError:
         pass
     try:
-        p.communicate(timeout=10)
+        out, err = p.communicate(timeout=10)
+        return out or "", err or ""
     except (subprocess.TimeoutExpired, ValueError, OSError):
-        pass
+        return "", ""
 
 
 def operator_keys() -> None:
@@ -422,11 +424,23 @@ def operator_keys() -> None:
             say(f"press Enter again within {SKIP_ARM_S:.0f} s to skip {STATUS.step}")
 
 
+TIME_LIMIT_RC = 124                                    # like timeout(1): stopped at the time limit
+
+
+def _timed_out(e: subprocess.TimeoutExpired) -> tuple[int, str]:
+    out, err = e.output or "", e.stderr or ""
+    out = out.decode(errors="replace") if isinstance(out, bytes) else out
+    err = err.decode(errors="replace") if isinstance(err, bytes) else err
+    return TIME_LIMIT_RC, out + (("\n--- stderr ---\n" + err) if err.strip() else "") + f"\n--- time limit: {e.timeout:.0f} s ---\n"
+
+
 def sh(cmd: list[str], timeout: float = 120) -> tuple[int, str]:
     try:
         r = run_cmd(cmd, capture_output=True, text=True, timeout=timeout)
         return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
-    except (OSError, subprocess.TimeoutExpired) as e:
+    except subprocess.TimeoutExpired as e:
+        return _timed_out(e)
+    except OSError as e:
         return 127, f"{type(e).__name__}: {e}"
 
 
@@ -1185,6 +1199,34 @@ def drive_temp_c(name: str) -> float | None:
     return None
 
 
+ZERO_SAMPLES = 256
+
+
+def zero_share(dev: str, samples: int = ZERO_SAMPLES, block: int = 1 << 20, path: Path | None = None) -> float | None:
+    """Share of blocks, sampled evenly over the device, that read as all zeros: never written or trimmed blocks, which
+    a controller answers without reading flash (run f78e: two identical drives 0.5 vs 4.9 GB/s). Only the share is
+    kept, nothing read leaves this function. None if the device cannot be read."""
+    p = path or Path("/dev") / dev
+    try:
+        fd = os.open(p, os.O_RDONLY)
+    except OSError:
+        return None
+    try:
+        size = os.lseek(fd, 0, os.SEEK_END)
+        n = max(1, min(samples, size // block))
+        zero = bytes(block)
+        hits = 0
+        for i in range(n):
+            off = (size // n * i) // block * block
+            b = os.pread(fd, block, off)
+            hits += b == zero[:len(b)]
+        return round(hits / n, 3)
+    except OSError:
+        return None
+    finally:
+        os.close(fd)
+
+
 def parse_fio(out: str) -> dict:
     """The numbers of one fio job (--output-format=json): read rate, IOPS, latency mean and percentiles."""
     try:
@@ -1231,6 +1273,7 @@ def run_storage(rundir: Path, log: Path, cmdline: str) -> dict:
                                       **({} if rc == 0 else dict(error=out.strip().splitlines()[-1][:200] if out.strip() else "")))
             rc_all |= rc != 0
         info["temp_c_after"] = drive_temp_c(dev)
+        info["zero_share"] = zero_share(dev)
         say(f"storage {dev}: {info['kind']}, ~{info['capacity_class_gb']} GB, "
             f"seq 1M QD32 {runs.get(f'{dev}-seq-1m-qd32', {}).get('bytes_per_s', 0) / 1e9:.2f} GB/s", log)
     (d / "drives.json").write_text(json.dumps(drives, indent=1))
@@ -1317,7 +1360,9 @@ def device_lost(text: str) -> str:
 def item_ok(v: dict) -> bool:
     """A llama.cpp item that does not make its step fail: done, skipped with a reason, or ended by a limit of the
     machine (memory limit, GPU reset) — recorded with the reason."""
-    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory") or v.get("device_lost"))
+    measured_some = "; 0 case(s)" not in str(v.get("time_limit", "; 0 case(s)"))
+    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory") or v.get("device_lost")
+                or (v.get("time_limit") and measured_some))
 
 
 VK_MEMORY = re.compile(r"Device memory:\s*(\d+) MB \((\d+) MB free\)")
@@ -1363,7 +1408,9 @@ def _run_env(cmd: list[str], timeout: float, env: dict) -> tuple[int, str]:
     try:
         r = run_cmd(cmd, capture_output=True, text=True, timeout=timeout, env=env)
         return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
-    except (OSError, subprocess.TimeoutExpired) as e:
+    except subprocess.TimeoutExpired as e:
+        return _timed_out(e)
+    except OSError as e:
         return 127, f"{type(e).__name__}: {e}"
 
 
@@ -1393,14 +1440,18 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
                                         lambda env, cmd=cmd: run(cmd, BACKEND_OPS_TIMEOUT_S, env))
         else:
             rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
-        if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
+        if rc not in (0, 127, TIME_LIMIT_RC):                # not runnable or out of time: no point retrying
             cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
-        if rc != 0 and rc != 127:
+        if rc not in (0, 127, TIME_LIMIT_RC):
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
         lost = device_lost(out) if rc != 0 else ""
         if lost:
             say(f"test-backend-ops {prefix} {key}: {lost}", log)
+        if rc == TIME_LIMIT_RC:                          # what ran until the limit is measured (run f78e: FA on an iGPU)
+            cases = sum(1 for l in out.splitlines() if " runs - " in l)
+            extra = dict(extra, time_limit=f"stopped at the {BACKEND_OPS_TIMEOUT_S} s limit; {cases} case(s) measured before")
+            say(f"test-backend-ops {prefix} {key}: {extra['time_limit']}", log)
         runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra,
                                         **(dict(device_lost=lost) if lost else {}))
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
