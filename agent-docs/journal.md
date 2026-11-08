@@ -168,3 +168,5 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-07** — Store measured by the user: containerd content 21 GiB (compressed layers) + snapshots 62 GiB (unpacked). The
   stick and the flash-time dockerd now use the classic overlay2 store (each image once, ~62 GiB, fits next to the 25 GiB
   seed on a 128 GB stick); STORE_LAYOUT in the build's image set removes the old store.
+- **2026-11-08** — First run of the sprint's stick: everything new ran; only oneAPI FLASH_ATTN_EXT timed out. SPD reason
+  parse fixed. Storage shows the unmapped-block effect (identical drives 0.5 vs 4.9 GB/s). Two proposals in open-points.

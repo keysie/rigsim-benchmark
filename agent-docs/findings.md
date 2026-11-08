@@ -289,3 +289,17 @@ status line / ticker, shutdown, runner item listing) — open point.
   master) and its HIP compile fails with ROCm 6.4.1 ("candidate template ignored: substitution failure" for 384…576
   experts). The per-target fallback then dropped one target per attempt and gave up after four with the misleading
   message "not a per-target error". CUDA and Vulkan build v0.8.0 fine.
+
+## First run of the sprint's stick (2026-11-08, run `…-f78e`, 13700K + RTX 3080 + UHD 770, 4 drives; measured)
+
+- All new questions ran (rc 0): cpu-gemm-shapes, cpu-c2c, pcie-xfer, gpu-gemm-shapes (144 items), gpu-overlap, storage on
+  4 drives, cpu-mem-latency with 15 items (P and E cores); gpu-p2p(-xfer) skipped (one card); MLC got its 1000 hugepages;
+  overlay2 store used; no swap was on; lockdown none.
+- Only failure: oneAPI FLASH_ATTN_EXT on the UHD 770 hit the 30-min timeout with oneDNN off (llama.cpp v0.8.0; v0.13.8
+  with an older llama.cpp passed it) — the timeout drops the partial output.
+- SPD: "SMBus adapters: none" — no SMBus controller visible to Linux on this board, the cause of the missing SPD data.
+  The reason quoted the stick's "--- stderr ---" marker instead of decode-dimms (fixed).
+- Storage (raw reads, whole device, random offsets): two identical Samsung 980 PRO 2 TB on the same Gen4 x4 link: seq 1M
+  QD32 0.50 vs 4.93 GB/s, rand 4K QD128 104k vs 558k IOPS. Old SATA 840: 0.15 GB/s. *Inferred:* unmapped (never written
+  or trimmed) blocks are answered by the controller without reading flash, so the numbers depend on how full a drive is
+  — a mostly empty drive reads at interface speed, a full one at flash speed (and old data on some Samsung drives reads slowly).
