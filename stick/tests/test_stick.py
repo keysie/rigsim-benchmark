@@ -1696,6 +1696,8 @@ def test_spd_status_says_why(tmp_path):
     assert s["status"] == "unavailable" and "No EEPROM found" in s["reason"] and "SMBus I801 adapter" in s["reason"]
     assert "SPD devices bound: none" in s["reason"] and s["smbus_adapters"] == ["SMBus I801 adapter"]
     assert stick.spd_status(inv, ["spd-0-0050.hex"], i2c, ad)["status"] == "raw"
+    (inv / "spd.txt").write_text("\n--- stderr ---\nNo EEPROM found, the kernel probably does not support your hardware.\n")
+    assert "decode-dimms: No EEPROM found" in stick.spd_status(inv, [], i2c, ad)["reason"]       # run f78e: the marker
     (inv / "spd.txt").write_text("# decode-dimms\nDecoding EEPROM: /sys/bus/i2c/drivers/ee1004/0-0050\n")
     assert stick.spd_status(inv, [], i2c, ad)["status"] == "decoded"
 

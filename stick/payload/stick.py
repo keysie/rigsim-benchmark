@@ -732,7 +732,8 @@ def spd_status(dst: Path, raw: list[str], i2c: Path = Path("/sys/bus/i2c/devices
         return dict(out, status="decoded")
     if raw:
         return dict(out, status="raw", reason="decode-dimms decoded nothing; the raw SPD bytes are in inventory/spd-*.hex")
-    msg = next((l.strip() for l in txt.splitlines() if l.strip() and not l.startswith("#")), "no output")
+    # the first real line of decode-dimms' output, not the stick's "--- stderr ---" marker (run f78e, 2026-11-08)
+    msg = next((l.strip() for l in txt.splitlines() if l.strip() and not l.startswith(("#", "---"))), "no output")
     why = [f"decode-dimms: {msg[:120]}", "SMBus adapters: " + (", ".join(smbus) or "none"),
            "SPD devices bound: " + (", ".join(devs) or "none")]
     return dict(out, status="unavailable", reason="; ".join(why))
