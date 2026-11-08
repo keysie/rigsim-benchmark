@@ -137,11 +137,16 @@ preload_images() {                                   # $1 = data partition (not 
     rm -f "$MNT/store.img"
     umount "$MNT"; rmdir "$MNT"; MNT=""; return 0
   fi
-  echo "images: copying the store to the stick ($((used >> 30)) GiB, one sequential write)"
+  local apparent; apparent="$(stat -c %s "$STORE")"
+  # store.img is sparse: dd reads its whole apparent size (the empty parts as zeros, no disk I/O) and writes only the
+  # data, so its progress counts more than is written (2026-11-08: "60 GB copied" of a 44 GiB store)
+  echo "images: copying the store to the stick — a sparse file of $((apparent >> 30)) GiB, $((used >> 30)) GiB of it data:"
+  echo "        dd reads all $((apparent >> 30)) GiB (its progress below counts that) and writes only the $((used >> 30)) GiB"
   rm -f "$MNT/store.img"
   # images an older stick version unpacked onto the partition itself are replaced by the store: freed
   rm -rf "$MNT/docker" "$MNT/containerd"
   dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse status=progress && sync
+  echo "images: written to the stick: $(( $(du -B1 "$MNT/store.img" | cut -f1) >> 20 )) MiB of data (store.img, sparse)"
   umount "$MNT"; rmdir "$MNT"; MNT=""
   return 0
 }
