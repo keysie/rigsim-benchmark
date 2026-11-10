@@ -838,7 +838,7 @@ def test_flash_preloads_images_into_a_store_file_and_copies_it_once():
     outside = f.replace(f.split("STORE_IN_NAMESPACE='", 1)[1].split("exit $rc'", 1)[0], "")
     assert "--rbind" not in outside                                                # no recursive bind outside it
     pre = f.split("preload_images() {", 1)[1].split("\n}\n", 1)[0]
-    assert 'dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse' in pre and "NO_PRELOAD" in pre
+    assert 'python3 "$S/tools/deltacopy.py" "$STORE" "$MNT/store.img"' in pre and "NO_PRELOAD" in pre
     assert "not copied" in pre and pre.rstrip().endswith("return 0")              # never fails the flash
     assert "dockerd --config-file /tmp/rigsim-daemon.json --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock" in f
     src = (HERE / "payload" / "stick.py").read_text()
@@ -1952,3 +1952,36 @@ def test_stick_version_readable_on_both_partitions(tmp_path):
             (d / k).write_text(v + "\n")
         r = subprocess.run(["bash", "-c", fn + f'\nver {d}'], capture_output=True, text=True)
         assert r.stdout.strip() == want
+
+
+_dspec = importlib.util.spec_from_file_location("deltacopy", HERE / "tools" / "deltacopy.py")
+deltacopy = importlib.util.module_from_spec(_dspec); _dspec.loader.exec_module(deltacopy)
+
+
+def _sparse(path: Path, size_mib: int, parts: dict[int, bytes]) -> None:
+    with open(path, "wb") as f:
+        f.truncate(size_mib << 20)
+        for mib, data in parts.items():
+            f.seek(mib << 20); f.write(data)
+
+
+def test_deltacopy_writes_only_what_differs_and_clears_stale_data(tmp_path):
+    """User 2026-11-10: a changed store should not mean 44 GiB of writes. And the stick writes into its own copy."""
+    a, b = os.urandom(8 << 20), os.urandom(4 << 20)
+    src, dst = tmp_path / "store.img", tmp_path / "stick.img"
+    _sparse(src, 64, {0: a, 32: b})
+    st = deltacopy.copy(str(src), str(dst), 1 << 20, out=open(os.devnull, "w"))      # a stick without a store
+    assert dst.read_bytes() == src.read_bytes() and st["written"] == 12 << 20
+    st = deltacopy.copy(str(src), str(dst), 1 << 20, out=open(os.devnull, "w"))      # nothing changed: nothing written
+    assert st["written"] == st["punched"] == 0 and st["same"] == 12 << 20
+    with open(dst, "r+b") as f:                                                       # the stick ran: data in a hole
+        f.seek(48 << 20); f.write(os.urandom(2 << 20))
+    with open(src, "r+b") as f:                                                       # one image changed
+        f.seek(2 << 20); f.write(os.urandom(1 << 20))
+    st = deltacopy.copy(str(src), str(dst), 1 << 20, out=open(os.devnull, "w"))
+    assert dst.read_bytes() == src.read_bytes()
+    assert st["written"] == 1 << 20 and st["punched"] == 2 << 20                      # changed chunk; stale data gone
+    assert os.stat(dst).st_blocks * 512 <= os.stat(src).st_blocks * 512 + (1 << 20)   # still sparse
+    _sparse(src, 16, {0: a})                                                          # a smaller store
+    deltacopy.copy(str(src), str(dst), 1 << 20, out=open(os.devnull, "w"))
+    assert dst.read_bytes() == src.read_bytes()
