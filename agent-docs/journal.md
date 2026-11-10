@@ -177,3 +177,7 @@ by adding a new entry). Rarely read: it explains how the current state came to b
   stick. dd's progress counts the sparse file's apparent size (holes included), so it shows more than 44 GiB.
 - **2026-11-08** — Store copy now says it is sparse: apparent size, data size, and what was written (du of the copy).
 - **2026-11-10** — User: stick version readable from the file systems. /.disk/info now "rigsim hardware stick <semver> (<commit>, Ubuntu <suite>)", seed/STICK_VERSION on the data partition; flash.sh shows "0.15.0 (a5fc277)".
+- **2026-11-10** — User: skip the store when unchanged, and could it be split so a change rewrites less? Built instead a chunk-wise
+  delta copy of the one store file (tools/deltacopy.py): unchanged chunks only read, changed written, data in SRC holes
+  punched (rsync --inplace --sparse left such stale data, tested). Splitting the store is not needed for that, and a
+  pure skip would have kept what the stick writes into its copy while running (verification would fail).
