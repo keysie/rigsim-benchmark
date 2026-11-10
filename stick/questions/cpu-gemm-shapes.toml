@@ -1,0 +1,24 @@
+question = "cpu-gemm-shapes"
+asks = "CPU matrix throughput over the tokens in flight (M = 1 … 4096) at two layer shapes of an 8B-class model, all logical CPUs: OpenBLAS fp32, oneDNN int8 (VNNI / AMX), bf16 (AVX512_BF16 / AMX) and fp16 (AVX512-FP16 / AMX-FP16) with the weights in oneDNN's own layout — which instruction set and kernel oneDNN chose is recorded; formats the CPU lacks are recorded as unsupported (stick profile)."
+feeds = "CPU rates per (operation class, data type) for engines that run layers or experts on the CPU (hw/rates.py); decode and prefill bounds (design/engine-primitives.md, item 2)."
+image = "debian:trixie"
+toolkit = "cpu"
+gpus = "none"
+exclusive = true
+repeats = 1
+timeout_s = 600
+
+[grid]
+prec = ["fp32", "int8", "bf16", "fp16"]
+shape = ["1x4096x4096", "4x4096x4096", "16x4096x4096", "64x4096x4096", "256x4096x4096", "1024x4096x4096",
+         "4096x4096x4096",
+         "1x14336x4096", "4x14336x4096", "16x14336x4096", "64x14336x4096", "256x14336x4096", "1024x14336x4096",
+         "4096x14336x4096"]
+threads = [0]
+
+[args]
+reps = 3
+cmd = ["cgemm", "--prec", "{prec}", "--shape", "{shape}", "--threads", "{threads}", "--reps", "{reps}"]
+
+[smoke]
+grid = { prec = ["fp32", "bf16"], shape = ["1x4096x4096", "1024x4096x4096"] }

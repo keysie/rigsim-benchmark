@@ -25,5 +25,7 @@ else
 fi
 gcc -O2 -o /usr/local/bin/chase src/chase.c
 gcc -O2 -fopenmp -o /usr/local/bin/cgemm src/cgemm.c -lopenblas -ldnnl
+# a probe of its own: if it does not build, only cpu-c2c fails, not every CPU question
+gcc -O2 -o /usr/local/bin/c2c src/c2c.c -lpthread || echo "c2c: build failed"
 install -m 0755 src/cpuprobe /usr/local/bin/cpuprobe
 echo "cpu toolkit ready"

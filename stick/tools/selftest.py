@@ -4,7 +4,7 @@ binary find its libraries where it will run? A missing part stops the build (exi
 instead of runs that lack the expected data (user decision 2026-10-31). ALLOW_INCOMPLETE=1 builds anyway, for testing.
 
 Parts left out on purpose by a build option (MLC_URL or BLENDER_LAUNCHER_URL empty, SKIP_MODELS, SKIP_ROCM,
-SKIP_ONEAPI) are reported as "left out", not as failures.
+SKIP_ONEAPI, LLAMA_FORKS) are reported as "left out", not as failures.
 
 Where things run on the stick (stick.py): Blender, MLC, vkprobe and llama.cpp Vulkan in the system image; llama.cpp
 CUDA inside the CUDA image. `ldd` is therefore run in the system image (chroot, binary bind-mounted) or in that image.
@@ -30,6 +30,8 @@ LLAMA_BINS = ("llama-bench", "test-backend-ops")
 # the image they are fine, provided the system image has them.
 DRIVER_LIB_PREFIXES = ("libcuda.so", "libnvidia-")
 MOUNT = "mnt/rigsim-selftest"
+SWAP = "usr/lib/rigsim/nvidia-swap"            # the other NVIDIA module flavour (chroot-setup.sh), for stick.py
+SWAP_MODULES = ("nvidia", "nvidia-uvm", "nvidia-modeset")
 
 
 def load_stick():
@@ -138,6 +140,21 @@ class SelfTest:
         self.set("llama.cpp vulkan", self.binaries("llama", [s / "llama" / "vulkan" / b for b in LLAMA_BINS], self.ldd_root))
         self.set("llama.cpp cuda", self.binaries("llama", [s / "llama" / "cuda" / b for b in LLAMA_BINS],
                                                  self.ldd_in_cuda_image))
+        # llama.cpp forks for Pascal cards: each one asked for (LLAMA_FORKS) built, its libraries in the CUDA image
+        forks = [spec.split("=", 1)[0] for spec in e.get("LLAMA_FORKS", "").split()]
+        if not forks:
+            self.set("llama.cpp forks", [], "LLAMA_FORKS is empty")
+        else:
+            fd = s / "llama" / "forks"
+            self.set("llama.cpp forks", self.binaries("forks", [fd / f / "llama-bench" for f in forks], self.ldd_in_cuda_image)
+                     + [f + ": no COMMIT recorded" for f in forks if not nonempty(fd / f / "COMMIT")])
+        # the other NVIDIA module flavour for switching during a run, the same driver version as the boot modules
+        sw = self.payload.parent.parent / SWAP                  # payload = <rootfs>/opt/rigsim
+        problems = [m + ".ko not in the system image" for m in SWAP_MODULES if not list(sw.glob(m + ".ko*"))]
+        ver = lambda n: (sw / n).read_text().strip() if (sw / n).is_file() else ""
+        if not ver("VERSION") or ver("VERSION") != ver("BOOT_VERSION"):
+            problems.append("versions differ or missing: swap " + (ver("VERSION") or "?") + ", boot " + (ver("BOOT_VERSION") or "?"))
+        self.set("nvidia module swap", problems)
         # models
         if self.opt_off("SKIP_MODELS"):
             self.set("models", [], "SKIP_MODELS=1")
@@ -171,7 +188,10 @@ class SelfTest:
             if self.opt_off(opt):
                 self.set(v, [], f"{opt}=1")
             else:
-                self.set(v, [] if nonempty(s / "images" / f"vendor-{v}.tar") else [f"vendor-{v}.tar not in the seed"])
+                listed = (s / "images" / "VENDOR.tsv").read_text().split("\n") if (s / "images" / "VENDOR.tsv").exists() else []
+                self.set(v, ([] if nonempty(s / "images" / f"vendor-{v}.tar") else [f"vendor-{v}.tar not in the seed"])
+                         + ([] if any(l.startswith(v + "\t") for l in listed) else
+                            [f"{v} not in images/VENDOR.tsv: the archive is not from this build"]))
         return self.results
 
 

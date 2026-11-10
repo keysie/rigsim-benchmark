@@ -16,18 +16,25 @@ done
 echo "targets: $(cat TARGETS)"
 cat /opt/rocm/.info/version > ROCM_VERSION 2>/dev/null || hipconfig --version > ROCM_VERSION
 # probe: the CUDA source, hipified; built or recorded as missing (llama-bench still runs)
-hipify-perl /src/probe.cu > probe.hip.cpp
-if hipcc -O3 -std=c++17 $(printf -- '--offload-arch=%s ' "${T[@]}") -o probe probe.hip.cpp -lhipblas -lpthread 2> probe-build.log; then
+# hipify-perl: on PATH in ROCm 6, not in the ROCm 7.2.1 image (build of 2026-11-06) — /opt/rocm/bin, else the
+# hipify-clang package that ships it; without it the probe is missing, not the image
+HIPIFY="$(command -v hipify-perl || ls /opt/rocm*/bin/hipify-perl 2>/dev/null | head -1 || true)"
+if [ -z "$HIPIFY" ]; then
+  apt-get update -qq && apt-get install -y -qq hipify-clang >/dev/null 2>&1 || true
+  HIPIFY="$(command -v hipify-perl || ls /opt/rocm*/bin/hipify-perl 2>/dev/null | head -1 || true)"
+fi
+if [ -n "$HIPIFY" ] && "$HIPIFY" /src/probe.cu > probe.hip.cpp && hipcc -O3 -std=c++17 $(printf -- '--offload-arch=%s ' "${T[@]}") -o probe probe.hip.cpp -lhipblas -lpthread 2> probe-build.log; then
   echo "probe built"
 else
-  echo "probe NOT built (probe-build.log):"; tail -5 probe-build.log; rm -f probe
+  echo "probe NOT built (hipify-perl: ${HIPIFY:-missing}; probe-build.log):"; tail -5 probe-build.log 2>/dev/null; rm -f probe
 fi
 git clone -q https://github.com/ggml-org/llama.cpp /tmp/llama && cd /tmp/llama && git checkout -q "$LLAMA_REF"
 # A llama.cpp commit can fail to compile for single older targets (e.g. gfx1010 with a newer kernel template); then
 # those targets are dropped and the build repeats, instead of losing the whole ROCm image. TARGETS ends up holding
 # what llama.cpp was built for (the stick decides the HSA override from it); dropped ones in TARGETS_DROPPED.
 : > /rigsim/TARGETS_DROPPED
-for attempt in 1 2 3 4; do
+max=$(( $(tr ';' '\n' < /rigsim/TARGETS | grep -c .) + 1 ))     # at most one attempt per target, plus the first
+for attempt in $(seq 1 "$max"); do
   rm -rf b
   HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" cmake -B b -DGGML_HIP=ON \
     -DGPU_TARGETS="$(cat /rigsim/TARGETS)" -DAMDGPU_TARGETS="$(cat /rigsim/TARGETS)" -DCMAKE_BUILD_TYPE=Release \
@@ -39,7 +46,10 @@ for attempt in 1 2 3 4; do
     break                                              # pipefail: the pipeline fails when the build does
   fi
   bad="$(grep -oE 'errors? generated when compiling for gfx[0-9a-f]+' /tmp/llama-build.log | awk '{print $NF}' | sort -u || true)"
-  if [ -z "$bad" ] || [ "$attempt" -eq 4 ]; then echo "llama.cpp HIP build failed (not a per-target error)"; exit 1; fi
+  if [ -z "$bad" ]; then echo "llama.cpp HIP build failed, not for one GPU target (see the errors above)"; exit 1; fi
+  if [ "$attempt" -eq "$max" ] || [ "$bad" = "$(cat /rigsim/TARGETS)" ]; then
+    echo "llama.cpp HIP build failed for every GPU target (last: $bad) — this ROCm cannot compile this llama.cpp"; exit 1
+  fi
   echo "llama.cpp does not compile for: $bad — dropping, building again"
   echo "$bad" >> /rigsim/TARGETS_DROPPED
   tr ';' '\n' < /rigsim/TARGETS | grep -vxF -f <(echo "$bad") | paste -sd ';' > /tmp/t && mv /tmp/t /rigsim/TARGETS

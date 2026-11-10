@@ -65,7 +65,9 @@ STORE="${STORE:-$OUT/store.img}"; STORE_GB="${STORE_GB:-96}"
 PRELOAD_IN_CHROOT='
 containerd >/tmp/containerd.log 2>&1 & cpid=$!
 for i in $(seq 60); do [ -S /run/containerd/containerd.sock ] && break; sleep 1; done
-dockerd --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
+# the same image store as on the stick (stick.py docker_config): classic overlay2, not the containerd store (twice the space)
+echo "{\"features\": {\"containerd-snapshotter\": false}, \"storage-driver\": \"overlay2\"}" > /tmp/rigsim-daemon.json
+dockerd --config-file /tmp/rigsim-daemon.json --data-root /mnt/rigsim/docker --containerd=/run/containerd/containerd.sock --iptables=false --bridge=none \
   >/tmp/dockerd.log 2>&1 & dpid=$!
 for i in $(seq 90); do docker info >/dev/null 2>&1 && break; sleep 1; done
 if ! docker info >/dev/null 2>&1; then
@@ -96,6 +98,8 @@ mount --bind "$t/store/containerd" "$r/var/lib/containerd"
 set +e
 chroot "$r" /bin/bash -c "$PRELOAD_IN_CHROOT"; rc=$?
 sync
+# blocks freed inside the store (removed images) become holes in the sparse file again, so the copy shrinks too
+fstrim "$t/store" 2>/dev/null || true
 umount "$t/store" 2>/dev/null || umount -l "$t/store"
 exit $rc'
 build_store() {                                      # loads the seed's images into $STORE (on this machine)
@@ -120,6 +124,7 @@ preload_images() {                                   # $1 = data partition (not 
   if ! build_store; then
     echo "images: preloading failed — the stick loads what is missing on its first boot"; return 0
   fi
+  cp "$OUT/seed/images/SET" "$STORE.set" 2>/dev/null || true   # which image set this store holds (build.sh checks it)
   local used; used="$(du -B1 "$STORE" | cut -f1)"
   mount_data "$1"
   # no store.img yet (a fresh partition): du fails — must not end the script (set -e + pipefail: [e]rase used to stop
@@ -128,13 +133,23 @@ preload_images() {                                   # $1 = data partition (not 
   free="$(( $(df -B1 --output=avail "$MNT" | tail -1) + ${old:-0} ))"
   if (( used + 1073741824 > free )); then
     echo "images: the store needs $((used >> 30)) GiB, the stick has $((free >> 30)) GiB free — not copied" >&2
+    # an older store on the stick would hold other images than this seed: gone, the stick loads from the seed instead
+    rm -f "$MNT/store.img"
     umount "$MNT"; rmdir "$MNT"; MNT=""; return 0
   fi
-  echo "images: copying the store to the stick ($((used >> 30)) GiB, one sequential write)"
-  rm -f "$MNT/store.img"
+  local apparent; apparent="$(stat -c %s "$STORE")"
+  # Only the chunks that differ are written (tools/deltacopy.py): images that did not change since the last flash
+  # stay as they are on the stick, and what the stick wrote into its copy while running is set back. A stick without
+  # a store gets all of it. store.img is sparse ($((apparent >> 30)) GiB, $((used >> 30)) GiB of it data).
+  if [[ -f "$MNT/store.img" ]]; then
+    echo "images: updating the store on the stick ($((used >> 30)) GiB of data): only the parts that changed are written"
+  else
+    echo "images: copying the store to the stick ($((used >> 30)) GiB of data in a sparse file of $((apparent >> 30)) GiB)"
+  fi
   # images an older stick version unpacked onto the partition itself are replaced by the store: freed
   rm -rf "$MNT/docker" "$MNT/containerd"
-  dd if="$STORE" of="$MNT/store.img" bs=16M conv=sparse status=progress && sync
+  python3 "$S/tools/deltacopy.py" "$STORE" "$MNT/store.img" && sync
+  echo "images: the store on the stick holds $(( $(du -B1 "$MNT/store.img" | cut -f1) >> 20 )) MiB of data"
   umount "$MNT"; rmdir "$MNT"; MNT=""
   return 0
 }
@@ -239,11 +254,14 @@ fi
 if [[ -z "$part" ]]; then fresh; exit 0; fi
 
 MNT="$(mktemp -d)"; mount -o ro "$part" "$MNT"
-old="$(cat "$MNT/seed/VERSION" 2>/dev/null || echo unknown)"
+# "0.15.0 (a5fc277)"; sticks before seed/STICK_VERSION show the build commit only
+ver() { local v c; v="$(cat "$1/STICK_VERSION" 2>/dev/null)"; c="$(cat "$1/VERSION" 2>/dev/null || echo unknown)"
+        echo "${v:+$v (}$c${v:+)}"; }
+old="$(ver "$MNT/seed")"
 runs="$(ls "$MNT/runs" 2>/dev/null | wc -l)"
 machines="$(ls "$MNT/runs" 2>/dev/null | awk -F- '{print $2}' | sort -u | wc -l)"
 umount "$MNT"; rmdir "$MNT"; MNT=""
-new="$(cat "$OUT/seed/VERSION" 2>/dev/null || echo unknown)"
+new="$(ver "$OUT/seed")"
 echo "$DEV is already a rigsim stick: version $old, $runs runs from $machines machines. New build: $new."
 # [u]pdate is offered only when it can work (before, a blocked update was offered again after every refusal)
 blocker="$(update_blocker "$part")"

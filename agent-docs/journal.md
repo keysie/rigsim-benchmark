@@ -68,10 +68,26 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-10-31** — E: SYCL logs read; the aborts come from the oneDNN path of llama.cpp's SYCL mul_mat on the UHD 770
   (inferred from the message). Proposed: retry once without oneDNN, recorded. Waiting for the user.
 - **2026-10-31** — User chose variant 1 (retry without oneDNN, recorded) and asked for the plan before building.
-- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
-  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
 - **2026-10-31** — Manual SYCL test, first result: one test-backend-ops op without oneDNN ends "2/2 backends passed, OK" on the
   UHD 770 (which op not stated); llama-bench with / without oneDNN still to see.
+- **2026-10-31** — New branch `sprint/old-gpus` off `sprint/stick-data` (user): benchmarking older NVIDIA GPUs such as the
+  P100, runtime choice of the older software, P100 forks of llama.cpp. Found: CUDA probe built only for sm_80+; runs
+  with Pascal/Maxwell cards have no CUDA data; qr0n's and Kmic-68's forks located, fallentree's not. Design proposed in
+  open-points; nothing built.
+- **2026-10-31** — User: ignore fallentree; asked whether modules can be swapped during a run so mixed hardware gets every
+  card measured. Design revised to two phases (open, then proprietary for pre-Turing cards); not built.
+- **2026-10-31** — User asked for the space needed by the old-GPU design; estimate from package sizes recorded in findings.
+- **2026-10-31** — User cleared building the old-GPU design. Built on `sprint/old-gpus` (stick 0.14.0, format 1.5): module
+  switch during the run, sm_60–75 CUDA builds, the qr0n and Kmic-68 forks pinned, validator and measurements for
+  `nvidia-swap/` and `cuda+<fork>`. 151 tests pass; existing runs extract unchanged. Not run on hardware.
+- **2026-10-31** — New branch `ddr-timing-improvements` off `sprint/stick-data` (user-named; rule 7 now: the user's name,
+  else `sprint/<goal>`). Side-chat proposal on DRAM timings checked against runs and code: items 2 and 3 cheap and
+  useful (p95/p99 not with the current probe), item 1 blocked by lockdown on most runs, item 4 research, item 5's
+  premise wrong (rigsim already predicts too high; the fixed term is the error). Nothing built.
+- **2026-10-31** — User: keep the DDR assessment as recorded state only; the other branches come first (the stick-data
+  stick is running on hardware). Branch parked.
+- **2026-11-01** — Manual test confirms the SYCL hypothesis for llama-bench on the UHD 770 (without oneDNN it runs:
+  pp512 220 tok/s, tg128 38 tok/s). Ops test still running.
 - **2026-11-01** — Manual test complete: FLASH_ATTN_EXT and MUL_MAT_ID also pass without oneDNN. Hypothesis confirmed for
   all four aborted SYCL steps.
 - **2026-11-01** — User cleared E as planned. Built: oneDNN retry for oneAPI steps (stick 0.13.7, format 1.5, measurements
@@ -88,6 +104,9 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-01** — User: run `…-05ea` hung in Blender and was shut down by hand. Plan extended by a memory limit per step.
 - **2026-11-01** — User cleared the low-memory plan and will test on the laptop. Built (stick 0.13.9, format 1.6): memory
   limit per step, OOM recorded as `out_of_memory` (counts as done), model fit checks, MLC buffer on < 12 GiB. 157 tests.
+- **2026-11-01** — `sprint/stick-data` merged by the user. `main` merged into `sprint/old-gpus`: run format renumbered
+  1.5 → 1.6 (stick-data took 1.5), measurements VERSION 3 → 4; the second NVIDIA phase now plans its questions for the
+  cards it drives (gpu-p2p needs two). Agent-docs merged by hand. 160 tests pass.
 - **2026-11-03** — Flashing 0.13.9: [e] stops silently (du + pipefail, issue #24), image verification fails after the GPT
   partition step, the verify bar counts both sides of a sparse store. Diagnosed and reproduced; fix proposed.
 - **2026-11-03** — User cleared the flash.sh fixes; built (160 tests, boot test incl. read-back verification green).
@@ -101,3 +120,64 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-04** — User cleared 1 + 2; built (0.13.11, 162 tests). GPU memory taken from llama.cpp's own report, not vulkaninfo.
 - **2026-11-04** — Laptop run with 0.13.11: only MLC fails — 750 of 1000 hugepages granted. Fix proposed.
 - **2026-11-04** — User: enough optimising — the MLC hugepage shortfall stays as it is (open point); prepare PR #33 for merge.
+- **2026-11-04** — New branch `sprint/engine-primitives` from `main` (user: work on gaps 2–4 of the coverage estimate,
+  think through which hardware details to sample, for the model and for engine bounds, all vendors). Design written:
+  `design/engine-primitives.md`. Nothing built.
+- **2026-11-04** — User cleared the design: steps 1–5 in this sprint; drives read-only with nothing identifying. Step 1
+  built (GEMM shapes and formats, CPU and GPU; stick 0.15.0, measurements VERSION 4; 165 tests).
+- **2026-11-04** — Step 2 built (transfer sweeps, P2P sweep, overlap; vendor probes; measurements VERSION 5; 167 tests).
+- **2026-11-04** — Step 3 built (read-only storage step; format 1.7, measurements VERSION 6; 171 tests).
+- **2026-11-04** — Step 4 built (cpu-c2c; VERSION 7; 173 tests). Found that the stick's CUDA probe build is the overlay
+  (sm_52…sm_120); the old-GPU sprint's claim about sm_80+ only was wrong, sm_60 is the one missing — recorded for that branch.
+- **2026-11-04** — Step 5 built (fp8/fp4 via cuBLASLt; 174 tests). All five steps of the engine-primitives sprint built;
+  next: a stick build and runs on suitable hardware.
+- **2026-11-04** — `sprint/low-memory` merged by the user; `main` merged into `sprint/old-gpus`: run format renumbered
+  1.6 → 1.7 (low-memory took 1.6); the second NVIDIA phase and the fork containers now run under the memory limit
+  per step. 171 tests pass.
+- **2026-11-04** — User asked how much of what LLM engines depend on the stick measures; estimate given and recorded in findings.
+- **2026-11-04** — User: fold `sprint/old-gpus` and `ddr-timing-improvements` into this sprint. Merged: one run format 1.7
+  and one measurements VERSION 7 for all of it, stick 0.15.0; sm_60 (P100) and sm_100 added to the stick's own CUDA
+  probe build (overlay), the AI box's build back to sm_80+.
+- **2026-11-04** — `ddr-timing-improvements` folded in too; PRs #25 and #26 closed in favour of #36, branches deleted.
+- **2026-11-04** — DDR items built in this sprint: SPD status, lockdown mode, pinned latency probe with cache points and
+  core type/clock; cpu-latency values (186 tests).
+- **2026-11-04** — Bug hunt before the first build (user): six faults fixed (casper swap the most serious); my source-mirroring
+  tests replaced by tests that run the probes, fio and run_vendor; 183 tests. Older mirror tests listed as an open point.
+- **2026-11-05** — First build of the sprint failed in the rootfs: the proprietary NVIDIA modules link at install time and
+  need objtool and scripts/module.lds from `linux-headers-<kernel>` (checked in the package). Headers now installed for
+  the link and purged with it. Also: the user's build command had MLC_URL and BLENDER_LAUNCHER_URL swapped.
+- **2026-11-05** — Second build: the qr0n fork failed in `fattn-tile-instance-dkq256-dv256` (ptxas: 50–64 KB static shared
+  memory, 48 KB max). Reproduced here with nvcc 12.0 on the pinned commits: sm_60 builds, sm_61 fails, for both forks.
+  Forks now built for sm_60 only (P100); all 12 tile instances of qr0n compile for sm_60 here.
+- **2026-11-06** — Build: forks and oneAPI image (first compile of the new SYCL probe code) built; the ROCm image failed on
+  llama.cpp v0.8.0's top-k MoE kernel (HIP). Options given to the user.
+- **2026-11-06** — User: upgrade ROCm. Default ROCm image now 7.2.1 (what llama.cpp v0.8.0 uses for its own image);
+  the target-dropping loop tries every target and reports "every target failed"; its test runs the loop with a fake cmake.
+- **2026-11-06** — Build with ROCm 7.2.1: `hipify-perl` not on PATH (whole ROCm build stopped under set -e). And a hole: the
+  failed ROCm build left the previous build's vendor-rocm.tar in the seed and the self-test said ok — the stick would
+  have shipped a stale ROCm 6.4.1 image with another llama.cpp. Fixed both: hipify looked up / installed, probe-only
+  failure; failed vendor builds remove the old archive; self-test requires the image in this build's VENDOR.tsv.
+- **2026-11-06** — User: the stick of this sprint builds (ROCm 7.2.1, forks sm_60, oneAPI, self-test all ok). Next: runs.
+- **2026-11-07** — Flash failed verification: the store (reused from flash to flash, never pruned) had grown to 83 GiB with the
+  old ROCm 6.4.1 image inside, did not fit (76 GiB free), was not copied — and the stick's previous store.img stayed and
+  was compared against the new one. Fixed: prune images not in the seed after preloading, fstrim the store, remove the
+  stick's old store.img when the new one does not fit. Open: whether the pruned store fits on a 128 GB stick.
+- **2026-11-07** — User: the cleanup belongs in the build. build.sh now writes the seed's image set (SET) and removes
+  stick/out/store.img when the store was built from another set (flash.sh records the set it built); the prune at flash
+  time stays as a second line. A store without a record (the current 83 GiB one) is removed by the next build.
+- **2026-11-07** — Store measured by the user: containerd content 21 GiB (compressed layers) + snapshots 62 GiB (unpacked). The
+  stick and the flash-time dockerd now use the classic overlay2 store (each image once, ~62 GiB, fits next to the 25 GiB
+  seed on a 128 GB stick); STORE_LAYOUT in the build's image set removes the old store.
+- **2026-11-08** — First run of the sprint's stick: everything new ran; only oneAPI FLASH_ATTN_EXT timed out. SPD reason
+  parse fixed. Storage shows the unmapped-block effect (identical drives 0.5 vs 4.9 GB/s). Two proposals in open-points.
+- **2026-11-08** — User cleared both proposals; built: timeouts return 124 with the partial output (run_cmd keeps what
+  the process printed), test-backend-ops records `time_limit` with the cases measured (counts as done if > 0);
+  storage `zero_share` (256 evenly sampled 1 MiB blocks, only the share kept). 191 tests.
+- **2026-11-08** — With overlay2 the image store holds 44 GiB (was 83 GiB with containerd's store) and is copied to the 128 GB
+  stick. dd's progress counts the sparse file's apparent size (holes included), so it shows more than 44 GiB.
+- **2026-11-08** — Store copy now says it is sparse: apparent size, data size, and what was written (du of the copy).
+- **2026-11-10** — User: stick version readable from the file systems. /.disk/info now "rigsim hardware stick <semver> (<commit>, Ubuntu <suite>)", seed/STICK_VERSION on the data partition; flash.sh shows "0.15.0 (a5fc277)".
+- **2026-11-10** — User: skip the store when unchanged, and could it be split so a change rewrites less? Built instead a chunk-wise
+  delta copy of the one store file (tools/deltacopy.py): unchanged chunks only read, changed written, data in SRC holes
+  punched (rsync --inplace --sparse left such stale data, tested). Splitting the store is not needed for that, and a
+  pure skip would have kept what the stick writes into its copy while running (verification would fail).

@@ -15,6 +15,8 @@
 # deliver stops the build at the seed self-test — ALLOW_INCOMPLETE=1 builds a test stick anyway):
 #   LLAMA_REF=release|latest-release|<tag|branch|commit>   llama.cpp to build; default "release": the newest patch
 #                            of the previous release line (see below); tag and commit are recorded
+#   LLAMA_FORKS="name=url@commit[:subdir] ..."   llama.cpp forks for Pascal cards (default: qr0n's and Kmic-68's P100
+#                            forks, pinned); "" leaves them out
 #   SKIP_MODELS=1            no GGUF models (TinyLlama 1.1B Q4_0, Llama 2 7B Q4_0 — the scoreboards' model)
 #   BLENDER_VERSION=4.2.0  BLENDER_LAUNCHER_URL=...   Blender Benchmark launcher CLI, Blender and scenes
 #   BLENDER_SCRIPT_URL=...   the benchmark script for the offline route (default: script 3.1.1 from opendata)
@@ -46,7 +48,7 @@ if [[ "${RIGSIM_IN_CONTAINER:-0}" != 1 && "${BUILD_IN_CONTAINER:-1}" == 1 ]]; th
   docker image inspect "$BUILDER" >/dev/null 2>&1 || { echo "building the build container $BUILDER"; docker build -q -t "$BUILDER" "$S/builder"; }
   envs=()
   for v in VERBOSE REBUILD_ROOTFS ROOTFS_MAX_AGE_DAYS SUITE NVIDIA_BRANCH NVIDIA_FLAVOUR MIRROR KERNEL ROCM_IMAGE ONEAPI_IMAGE AMDGPU_TARGETS LLAMA_REF \
-           SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL ALLOW_INCOMPLETE; do
+           SKIP_MODELS SKIP_ROCM SKIP_ONEAPI BLENDER_LAUNCHER_URL BLENDER_VERSION MLC_URL ALLOW_INCOMPLETE LLAMA_FORKS; do
     [[ -n "${!v+x}" ]] && envs+=(-e "$v=${!v}")          # set, even if empty ("" leaves a tool out)
   done
   tty=(); [[ -t 0 && -t 1 ]] && tty=(-it)
@@ -70,7 +72,9 @@ sudo -v                                                  # ask for the password 
 echo "logs: $LOGS"
 SUITE="${SUITE:-noble}"; NVIDIA_BRANCH="${NVIDIA_BRANCH:-580}"; NVIDIA_FLAVOUR="${NVIDIA_FLAVOUR:-open}"
 MIRROR="${MIRROR:-http://archive.ubuntu.com/ubuntu}"; KERNEL="${KERNEL:-hwe}"
-ROCM_IMAGE="${ROCM_IMAGE:-rocm/dev-ubuntu-24.04:6.4.1-complete}"
+# ROCm 7.2.1: the version llama.cpp's own ROCm image uses since v0.8.0 (.devops/rocm.Dockerfile); 6.4.1 cannot compile
+# v0.8.0's top-k MoE kernel (build of 2026-11-06). Targets this ROCm no longer knows are dropped by the build script.
+ROCM_IMAGE="${ROCM_IMAGE:-rocm/dev-ubuntu-24.04:7.2.1-complete}"
 ONEAPI_IMAGE="${ONEAPI_IMAGE:-intel/oneapi-basekit:2025.2.0-0-devel-ubuntu24.04}"
 AMDGPU_TARGETS="${AMDGPU_TARGETS:-gfx900 gfx906 gfx908 gfx90a gfx942 gfx1010 gfx1012 gfx1030 gfx1031 gfx1032 gfx1100 gfx1101 gfx1102 gfx1103 gfx1150 gfx1151 gfx1200 gfx1201}"
 case "$NVIDIA_FLAVOUR" in open) SUFFIX=""; MODSUFFIX="-open";; legacy) SUFFIX="-legacy"; MODSUFFIX="";;
@@ -181,7 +185,7 @@ echo "shim $SHIM"
 sudo cp "$SHIM" "$ISO/EFI/boot/bootx64.efi"
 sudo cp "$(rootfile /usr/lib/shim/mmx64.efi)" "$ISO/EFI/boot/mmx64.efi"
 sudo cp "$(rootfile /usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed)" "$ISO/EFI/boot/grubx64.efi"
-printf 'rigsim hardware stick %s (Ubuntu %s)\n' "$VERSION" "$SUITE" > "$ISO/.disk/info"
+printf 'rigsim hardware stick %s (%s, Ubuntu %s)\n' "$STICK_VERSION" "$VERSION" "$SUITE" > "$ISO/.disk/info"
 cp "$S/ubuntu/grub.cfg" "$ISO/boot/grub/grub.cfg"
 sudo chroot "$ROOT" grub-mkstandalone --format=i386-pc --output=/tmp/core.img \
   --install-modules="linux normal iso9660 biosdisk search configfile" --modules="linux normal iso9660 biosdisk search configfile" \
@@ -267,7 +271,7 @@ echo "llama.cpp ${LLAMA_TAG:-$LLAMA_REF} = $LLAMA_COMMIT"
 LLAMA_CUDA='
   set -e; apt-get update -qq && apt-get install -y -qq git cmake >/dev/null
   git clone -q https://github.com/ggml-org/llama.cpp /src && cd /src && git checkout -q "$REF"
-  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="52;61;70;75;80;86;89;90;120" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF         -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
+  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="52;60;61;70;75;80;86;89;90;120" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF         -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=ON -DGGML_NATIVE=OFF >/dev/null
   cmake --build b --target llama-bench test-backend-ops -j"$(nproc)"
   cp b/bin/llama-bench b/bin/test-backend-ops /out/ && git rev-parse HEAD > /out/COMMIT'
 LLAMA_VULKAN='
@@ -284,9 +288,37 @@ llama_build() {   # backend image script
 }
 docker pull -q "ubuntu:$SUITE" >/dev/null
 cached_step "$C/llama-cuda.key" "$(key "$LLAMA_COMMIT" "$(image_id "$CUDA_IMAGE")" "$LLAMA_CUDA")" \
-  "llama.cpp CUDA (9 architectures)" llama_build cuda "$CUDA_IMAGE" "$LLAMA_CUDA"
+  "llama.cpp CUDA (10 architectures)" llama_build cuda "$CUDA_IMAGE" "$LLAMA_CUDA"
 cached_step "$C/llama-vulkan.key" "$(key "$LLAMA_COMMIT" "$(image_id "ubuntu:$SUITE")" "$LLAMA_VULKAN")" \
   "llama.cpp Vulkan" llama_build vulkan "ubuntu:$SUITE" "$LLAMA_VULKAN"
+# llama.cpp forks tuned for the Tesla P100 (sm_60): llama-bench only, built for sm_60 in the same CUDA 12 image, pinned
+# by commit; the stick runs them only on sm_60 cards, as their own backend ("cuda+<name>"), next to upstream. Both forks
+# build for sm_60 only: their flash-attention tile kernels for head size 256 need 50-64 KB of static shared memory on
+# sm_61, over the 48 KB limit (first build 2026-11-05; reproduced with nvcc 12.0 on the pinned commits). LLAMA_FORKS=""
+# leaves them out; entries: name=url@commit[:subdir].
+LLAMA_FORKS="${LLAMA_FORKS-qr0n=https://github.com/qr0n/p100-llama-cpp@dc5c644c45f35167edfa041110f8c9bd75404b34:llama.cpp kmic68=https://github.com/Kmic-68/llama.cpp@7461904dbc7fb4e2959878b241a76f6dc19cd391}"
+LLAMA_FORK_BUILD='
+  set -e; apt-get update -qq && apt-get install -y -qq git cmake >/dev/null
+  git init -q /src && cd /src && git remote add origin "$URL" && git fetch -q --depth 1 origin "$COMMIT" && git checkout -q FETCH_HEAD
+  cd "/src/$SUB"
+  cmake -B b -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="60" -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets -DBUILD_SHARED_LIBS=OFF -DLLAMA_CURL=OFF -DGGML_NATIVE=OFF >/dev/null
+  cmake --build b --target llama-bench -j"$(nproc)"
+  cp b/bin/llama-bench /out/ && echo "$URL" > /out/URL && echo "$COMMIT" > /out/COMMIT && echo "60" > /out/ARCHS'
+fork_build() {    # name url commit subdir
+  rm -rf "$L/forks/$1"; mkdir -p "$L/forks/$1"
+  docker run --rm --security-opt label=disable -v "$L/forks/$1:/out" -e URL="$2" -e COMMIT="$3" -e SUB="$4" \
+    "$CUDA_IMAGE" sh -c "$LLAMA_FORK_BUILD"
+}
+mkdir -p "$L/forks"
+for f in $(ls "$L/forks"); do                                  # forks no longer asked for: not on this stick
+  [[ " $LLAMA_FORKS " == *" $f="* ]] || rm -rf "$L/forks/$f" "$C/llama-fork-$f.key"
+done
+for spec in $LLAMA_FORKS; do
+  name="${spec%%=*}"; rest="${spec#*=}"; url="${rest%@*}"; cs="${rest##*@}"; commit="${cs%%:*}"; sub=""
+  [[ "$cs" == *:* ]] && sub="${cs#*:}"
+  cached_step "$C/llama-fork-$name.key" "$(key "$url" "$commit" "$sub" "$(image_id "$CUDA_IMAGE")" "$LLAMA_FORK_BUILD")" \
+    "llama.cpp fork $name (sm_60)" fork_build "$name" "$url" "$commit" "$sub"
+done
 : > "$OUT/seed/images/VENDOR.tsv"
 vendor_build() {  # name base src tag
   local c="rigsim-build-$1"
@@ -313,10 +345,14 @@ vendor() {   # name base-image label source-dir. Image reused while base, llama.
 for v in rocm oneapi; do                                  # skipped this time: not on this stick (local images stay)
   u="SKIP_${v^^}"; [[ "${!u:-0}" == 1 ]] && rm -f "$OUT/seed/images/vendor-$v.tar" "$OUT/seed/images/vendor-$v.tar.key"
 done
+# a failed vendor image takes the previous build's archive with it: otherwise the stick would ship a stale image built
+# from another base and llama.cpp commit, and the self-test would see "an image" (build of 2026-11-06)
+vendor_failed() { rm -f "$OUT/seed/images/vendor-$1.tar" "$OUT/seed/images/vendor-$1.tar.key"
+                  echo "    WARN: no $2 image; the seed self-test will stop the build (SKIP_${1^^}=1 leaves it out)"; }
 [[ "${SKIP_ROCM:-0}" == 1 ]] || vendor rocm "$ROCM_IMAGE" "AMD ROCm image" "$REPO/bench/hw/toolkits/cuda/src" \
-  || echo "    WARN: no ROCm image; the seed self-test will stop the build (SKIP_ROCM=1 leaves it out)"
+  || vendor_failed rocm ROCm
 [[ "${SKIP_ONEAPI:-0}" == 1 ]] || vendor oneapi "$ONEAPI_IMAGE" "Intel oneAPI image" "$S/src/syclprobe" \
-  || echo "    WARN: no oneAPI image; the seed self-test will stop the build (SKIP_ONEAPI=1 leaves it out)"
+  || vendor_failed oneapi oneAPI
 if [[ "${SKIP_MODELS:-0}" != 1 ]]; then
   M="$OUT/seed/models"; mkdir -p "$M"
   fetch() { [[ -s "$M/$2" ]] || curl -fL --retry 3 -# -o "$M/$2" "$1"; }
@@ -371,13 +407,25 @@ else
   echo "== seed: Intel MLC left out (MLC_URL is empty)"
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
+echo "$STICK_VERSION" > "$OUT/seed/STICK_VERSION"       # readable on the data partition without the repo
 export LLAMA_REF LLAMA_SELECT AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
 # Seed self-test (user decision 2026-10-31): every part asked for is in the seed and every native binary finds its
 # libraries where it runs; otherwise the build stops here, before anyone boots a stick that lacks data
-step "seed self-test" sudo env MLC_URL="${MLC_URL:-}" BLENDER_LAUNCHER_URL="${BLENDER_LAUNCHER_URL:-}" \
+step "seed self-test" sudo env MLC_URL="${MLC_URL:-}" BLENDER_LAUNCHER_URL="${BLENDER_LAUNCHER_URL:-}" LLAMA_FORKS="$LLAMA_FORKS" \
   SKIP_MODELS="${SKIP_MODELS:-0}" SKIP_ROCM="${SKIP_ROCM:-0}" SKIP_ONEAPI="${SKIP_ONEAPI:-0}" \
   ALLOW_INCOMPLETE="${ALLOW_INCOMPLETE:-0}" python3 "$S/tools/selftest.py" --seed "$OUT/seed" --rootfs "$ROOT" \
   --payload "$P" --cuda-image "$CUDA_IMAGE" --image "$CUDA_IMAGE" --image "$CPU_IMAGE" --out "$OUT/seed/SELFTEST.json"
 sed -n '/^seed self-test:/,$p' "$LOGS"/*-seed-self-test.log 2>/dev/null | head -20 || true
 step "manifest (seed)" env IMAGES="$CUDA_IMAGE $CPU_IMAGE" python3 "$S/tools/manifest.py" seed "$OUT/seed" "$OUT/seed/MANIFEST.json"
+# The image store flash.sh builds from the seed (stick/out/store.img) belongs to one set of images. When this build
+# changed that set (a new ROCm, a rebuilt vendor image), the store is removed here, where the change happens: flash.sh
+# then builds a fresh one instead of piling new images onto old ones (83 GiB on 2026-11-07, too big for the stick).
+# (STORE_LAYOUT changes when the way images are stored changes: overlay2 since 2026-11-07, containerd's store before)
+SET="$( (echo "STORE_LAYOUT overlay2"; cd "$OUT/seed/images" && ls -l --time-style=+%s -- *.tar 2>/dev/null | awk '{print $5, $6, $7}') | sha256sum | cut -c1-16)"
+echo "$SET" > "$OUT/seed/images/SET"
+STORE="${STORE:-$OUT/store.img}"
+if [[ -f "$STORE" && "$(cat "$STORE.set" 2>/dev/null)" != "$SET" ]]; then
+  rm -f "$STORE" "$STORE.set"
+  echo "    images changed: removed $STORE (flash.sh builds a fresh one)"
+fi
 echo "built $OUT/rigsim-stick$SUFFIX.iso ($VERSION) and $OUT/seed"

@@ -5,11 +5,23 @@ predict (predictions/README.md). Reads every run format 1.x; a value a run does 
   python3 tools/measurements.py results/runs/<run>        prints the run's values as JSON
 
 Every GPU value carries its card's PCI address (conditions.pci) where the run recorded it, so two cards of the same
-model stay apart; the device part of a key is the index within that backend (gpuN, devN), not a model name.
+model stay apart; the device part of a key is the index within that backend (gpuN, devN), not a model name. Cards
+measured after the NVIDIA module switch (nvidia-swap/, format 1.7) continue the CUDA numbering: with two cards in the
+first phase, the first card of the second is gpu2.
 
 Keys are stable (they are how a prediction finds its measurement) and versioned with VERSION; a new kind of value
 gets a new key, an existing key never changes meaning:
-  llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu
+  gpu-gemm/<gpu>/<prec>/<M>x<N>x<K>                 TFLOP/s (int8: TOP/s)   cuBLAS, with SM clock and power
+  cpu-gemm/<prec>/<M>x<N>x<K>/t<threads>            GFLOP/s (int8: GOP/s)   OpenBLAS / oneDNN, with ISA and kernel
+  xfer/<gpu>/<dir>/<mem>/<size>/latency|rate        µs | GB/s       pcie-xfer: one copy + wait, queued copies
+  xfer/<gpuA>-<gpuB>/d2d/peer|host/<size>/…         µs | GB/s       gpu-p2p-xfer: with / without peer access
+  gpu-overlap/<gpu>/kernel_share|copy_share         ratio      each with the other running / alone
+  cpu-c2c/<relation>/<types>/latency                ns         one-way, median over the pairs of that kind
+  cpu-barrier/<kind>/<placement>/t<threads>         ns         one barrier (spin / futex)
+  cpu-latency/<MiB>MiB/<core type>                  ns         pointer chase, one pinned thread (P, E, - = not hybrid)
+  storage/<drive>/<job>/rate|iops|lat_p50|lat_p99   GB/s | IO/s | µs   read-only fio jobs (seq / rand, block, QD)
+  llama-bench/<backend>/<device>/<model>/<test>     tokens/s        backend: cuda, vulkan, hip, sycl, cpu, and
+                                                                    cuda+<fork> for the Pascal forks (format 1.7)
   gpu-vram/<gpu>/<op>                               GB/s            op: read, write, copy (median over repeats)
   cpu-mem-ladder/<kernel>/<threads>                 GB/s            likwid kernel (load_*, store_avx, store_mem_avx)
   mlc/idle_latency                                  ns
@@ -22,8 +34,10 @@ import statistics
 import sys
 from pathlib import Path
 
-VERSION = "3"                  # 2: cpu-mem-ladder values; 3: sycl_onednn condition. Any change bumps it.
-LLAMA_FILE = re.compile(r"^(cuda-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
+VERSION = "7"                  # 2: ladder; 3: sycl_onednn; 4: gemm; 5: xfer, overlap; 6: storage; 7: c2c, barrier,
+                               # cpu-latency;
+                               # also 7: nvidia-swap cards, cuda+<fork> (the old-GPU sprint, merged into this one)
+LLAMA_FILE = re.compile(r"^(cuda(?:\+[a-z0-9]+)?-gpu\d+|vulkan-dev\d+|cpu)-(.+)\.jsonl$")
 VENDOR_FILE = re.compile(r"^dev(\d+)-llama-(.+)\.jsonl$")
 
 
@@ -82,17 +96,43 @@ def _llama_rows(rows: list[dict], backend: str, device: str, model: str, source:
     return out
 
 
-def llama(run: Path) -> list[dict]:
+def _swap(run: Path) -> tuple[int, dict[str, str]]:
+    """The second NVIDIA phase: (number of CUDA cards in the first, so its cards continue gpuN; its gpuN -> PCI)."""
+    try:
+        r = json.loads((run / "run.json").read_text())
+    except (OSError, ValueError):
+        return 0, {}
+    first = [g for g in r.get("hardware", {}).get("gpus", [])
+             if g.count(",") >= 2 and re.search(r"[0-9a-fA-F]+:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}\.\d", g)]
+    second = (r.get("nvidia_swap") or {}).get("gpus") or []
+    return len(first), {f"gpu{i}": _norm_pci(g.rsplit(",", 1)[-1]) for i, g in enumerate(second)}
+
+
+def _renumber(dev: str, offset: int) -> str:
+    m = re.fullmatch(r"gpu(\d+)", dev)
+    return f"gpu{int(m.group(1)) + offset}" if m and offset else dev
+
+
+def _llama_dir(d: Path, pci: dict, offset: int, prefix: str) -> list[dict]:
     out = []
-    pci = device_pci(run)
-    for f in sorted((run / "llama").glob("*.jsonl")):
+    for f in sorted((d / "llama").glob("*.jsonl")):
         m = LLAMA_FILE.match(f.name)
         if not m:
             continue
         backend, _, dev = m.group(1).partition("-")
-        out += _llama_rows(_json_lines(f), backend, dev or "cpu", m.group(2), f"llama/{f.name}")
-        for r in out:
-            r["conditions"].setdefault("pci", pci.get((r["conditions"]["backend"], r["conditions"]["device"]), ""))
+        rows = _llama_rows(_json_lines(f), backend, _renumber(dev or "cpu", offset), m.group(2), f"{prefix}llama/{f.name}")
+        for r in rows:                                    # a fork runs on the same cards as upstream CUDA
+            r["conditions"].setdefault("pci", pci.get((backend.split("+")[0], dev or "cpu"), ""))
+        out += rows
+    return out
+
+
+def llama(run: Path) -> list[dict]:
+    pci = device_pci(run)
+    out = _llama_dir(run, pci, 0, "")
+    offset, swap_pci = _swap(run)
+    if (run / "nvidia-swap").is_dir():
+        out += _llama_dir(run / "nvidia-swap", {("cuda", k): v for k, v in swap_pci.items()}, offset, "nvidia-swap/")
     try:
         vruns = json.loads((run / "run.json").read_text()).get("questions", {}).get("oneapi", {}).get("runs") or {}
     except (OSError, ValueError):
@@ -112,13 +152,13 @@ def llama(run: Path) -> list[dict]:
     return out
 
 
-def gpu_vram(run: Path) -> list[dict]:
-    f = run / "q" / "gpu-vram" / "results.jsonl"
+def _gpu_vram_dir(d: Path, offset: int, prefix: str) -> list[dict]:
+    f = d / "q" / "gpu-vram" / "results.jsonl"
     if not f.exists():
         return []
     by: dict[tuple[str, str], list[float]] = {}
     bus = {}
-    for b in sorted((run / "q" / "gpu-vram").glob("baseline.json")):
+    for b in sorted((d / "q" / "gpu-vram").glob("baseline.json")):
         try:
             bus = {g["name"]: _norm_pci(g.get("bus", "")) for g in json.loads(b.read_text()).get("gpus", [])}
         except (ValueError, KeyError):
@@ -129,9 +169,15 @@ def gpu_vram(run: Path) -> list[dict]:
         for r in row.get("results") or []:
             if r.get("mode") == "stream" and r.get("bytes_per_s"):
                 by.setdefault((str(row.get("params", {}).get("gpu", "")), r.get("op", "")), []).append(r["bytes_per_s"])
-    return [dict(key=f"gpu-vram/{g}/{op}", value=statistics.median(v) / 1e9, unit="GB/s", spread=0.0,
-                 source="q/gpu-vram/results.jsonl", conditions=dict(gpu=g, op=op, repeats=len(v), pci=bus.get(g, "")))
+    return [dict(key=f"gpu-vram/{_renumber(g, offset)}/{op}", value=statistics.median(v) / 1e9, unit="GB/s", spread=0.0,
+                 source=f"{prefix}q/gpu-vram/results.jsonl",
+                 conditions=dict(gpu=_renumber(g, offset), op=op, repeats=len(v), pci=bus.get(g, "")))
             for (g, op), v in sorted(by.items())]
+
+
+def gpu_vram(run: Path) -> list[dict]:
+    offset, _ = _swap(run)
+    return _gpu_vram_dir(run, 0, "") + _gpu_vram_dir(run / "nvidia-swap", offset, "nvidia-swap/")
 
 
 def ladder(run: Path) -> list[dict]:
@@ -171,8 +217,191 @@ def mlc(run: Path) -> list[dict]:
     return out
 
 
+def _gemm_rows(run: Path, questions: tuple[str, ...]) -> dict[tuple, dict]:
+    """Rows of the GEMM questions, grouped by (device, prec, M, N, K, threads)."""
+    by: dict[tuple, dict] = {}
+    for q in questions:
+        f = run / "q" / q / "results.jsonl"
+        for row in (_json_lines(f) if f.exists() else []):
+            if row.get("rc") != 0 or row.get("smoke"):
+                continue
+            p = row.get("params", {})
+            for r in row.get("results") or []:
+                if r.get("unsupported") or not r.get("ops_per_s"):
+                    continue
+                m, n, k = r.get("m", r.get("n")), r.get("nn", r.get("n")), r.get("k", r.get("n"))
+                key = (str(p.get("gpu", "")), r.get("prec", p.get("prec", "")), m, n, k, r.get("threads", 0))
+                e = by.setdefault(key, dict(v=[], src=q, impl=r.get("impl", ""), isa=r.get("isa"), lib=r.get("lib", ""),
+                                            clock=[], power=[]))
+                e["v"].append(r["ops_per_s"])
+                s = (row.get("samples") or {}).get(str(p.get("gpu", "")), {})
+                if s.get("clocks.sm", {}).get("median") is not None:
+                    e["clock"].append(s["clocks.sm"]["median"])
+                if s.get("power.draw", {}).get("median") is not None:
+                    e["power"].append(s["power.draw"]["median"])
+    return by
+
+
+def gpu_gemm(run: Path) -> list[dict]:
+    """cuBLAS rates per card, format and shape (gpu-gemm, gpu-gemm-shapes): TFLOP/s (int8: TOP/s), with the card's SM
+    clock and power during the point (format 1.x samples)."""
+    bus = {}
+    for b in sorted((run / "q").glob("gpu-gemm*/baseline.json")):
+        try:
+            bus.update({g["name"]: _norm_pci(g.get("bus", "")) for g in json.loads(b.read_text()).get("gpus", [])})
+        except (ValueError, KeyError):
+            pass
+    out = []
+    for (g, prec, m, n, k, _), e in sorted(_gemm_rows(run, ("gpu-gemm", "gpu-gemm-shapes")).items(), key=str):
+        c = dict(gpu=g, prec=prec, m=m, n=n, k=k, repeats=len(e["v"]), pci=bus.get(g, ""))
+        if e["clock"]:
+            c["sm_clock_mhz"] = statistics.median(e["clock"])
+        if e["power"]:
+            c["power_w"] = statistics.median(e["power"])
+        out.append(dict(key=f"gpu-gemm/{g}/{prec}/{m}x{n}x{k}", value=statistics.median(e["v"]) / 1e12,
+                        unit="TOP/s" if prec == "int8" else "TFLOP/s", spread=0.0, source=f"q/{e['src']}/results.jsonl",
+                        conditions=c))
+    return out
+
+
+def cpu_gemm(run: Path) -> list[dict]:
+    """CPU rates per format, shape and thread count (cpu-gemm, cpu-gemm-shapes): GFLOP/s (int8: GOP/s), with the
+    library, oneDNN's ISA code and kernel."""
+    out = []
+    for (_, prec, m, n, k, t), e in sorted(_gemm_rows(run, ("cpu-gemm", "cpu-gemm-shapes")).items(), key=str):
+        out.append(dict(key=f"cpu-gemm/{prec}/{m}x{n}x{k}/t{t}", value=statistics.median(e["v"]) / 1e9,
+                        unit="GOP/s" if prec == "int8" else "GFLOP/s", spread=0.0, source=f"q/{e['src']}/results.jsonl",
+                        conditions=dict(prec=prec, m=m, n=n, k=k, threads=t, repeats=len(e["v"]), lib=e["lib"],
+                                        isa=e["isa"], impl=e["impl"])))
+    return out
+
+
+def _size(b: int) -> str:
+    return f"{b >> 20}MiB" if b >= 1 << 20 else f"{b >> 10}KiB"
+
+
+def xfer(run: Path) -> list[dict]:
+    """Transfer sweeps (pcie-xfer, gpu-p2p-xfer): per size the latency of one copy + wait and the rate of queued ones."""
+    out = []
+    for q in ("pcie-xfer", "gpu-p2p-xfer"):
+        f = run / "q" / q / "results.jsonl"
+        for row in (_json_lines(f) if f.exists() else []):
+            if row.get("rc") != 0 or row.get("smoke"):
+                continue
+            g = str(row.get("params", {}).get("gpu", ""))
+            for r in row.get("results") or []:
+                if r.get("mode") != "xfer" or not r.get("bytes"):
+                    continue
+                if r.get("dir") == "d2d":
+                    dev, path = f"gpu{r.get('src')}-gpu{r.get('dst')}", "peer" if r.get("peer_access") else "host"
+                    base = f"xfer/{dev}/d2d/{path}/{_size(r['bytes'])}"
+                else:
+                    dev, path = g, r.get("mem", "")
+                    base = f"xfer/{dev}/{r.get('dir')}/{path}/{_size(r['bytes'])}"
+                c = dict(device=dev, dir=r.get("dir"), path=path, bytes=r["bytes"], samples=r.get("latency_samples"))
+                if r.get("latency_s", -1) > 0:
+                    out.append(dict(key=f"{base}/latency", value=r["latency_s"] * 1e6, unit="µs", spread=0.0,
+                                    source=f"q/{q}/results.jsonl",
+                                    conditions=dict(c, p10_us=r.get("latency_p10_s", 0) * 1e6,
+                                                    p90_us=r.get("latency_p90_s", 0) * 1e6)))
+                if r.get("rate_bytes_per_s", 0) > 0:
+                    out.append(dict(key=f"{base}/rate", value=r["rate_bytes_per_s"] / 1e9, unit="GB/s", spread=0.0,
+                                    source=f"q/{q}/results.jsonl", conditions=dict(c, copies=r.get("copies"))))
+    return out
+
+
+def gpu_overlap(run: Path) -> list[dict]:
+    """gpu-overlap: the share of its own rate a GEMM keeps with a copy beside it, and the copy with the GEMM."""
+    out, f = [], run / "q" / "gpu-overlap" / "results.jsonl"
+    for row in (_json_lines(f) if f.exists() else []):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        g = str(row.get("params", {}).get("gpu", ""))
+        for r in row.get("results") or []:
+            if r.get("mode") != "overlap" or not r.get("kernel_alone_ops_per_s") or not r.get("copy_alone_bytes_per_s"):
+                continue
+            c = dict(gpu=g, copy_engines=r.get("copy_engines"), kernel_alone_tflops=r["kernel_alone_ops_per_s"] / 1e12,
+                     copy_alone_gbs=r["copy_alone_bytes_per_s"] / 1e9)
+            for name, a, b in (("kernel_share", "kernel_with_copy_ops_per_s", "kernel_alone_ops_per_s"),
+                               ("copy_share", "copy_with_kernel_bytes_per_s", "copy_alone_bytes_per_s")):
+                out.append(dict(key=f"gpu-overlap/{g}/{name}", value=r.get(a, 0) / r[b], unit="ratio", spread=0.0,
+                                source="q/gpu-overlap/results.jsonl", conditions=c))
+    return out
+
+
+def cpu_c2c(run: Path) -> list[dict]:
+    """cpu-c2c: core-to-core latency per relation (smt, same-l3, other-l3, other-package) and core types, and barriers."""
+    f = run / "q" / "cpu-c2c" / "results.jsonl"
+    pairs: dict[tuple[str, str], list[float]] = {}
+    out = []
+    for row in (_json_lines(f) if f.exists() else []):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        for r in row.get("results") or []:
+            if r.get("mode") == "c2c" and r.get("ns", -1) > 0:
+                pairs.setdefault((r.get("relation", ""), r.get("types", "")), []).append(r["ns"])
+            elif r.get("mode") == "barrier" and r.get("ns", -1) > 0:
+                out.append(dict(key=f"cpu-barrier/{r.get('kind')}/{r.get('placement')}/t{r.get('threads')}", value=r["ns"],
+                                unit="ns", spread=0.0, source="q/cpu-c2c/results.jsonl",
+                                conditions=dict(kind=r.get("kind"), placement=r.get("placement"), threads=r.get("threads"),
+                                                iters=r.get("iters"))))
+    for (rel, types), v in sorted(pairs.items()):
+        out.append(dict(key=f"cpu-c2c/{rel}/{types}/latency", value=statistics.median(v), unit="ns",
+                        spread=(max(v) - min(v)) / statistics.median(v) if len(v) > 1 else 0.0,
+                        source="q/cpu-c2c/results.jsonl", conditions=dict(relation=rel, types=types, pairs=len(v),
+                                                                           min_ns=min(v), max_ns=max(v))))
+    return out
+
+
+def cpu_latency(run: Path) -> list[dict]:
+    """cpu-mem-latency: ns per dependent load by working set, per core type (format 1.7: pinned, with its clock;
+    before 1.7: unpinned, core type "-")."""
+    f = run / "q" / "cpu-mem-latency" / "results.jsonl"
+    by: dict[tuple, dict] = {}
+    for row in (_json_lines(f) if f.exists() else []):
+        if row.get("rc") != 0 or row.get("smoke"):
+            continue
+        for r in row.get("results") or []:
+            if r.get("mode") != "latency" or not r.get("ns_median"):
+                continue
+            e = by.setdefault((r.get("mib"), r.get("core_type", "-")), dict(v=[], mhz=[], cpu=r.get("cpu")))
+            e["v"].append(r["ns_median"])
+            if r.get("mhz_mean", -1) > 0:
+                e["mhz"].append(r["mhz_mean"])
+    return [dict(key=f"cpu-latency/{mib}MiB/{t}", value=statistics.median(e["v"]), unit="ns", spread=0.0,
+                 source="q/cpu-mem-latency/results.jsonl",
+                 conditions=dict(mib=mib, core_type=t, cpu=e["cpu"], repeats=len(e["v"]),
+                                 **({"mhz": statistics.median(e["mhz"])} if e["mhz"] else {})))
+            for (mib, t), e in sorted(by.items(), key=str)]
+
+
+def storage(run: Path) -> list[dict]:
+    """Read-only drive timings (format 1.7): per drive and fio job its rate, IOPS and latency."""
+    try:
+        drives = {d["drive"]: d for d in json.loads((run / "storage" / "drives.json").read_text())}
+        res = json.loads((run / "storage" / "results.json").read_text())
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+    out = []
+    for key, r in sorted(res.items()):
+        drive, _, job = key.partition("-")
+        if r.get("rc") != 0 or drive not in drives:
+            continue
+        d = drives[drive]
+        c = dict(drive=drive, job=job, kind=d.get("kind"), capacity_class_gb=d.get("capacity_class_gb"),
+                 link=d.get("link"), ios=r.get("ios"), zero_share=d.get("zero_share"))
+        for name, v, unit in (("rate", r.get("bytes_per_s", 0) / 1e9, "GB/s"), ("iops", r.get("iops", 0), "IO/s"),
+                              ("lat_p50", r.get("lat_p50_us", 0), "µs"), ("lat_p99", r.get("lat_p99_us", 0), "µs")):
+            if v:
+                out.append(dict(key=f"storage/{drive}/{job}/{name}", value=v, unit=unit, spread=0.0,
+                                source="storage/results.json", conditions=c))
+    return out
+
+
 def extract(run: Path) -> dict:
-    return dict(version=VERSION, run=run.name, measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run))
+    return dict(version=VERSION, run=run.name,
+                measurements=llama(run) + gpu_vram(run) + ladder(run) + mlc(run) + gpu_gemm(run) + cpu_gemm(run)
+                + xfer(run) + gpu_overlap(run) + storage(run) + cpu_c2c(run) + cpu_latency(run))
 
 
 if __name__ == "__main__":

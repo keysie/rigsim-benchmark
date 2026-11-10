@@ -33,8 +33,9 @@ OPENCL_TIMEOUT_S = 20 * 60
 CLPEAK_TESTS = ["--global-bandwidth", "--compute-sp", "--compute-hp", "--compute-integer", "--transfer-bandwidth",
                 "--kernel-latency"]
 SOFTWARE_DEVICES = re.compile(r"(?i)llvmpipe|softpipe|pthread|\bcpu\b|pocl")
-PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-ladder", "cpu-power-time", "pcie-copy", "gpu-p2p",
-           "gpu-vram", "gpu-gemm", "gpu-launch"]
+PROFILE = ["cpu-mem-latency", "cpu-mem-ladder", "cpu-gemm", "cpu-gemm-shapes", "cpu-gemm-ladder", "cpu-power-time", "cpu-c2c",
+           "pcie-copy", "pcie-xfer", "gpu-p2p", "gpu-p2p-xfer", "gpu-vram", "gpu-gemm", "gpu-gemm-shapes", "gpu-launch",
+           "gpu-overlap"]
 DRM = Path("/sys/class/drm")
 FBDEV = Path("/sys/class/graphics")
 SAMPLE_S = 0.2
@@ -101,9 +102,8 @@ VKPROBE = OPT / "bin" / "vkprobe"
 VK_GEMM_TYPES = ["f16", "f16f32", "i8"]
 VK_GEMM_SHAPES = ["512x4096x4096", "2048x2048x2048", "4096x4096x4096"]
 VENDOR_GEMM_PRECS = ["fp32", "tf32", "fp16_fp32acc", "fp16", "bf16", "int8"]
-VENDOR_GEMM_SHAPES = ["1x4096x4096", "8x2048x2048", "8x4096x4096", "32x4096x4096", "128x4096x4096", "512x2048x2048",
-                      "2048x2048x2048", "512x8192x8192", "2048x8192x8192", "4096x4096x4096", "8192x8192x8192",
-                      "16384x16384x4096"]
+# the same tokens-in-flight sweep as gpu-gemm-shapes on CUDA (design/engine-primitives.md, item 2), plus the square peak
+VENDOR_GEMM_SHAPES = [f"{m}x{n}x4096" for n in (4096, 14336) for m in (1, 4, 16, 64, 256, 1024, 4096, 8192)] + ["8192x8192x8192"]
 PROBE_TIMEOUT_S = 10 * 60
 AMD_DEVICES = ["--device", "/dev/kfd", "--device", "/dev/dri", "--security-opt", "seccomp=unconfined"]
 INTEL_DEVICES = ["--device", "/dev/dri"]
@@ -385,19 +385,21 @@ def run_cmd(cmd: list[str], capture_output: bool = True, text: bool = True, time
                 _killpg(p); _kill_containers()
                 raise StepSkipped()
             if timeout is not None and time.time() - t0 > timeout:
-                _killpg(p)
-                raise subprocess.TimeoutExpired(cmd, timeout)
+                out, err = _killpg(p)                  # what it printed until then is kept (run f78e: 30 min lost)
+                raise subprocess.TimeoutExpired(cmd, timeout, output=out, stderr=err)
 
 
-def _killpg(p: subprocess.Popen) -> None:
+def _killpg(p: subprocess.Popen) -> tuple[str, str]:
+    """Kill the process group; returns what it printed (empty where nothing was captured)."""
     try:
         os.killpg(p.pid, signal.SIGKILL)
     except OSError:
         pass
     try:
-        p.communicate(timeout=10)
+        out, err = p.communicate(timeout=10)
+        return out or "", err or ""
     except (subprocess.TimeoutExpired, ValueError, OSError):
-        pass
+        return "", ""
 
 
 def operator_keys() -> None:
@@ -422,11 +424,23 @@ def operator_keys() -> None:
             say(f"press Enter again within {SKIP_ARM_S:.0f} s to skip {STATUS.step}")
 
 
+TIME_LIMIT_RC = 124                                    # like timeout(1): stopped at the time limit
+
+
+def _timed_out(e: subprocess.TimeoutExpired) -> tuple[int, str]:
+    out, err = e.output or "", e.stderr or ""
+    out = out.decode(errors="replace") if isinstance(out, bytes) else out
+    err = err.decode(errors="replace") if isinstance(err, bytes) else err
+    return TIME_LIMIT_RC, out + (("\n--- stderr ---\n" + err) if err.strip() else "") + f"\n--- time limit: {e.timeout:.0f} s ---\n"
+
+
 def sh(cmd: list[str], timeout: float = 120) -> tuple[int, str]:
     try:
         r = run_cmd(cmd, capture_output=True, text=True, timeout=timeout)
         return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
-    except (OSError, subprocess.TimeoutExpired) as e:
+    except subprocess.TimeoutExpired as e:
+        return _timed_out(e)
+    except OSError as e:
         return 127, f"{type(e).__name__}: {e}"
 
 
@@ -582,7 +596,7 @@ def collect_inventory(dst: Path, log: Path) -> dict:
                                 else MAC.sub("<mac>", out))
         if rc != 0:
             say(f"inventory: {name} rc={rc}", log)
-    spd_raw(dst)
+    raw = spd_raw(dst)
     (dst / "pcie.json").write_text(json.dumps(pcie_topology(names=lspci_names()), indent=1))
     (dst / "powercap.json").write_text(json.dumps(powercap(), indent=1))
     cpu = next(iter(re.findall(r"^model name\s*:\s*(.*)$", (dst / "cpuinfo.txt").read_text(), re.M)), "unknown")
@@ -596,7 +610,8 @@ def collect_inventory(dst: Path, log: Path) -> dict:
     mem_kb = int(next(iter(re.findall(r"MemTotal:\s*(\d+)", (dst / "meminfo.txt").read_text())), "0"))
     dimms = parse_dimms((dst / "dmidecode.txt").read_text())
     s = dict(cpu=cpu, board=board, bios=_dmi("bios_version"), gpus=gpu_list, ram_gib=round(mem_kb / 2**20, 1),
-             dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip())
+             dimms=dimms, cpufreq=cpufreq(), secure_boot=secure_boot(), kernel=sh(["uname", "-r"])[1].strip(),
+             spd=spd_status(dst, raw), lockdown=lockdown())
     (dst / "summary.json").write_text(json.dumps(s, indent=1))
     return s
 
@@ -717,6 +732,43 @@ def spd_raw(dst: Path, i2c: Path = Path("/sys/bus/i2c/devices")) -> list[str]:
     return out
 
 
+def spd_status(dst: Path, raw: list[str], i2c: Path = Path("/sys/bus/i2c/devices"),
+               adapters: Path = Path("/sys/class/i2c-adapter")) -> dict:
+    """Whether the modules' SPD could be read, and if not what was there to read it with (DDR item 2 of 2026-10-31:
+    7 of 15 runs had "No EEPROM found", visible only in inventory/spd.txt)."""
+    txt = (dst / "spd.txt").read_text() if (dst / "spd.txt").exists() else ""
+    devs = sorted({(d / "driver").resolve().name for d in i2c.glob("*-00[5-9a-f]*") if (d / "driver").exists()}
+                  & set(SPD_SERIAL))
+    smbus = sorted({re.sub(r" at .*", "", _read(a / "name") or "") for a in adapters.glob("i2c-*")
+                    if "smbus" in (_read(a / "name") or "").lower()})
+    out = dict(spd_drivers=devs, smbus_adapters=smbus, raw_files=len(raw))
+    if "Decoding EEPROM" in txt:
+        return dict(out, status="decoded")
+    if raw:
+        return dict(out, status="raw", reason="decode-dimms decoded nothing; the raw SPD bytes are in inventory/spd-*.hex")
+    # the first real line of decode-dimms' output, not the stick's "--- stderr ---" marker (run f78e, 2026-11-08)
+    msg = next((l.strip() for l in txt.splitlines() if l.strip() and not l.startswith(("#", "---"))), "no output")
+    why = [f"decode-dimms: {msg[:120]}", "SMBus adapters: " + (", ".join(smbus) or "none"),
+           "SPD devices bound: " + (", ".join(devs) or "none")]
+    return dict(out, status="unavailable", reason="; ".join(why))
+
+
+def swap_off(swaps: Path = Path("/proc/swaps")) -> list[str]:
+    """Switch off any swap that is on (the boot must not use the machine's disks; casper's 13swap is removed from the
+    initramfs, this catches anything else). Returns what was on, by kind only (no device names)."""
+    on = [l.split()[1] for l in (swaps.read_text().splitlines()[1:] if swaps.exists() else []) if l.strip()]
+    if on:
+        sh(["swapoff", "-a"], timeout=120)
+    return on
+
+
+def lockdown(path: Path = Path("/sys/kernel/security/lockdown")) -> str:
+    """The kernel's lockdown mode ("none", "integrity", "confidentiality"), "" if the kernel has none: under lockdown
+    /dev/mem, PCI config writes and debugfs are refused (what reading memory-controller registers would need)."""
+    m = re.search(r"\[(\w+)\]", _read(path) or "")
+    return m.group(1) if m else ""
+
+
 def _dmi(k: str) -> str:
     try:
         return (DMI / k).read_text().strip()
@@ -765,11 +817,88 @@ def nvidia_state() -> tuple[bool, str]:
         return True, ""
     flavour = "legacy" if "legacy" in (OPT / "VERSION").read_text() else "open" if (OPT / "VERSION").exists() else "?"
     if flavour == "open" and _nvidia_pre_turing():
+        if (SWAP_DIR / "FLAVOUR").exists():
+            return False, "NVIDIA GPU older than Turing: measured after the switch to the proprietary modules (nvidia-swap)"
         return False, "NVIDIA GPU older than Turing: needs the legacy image (open modules support Turing and newer)"
     rc2, lspci = sh(["sh", "-c", "lspci -nn | grep -i nvidia"], timeout=30)
     if not lspci.strip():
         return False, "no NVIDIA GPU"
     return False, "NVIDIA GPU present but the driver did not load (card unsupported by the driver?)"
+
+
+# --- NVIDIA module switch (old-GPU sprint, 2026-10-31) ----------------------------------------------------------------
+# The open kernel modules drive Turing and newer, the proprietary ones Maxwell .. Ada. The stick boots one flavour and
+# carries the other one's signed .ko files (chroot-setup.sh, same driver version, one user-space stack). After every
+# step, cards the boot modules left undriven are measured in a second phase: the modules are swapped (the cards
+# already measured are kept off the new driver with driver_override) and the CUDA questions and llama-bench run again
+# for those cards only, into nvidia-swap/ (run format 1.7).
+SWAP_DIR = Path("/usr/lib/rigsim/nvidia-swap")
+SWAP_LOAD = ("nvidia", "nvidia-uvm", "nvidia-modeset")       # load order; nvidia-drm left out: nothing is displayed
+SWAP_UNLOAD = ("nvidia_drm", "nvidia_peermem", "nvidia_modeset", "nvidia_uvm", "nvidia")
+
+
+def norm_pci(bus: str) -> str:
+    """'00000000:01:00.0' (nvidia-smi) and '0000:01:00.0' (sysfs) -> '0000:01:00.0'."""
+    b = bus.strip().lower()
+    m = re.match(r"^(?:([0-9a-f]+):)?([0-9a-f]{2}):([0-9a-f]{2})\.([0-9a-f])$", b)
+    return f"{int(m.group(1) or '0', 16):04x}:{m.group(2)}:{m.group(3)}.{m.group(4)}" if m else b
+
+
+def nvidia_pci_devices(devices: Path = Path("/sys/bus/pci/devices")) -> list[str]:
+    """Every NVIDIA display device (vendor 0x10de, class 0x03xxxx), driven or not, by PCI address."""
+    return sorted(d.name for d in devices.glob("*")
+                  if _read(d / "vendor") == "0x10de" and (_read(d / "class") or "").startswith("0x03"))
+
+
+def nvidia_driven() -> dict[str, str]:
+    """PCI address -> nvidia-smi line ('name, memory, bus', as in hardware.gpus) for every card the loaded driver drives."""
+    rc, out = sh(["nvidia-smi", "--query-gpu=name,memory.total,pci.bus_id", "--format=csv,noheader"], timeout=60)
+    if rc != 0:
+        return {}
+    return {norm_pci(l.rsplit(",", 1)[-1]): l.strip() for l in out.splitlines() if l.count(",") >= 2}
+
+
+def swap_modules(keep_off: list[str], log: Path | None, swap: Path = SWAP_DIR, sysfs: Path = Path("/sys"),
+                 run=None) -> dict:
+    """Replace the loaded NVIDIA modules with the other flavour. keep_off: cards measured already, kept off the new
+    driver. Returns what happened; 'failed' says why it did not work (the cards are then recorded as not measured)."""
+    run = run or (lambda cmd: sh(cmd, timeout=120))
+    res = dict(flavour=_read(swap / "FLAVOUR") or "", version=_read(swap / "VERSION") or "", kept_off=keep_off)
+    if not res["flavour"]:
+        return dict(res, failed="the other NVIDIA module flavour is not on this stick")
+    _kill_containers()
+    run(["systemctl", "stop", "nvidia-persistenced"])
+    for m in SWAP_UNLOAD:
+        if not (sysfs / "module" / m).exists():
+            continue
+        rc, out = run(["rmmod", m])
+        if rc != 0:                                    # a framebuffer console on nvidia-drm holds it: unbind, retry
+            for v in sorted((sysfs / "class" / "vtconsole").glob("vtcon*")):
+                if "frame buffer" in (_read(v / "name") or ""):
+                    try:
+                        (v / "bind").write_text("0")
+                    except OSError:
+                        pass
+            rc, out = run(["rmmod", m])
+        if rc != 0:
+            return dict(res, failed=f"could not unload {m}: {out.strip()[:200]}")
+    for pci in keep_off:
+        try:
+            (sysfs / "bus" / "pci" / "devices" / pci / "driver_override").write_text("none")
+        except OSError as e:
+            say(f"nvidia-swap: driver_override for {pci}: {e}", log)
+    for m in SWAP_LOAD:
+        f = next(iter(sorted(swap.glob(f"{m}.ko*"))), None)
+        if f is None:
+            return dict(res, failed=f"{m}.ko is not on this stick")
+        _, deps = run(["modinfo", "-F", "depends", str(f)])
+        for d in [x for x in deps.strip().split(",") if x]:
+            run(["modprobe", d])
+        rc, out = run(["insmod", str(f)])
+        if rc != 0:
+            return dict(res, failed=f"could not load {f.name}: {out.strip()[:200]}")
+    run(["nvidia-modprobe", "-u", "-c=0"])
+    return res
 
 
 def _nvidia_pre_turing() -> bool:
@@ -995,6 +1124,163 @@ def parse_mlc(text: str) -> dict:
     return out
 
 
+# --- storage read speed (design/engine-primitives.md, item 4) ----------------------------------------------------------
+# Read-only timings of the machine's internal drives with fio (--readonly refuses any write; O_DIRECT on the raw device).
+# User decision 2026-11-04: read access yes, as long as no content and no identifying feature of a drive ends up in the
+# report — so only timings and the drive's kind are kept (no serial, WWN/EUI, UUIDs, labels, partitions, filesystems,
+# firmware; capacity rounded); nothing read is written anywhere. `rigsim.nodisks` on the kernel command line skips it.
+SYS_BLOCK = Path("/sys/block")
+STORAGE_JOBS = [  # name, fio rw, block size, queue depth
+    ("seq-1m-qd1", "read", "1M", 1), ("seq-1m-qd8", "read", "1M", 8), ("seq-1m-qd32", "read", "1M", 32),
+    ("rand-4k-qd1", "randread", "4k", 1), ("rand-4k-qd32", "randread", "4k", 32), ("rand-4k-qd128", "randread", "4k", 128),
+    ("rand-128k-qd8", "randread", "128k", 8),
+    ("rand-4m-qd1", "randread", "4M", 1), ("rand-4m-qd4", "randread", "4M", 4),
+    ("rand-16m-qd1", "randread", "16M", 1), ("rand-16m-qd4", "randread", "16M", 4)]
+STORAGE_JOB_S = 8
+STORAGE_MAX_DRIVES = 4
+CAPACITY_CLASSES_GB = (16, 32, 64, 128, 256, 512, 1000, 2000, 4000, 8000, 16000, 32000)
+
+
+def capacity_class(gb: float) -> int:
+    """The nearest common drive size — a class, not the exact capacity (which could single out a drive)."""
+    return min(CAPACITY_CLASSES_GB, key=lambda c: abs(c - gb))
+
+
+def stick_disks(mounts: Path = Path("/proc/mounts")) -> set[str]:
+    """The disks the stick itself is on (data partition, boot medium): never measured."""
+    out = set()
+    for line in (mounts.read_text().splitlines() if mounts.exists() else []):
+        f = line.split()
+        if len(f) > 1 and f[0].startswith("/dev/") and f[1].startswith(("/mnt/rigsim", "/cdrom", "/run/live", "/isodevice")):
+            rc, parent = sh(["lsblk", "-no", "PKNAME", f[0]], timeout=10)
+            out.add(parent.strip() or Path(f[0]).name)
+    return out
+
+
+def internal_drives(exclude: set[str], sysblock: Path = SYS_BLOCK) -> list[dict]:
+    """Internal NVMe / SATA / SAS drives of at least 8 GB, without anything that identifies the drive."""
+    out = []
+    for d in sorted(sysblock.glob("*")):
+        name = d.name
+        if name.startswith(("loop", "ram", "zram", "sr", "dm-", "md", "fd", "nbd")) or name in exclude:
+            continue
+        dev = d / "device"
+        path = str(dev.resolve()) if dev.exists() else ""
+        if (_read(d / "removable") or "0") != "0" or "/usb" in path:
+            continue
+        sectors = int(_read(d / "size") or 0)
+        gb = sectors * 512 / 1e9
+        if gb < 8:
+            continue
+        kind = "nvme" if name.startswith("nvme") else ("sata" if "/ata" in path else "other")
+        info = dict(drive=name, kind=kind, capacity_class_gb=capacity_class(gb),
+                    rotational=(_read(d / "queue" / "rotational") or "0") == "1",
+                    model=re.sub(r"[^A-Za-z0-9 ._-]", "", _read(dev / "model") or "").strip(),
+                    logical_block=int(_read(d / "queue" / "logical_block_size") or 512))
+        if kind == "nvme":                                # the controller's PCIe link
+            pci = dev.resolve().parent if dev.exists() else None
+            for p in (dev / "device", pci):
+                if p and (p / "current_link_speed").exists():
+                    info["link"] = dict(speed=_read(p / "current_link_speed"), width=_read(p / "current_link_width"),
+                                        max_speed=_read(p / "max_link_speed"), max_width=_read(p / "max_link_width"))
+                    break
+        out.append(info)
+    return out[:STORAGE_MAX_DRIVES]
+
+
+def drive_temp_c(name: str) -> float | None:
+    """The drive's temperature from hwmon (nvme / drivetemp), read-only; None where there is none."""
+    ctrl = re.sub(r"n\d+$", "", name) if name.startswith("nvme") else name     # nvme0n1 -> nvme0
+    for t in list(SYS_BLOCK.glob(f"{name}/device/hwmon*/temp1_input")) + \
+             list(Path("/sys/class/nvme").glob(f"{ctrl}/hwmon*/temp1_input")):
+        v = _read(t)
+        if v and v.lstrip("-").isdigit():
+            return int(v) / 1000
+    return None
+
+
+ZERO_SAMPLES = 256
+
+
+def zero_share(dev: str, samples: int = ZERO_SAMPLES, block: int = 1 << 20, path: Path | None = None) -> float | None:
+    """Share of blocks, sampled evenly over the device, that read as all zeros: never written or trimmed blocks, which
+    a controller answers without reading flash (run f78e: two identical drives 0.5 vs 4.9 GB/s). Only the share is
+    kept, nothing read leaves this function. None if the device cannot be read."""
+    p = path or Path("/dev") / dev
+    try:
+        fd = os.open(p, os.O_RDONLY)
+    except OSError:
+        return None
+    try:
+        size = os.lseek(fd, 0, os.SEEK_END)
+        n = max(1, min(samples, size // block))
+        zero = bytes(block)
+        hits = 0
+        for i in range(n):
+            off = (size // n * i) // block * block
+            b = os.pread(fd, block, off)
+            hits += b == zero[:len(b)]
+        return round(hits / n, 3)
+    except OSError:
+        return None
+    finally:
+        os.close(fd)
+
+
+def parse_fio(out: str) -> dict:
+    """The numbers of one fio job (--output-format=json): read rate, IOPS, latency mean and percentiles."""
+    try:
+        j = json.loads(out[out.index("{"):])
+        r = j["jobs"][0]["read"]
+    except (ValueError, KeyError, IndexError):
+        return {}
+    clat = r.get("clat_ns", {}).get("percentile", {})
+    pct = lambda p: clat.get(f"{p:.6f}")
+    return dict(bytes_per_s=r.get("bw_bytes", 0), iops=r.get("iops", 0), lat_mean_us=r.get("lat_ns", {}).get("mean", 0) / 1e3,
+                lat_p50_us=(pct(50) or 0) / 1e3, lat_p99_us=(pct(99) or 0) / 1e3, ios=r.get("total_ios", 0))
+
+
+def fio_cmd(dev: str, rw: str, bs: str, qd: int, seconds: int, direct: bool = True) -> list[str]:
+    return ["fio", "--readonly", "--name=rigsim", f"--filename=/dev/{dev}", f"--rw={rw}", f"--bs={bs}",
+            f"--iodepth={qd}", "--ioengine=libaio", f"--direct={1 if direct else 0}", "--time_based",
+            f"--runtime={seconds}", "--norandommap", "--randrepeat=0", "--group_reporting", "--output-format=json"] + \
+           ([] if direct else ["--size=4G", "--invalidate=1"])
+
+
+def run_storage(rundir: Path, log: Path, cmdline: str) -> dict:
+    if "rigsim.nodisks" in cmdline.split():
+        return dict(skipped="rigsim.nodisks on the kernel command line")
+    if not shutil.which("fio"):
+        return dict(skipped="fio not in the system image")
+    drives = internal_drives(stick_disks())
+    if not drives:
+        return dict(skipped="no internal drive of 8 GB or more")
+    d = rundir / "storage"
+    d.mkdir(parents=True, exist_ok=True)
+    runs, rc_all = {}, 0
+    for info in drives:
+        dev = info["drive"]
+        info["temp_c_before"] = drive_temp_c(dev)
+        jobs = [(n, rw, bs, qd, True) for n, rw, bs, qd in STORAGE_JOBS] + [("seq-1m-buffered", "read", "1M", 8, False)]
+        for k, (n, rw, bs, qd, direct) in enumerate(jobs, 1):
+            STATUS.set(f"storage {dev} {n} {k}/{len(jobs)}")
+            if not direct:
+                sh(["sh", "-c", "sync; echo 3 > /proc/sys/vm/drop_caches"], timeout=60)
+            t0 = time.time()
+            rc, out = sh(fio_cmd(dev, rw, bs, qd, STORAGE_JOB_S, direct), timeout=STORAGE_JOB_S * 4 + 60)
+            res = parse_fio(out) if rc == 0 else {}
+            runs[f"{dev}-{n}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **res,
+                                      **({} if rc == 0 else dict(error=out.strip().splitlines()[-1][:200] if out.strip() else "")))
+            rc_all |= rc != 0
+        info["temp_c_after"] = drive_temp_c(dev)
+        info["zero_share"] = zero_share(dev)
+        say(f"storage {dev}: {info['kind']}, ~{info['capacity_class_gb']} GB, "
+            f"seq 1M QD32 {runs.get(f'{dev}-seq-1m-qd32', {}).get('bytes_per_s', 0) / 1e9:.2f} GB/s", log)
+    (d / "drives.json").write_text(json.dumps(drives, indent=1))
+    (d / "results.json").write_text(json.dumps(runs, indent=1))
+    return dict(rc=1 if rc_all else 0, drives=drives, runs=runs)
+
+
 def run_mlc(data: Path, rundir: Path, log: Path) -> dict:
     mlc = data / "seed" / "tools" / "mlc" / "mlc"
     if not mlc.exists():
@@ -1074,7 +1360,9 @@ def device_lost(text: str) -> str:
 def item_ok(v: dict) -> bool:
     """A llama.cpp item that does not make its step fail: done, skipped with a reason, or ended by a limit of the
     machine (memory limit, GPU reset) — recorded with the reason."""
-    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory") or v.get("device_lost"))
+    measured_some = "; 0 case(s)" not in str(v.get("time_limit", "; 0 case(s)"))
+    return bool(v.get("skipped") or v.get("rc") == 0 or v.get("out_of_memory") or v.get("device_lost")
+                or (v.get("time_limit") and measured_some))
 
 
 VK_MEMORY = re.compile(r"Device memory:\s*(\d+) MB \((\d+) MB free\)")
@@ -1120,7 +1408,9 @@ def _run_env(cmd: list[str], timeout: float, env: dict) -> tuple[int, str]:
     try:
         r = run_cmd(cmd, capture_output=True, text=True, timeout=timeout, env=env)
         return r.returncode, r.stdout + (("\n--- stderr ---\n" + r.stderr) if r.stderr.strip() else "")
-    except (OSError, subprocess.TimeoutExpired) as e:
+    except subprocess.TimeoutExpired as e:
+        return _timed_out(e)
+    except OSError as e:
         return 127, f"{type(e).__name__}: {e}"
 
 
@@ -1150,21 +1440,25 @@ def run_backend_ops(run, d: Path, prefix: str, binary: str, backend: str, log: P
                                         lambda env, cmd=cmd: run(cmd, BACKEND_OPS_TIMEOUT_S, env))
         else:
             rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
-        if rc != 0 and rc != 127:                             # 127: timeout or not runnable, no point retrying
+        if rc not in (0, 127, TIME_LIMIT_RC):                # not runnable or out of time: no point retrying
             cmd = cmd[:-2]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
-        if rc != 0 and rc != 127:
+        if rc not in (0, 127, TIME_LIMIT_RC):
             i = cmd.index("-b"); cmd = cmd[:i] + cmd[i + 2:]; rc, out = run(cmd, BACKEND_OPS_TIMEOUT_S)
         (d / f"{prefix}-{key}.txt").write_text(scrub(" ".join(cmd) + "\n" + out))
         lost = device_lost(out) if rc != 0 else ""
         if lost:
             say(f"test-backend-ops {prefix} {key}: {lost}", log)
+        if rc == TIME_LIMIT_RC:                          # what ran until the limit is measured (run f78e: FA on an iGPU)
+            cases = sum(1 for l in out.splitlines() if " runs - " in l)
+            extra = dict(extra, time_limit=f"stopped at the {BACKEND_OPS_TIMEOUT_S} s limit; {cases} case(s) measured before")
+            say(f"test-backend-ops {prefix} {key}: {extra['time_limit']}", log)
         runs[f"{prefix}-{key}"] = dict(rc=rc, seconds=round(time.time() - t0, 1), **extra,
                                         **(dict(device_lost=lost) if lost else {}))
     say(f"test-backend-ops {prefix}: {sum(1 for v in runs.values() if v['rc'] == 0)}/{len(runs)} ops", log)
     return runs
 
 
-def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path) -> dict:
+def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path, cuda_only: bool = False) -> dict:
     seed = data / "seed" / "llama"
     models = llama_models(data)
     if not models or not seed.is_dir():
@@ -1203,8 +1497,24 @@ def run_llama(data: Path, rundir: Path, cfg_image: str, nvidia: bool, log: Path)
                           "-e", f"CUDA_VISIBLE_DEVICES={gi}", "-v", f"{seed / 'cuda'}:/llama:ro", cfg_image]
                 runs.update(run_backend_ops(lambda c, t: sh(docker + c, timeout=t), d, f"cuda-gpu{gi}",
                                             "/llama/test-backend-ops", "CUDA0", log))
+    # forks tuned for Pascal (build.sh LLAMA_FORKS): on the cards of the architectures they were built for, as their own
+    # backend "cuda+<fork>", same models and arguments as upstream
+    forks = sorted(p for p in (seed / "forks").glob("*") if (p / "llama-bench").exists()) if nvidia else []
+    if forks:
+        _, out = sh(["nvidia-smi", "--query-gpu=index,compute_cap", "--format=csv,noheader"], timeout=60)
+        caps = [(i.strip(), c.strip().replace(".", "")) for i, c in (l.split(",", 1) for l in out.splitlines() if "," in l)]
+        for fk in forks:
+            archs = (_read(fk / "ARCHS") or "60").split()
+            for gi, cap in caps:
+                if cap not in archs:
+                    continue
+                for m in models:
+                    one(f"cuda+{fk.name}-gpu{gi}-{m.stem}", ["docker", "run", "--rm", *docker_mem(), "--gpus", "all", "--network", "none",
+                        "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID", "-e", f"CUDA_VISIBLE_DEVICES={gi}",
+                        "-v", f"{fk}:/llama:ro", "-v", f"{m.parent}:/models:ro", cfg_image,
+                        "/llama/llama-bench", "-m", f"/models/{m.name}", "-ngl", "99", *LLAMA_ARGS])
     vk = seed / "vulkan" / "llama-bench"
-    if vk.exists():
+    if vk.exists() and not cuda_only:
         _, summary = sh(["vulkaninfo", "--summary"], timeout=60)
         (d / "vulkaninfo-summary.txt").write_text(scrub(summary))
         tbo = seed / "vulkan" / "test-backend-ops"
@@ -1334,6 +1644,11 @@ def vendor_plan(kind: str) -> list[tuple[str, list[str]]]:
     out.append(("launch", [probe, "launch", "--count", "2000"]))
     for d in ("h2d", "d2h") + (("bidir",) if kind == "rocm" else ()):
         out.append((f"copy-{d}", [probe, "copy", "--dir", d, "--mib", "512", "--reps", "10"]))
+    for d in ("h2d", "d2h") + (("bidir",) if kind == "rocm" else ()):    # the size sweep (engine primitives, item 3)
+        for mem in ("pinned", "pageable"):
+            out.append((f"xfer-{d}-{mem}", [probe, "xfer", "--dir", d, "--mem", mem, "--seconds", "0.2"]))
+    if kind == "rocm":                                # the CUDA probe's HIP build has the overlap mode too
+        out.append(("overlap", [probe, "overlap", "--mib", "256", "--seconds", "2"]))
     for prec in VENDOR_GEMM_PRECS:
         for shape in VENDOR_GEMM_SHAPES:
             out.append((f"gemm-{prec}-{shape}", [probe, "gemm", "--prec", prec, "--shape", shape, "--reps", "10"]))
@@ -1418,7 +1733,7 @@ def run_vendor(kind: str, data: Path, rundir: Path, log: Path) -> dict:
         sh(["docker", "rm", "-f", c], timeout=120)
         say(f"{kind} device {i} ({dev.get('name')}): {sum(1 for k in runs if k.startswith(f'dev{i}-'))} runs"
             + (f", HSA_OVERRIDE_GFX_VERSION={ov}" if ov else "") + ("" if have_probe else ", probe not in the image"), log)
-    return dict(res, rc=0 if runs and all(v["rc"] == 0 for v in runs.values()) else 1, runs=runs)
+    return dict(res, rc=0 if runs and all(item_ok(v) for v in runs.values()) else 1, runs=runs)   # as run_llama
 
 
 # --- Blender Benchmark (official launcher CLI, Blender and scenes pre-downloaded into the seed) ---------------------------
@@ -1628,6 +1943,16 @@ def mount_data() -> Path | None:
     return MNT
 
 
+DOCKER_STORAGE = {"features": {"containerd-snapshotter": False}, "storage-driver": "overlay2"}
+
+
+def docker_config(d: dict, root: Path) -> dict:
+    """dockerd's settings on the stick (and at flash time, flash.sh writes the same): data on the stick, and the
+    classic overlay2 image store. The containerd image store keeps every image twice — the compressed layers (21 GiB)
+    beside the unpacked ones (62 GiB): 83 GiB, more than a 128 GB stick holds next to the seed (2026-11-07)."""
+    return dict(d, **DOCKER_STORAGE, **{"data-root": str(root)})
+
+
 def start_docker(data: Path, log: Path) -> dict:
     """Docker and containerd keep everything on the data partition. The live system's root is an overlay; an
     overlay snapshot cannot sit on it ("not supported as upperdir"), so both stores move to the stick's ext4:
@@ -1642,8 +1967,7 @@ def start_docker(data: Path, log: Path) -> dict:
     if subprocess.run(["mountpoint", "-q", str(cl)]).returncode != 0:
         sh(["mount", "--bind", str(croot), str(cl)])
     cfg = Path("/etc/docker/daemon.json")
-    d = json.loads(cfg.read_text()) if cfg.exists() else {}
-    d["data-root"] = str(root)
+    d = docker_config(json.loads(cfg.read_text()) if cfg.exists() else {}, root)
     cfg.parent.mkdir(parents=True, exist_ok=True)
     cfg.write_text(json.dumps(d, indent=1))
     sh(["systemctl", "start", "containerd", "docker"], timeout=300)
@@ -1873,10 +2197,57 @@ def run_question(q: str, qfile: Path, rundir: Path, cfg: Path, log: Path) -> dic
     return dict(rc=rc, items=counts, seconds=round(time.time() - t0))
 
 
+def nvidia_phase2(data: Path, rundir: Path, cfg: Path, cuda_image: str, man: dict, run: dict, log: Path) -> dict | None:
+    """After every step: NVIDIA cards the boot modules did not drive are measured with the other flavour. None when
+    every NVIDIA card was driven (nothing to do)."""
+    driven = nvidia_driven()
+    left = [p for p in nvidia_pci_devices() if p not in driven]
+    if not left:
+        return None
+    say(f"nvidia-swap: cards the boot modules do not drive: {left}", log)
+    STATUS.n += 1
+    STATUS.begin("nvidia-swap")
+    res = dict(swap_modules(sorted(driven), log), pci=left)
+    if res.get("failed"):
+        say(f"nvidia-swap: {res['failed']} — those cards are not measured", log)
+        return res
+    now = nvidia_driven()
+    res["gpus"] = [line for pci, line in sorted(now.items())]
+    missing = [p for p in left if p not in now]
+    if missing:
+        res["not_driven"] = missing
+    if not now:
+        res["failed"] = "the other modules loaded, but they drive none of the cards either"
+        say(f"nvidia-swap: {res['failed']}", log)
+        return res
+    say(f"nvidia-swap: {res['flavour']} modules {res['version']} drive {res['gpus']}", log)
+    # questions as for the first phase, for the cards the new driver drives (gpu-p2p needs two of them)
+    gpu_q = [(q, f) for q, f, skip in plan(OPT / "questions", True, "", len(now)) if not skip and question_gpus(f) != "none"]
+    STATUS.n += len(gpu_q) + 1
+    sd = rundir / "nvidia-swap"
+    sd.mkdir(parents=True, exist_ok=True)
+    with NvidiaSampler(sd / "samples-nvidia.csv", True):
+        steps = [(f"nvidia-swap/{q}", q, lambda q=q, f=f: run_question(q, f, sd, cfg, log)) for q, f in gpu_q]
+        steps.append(("nvidia-swap/llama-bench", "llama-bench",
+                      lambda: run_llama(data, sd, cuda_image, True, log, cuda_only=True)))
+        for name, kind, step in steps:
+            STATUS.begin(name, skippable=True)
+            with StepMemory(name, log) as mem:                # the same memory limit as the first phase
+                try:
+                    run["questions"][name] = step()
+                except StepSkipped:
+                    run["questions"][name] = dict(skipped=OPERATOR_SKIP)
+                    run.setdefault("operator_skips", []).append(name)
+            record_memory(run["questions"][name], mem, log)
+            run["questions"][name]["tools"] = tools_for(kind, man)
+            (rundir / "run.json").write_text(json.dumps(run, indent=1))
+    return res
+
+
 # --- format and versions ---------------------------------------------------------------------------------------------
 # The run folder's format (results/FORMAT.md). Minor versions only add: fields and files are never removed, renamed
 # or retyped, so every reader of 1.x reads every 1.y run. A change that cannot be additive is a new major version.
-FORMAT = dict(name="rigsim-stick-run", version="1.6")
+FORMAT = dict(name="rigsim-stick-run", version="1.7")
 
 
 def runtime_versions() -> dict:
@@ -1995,6 +2366,9 @@ def main() -> int:
     STATUS.start()
     STATUS.begin("inventory")
     try:
+        run["swap_was_on"] = swap_off()                # by type ("partition", "file"); nothing may use the disks
+        if run["swap_was_on"]:
+            say(f"swap was on ({run['swap_was_on']}), switched off", log)
         run["hardware"] = collect_inventory(rundir / "inventory", log)
         say(f"cpu {run['hardware']['cpu']} | board {run['hardware']['board']} | {run['hardware']['ram_gib']} GiB | "
             f"gpus {run['hardware']['gpus'] or 'none'}", log)
@@ -2020,7 +2394,7 @@ def main() -> int:
         cuda_image = re.search(r'(?m)^image\s*=\s*"([^"]+)"', (OPT / "questions" / "gpu-gemm.toml").read_text()).group(1)
         with DrmSampler(rundir / "samples-drm.jsonl"), NvidiaSampler(rundir / "samples-nvidia.csv", nvidia):
             qplan = list(plan(OPT / "questions", nvidia, why, nvidia_count() if nvidia else None))
-            STATUS.n = 2 + len(qplan) + 7        # inventory, docker, the questions, the seven steps below
+            STATUS.n = 2 + len(qplan) + 8        # inventory, docker, the questions, the eight steps below
             threading.Thread(target=operator_keys, daemon=True).start()
             for q, f, skip in qplan:
                 STATUS.begin(q, skippable=not skip)
@@ -2036,6 +2410,7 @@ def main() -> int:
                 run["questions"][q]["tools"] = tools_for(q, man)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
             for name, step in (("mlc", lambda: run_mlc(data, rundir, log)),
+                               ("storage", lambda: run_storage(rundir, log, cmdline)),
                                ("opencl", lambda: run_opencl(rundir, log)),
                                ("vkprobe", lambda: run_vulkan_probe(rundir, log)),
                                ("rocm", lambda: run_vendor("rocm", data, rundir, log)),
@@ -2054,7 +2429,11 @@ def main() -> int:
                 if run["questions"][name].get("skipped"):
                     say(f"{name}: skipped ({run['questions'][name]['skipped']})", log)
                 (rundir / "run.json").write_text(json.dumps(run, indent=1))
-        ok = all(step_ok(v) for v in run["questions"].values())
+        swap = nvidia_phase2(data, rundir, cfg, cuda_image, man, run, log)
+        if swap is not None:
+            run["nvidia_swap"] = swap
+            (rundir / "run.json").write_text(json.dumps(run, indent=1))
+        ok = all(step_ok(v) for v in run["questions"].values()) and not (run.get("nvidia_swap") or {}).get("failed")
         run["status"] = "done" if ok else "done with failures"
     except Stopped:
         run["status"] = "stopped"
@@ -2086,6 +2465,22 @@ def main() -> int:
     return 0
 
 
+def prune_images(data: Path, log: Path | None = None) -> list[str]:
+    """Remove every image the seed no longer has (an older ROCm, an earlier build's vendor tag): the store is reused
+    from flash to flash and only ever grew — 83 GiB on 2026-11-07, more than the stick could take."""
+    want = {t for img in (data / "seed" / "images").glob("*.tar") for t in image_tags(img)}
+    if not want:                                       # cannot tell what belongs: remove nothing
+        return []
+    rc, out = sh(["docker", "image", "ls", "--format", "{{.Repository}}:{{.Tag}}"], timeout=120)
+    gone = [t for t in out.split() if rc == 0 and t not in want and not t.endswith(":<none>")]
+    for t in gone:
+        sh(["docker", "image", "rm", "-f", t], timeout=600)
+    sh(["docker", "image", "prune", "-f"], timeout=600)      # the layers nothing refers to any more
+    if gone:
+        say(f"docker: removed images the seed no longer has: {gone}", log)
+    return gone
+
+
 def preload(data: Path) -> int:
     """Run by flash.sh at flash time, inside the stick's own system image (chroot) with containerd and dockerd
     already started on the data partition: loads every seeded image — the vendor images too — so the stick's
@@ -2097,6 +2492,7 @@ def preload(data: Path) -> int:
         if r.get("cached"):
             say(f"docker: {img.name} already on the stick")
         failed += r.get("rc", 0) != 0
+    prune_images(data)
     return 1 if failed else 0
 
 
