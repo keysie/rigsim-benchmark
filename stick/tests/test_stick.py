@@ -1947,7 +1947,7 @@ def test_stick_version_readable_on_both_partitions(tmp_path):
     fn = f[f.index("ver() {"):f.index("old=", f.index("ver() {"))]
     for files, want in (({"STICK_VERSION": "0.15.0", "VERSION": "a5fc277"}, "0.15.0 (a5fc277)"),
                         ({"VERSION": "3ba4483"}, "3ba4483"), ({}, "unknown")):
-        d = tmp_path / want.replace(" ", "_"); d.mkdir()
+        d = tmp_path / f"case{len(list(tmp_path.iterdir()))}"; d.mkdir()
         for k, v in files.items():
             (d / k).write_text(v + "\n")
         r = subprocess.run(["bash", "-c", fn + f'\nver {d}'], capture_output=True, text=True)
