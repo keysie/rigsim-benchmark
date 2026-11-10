@@ -176,3 +176,4 @@ by adding a new entry). Rarely read: it explains how the current state came to b
 - **2026-11-08** — With overlay2 the image store holds 44 GiB (was 83 GiB with containerd's store) and is copied to the 128 GB
   stick. dd's progress counts the sparse file's apparent size (holes included), so it shows more than 44 GiB.
 - **2026-11-08** — Store copy now says it is sparse: apparent size, data size, and what was written (du of the copy).
+- **2026-11-10** — User: stick version readable from the file systems. /.disk/info now "rigsim hardware stick <semver> (<commit>, Ubuntu <suite>)", seed/STICK_VERSION on the data partition; flash.sh shows "0.15.0 (a5fc277)".
