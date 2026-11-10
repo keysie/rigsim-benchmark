@@ -185,7 +185,7 @@ echo "shim $SHIM"
 sudo cp "$SHIM" "$ISO/EFI/boot/bootx64.efi"
 sudo cp "$(rootfile /usr/lib/shim/mmx64.efi)" "$ISO/EFI/boot/mmx64.efi"
 sudo cp "$(rootfile /usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed)" "$ISO/EFI/boot/grubx64.efi"
-printf 'rigsim hardware stick %s (Ubuntu %s)\n' "$VERSION" "$SUITE" > "$ISO/.disk/info"
+printf 'rigsim hardware stick %s (%s, Ubuntu %s)\n' "$STICK_VERSION" "$VERSION" "$SUITE" > "$ISO/.disk/info"
 cp "$S/ubuntu/grub.cfg" "$ISO/boot/grub/grub.cfg"
 sudo chroot "$ROOT" grub-mkstandalone --format=i386-pc --output=/tmp/core.img \
   --install-modules="linux normal iso9660 biosdisk search configfile" --modules="linux normal iso9660 biosdisk search configfile" \
@@ -407,6 +407,7 @@ else
   echo "== seed: Intel MLC left out (MLC_URL is empty)"
 fi
 echo "$VERSION" > "$OUT/seed/VERSION"
+echo "$STICK_VERSION" > "$OUT/seed/STICK_VERSION"       # readable on the data partition without the repo
 export LLAMA_REF LLAMA_SELECT AMDGPU_TARGETS ROCM_IMAGE ONEAPI_IMAGE BLENDER_VERSION BLENDER_SCRIPT_URL
 # Seed self-test (user decision 2026-10-31): every part asked for is in the seed and every native binary finds its
 # libraries where it runs; otherwise the build stops here, before anyone boots a stick that lacks data

@@ -251,11 +251,14 @@ fi
 if [[ -z "$part" ]]; then fresh; exit 0; fi
 
 MNT="$(mktemp -d)"; mount -o ro "$part" "$MNT"
-old="$(cat "$MNT/seed/VERSION" 2>/dev/null || echo unknown)"
+# "0.15.0 (a5fc277)"; sticks before seed/STICK_VERSION show the build commit only
+ver() { local v c; v="$(cat "$1/STICK_VERSION" 2>/dev/null)"; c="$(cat "$1/VERSION" 2>/dev/null || echo unknown)"
+        echo "${v:+$v (}$c${v:+)}"; }
+old="$(ver "$MNT/seed")"
 runs="$(ls "$MNT/runs" 2>/dev/null | wc -l)"
 machines="$(ls "$MNT/runs" 2>/dev/null | awk -F- '{print $2}' | sort -u | wc -l)"
 umount "$MNT"; rmdir "$MNT"; MNT=""
-new="$(cat "$OUT/seed/VERSION" 2>/dev/null || echo unknown)"
+new="$(ver "$OUT/seed")"
 echo "$DEV is already a rigsim stick: version $old, $runs runs from $machines machines. New build: $new."
 # [u]pdate is offered only when it can work (before, a blocked update was offered again after every refusal)
 blocker="$(update_blocker "$part")"

@@ -1937,3 +1937,18 @@ def test_zero_share_counts_unwritten_blocks_and_keeps_nothing_else(tmp_path):
         h.seek(0); h.write(os.urandom(16 << 20))                              # the first quarter holds data
     assert stick.zero_share("x", samples=16, path=f) == 0.75
     assert stick.zero_share("x", path=tmp_path / "missing") is None
+
+
+def test_stick_version_readable_on_both_partitions(tmp_path):
+    """User 2026-11-10: the stick's version without the repo — /.disk/info and seed/STICK_VERSION; flash.sh shows it."""
+    b = (HERE / "build.sh").read_text()
+    assert '"$STICK_VERSION" "$VERSION" "$SUITE" > "$ISO/.disk/info"' in b and '"$OUT/seed/STICK_VERSION"' in b
+    f = (HERE / "flash.sh").read_text()
+    fn = f[f.index("ver() {"):f.index("old=", f.index("ver() {"))]
+    for files, want in (({"STICK_VERSION": "0.15.0", "VERSION": "a5fc277"}, "0.15.0 (a5fc277)"),
+                        ({"VERSION": "3ba4483"}, "3ba4483"), ({}, "unknown")):
+        d = tmp_path / want.replace(" ", "_"); d.mkdir()
+        for k, v in files.items():
+            (d / k).write_text(v + "\n")
+        r = subprocess.run(["bash", "-c", fn + f'\nver {d}'], capture_output=True, text=True)
+        assert r.stdout.strip() == want
